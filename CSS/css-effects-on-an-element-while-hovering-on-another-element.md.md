@@ -6,23 +6,27 @@ The target element (element A) has to be a descendant of the hovered element (el
 ## Example
 ```
 <div class="A">
-  <div class="B"></div>
-  <div class="C"></div>
+  <div class="B">
+    <div class="C"></div>
+  </div>
+  <div class="D"></div>
 </div>
-<div class="D">
-  <div class="E"></div>
+<div class="E">
+  <div class="F"></div>
 </div>
 ```
 What works:
 
 `.A:hover .B{CSS styles}`  
+`.A:hover .D{CSS styles}`  
 `.A:hover .C{CSS styles}`  
-`.D:hover .E{CSS styles}`
+`.E:hover .F{CSS styles}`
 
 What doesn't work:
 
-`.A:hover .D{CSS styles}`  
 `.A:hover .E{CSS styles}`  
-`.D:hover .A{CSS styles}`  
-`.D:hover .B{CSS styles}`  
-`.D:hover .C{CSS styles}`  
+`.A:hover .F{CSS styles}`  
+`.E:hover .A{CSS styles}`  
+`.E:hover .B{CSS styles}`  
+`.E:hover .C{CSS styles}`  
+`.E:hover .D{CSS styles}`
