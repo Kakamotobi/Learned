@@ -1,7 +1,7 @@
 # How to Apply CSS Effects on an Element while Hovering on another Element
 
 ## Restriction
-The target element (element A) has to be a child of the hovered element (element B) in the HTML.
+The target element (element A) has to be a descendant of the hovered element (element B) in the HTML.
 
 ## Example
 ```
