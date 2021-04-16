@@ -68,10 +68,10 @@ Accepts a callback function as its argument.
   - Array of Objects Ex:  
     ```
     movies.reduce((bestMovie, currMovie) => {
-    if (currMovie.score < bestMovie.score) {
-    return bestMovie;
-    } return currMovie;
-    })
+      if (currMovie.score < bestMovie.score) {
+        return bestMovie;
+      } return currMovie;
+    });
     ```
 
 ## Reference
