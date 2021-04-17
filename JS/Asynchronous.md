@@ -23,9 +23,11 @@
   - When the current function is finished, it is taken off the stack and resumes execution wher it left off in the last code listing.
 
 ## Working Around JS' Synchronous Nature
+For example, when making requests to servers, it can take some time to get the data but we don't want our program/website to stall and wait for the data to come back. We want to keep executing our script.
+
 *JS is only asynchronous in that it can hand off certain tasks to the browser, AJAX, etc. to handle while it runs through the script.*
 
-### Browser APIs
+### Web APIs
 - **`setTimeout()`**
   - Sets a timer which executes a function or specified code once the timer expires.
   - Telling the browser: "when the timer ends, push the callback function to the callback queue."
@@ -43,6 +45,16 @@
   - Cancels interval set by `setInterval`.
   - Syntax: `clearInterval(IntervalID)`
 - More on APIs [here](Web-APIs.md)
+
+## Ways to Deal with Asynchronous Data
+
+### Callbacks
+
+### Promises
+
+### async await
+- Dealing with promises/response but in a more elegant way.
+- Looks more like synchronous programming. Rather than when using the .then(), .catch().
 
 ### AJAX
 
