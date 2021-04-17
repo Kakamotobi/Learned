@@ -46,15 +46,19 @@ For example, when making requests to servers, it can take some time to get the d
   - Syntax: `clearInterval(IntervalID)`
 - More on APIs [here](Web-APIs.md)
 
-## Ways to Deal with Asynchronous Data
+## Dealing with Asynchronous Data
 
 ### Callbacks
 
 ### Promises
+#### Creating Promises
+#### Working with Promises
 
-### async await
+### async keyword
 - Dealing with promises/response but in a more elegant way.
 - Looks more like synchronous programming. Rather than when using the .then(), .catch().
+
+### await keyword
 
 ### AJAX
 
