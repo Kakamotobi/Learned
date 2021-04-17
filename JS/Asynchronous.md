@@ -42,7 +42,7 @@
 - **`clearInterval()`**
   - Cancels interval set by `setInterval`.
   - Syntax: `clearInterval(IntervalID)`
-- More [here](JS/Web-APIs.md)
+- More on APIs [here](Web-APIs.md)
 
 ### AJAX
 
