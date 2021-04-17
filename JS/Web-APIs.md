@@ -15,6 +15,7 @@
 ### Browser APIs
 - Browsers come with APIs, which are methods that we can call from JS.
 - Ex:
+  - `setTimeout()`
   - Web Audio API
     - Allows manipulation of audio (volume, etc.) in the browser.
 - The JS call stack recognizes these web API functions and passes them off to the browser to take care of.
