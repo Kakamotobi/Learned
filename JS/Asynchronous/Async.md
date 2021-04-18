@@ -52,27 +52,73 @@ For example, when making requests to servers, it can take some time to get the d
 ### Callbacks
 
 #### Definition
-A function that is passed as an argument to another function, which will invoke the argument(callback) at a given time.
+A function that is passed as an argument to another function, which will invoke the argument(callback) at a given time to complete some kind of routine or action.
 
 #### Example
-![callbackhell]()
+![callbackVersion](refImg/callbackVersion.png)
+- A function for async operations usually requires two or more callbacks (one for success, one for failure) as its arguments.
 
+![callbackExecute](refImg/callbackExecute.png)
+- Using callbacks can result to a lot of nesting (callback hell).
+- Flow:
 ```
-const fakeRequestCallback = (url, success, failure) => {
-  const delay = Math.floor(Math.random() * 4500) + 500;
-  setTimeout(() => {
-    if (delay > 4000) {
-        failure("Connection Timeout :(");
-    } else {
-        success(`Here is your fake data from ${url}`);
-    }
-  }, delay);
-};
+asyncOpFunction (url1, 
+  successFunction () {
+    // for req1;
+    asyncOpFunction (url2,  
+      successFunction () {
+        // for req2;
+        asyncOpFunction (url3,
+          successFunction () {
+            // for req3;
+          },
+          failFunction () {
+            // for req3;
+          }
+        );
+      },
+      failFunction () {
+        // for req2;
+      }
+    );
+  },
+  failFunction () {
+    // for req1;
+  }
+);
 ```
 
 ### Promises
+
+#### Definition
+A Promise is an **object** representing **the eventual resolution of success or failure of an asynchronous operation**.  
+It is a returned object to which callbacks are attached, instead of passed in to the function.  
+These callbacks will run depending on whether the promise was resolved or rejected.
+
+#### Description
+- 3 States
+  - pending: initial state where the promise is neither fulfilled nor rejected.
+  - fulfilled: the async operation was successfully resolved.
+  - rejected: the async operation failed.
+- Promise Methods
+  - **`.then()`**
+    - Attach a callback by writing code to run if the promise is resolved in the `()`.
+    - **Returns a promise, hence can be chained on.**
+      - Ex: if this promise was resolved, check this promise.
+  - **`.catch()`**
+    - Attach a callback by writing code to run if the promise is rejected in the `()`.
+    - Returns a promise.
+
 #### Creating Promises
+![promisesVersion](refImg/promisesVersion.png)
+
 #### Working with Promises
+##### Syntactical Flow
+![promisesExecute1](refImg/promisesExecute1.png)
+##### Cleaner Version
+![promisesExecute2](refImg/promisesExecute2.png)
+- Can avoid nesting multiple initial functions by returning it inside **`.then()`**, *which returns a promise*, with corresponding argument.
+- **`.catch()`** can be reduced to one for all.
 
 ### Async Functions
 
