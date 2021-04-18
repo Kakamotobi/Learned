@@ -1,6 +1,7 @@
 # Asynchronous JS
 
 ## Prerequisites
+
 ### Single Threaded and Synchronous
 - JS is **always** single threaded and synchronous.
 - Single Threaded
@@ -25,7 +26,7 @@
 ## Working Around JS' Synchronous Nature
 For example, when making requests to servers, it can take some time to get the data but we don't want our program/website to stall and wait for the data to come back. We want to keep executing our script.
 
-*JS is only asynchronous in that it can hand off certain tasks to the browser, AJAX, etc. to handle while it runs through the script.*
+*JS is only asynchronous in that it can hand off certain tasks to the browser, AJAX, etc. to handle while it synchronously runs through the script.*
 
 ### Web APIs
 - **`setTimeout()`**
@@ -50,15 +51,36 @@ For example, when making requests to servers, it can take some time to get the d
 
 ### Callbacks
 
+#### Definition
+A function that is passed as an argument to another function, which will invoke the argument(callback) at a given time.
+
+#### Example
+![callbackhell]()
+
+```
+const fakeRequestCallback = (url, success, failure) => {
+  const delay = Math.floor(Math.random() * 4500) + 500;
+  setTimeout(() => {
+    if (delay > 4000) {
+        failure("Connection Timeout :(");
+    } else {
+        success(`Here is your fake data from ${url}`);
+    }
+  }, delay);
+};
+```
+
 ### Promises
 #### Creating Promises
 #### Working with Promises
 
-### async keyword
+### Async Functions
+
+#### async keyword
 - Dealing with promises/response but in a more elegant way.
 - Looks more like synchronous programming. Rather than when using the .then(), .catch().
 
-### await keyword
+#### await keyword
 
 ### AJAX
 
