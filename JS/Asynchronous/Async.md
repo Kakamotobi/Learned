@@ -57,7 +57,7 @@ For example, when making requests to servers, it can take some time to get the d
 - **`clearInterval()`**
   - Cancels interval set by `setInterval`.
   - Syntax: `clearInterval(IntervalID)`
-- More on APIs [here](Web-APIs.md)
+- More on APIs [here](../Web-APIs.md)
 
 ## Dealing with Asynchronous Data
 
