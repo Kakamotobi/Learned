@@ -1,5 +1,23 @@
 # Asynchronous JS
 
+## Table of Contents
+- [Prerequisites](#prerequisites)
+  - [Singled Threaded and Synchronous](#single-threaded-and-synchronous)
+  - [Call Stack](#call-stack)
+- [Working Around JS' Synchronous Nature](#working-around-js'-synchronous-nature)
+  - [Web APIs](#web-apis)
+- [Dealing with Asynchronous Data](#dealing-with-asynchronous-data)
+  - [Callbacks](#callbacks)
+    - [Definition](#definition)
+    - [Example](#example)
+  - [Promises](#promises)
+    - [Definition](#definition)
+    - [Description](#description)
+    - [Creating Promises](#creating-promises)
+    - [Working with Promises](#working-with-promises)
+  - [Async Functions](#async-functions)
+
+
 ## Prerequisites
 
 ### Single Threaded and Synchronous
