@@ -4,7 +4,7 @@
 - [Prerequisites](#prerequisites)
   - [Singled Threaded and Synchronous](#single-threaded-and-synchronous)
   - [Call Stack](#call-stack)
-- [Working Around JS' Synchronous Nature](#working-around-js'-synchronous-nature)
+- [Working Around JS Synchronous Nature](#working-around-js-synchronous-nature)
   - [Web APIs](#web-apis)
 - [Dealing with Asynchronous Data](#dealing-with-asynchronous-data)
   - [Callbacks](#callbacks)
@@ -35,7 +35,7 @@
   - Any other functions that are then called by that function are added to the call stack further up, and run where their calls are reached.
   - When the current function is finished, it is taken off the stack and resumes execution wher it left off in the last code listing.
 
-## Working Around JS' Synchronous Nature
+## Working Around JS Synchronous Nature
 For example, when making requests to servers, it can take some time to get the data but we don't want our program/website to stall and wait for the data to come back. We want to keep executing our script.
 
 *JS is only asynchronous in that it can hand off certain tasks to the browser, AJAX, etc. to handle while it synchronously runs through the script.*
@@ -133,12 +133,33 @@ These callbacks will run depending on whether the promise was resolved or reject
 - **`.catch()`** can be reduced to one for all.
 
 ### Async Functions
+A function that is declared with the **`async`** keyword, and permits the **`await`** keyword to be used in it.  
+The two keywords enable asynchronous, promise-based behavior to be written in a cleaner style (don't have to explicitly configure promise chains).
 
-#### async keyword
-- Dealing with promises/response but in a more elegant way.
-- Looks more like synchronous programming. Rather than when using the .then(), .catch().
+#### Keywords
+- **`async`**
+  - Dealing with promises/response but in a more elegant way.
+- **`await`**
+  - Used to wait for a `Promise`.
+  - It will pause the execution of the function, waiting for a `Promise` to be resolved before continuing on.
+- **`return`**
+  - If the function `return`s a value, the `Promise` will be resolved with that value.
+- **`throw`**
+  - If the function `throw`s an exception/error, the promise will be rejected.
+- **`try...catch`** Statement
+  - Handle rejection in async functions using `try...catch` statement.
+  - Execute codes in `try {}`, and when an exception is thrown, execute codes in `catch {}`.
+  - When an error is caught, the remaining codes are not executed. So, we could include code in `catch {}` that we want to execute despite error.
 
-#### await keyword
+#### Note
+- Returning a value inside a `setTimeout()` doesn't return a `Promise` that could be `await`ed.
+- Therefore, it needs to be wrapped with a `Promise` for it to work as intended.
+
+#### Example 
+![](refImg/asyncAwaitExecute.png)
+- Created an async function in which the previously created `Promise` will be called.
+- "Wait for this request to return. If it is resolved/returned, store it in a variable."
+
 
 ### AJAX
 
