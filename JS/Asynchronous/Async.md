@@ -4,7 +4,7 @@
 - [Prerequisites](#prerequisites)
   - [Singled Threaded and Synchronous](#single-threaded-and-synchronous)
   - [Call Stack](#call-stack)
-- [Working Around JS Synchronous Nature](#working-around-js-synchronous-nature)
+- [Working Around Synchronous JS](#working-around-synchronous-js)
   - [Web APIs](#web-apis)
 - [Dealing with Asynchronous Data](#dealing-with-asynchronous-data)
   - [Callbacks](#callbacks)
@@ -35,8 +35,9 @@
   - Any other functions that are then called by that function are added to the call stack further up, and run where their calls are reached.
   - When the current function is finished, it is taken off the stack and resumes execution wher it left off in the last code listing.
 
-## Working Around JS Synchronous Nature
-For example, when making requests to servers, it can take some time to get the data but we don't want our program/website to stall and wait for the data to come back. We want to keep executing our script.
+## Working Around Synchronous JS
+For example, when making requests to servers, it can take some time to get the data but we don't want our program/website to stall and wait for the data to come back. We want to keep executing our script.  
+As we don't know how long it will take to do something with a server, we need our code to wait until the `response` is returned before it tries to do anything else to it.
 
 *JS is only asynchronous in that it can hand off certain tasks to the browser, AJAX, etc. to handle while it synchronously runs through the script.*
 
@@ -161,7 +162,10 @@ The two keywords enable asynchronous, promise-based behavior to be written in a 
 - "Wait for this request to return. If it is resolved/returned, store it in a variable."
 
 
-### AJAX
+### AJAX/AJAJ
+
+#### Definition
+Asynchronous JavaScript And XML (AJAX).
 
 ## Reference
 [Asynchronous JavaScript | MDN](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous)
