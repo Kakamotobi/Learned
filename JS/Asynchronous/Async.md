@@ -8,15 +8,9 @@
   - [Web APIs](#web-apis)
 - [Dealing with Asynchronous Data](#dealing-with-asynchronous-data)
   - [Callbacks](#callbacks)
-    - [Definition](#definition)
-    - [Example](#example)
   - [Promises](#promises)
-    - [Definition](#definition)
-    - [Description](#description)
-    - [Creating Promises](#creating-promises)
-    - [Working with Promises](#working-with-promises)
   - [Async Functions](#async-functions)
-
+- [Reference](#reference)
 
 ## Prerequisites
 
