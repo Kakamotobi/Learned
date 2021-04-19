@@ -223,7 +223,7 @@ The two keywords enable asynchronous, promise-based behavior to be written in a 
 - Does not support `Promises` (so, callback hell esp. when making subsequent requests).
 ![XHR](refImg/XHR.png)
 
-#### fetch API
+#### Fetch API
 - Promise-based approach.
 - Syntax: `fetch("url")`
   - Returns a `Promise` that is resolved with a response object.
@@ -237,6 +237,11 @@ The two keywords enable asynchronous, promise-based behavior to be written in a 
 
 ##### Approach 2
 ![fetchAPI2](refImg/fetchAPI2.png)
+
+#### AXIOS
+- A library for making HTTP Requests.
+- Built on top of Fetch, with less steps.
+
 
 ## Reference
 [Asynchronous JavaScript | MDN](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous)
