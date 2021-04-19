@@ -180,10 +180,10 @@ The two keywords enable asynchronous, promise-based behavior to be written in a 
 ### JSON
 - JavaScript Object Notation (JSON)
 - Methods
-  - JSON.parse()
+  - **`JSON.parse()`**
     - Convert JSON to JS object.
     - When receiving information from the API.
-  - JSON.stringify()
+  - **`JSON.stringify()`**
     - Conver JS object to JSON.
     - When sending information to the API.
 - Refer [here](https://www.json.org/json-en.html)
@@ -220,9 +220,23 @@ The two keywords enable asynchronous, promise-based behavior to be written in a 
 
 #### XHR
 - XMLHttpRequest
-- Does not support promises (so, callback hell esp. when making subsequent requests).
+- Does not support `Promises` (so, callback hell esp. when making subsequent requests).
 ![XHR](refImg/XHR.png)
 
+#### fetch API
+- Promise-based approach.
+- Syntax: `fetch("url")`
+  - Returns a `Promise` that is resolved with a response object.
+- Caveat:
+  - `fetch()` resolves the `Promise` as soon as it gets the first bit of headers even if the data (body/content that was requested) has not arrived yet. Hence, the     data may not be included in the response object that was returned.
+- So, use the **`.json()`** method.
+  - `.json()` returns a `Promise` object after waiting for the body/content to arrive.
+
+##### Approach 1
+![fetchAPI1](refImg/fetchAPI1.png)
+
+##### Approach 2
+![fetchAPI2](refImg/fetchAPI2.png)
 
 ## Reference
 [Asynchronous JavaScript | MDN](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous)
