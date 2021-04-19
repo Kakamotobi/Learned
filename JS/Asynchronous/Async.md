@@ -5,11 +5,12 @@
   - [Singled Threaded and Synchronous](#single-threaded-and-synchronous)
   - [Call Stack](#call-stack)
 - [Working Around Synchronous JS](#working-around-synchronous-js)
-  - [Web APIs](#web-apis)
+  - [Browser APIs](#browser-apis)
 - [Dealing with Asynchronous Data](#dealing-with-asynchronous-data)
   - [Callbacks](#callbacks)
   - [Promises](#promises)
   - [Async Functions](#async-functions)
+- [AJAX and Web APIs](#ajax-and-web-apis)
 - [Reference](#reference)
 
 ## Prerequisites
@@ -41,7 +42,7 @@ As we don't know how long it will take to do something with a server, we need ou
 
 *JS is only asynchronous in that it can hand off certain tasks to the browser, AJAX, etc. to handle while it synchronously runs through the script.*
 
-### Web APIs
+### Browser APIs
 - **`setTimeout()`**
   - Sets a timer which executes a function or specified code once the timer expires.
   - Telling the browser: "when the timer ends, push the callback function to the callback queue."
@@ -162,10 +163,66 @@ The two keywords enable asynchronous, promise-based behavior to be written in a 
 - "Wait for this request to return. If it is resolved/returned, store it in a variable."
 
 
-### AJAX/AJAJ
+## AJAX and Web APIs
 
-#### Definition
-Asynchronous JavaScript And XML (AJAX).
+### AJAX/AJAJ
+- Refers to making JS requests to load/send information from/to the server behind the scenes.
+- Basically, upon a request, the server doesn't respond with a full web page with HTML, CSS, JS.
+- The server responds with XML or JSON file with plain old information/data.
+
+### Web API
+- Web-based interfaces that work via HTTP and make requests to specific **endpoints**.
+  - Endpoints respond with information for other pieces of software to consume.
+  - A "portal" into a different application/database.
+  - i.e., fetching, loading, exposing data.
+  - Responds with JSON.
+
+### JSON
+- JavaScript Object Notation (JSON)
+- Methods
+  - JSON.parse()
+    - Convert JSON to JS object.
+    - When receiving information from the API.
+  - JSON.stringify()
+    - Conver JS object to JSON.
+    - When sending information to the API.
+- Refer [here](https://www.json.org/json-en.html)
+
+### HTTP Request/Response
+
+#### Types of HTTP Requests
+- Get
+- Post
+- More [here](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods)
+
+#### HTTP Response
+- Body
+  - The content/payload of the response that we got back.
+  - Depending on what's been requested, can be HTML, JSON, etc.
+- Status Codes
+  - Numeric codes that are standardized for a quick way of indicating, from the server to the client, how the request went.
+  - Numbers starting with 2 indicate success.
+  - Numbers starting with 3 indicate redirection.
+  - Numbers starting with 4 indicate client error responses.
+  - Numbers starting with 5 indicate server error responses.
+- Query Strings & Headers
+  - Query String
+    - Key-Value pairs representing additional information that we pass in to any URL.
+    - Ex: ?q=query
+      - query is a parameter for which the client provides.
+  - Header
+    - Key-Value pairs that are like meta data for a request or response.
+      - Key is the parameter.
+      - Value is the argument.
+    - Some APIs require certain headers to be specified when sending request. Read the docs!
+
+### Sending HTTP Requests via JS
+
+#### XHR
+- XMLHttpRequest
+- Does not support promises (so, callback hell esp. when making subsequent requests).
+![XHR](refImg/XHR.png)
+
 
 ## Reference
 [Asynchronous JavaScript | MDN](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous)
