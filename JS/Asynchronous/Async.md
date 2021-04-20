@@ -13,6 +13,8 @@
 - [AJAX and Web APIs](#ajax-and-web-apis)
   - [HTTP Request and Response](#http-request-and-response)
   - [Sending HTTP Requests via JS](#sending-http-requests-via-js)
+    - [Fetch API](#fetch-api)
+    - [AXIOS](#axios)
 - [Reference](#reference)
 
 ## Prerequisites
