@@ -261,10 +261,12 @@ The two keywords enable asynchronous, promise-based behavior to be written in a 
 
 - Configuring Request Headers
   - `axios.get()` accepts a second argument after the endpoint url for configuration information.
-  - 
 ##### Example
 ![axiosHeadersConfig](refImg/axiosHeadersConfig.png)
 
+- AXIOS and DOM
+##### Example
+![axiosAndDOM](refImg/axiosAndDOM.png)
 
 ## Reference
 [Asynchronous JavaScript | MDN](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous)
