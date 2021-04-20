@@ -261,6 +261,9 @@ The two keywords enable asynchronous, promise-based behavior to be written in a 
 
 - Configuring Request Headers
   - `axios.get()` accepts a second argument after the endpoint url for configuration information.
+  - Ex: `const config = {headers: {Accept: "applcation/json"}, params: {q: searchInput}}`
+    - `params` for query strings, ID, country, embed etc.
+ 
 ##### Example
 ![axiosHeadersConfig](refImg/axiosHeadersConfig.png)
 
