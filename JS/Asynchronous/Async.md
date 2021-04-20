@@ -11,6 +11,8 @@
   - [Promises](#promises)
   - [Async Functions](#async-functions)
 - [AJAX and Web APIs](#ajax-and-web-apis)
+  - [HTTP Request and Response](#http-request-and-response)
+  - [Sending HTTP Requests via JS](#sending-http-requests-via-js)
 - [Reference](#reference)
 
 ## Prerequisites
@@ -105,9 +107,9 @@ asyncOpFunction (url1,
 ### Promises
 
 #### Definition
-A Promise is an **object** representing **the eventual resolution of success or failure of an asynchronous operation**.  
-It is a returned object to which callbacks are attached, instead of passed in to the function.  
-These callbacks will run depending on whether the promise was resolved or rejected.
+A `Promise` is a returned **object** representing **the eventual resolution of success or failure of an asynchronous operation** to which callbacks are attached, instead of passed in to the function.  
+These callbacks will run depending on whether the promise was resolved or rejected.  
+`Promise`s are resolved and rejected with value/data that we requested (data or error) for which we want.
 
 #### Description
 - 3 States
@@ -132,6 +134,7 @@ These callbacks will run depending on whether the promise was resolved or reject
 ##### Cleaner Version
 ![promisesExecute2](refImg/promisesExecute2.png)
 - Can avoid nesting multiple initial functions by returning it inside **`.then()`**, *which returns a promise*, with corresponding argument.
+- **`data`** in **`.then()`** refers to the response/returned value from the resolved `Promise`.
 - **`.catch()`** can be reduced to one for all.
 
 ### Async Functions
@@ -143,7 +146,7 @@ The two keywords enable asynchronous, promise-based behavior to be written in a 
   - Dealing with promises/response but in a more elegant way.
 - **`await`**
   - Used to wait for a `Promise`.
-  - It will pause the execution of the function, waiting for a `Promise` to be resolved before continuing on.
+  - It will pause the execution of the function, waiting for a `Promise` to be resolved, after which the response/returned value can be extracted from, before continuing on.
 - **`return`**
   - If the function `return`s a value, the `Promise` will be resolved with that value.
 - **`throw`**
@@ -188,7 +191,7 @@ The two keywords enable asynchronous, promise-based behavior to be written in a 
     - When sending information to the API.
 - Refer [here](https://www.json.org/json-en.html)
 
-### HTTP Request/Response
+### HTTP Request and Response
 
 #### Types of HTTP Requests
 - Get
@@ -239,8 +242,26 @@ The two keywords enable asynchronous, promise-based behavior to be written in a 
 ![fetchAPI2](refImg/fetchAPI2.png)
 
 #### AXIOS
-- A library for making HTTP Requests.
+- An external library for making HTTP Requests.
 - Built on top of Fetch, with less steps.
+- Works with both client-side and server-side (Node.js).
+- Methods
+  - **`axios.get()`**
+    - Returns a `Promise` object that has already parsed data in it.
+      - No need for `json.parse()` or multiple `.then()s`.
+      - Unlike `fetch()`, the `Promise` is returned once everything is finished (requested data is included).
+
+##### Approach 1
+![axiosGetApproach1](refImg/axiosGetApproach1.png)
+
+##### Approach 2
+![axiosGetApproach2](refImg/axiosGetApproach2.png)
+
+- Configuring Request Headers
+  - `axios.get()` accepts a second argument after the endpoint url for configuration information.
+  - 
+##### Example
+![axiosHeadersConfig](refImg/axiosHeadersConfig.png)
 
 
 ## Reference
