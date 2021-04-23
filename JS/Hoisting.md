@@ -1,6 +1,6 @@
 # Hoisting
 
-Variable and function declarations are all given space in memory before they get an actual value, but stay exactly where you typed them in your code.  
+Variable and function **declarations** (not initializations) are all given space in memory before they get an actual value, but stay exactly where you typed them in your code.  
 They are not physically hoisted to the top of the script.
 
 
