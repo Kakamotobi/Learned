@@ -61,3 +61,7 @@ console.log("Your rate is: " getRate());
   - Both are also hoisted but are not set to undefined.
     - Therefore, leads to reference error if the variable is used before the initialization occurs.
   - Both are scoped to blocks rather than current execution contexts (ex: functions) like `var` does.
+
+## Function Hoisting
+Allows you to use a function before it being declared in your code.
+
