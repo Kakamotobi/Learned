@@ -47,7 +47,19 @@
 - new Set(array) is an object per se. So need to use spread (…).
 
 ### Example
+![setConstructor](refImg/setConstructor.png)
 
+## Factory Functions vs. Constructor Functions
+- Common Objective: construct or create a JS object.
+- Naming Convention
+  - Factory Function - camel notation
+  - Constructor Function - pascal notation
+- Approach in Creating Objects
+  - Factory Function - use ‘return’ keyword in the function to return an object.
+  - Constructor Function - use the ‘new’ operator and the ‘this’ keyword instead of returning an object inside the function. 
+
+### Example
+![factoryAndConstructorFunctions](refImg/factoryAndConstructorFunctions.png)
 
 ## Reference
 [What are Classes, Objects, and Constructors?](https://www.youtube.com/watch?v=5AWRivBk0Gw&ab_channel=WebDevSimplified)
