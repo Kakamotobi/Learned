@@ -63,4 +63,5 @@ console.log("Your rate is: " getRate());
   - Both are scoped to blocks (ex: conditionals, loops, function, etc.) rather than current execution contexts (ex: functions) like `var` does.
 
 ## Function Hoisting
-Allows you to use a function before it being declared in your code.
+- Allows you to use a function before it being declared in your code.  
+- Function expressions are not hoisted.
