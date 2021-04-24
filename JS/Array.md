@@ -39,7 +39,7 @@
   - By default, converts all entries into strings and order them according to UTF-16 code unit values.
   - Syntax: `arr.sort([compareFunction])`
     - `compareFunction` defines the sort order.
-      - For array of numbers (ascending): `(a, b) => {a - b;}`
+      - For array of numbers (ascending): `(a, b) => a - b;`
       - For array of objects: `(a, b) => {a.propertyName - b.propertyName;}`
 
 ## Array Callback Methods
