@@ -1,5 +1,14 @@
 # Prototypes, Classes, and OOP
 
+## Object Prototypes
+- The mechanism by which JS objects inherit features from one another.
+- Objects can have a prototype object, which acts as a *template object* that it inherits properties and methods from.
+- `.prototype` vs. `__proto__`
+  - `.prototype` is the actual object where properties and methods are added to.
+    - Ex: `Array.prototype` <-- prototype object that every array shares.
+  - `__proto__` is a reference to the `.prototype` object.
+    - It is a property name on a JS object.
+
 ## Factory Function
 - Make a prototype object to which we can add properties and methods based off of arguments that have been provided, and then return that object.
 - One way of making objects based off of a pattern/recipe (not ideal).
@@ -29,3 +38,8 @@
 ![constructorFunction](refImg/constructorFunction.png)
 ### Outcome
 ![constrFuncTest](refImg/constrFuncTest.png)
+### Shortcoming
+- Things are not grouped together.
+  - The constructor function and methods, are defined separately.
+
+## Classes
