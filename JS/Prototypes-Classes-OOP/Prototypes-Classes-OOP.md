@@ -26,6 +26,6 @@
   5. Returns `this` object if the function doesn't return its own object.
     - Ex: `return color;`
 ### Example
-![constructorFunction](refImg/constructoryFunction.png)
+![constructorFunction](refImg/constructorFunction.png)
 ### Outcome
 ![constrFuncTest](refImg/constrFuncTest.png)
