@@ -52,7 +52,7 @@ Accepts a callback function as its argument.
   - Ex: `arr.map(x => x + 1)`
 - **`.filter()`**
   - Creates a new array of all the elements of the array that passed the test implemented in `()`.
-  - Ex: `arr.test(x => x > 0)`
+  - Ex: `arr.filter(x => x > 0)`
 - **`.every()`**
   - Returns `true` or `false` if all the elements in the array passed the test in `()` or not.
 - **`.some()`**
