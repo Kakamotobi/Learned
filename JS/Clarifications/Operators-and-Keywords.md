@@ -62,5 +62,5 @@
 ![factoryAndConstructorFunctions](refImg/factoryAndConstructorFunctions.png)
 
 ## Reference
-[What are Classes, Objects, and Constructors?](https://www.youtube.com/watch?v=5AWRivBk0Gw&ab_channel=WebDevSimplified)
+[What are Classes, Objects, and Constructors?](https://www.youtube.com/watch?v=5AWRivBk0Gw&ab_channel=WebDevSimplified)  
 [JavaScript this Keyword](https://www.youtube.com/watch?v=gvicrj31JOM)
