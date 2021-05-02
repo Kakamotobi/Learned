@@ -24,7 +24,7 @@
 ## Constructor Function
 - Another way of making objects based off of a pattern/recipe.
 - Notes
-  - Capitalalize first letter indicates a constructor function.
+  - Capital first letter indicates a constructor function.
   - There is never a `return` value in constructor functions.
   - `this` keyword is referenced directly in the function; not in an object.
 - **`new`** Operator
@@ -43,3 +43,11 @@
   - The constructor function and methods, are defined separately.
 
 ## Classes
+- Syntactic sugar for what factory and construction functions do.
+- Notes
+  - Capital first letter indicates a class.
+  - There is always a `constructor(){}` function, which executes immediately whenever a new class is created. 
+### Example
+![class](refImg/class.png)
+### Outcome
+![classTest](refImg/classTest.png)
