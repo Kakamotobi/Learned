@@ -1,4 +1,12 @@
 # Destructuring Assignment
+
+## Table of Contents
+- [Destructuring](#destructuring)
+- [Destructuring Arrays](#destructuring-arrays)
+- [Destructuring Objects](#destructuring-objects)
+- [Destructuring Parameters](#destructuring-parameters)
+
+## Destructuring
 > Javascript expression that makes it possible to unpack values from arrays, or properties from objects, into distinct variables.
 - A way to unpack, extract, single out:
   - Values from arrays
