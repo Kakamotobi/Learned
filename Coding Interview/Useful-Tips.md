@@ -56,4 +56,5 @@ function solution(answers) {
 ```
 
 ### Reference
-[Remainder (%) - JavaScript | MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Remainder)
+[Remainder (%) - JavaScript | MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Remainder)  
+[Looping infinitely around an array in JavaScript - Ben Frain](https://benfrain.com/looping-infinitely-around-an-array-in-javascript/)
