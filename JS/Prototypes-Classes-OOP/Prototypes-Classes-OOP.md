@@ -65,10 +65,13 @@
 - **`extends`** Keyword
   - Allows the use of properties and methods from another (super) class.
   - The `constructor` and methods of the original class have priority to that of the super class.
-- **`super`** Keyword
+- **`super()`** Keyword
   - References the super class that we are extending from.
   - It will call the `constructor` from the super class.
+  - If the `constructor` needs other additional properties, instead of rewriting what's already written in the super class, do `super([arguments])` and only write the additional properties.
 #### Example
 ![extendsAndSuper](refImg/extendsAndSuper.png)
+#### Outcome
+![spike](refImg/spike.png)
 
-
+![tom](refImg/tom.png)
