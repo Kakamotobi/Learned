@@ -5,6 +5,7 @@
 - [Factory Function](#factory-function)
 - [Constructor Function](#constructor-function)
 - [Class](#class)
+  - [`extends` and `super` Keywords](#extends-and-super-keywords)
 
 ## Object Prototypes
 - The mechanism by which JS objects inherit features from one another.
@@ -58,3 +59,16 @@
 ![class](refImg/class.png)
 ### Outcome
 ![classTest](refImg/classTest.png)
+
+### `extends` and `super` Keywords
+- Sharing functionality between classes, essentially subclassing/inheritance.
+- **`extends`** Keyword
+  - Allows the use of properties and methods from another (super) class.
+  - The `constructor` and methods of the original class have priority to that of the super class.
+- **`super`** Keyword
+  - References the super class that we are extending from.
+  - It will call the `constructor` from the super class.
+#### Example
+![extendsAndSuper](refImg/extendsAndSuper.png)
+
+
