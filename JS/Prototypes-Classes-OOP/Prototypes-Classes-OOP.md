@@ -1,5 +1,11 @@
 # Prototypes, Classes, and OOP
 
+## Table of Contents
+- [Object Prototypes](#object-prototypes)
+- [Factory Function](#factory-function)
+- [Constructor Function](#constructor-function)
+- [Class](#class)
+
 ## Object Prototypes
 - The mechanism by which JS objects inherit features from one another.
 - Objects can have a prototype object, which acts as a *template object* that it inherits properties and methods from.
@@ -42,11 +48,12 @@
 - Things are not grouped together.
   - The constructor function and methods, are defined separately.
 
-## Classes
+## Class
 - Syntactic sugar for what factory and construction functions do.
 - Notes
   - Capital first letter indicates a class.
   - There is always a `constructor(){}` function, which executes immediately whenever a new class is created. 
+  - Add properties and methods in one go.
 ### Example
 ![class](refImg/class.png)
 ### Outcome
