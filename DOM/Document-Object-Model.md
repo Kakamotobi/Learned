@@ -14,12 +14,12 @@
   - [3 Ways to Add Events](#3-ways-to-add-events)
     - [Inline Events](#inline-events)
     - [Property Approach](#property-approach)
-    - [.addEventListener()](#.addeventlistener())
+    - [.addEventListener()](#addeventlistener)
   - [Event Object and Keyboard Events](#event-object-and-keyboard-events)
-  - [Form Events and .preventDefault()](#form-events-and-.preventDefault())
+  - [Form Events and .preventDefault()](#form-events-and-preventdefault)
   - [Change Event and Input Event](#change-event-and-input-event)
-  - [Event Bubbling and .stopPropagation()](#event-bubbling-and-.stopPropagation())
-  - [Event Delegation and evt.target](#event-delegation-and-evt.target)
+  - [Event Bubbling and .stopPropagation()](#event-bubbling-and-stoppropagation)
+  - [Event Delegation and evt.target](#event-delegation-and-evttarget)
 
 ## Terminologies
 ### Document Object
