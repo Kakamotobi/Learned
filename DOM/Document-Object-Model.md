@@ -5,6 +5,22 @@
 > Nodes can also have event handlers attached to them. Once an event is triggered, the event handlers get executed.
 - Basically, JS "window"/access portal into the contents of the page.
 
+## Table of Contents
+- [Terminologies](#terminologies)
+- [Methods](#methods)
+  - [Selecting Elements](#selecting-elements)
+  - [Frequently Used Methods and Properties](#frequently-used-methods-and-properties)
+- [DOM Events](#dom-events)
+  - [3 Ways to Add Events](#3-ways-to-add-events)
+    - [Inline Events](#inline-events)
+    - [Property Approach](#property-approach)
+    - [.addEventListener()](#.addeventlistener())
+  - [Event Object and Keyboard Events](#event-object-and-keyboard-events)
+  - [Form Events and .preventDefault()](#form-events-and-.preventDefault())
+  - [Change Event and Input Event](#change-event-and-input-event)
+  - [Event Bubbling and .stopPropagation()](#event-bubbling-and-.stopPropagation())
+  - [Event Delegation and evt.target](#event-delegation-and-evt.target)
+
 ## Terminologies
 ### Document Object
 - The `document` object is the very top object (root) of the tree structure.
@@ -133,7 +149,7 @@
 ## DOM Events
 ### Some Events
 - Click, drag, drop, hover, scroll, form submission, key presses, focus/blur, mouse wheel, double click, copying, pasting, audio start, screen size, printing.
-### 3 Ways to respond to user inputs and actions.
+### 3 Ways to Add Events
 #### Inline Events
 - Directly in the HTML markup.
 ##### Example
@@ -186,7 +202,7 @@ function clicked() {
 window.addEventListener("", function(){});`
 ```
 
-### Event Object and Keyword Events
+### Event Object and Keyboard Events
 #### Event Object
 - The event object is always automatically passed in to the callback.
 - Contains information about the interaction with the event object.
@@ -239,6 +255,138 @@ window.addEventListener("keydown", function(evt) {
     default:
       console.log("IGNORED!");
   }
+});
+```
+
+### Form Events and `.preventDefault()`
+#### `.preventDefault()`
+- Prevents the default behavior that will happen as a result of the event.
+- *After forms are submitted, the web page continues to the next page (action) and doesn't stay in the original page.*
+##### Example
+```
+const form = document.querySelector("form");
+
+form.addEventListener("submit", function(evt) {
+  evt.preventDefault();
+});
+```
+#### `.value` attribute
+- Direct property to access the content/value of something.
+##### Example
+```
+const tweetForm = document.querySelector("#tweetForm");
+
+tweetForm.addEventListener("submit", function(evt) {
+  evt.preventDefault();
+  
+  const usernameInput = document.querySelector(".username");
+  const tweetInput = document.querySelector(".tweet");
+  
+  console.log(usernameInput.value, tweetInput.value);
+```
+#### Selecting Different Elements in the Form Element
+- `.elements`
+  - Form property containing HTML name attributes.
+  - *Can also iterate over the elements.*
+##### Example
+```
+const tweetForm = document.querySelector("#tweetForm");
+const tweetsContainer = document.querySelector("#tweets");
+
+// Upon form submission
+tweetForm.addEventListener("submit", function(evt) {
+  evt.preventDefault();
+  const usernameInput = form.elements.username.value;
+  const tweetInput = form.elements.tweet.value;
+  addTweet(usernameInput.value, tweetInput.value);
+  usernameInput.value = "";
+  tweetInput.value = "";
+});
+
+// Function for posting a new tweet
+const addTweet = (usernameInput, tweetInput) => {
+  const newTweet = document.createElement("li");
+  const bTag = document.createElement("b");
+  bTag.append(usernameInput);
+  newTweet.append(bTag);
+  newTweet.append(` - ${tweetInput}`);
+  tweetsContainer.append(newTweet);
+}
+```
+
+### Change Event and Input Event
+#### Change Event
+- Only fires when the input is blurred (i.e., leaving the input field).
+  - When the user leaves the input and the input is different from before.
+- Keys that don't impact the value of the input (ex: shift, tab, arrow keys, etc.) do not fire the change event.
+#### Input Event
+- Fires whenever what's in the input changes (not on blur).
+- Keys that don't impact the value of the input (ex: shift, tab, arrow keys, etc.) do not fire the change event.
+##### Example
+```
+input.addEventListener("input", function () {
+  h2.innerText = input.value;
+});
+```
+
+### Event Bubbling and `.stopPropagation()`
+#### Event Bubbling
+- When an event occurs on an element, it first runs the event handlers on it, then on its parent, then all the way up on other ancestors.
+- i.e., parent/ancestor's event handlers also trigger on an element.
+#### `.stopPropagation()`
+- After running the current element's event handlers, stop and don't run parent/ancestors' handlers.
+#### Example
+```
+const container = document.querySelector("#container"); // Parent
+const btn = document.querySelector("button); // Child
+
+// When clicking on either the container or btn, the background color changes.
+container.addEventListener("click", function() {
+  this.style.backgroundColor = "blue";
+
+// Now, when clicking the btn, the background color doesn't change.
+btn.addEventListener("click", function(evt) {
+  evt.stopPropagation();
+});
+```
+
+### Event Delegation and `evt.target`
+- Add event listener to the parent of the target element in order to apply the event listener to the target elements created in the future.
+- Ex: for elements that may not be on the page at the time the event listeners were added.
+#### `evt.target`
+- Reference to the object onto which the event was dispatched.
+#### Example
+```
+const tweetForm = document.querySelector("#tweetForm");
+const tweetsContainer = document.querySelector("#tweets");
+
+tweetForm.addEventListener("submit", function (evt) {
+  evt.preventDefault();
+  const username = tweetForm.elements.username;
+  const tweet = tweetForm.elements.tweet;
+  addTweet(username, tweet);
+  username.value = "";
+  tweet.value = "";
+});
+
+// Function for adding new tweet
+const addTweet = (username, tweet) => {
+  const newTweet = document.createElement("li");
+  const bTag = document.createElement("b");
+  const dltButton = document.createElement.("button");
+  dltButton.innerText = "Delete";
+  dltButton.classList.add("dltButton");
+  bTag.innerText = username.value;
+  newTweet.append(bTag);
+  newTweet.append(` - ${tweet.value}`);
+  newTweet.append(dltButton);
+  tweetsContainer.append(newTweet);
+};
+
+// Event Delegation
+tweetsContainer.addEventListener("click", function (evt) {
+  // In the tweetsContainer <ul> , when a button is clicked, remove its parentNode <li>.
+  evt.target.nodeName === "BUTTON" && evt.target.parentNode.remove();
 });
 ```
 
