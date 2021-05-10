@@ -17,6 +17,8 @@
 - `\ `
   - Indicates space between words.
   - Ex: `cd ~/Library/Mobile\ Documents/com~apple~CloudDocs` changes directory to iCloud.
+- `""`
+  - Use quotes to wrap around folder/file names with spaces and special characters.
 - `ls`
   - List the contents of the current directory that I am in.
 - `pwd`
