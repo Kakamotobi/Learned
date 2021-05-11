@@ -86,5 +86,30 @@ node index.js
 > It describes the exact tree that was generated, such that subsequent installs are able to generate identical trees, regardless of intermediate dependency updates.
 - *Importance:*
   - *Describes a single representation of a dependency tree such that teammates, deployments, and continuous integration are guaranteed to install exactly the same dependencies.*
+
+## Example - Language Guesser
+```
+<Terminal>
+npm install franc
+npm install langs
+npm install colors
+
+<index.js>
+const franc = require("franc");
+const langs = require("langs");
+const colors = require("colors");
+
+const text = process.argv[2];
+
+try {
+  console.log(langs.where("3", franc(text)).name.green);
+} catch (err) {
+  console.log("Could not match a language. Please try again with a longer sample".red);
+}
+
+<Terminal>
+node index.js "Bonjour, je m'appelle Etienne" // returns French
+```
+
 ## Reference
 [npm Docs](docs.npmjs.com)
