@@ -1,4 +1,4 @@
-# Web Development
+# Terminologies
 
 ## Static Web Page vs. Dynamic Web Page
 ### Static Web Page
@@ -19,3 +19,16 @@
 - Makes the HTML and CSS functional.
 ### Reference
 [Static vs Dynamic Website: What Is the Difference?](https://wpamelia.com/static-vs-dynamic-website/#:~:text=Static%20websites%20are%20ones%20that,databases%20in%20addition%20to%20HTML.)
+
+## Library vs. Framework
+### Library
+- When using a library, we are in charge. We control the flow of the application code and decide when to use the library.
+- Libraries often do smaller things or are single-purpose.
+- Ex: AXIOS (making http requests), color libraries, ASCII art libraries.
+### Framework
+- When using a framework, the framework is in charge. The framework provides the structure for an application and we incorporate our code according to how the framework works.
+- Trade-off between control, and speed of development and features.
+- Frameworks are geared into helping us make full applications.
+- Ex: Express, Ruby on Rails.
+
+
