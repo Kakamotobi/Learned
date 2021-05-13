@@ -1,5 +1,5 @@
 # Node JS
-- A JavaScript runtime that executes code outside of the browser.
+- A JavaScript runtime environment that executes outside of the browser (runs directly on a computer or server OS), and allows us to create server-side tools and apps.
 - Use the same syntax as JS to write server-side code.
 - Notes
   - No window, document, DOM API.
@@ -63,4 +63,5 @@ try {
 ```
 
 ## Reference
-[Index | Node.js v14.16.1 Documentation](https://nodejs.org/dist/latest-v14.x/docs/api/)
+[Index | Node.js v14.16.1 Documentation](https://nodejs.org/dist/latest-v14.x/docs/api/)  
+[Express/Node introduction - Learn web development | MDN](https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/Introduction)
