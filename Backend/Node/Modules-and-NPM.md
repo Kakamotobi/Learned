@@ -1,5 +1,11 @@
 # Modules and NPM
 
+## Table of Contents
+- [Node Modules](#node-modules)
+- [Node Package Manager (NPM)](#node-package-manager-npm)
+- [package.json](#packagejson)
+- [Example - Language Guesser](#example---language-guesser)
+
 ## Node Modules
 ### `module.exports` and `require("")`
 #### `module.exports` (shorthand: `exports`)
@@ -60,7 +66,7 @@ jokes.getRandomDadJoke (function(joke) {
 <Terminal>
 node index.js
 ```
-## Local vs. Global Installation of Packages
+### Local vs. Global Installation of Packages
 - Cannot `require("")` a module using its package name if it is installed locally into another directory.
 - `-g`
   - Install a package globally.
