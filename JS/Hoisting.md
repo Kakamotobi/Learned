@@ -64,4 +64,5 @@ console.log("Your rate is: " getRate());
 
 ## Function Hoisting
 - Allows you to use a function before it being declared in your code.  
-- Function expressions are not hoisted.
+- Function expressions are also hoisted ONLY IF it is not invoked yet.
+  - Ex: in an event listener, since the event has not yet triggered, a function containing a function expression in it is not invoked yet. Hence, hoisting works.
