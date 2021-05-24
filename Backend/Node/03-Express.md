@@ -18,10 +18,10 @@
   - Return the `exports` object from Express.
 - **`const app = express();`**
   - Execute Express package and save to a variable.
-- **`.use([path,] callback [,callback...])`**
+- **`app.use([path,] callback [,callback...])`**
   - This callback will run every time ANY request hits the server.
   - Handles every incoming request the exact same way.
-- **`.listen(port, callback)`**
+- **`app.listen(port, callback)`**
   - This callback will run when the app is running on the indicated port.
   - It will start listening for any incoming requests on that port.
   - Ex: `app.listen(3000, () => { console.log("Listening on Port 3000") })`
