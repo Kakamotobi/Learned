@@ -136,6 +136,9 @@ app.get("/cats", (req, res) => {
 ## Serving Static Assets in Express
 - Static Assets/Files
   - Ex: images, CSS files, JS files.
+- "Served"
+  - Accessible directly.
+  - Ex: localhost:3000/style.css
 ### Process
 - `mkdir public` in root directory.
   - Create a folder(s) called "public" that we want to serve our static assets from.
@@ -144,6 +147,7 @@ app.get("/cats", (req, res) => {
   - Now, we can load files in the "public" folder.
 - Refer to the static assets in the templates to apply them.
   - Ex: `<link rel="stylesheet" href="/style.css">`
+    - Reference the path inside of the "public" directory to get to that asset.
     - No need to reference the path "public/" because we are going to serve the contents of the directory; not the directory itself.
 ### Reference
 [Serving static files in Express](https://expressjs.com/en/starter/static-files.html)
