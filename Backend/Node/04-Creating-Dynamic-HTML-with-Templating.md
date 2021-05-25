@@ -8,7 +8,7 @@
 - [Passing Data to Templates](#passing-data-to-templates)
 - [Conditionals in EJS](#conditionals-in-ejs)
 - [Loops in EJS](#loops-in-ejs)
-- [Serving Static Assets in EJS](#serving-static-assets-in-ejs)
+- [Serving Static Assets in Express](#serving-static-assets-in-express)
 - [Template Demo Example](#template-demo-example)
 
 ## Templating
@@ -48,13 +48,17 @@
 
 ## EJS Interpolating Syntax
 - `<%=` `%>`
-  - Outputs the value into the template (HTML)
+  - Outputs the value into the template (HTML escaped)
   - *Anything in between will be treated as JS.*
   - Ex: `<%= 5 + 5%>` // turns out as 10 in the template.
 - `<%` `%>`
   - 'Scriptlet' tag, for control-flow, no output.
   - *Allows us to embed JS without the result actually be added to the template.*
   - i.e., we can add JS logic without having anything be rendered.
+- `<%-` `%>`
+  - Outputs the unescaped value into the template.
+  - i.e., if there is HTML that we're outputing, it is not going to escape it.
+  - "Escaping" content means we're treating it as a string (not as HTML and rendering it).
 
 ## Passing Data to Templates
 - Generally, remove as much logic from the templates since templates are best to simply display things.
