@@ -1,4 +1,4 @@
-# Creating Dynamic HTML with Templating (EJS)
+# Creating Dynamic HTML with Templating in Express with EJS
 
 ## Table of Contents
 - [Templating](#templating)
