@@ -1,4 +1,4 @@
-# Creating Dynamic HTML with Templating
+# Creating Dynamic HTML with Templating (EJS)
 
 ## Table of Contents
 - [Templating](#templating)
@@ -156,6 +156,18 @@ app.get("/cats", (req, res) => {
 ### Reference
 [Serving static files in Express](https://expressjs.com/en/starter/static-files.html)
 
+## EJS and Partials/Includes
+- `<%- include("pathToTheTemplate") %>`
+  - A way of including a template in other templates.
+  - i.e., sub-template inside of another template.
+- Ex: Common links, scripts, HTML, navbar, etc.
+### Process
+- Create a "partials" directory in the "views" directory.
+- Cut the common parts of templates and move it into a new template.
+- Save the new template in the "partials" directory.
+- Include the "partial" template in the other templates.
+  - Ex: `<%- include("partials/head.ejs") %>`
+
 ## Template Demo Example
 ```
 <<index.js>>
@@ -193,6 +205,8 @@ app.listen("3000", () => {
 
 <<subreddit.ejs>>
 <body>
+  <%- include("partials/navbar.ejs") %>
+  
   <h1>Browsing The <%= name %> Subreddit</h1>
   <h2><%= description %></h2>
   <p><%= subscribers %> Total Subscribers</p>
@@ -210,6 +224,10 @@ app.listen("3000", () => {
 
 <<notfound.ejs>>
 <body>
+  <%- include("partials/navbar.ejs") %>
   <h1>Sorry. We couldn't find the <%= subreddit> subreddit.</h1>
 </body>
+
+<<navbar.ejs>>
+<nav></nav>
 ```
