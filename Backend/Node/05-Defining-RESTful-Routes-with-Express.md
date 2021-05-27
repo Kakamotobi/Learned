@@ -299,5 +299,5 @@ app.listen(3000, () => {
 [Express 5.x - API Reference](http://expressjs.com/en/5x/api.html#req.body)  
 [Fielding Dissertation: CHAPTER 5: Representational State Transfer (REST)](https://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm#sec_5_5)  
 [[Network] REST란? REST API란? RESTful이란?](https://gmlwjd9405.github.io/2018/09/21/rest-and-restful.html)  
-[uui - npm](https://www.npmjs.com/package/uuid)  
+[uuid - npm](https://www.npmjs.com/package/uuid)  
 [method-override - npm](https://www.npmjs.com/package/method-override)
