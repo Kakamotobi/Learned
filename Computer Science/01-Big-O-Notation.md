@@ -16,6 +16,8 @@
   - [Rules of Thumb (space complexity)](#rules-of-thumb-space-complexity)
   - [Example SC-1](#example-sc-1)
   - [Example SC-2](#example-sc-2)
+- [Logarithms](#logarithms)
+- [Reference](#reference)
 
 ## What Is Better Code?
 - **Faster?**
@@ -26,6 +28,9 @@
 
 ## What is it?
 > Big O notation, also called Laundau's symbol, is a symbolism used in complexity theory, computer sciences, and mathematics to describe the asymptotic behavior of functions. Basically, it tells you how fast a function grows or declines.
+- *Big O notation can give us a high level understanding of the time or space complexity of an algorithm.*
+- *Big O notation is not about precision. It's about general trends (linear? quadratic? constant?).*
+- *The time or space complexity (as measured by Big O) depends only on the algorithm, not the hardware used to run the algorithm.*
 - An algorithm is O(f(n)) if the number of simple operations that the computer has to do is eventually less than a constant times f(n), as n increases.
   - f(n) could be linear (f(n) = n).
     - As n grows, the runtime scales as well.
@@ -170,6 +175,18 @@ function double(arr) {
 - If `arr` has length of n, `newArr` will be length of n.
   - Space that's being taken up is directly proportionate to n.
   - Therefore, O(n).
+
+## Logarithms
+- Inverse of exponentiation.
+### Rule of Thumb
+- The binary logarithm of a number roughly measures the number of times you can divide that number by 2 before you get a value that's less than or equal to one.
+- log === log2
+  - log === log base 2.
+  - Use shorthand because it is the general trend that we care about.
+### Occasions
+- Certain searching algorithms have logarithmic time complexity.
+- Efficient sorting algorithms involve logarithms.
+- Recursion sometimes involves logarithmic space complexity.
 
 ## Reference
 [Big O notation.doc](https://web.mit.edu/16.070/www/lecture/big_o.pdf)  
