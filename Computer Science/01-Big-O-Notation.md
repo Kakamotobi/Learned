@@ -17,6 +17,13 @@
   - [Example SC-1](#example-sc-1)
   - [Example SC-2](#example-sc-2)
 - [Logarithms](#logarithms)
+- [Analyzing the Performance of Objects and Arrays](#analyzing-the-performance-of-objects-and-arrays)
+  - [Objects](#objects)
+    - [Big O of Objects](#big-o-of-objects)
+    - [Big O of Object Methods](#big-o-of-object-methods)
+  - [Arrays](#arrays)
+    - [Big O of Arrays](#big-o-of-objects)
+    - [Big O of Array Methods](#big-o-of-array-methods)
 - [Reference](#reference)
 
 ## What Is Better Code?
@@ -187,6 +194,45 @@ function double(arr) {
 - Certain searching algorithms have logarithmic time complexity.
 - Efficient sorting algorithms involve logarithms.
 - Recursion sometimes involves logarithmic space complexity.
+
+## Analyzing the Performance of Objects and Arrays
+### Objects
+- Objects are really quick for pretty much everything. However, there is no order.
+#### Big O of Objects
+- Insertion - O(1).
+- Removal - O(1).
+- Searching - O(n).
+- Access - O(1).
+#### Big O of Object Methods
+- Object.keys - O(n)
+  - As the object grows, so does the number of operations and the amount of time it takes to compile those.
+- Object.values - O(n).
+- Object.entries - O(n).
+- hasOwnProperty - O(1).
+### Arrays
+- Arrays have an intrinsic ordering to their data.
+#### Big O of Arrays
+- Insertion - depends
+  - Inserting at the end of an array - O(1).
+  - Inserting at the beginning of an array - O(n).
+    - Because every single elements need to be reindexed.
+- Removal - depends
+  - Removing at the end of an array - O(1).
+  - Removing at the beginning of an array - O(n).
+- Searching - O(n).
+- Access - O(1).
+#### Big O of Array Methods
+- Push - O(1).
+- Pop - O(1).
+- Shift - O(n).
+- Unshift - O(n).
+- Concat - O(n).
+- Slice - O(n).
+- Splice - O(n).
+- Sort - O(n * log(n)).
+  - The time it takes to sort an array takes larger than O(n) because we have to make a lot of comparisons and move things around.
+- forEach/map/filter/reduce/etc. - O(n).
+  - Because we're doing something with each element.
 
 ## Reference
 [Big O notation.doc](https://web.mit.edu/16.070/www/lecture/big_o.pdf)  
