@@ -137,14 +137,34 @@ asyncOpFunction (url1,
 - **`.catch()`** can be reduced to one for all.
 
 ### Async Functions
-A function that is declared with the **`async`** keyword, and permits the **`await`** keyword to be used in it.  
-The two keywords enable asynchronous, promise-based behavior to be written in a cleaner style (don't have to explicitly configure promise chains).
+- A function that is declared with the **`async`** keyword, and permits the **`await`** keyword to be used in it.
+- *The two keywords enable asynchronous, promise-based behavior to be written in a cleaner style (don't have to explicitly configure promise chains).*
 #### Keywords
 - **`async`**
-  - Dealing with promises/response but in a more elegant way.
+  - Always return a promise.
+  - **If the function returns a value, the promise will be resolved with that value.**
+  - **If the function throws an error, the promise will be rejected.**
+  - Example
+    ```
+    async function hello() {
+      return "Hey guys!";
+    }
+    hello(); // Promise {<resolved>: "Hey guys!"}
+    
+    async function ohNo() {
+      throw new Error("Oh no!");
+    }
+    ohNo(); // Promise {<rejected>: Error: Oh no!}
+    ```
+  - Async Arrow Function Example
+    ```
+    const hello = async () => {
+      return "Hey guys!"
+    }
+    ```
 - **`await`**
-  - Used to wait for a `Promise`.
-  - It will pause the execution of the function, waiting for a `Promise` to be resolved, after which the response/returned value can be extracted from, before continuing on.
+  - Used to wait for a `Promise` to be resolved.
+  - **Pauses the execution of the function, waiting for a `Promise` to be resolved, after which the response/returned value can be extracted from, before continuing on.**
 - **`return`**
   - If the function `return`s a value, the `Promise` will be resolved with that value.
 - **`throw`**
