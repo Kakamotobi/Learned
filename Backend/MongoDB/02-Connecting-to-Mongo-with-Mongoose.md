@@ -2,7 +2,7 @@
 
 ## Table of Contents
 - [What is Mongoose?](#what-is-mongoose)
--[Connecting Mongoose to MongoDB](#connecting-mongoose-to-mongodb)
+- [Connecting Mongoose to MongoDB](#connecting-mongoose-to-mongodb)
 - [CRUD Operations with Mongoose](#crud-operations-with-mongoose)
   - [Inserting with Mongoose - Mongoose Model](#inserting-with-mongoose---mongoose-model)
     - [Models](#models)
@@ -11,11 +11,14 @@
   - [Finding with Mongoose](#finding-with-mongoose)
   - [Updating with Mongoose](#updating-with-mongoose)
   - [Deleting with Mongoose](#deleting-with-mongoose)
+- [Mongoose Schema Validations](#mongoose-schema-validations)
 
 ## What is Mongoose?
 - An ODM that provides ways for us to model out our application data and define a schema. It offers easy ways to validate and build complex queries from the comfort of JS.
   - Object Data/Document Mapper: maps the data that comes back from Mongo and the data that we want to insert into Mongo, into usable JS objects.
 - Goal: easily interact with a Mongo database from JS (i.e., control what's happening in Mongo, in JS through Mongoose).
+- Operation Buffering
+  - Mongoose lets you start using your models immediately without waiting for mongoose to establish a connection to MongoDB.
 
 ## Connecting Mongoose to MongoDB
 ```
@@ -65,6 +68,7 @@ mongoose
     const Movie = mongoose.model("Movie", movieSchema)
     ```
 - Create an instance of a Model and save it to the database.
+  - *`.save()` returns a promise.*
   - Example
     ```
     const amadeus = new Movie({ title: "Amadeus", score: 9.2 });
@@ -131,6 +135,92 @@ mongoose
   - Doesn't return the documents that were involved. Just returns the deleted count.
 - **`Model.findOneAndRemove()`**
 - **`Model.findByIdAndRemove()`**
+
+## Mongoose Schema Validations
+### Shorthand Approach
+```
+const productSchema = new mongoose.Schema({
+  name: String,
+  price: Number
+});
+```
+### Another Approach
+```
+const productSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+  price: {
+    type: Number,
+    required: true,
+  },
+});
+```
+- Additional validations can be added.
+### Validation Scenarios
+- If `required` information is not given, error.
+- If specified type in Schema and the type of data given is a mismatch, error.
+- If the provided information was unspecified in the Schema, it will simply be ignored.
+### Additional Schema Constraints - SchemaType Options
+#### Example
+```
+const productSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+    maxlength: 20,
+  },
+  price: {
+    type: Number,
+    required: true,
+    min: 0,
+  },
+  onSale: {
+    type: Boolean,
+    default: false,
+  },
+  categories: [String],
+  qty: {
+    online: {
+      type: Number,
+      default: 0,
+    },
+    inStore: {
+      type: Number,
+      default: 0,
+      },
+  },
+});
+
+const Product = mongoose.model("Product", productSchema);
+
+const bike = new Product({
+  name: "Bike Helment",
+  price: 29.95,
+  categories: ["Cycling", "Safety"],
+});
+bike.save()
+  .then((data) => {
+    console.log("It worked!");
+    console.log(data);
+  })
+  .catch((err) => {
+    console.log("Oh no error!");
+    console.log(err);
+  });
+```
+### Validating Mongoose Updates
+- By default, Schema validations are applied when creating new documents, but not when updating them.
+- **`{runValidators: true}`**
+  - Validate the update operation against the model's schema.
+### Mongoose Validation Errors
+- We can set up custom validator error messages.
+  - The second value of an array will be the error message.
+  - Ex: `min: [0, "Price must be positive!]`
+- `enum`
+  - Creates a validator that checks if the value is in the given array.
+  - Ex: `size: {type: String, enum: ["S", "M", "L"]}`
 
 ## Reference
 [Mongoose v5.12.12: Getting Started](https://mongoosejs.com/docs/)
