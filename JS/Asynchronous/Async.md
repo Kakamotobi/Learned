@@ -106,8 +106,8 @@ asyncOpFunction (url1,
 ### Promises
 #### Definition
 - A `Promise` is a returned **object** representing **the eventual resolution of success or failure of an asynchronous operation** and its resulting value, to which callbacks are attached, instead of passed in to the function.
-  - These callbacks will run depending on whether the promise was resolved or rejected.
-  - *Rather than passing callbacks into a function, we wait for the function to return a promise object and attach callbacks to it depending on whether the promise was resolved or rejected.*
+  - These callbacks will run depending on whether the promise was fulfilled or rejected.
+  - *Rather than passing callbacks into a function, we wait for the function to return a promise object and attach callbacks to it depending on whether the promise was fulfilled or rejected.*
 - Promises allow you to associate handlers with an asynchronous action's eventual success value or failure reason.
   - This lets asynchronous methods return values like synchronous methods: instead of immediately returning the final value, the asynchronous method returns a promise to supply the value at some point in the future.
 #### Description
@@ -115,13 +115,13 @@ asyncOpFunction (url1,
   - pending: initial state where the promise is neither fulfilled nor rejected.
     - A pending promise can either be fulfilled with a value or rejected with a reason (error).
     - When either of these options happens, the associated handlers queued up by a promise's then method are called.
-  - fulfilled: the async operation was successfully resolved.
+  - fulfilled: the async operation was successfully fulfilled.
   - rejected: the async operation failed.
 - Promise Methods
   - **`.then()`**
-    - Attach a callback/code to run **if the promise is resolved**.
+    - Attach a callback/code to run **if the promise is fulfilled**.
     - **Returns a promise, hence can be chained on.**
-      - Ex: if this promise was resolved, check this promise.
+      - Ex: if this promise was fulfilled, check this promise.
   - **`.catch()`**
     - Attach a callback/code to run **if the promise is rejected**.
     - Returns a promise.
@@ -133,7 +133,7 @@ asyncOpFunction (url1,
 ##### Cleaner Version
 ![promisesExecute2](refImg/promisesExecute2.png)
 - Avoid nesting multiple initial functions by returning a promise from within the callback in order to chain **`.then()`**.
-- **`data`** in **`.then()`** refers to the response/returned value from the resolved `Promise`.
+- **`data`** in **`.then()`** refers to the response/returned value from the fulfilled `Promise`.
 - **`.catch()`** can be reduced to one for all.
 
 ### Async Functions
@@ -142,14 +142,14 @@ asyncOpFunction (url1,
 #### Keywords
 - **`async`**
   - Always return a promise.
-  - **If the function returns a value, the promise will be resolved with that value.**
+  - **If the function returns a value, the promise will be fulfilled with that value.**
   - **If the function throws an error, the promise will be rejected.**
   - Example
     ```
     async function hello() {
       return "Hey guys!";
     }
-    hello(); // Promise {<resolved>: "Hey guys!"}
+    hello(); // Promise {<fulfilled>: "Hey guys!"}
     
     async function ohNo() {
       throw new Error("Oh no!");
@@ -163,10 +163,10 @@ asyncOpFunction (url1,
     }
     ```
 - **`await`**
-  - Used to wait for a `Promise` to be resolved.
-  - **Pauses the execution of the function, waiting for a `Promise` to be resolved, after which the response/returned value can be extracted from, before continuing on.**
+  - Used to wait for a `Promise` to be fulfilled.
+  - **Pauses the execution of the function, waiting for a `Promise` to be fulfilled, after which the response/returned value can be extracted from, before continuing on.**
 - **`return`**
-  - If the function `return`s a value, the `Promise` will be resolved with that value.
+  - If the function `return`s a value, the `Promise` will be fulfilled with that value.
 - **`throw`**
   - If the function `throw`s an exception/error, the promise will be rejected.
 - **`try...catch`** Statement
@@ -179,20 +179,23 @@ asyncOpFunction (url1,
 #### Example 
 ![](refImg/asyncAwaitExecute.png)
 - Created an async function in which the previously created `Promise` will be called.
-- "Wait for this request to return. If it is resolved/returned, store it in a variable."
+- "Wait for this request to return. If it is fulfilled/returned, store it in a variable."
 
 
 ## AJAX and Web APIs
 ### AJAX/AJAJ
 - Refers to making JS requests to load/send information from/to the server behind the scenes.
-- Basically, upon a request, the server doesn't respond with a full web page with HTML, CSS, JS.
-- The server responds with XML or JSON file with plain old information/data.
+  - Basically, making requests on the page after it has been already been loaded.
+  - Ex: live search, infinite scrolling, etc.
+- The server responds with XML or JSON file with plain old information/data, instead of a web page of HTML, CSS, JS.
+- Concept: creating applications where using JS, we can load, fetch, send, save data to a database behind the scenes without refreshing the page.
 ### Web API
-- Web-based interfaces that work via HTTP and make requests to specific **endpoints**.
+- In broad terms, API refers to any interface that defines interactions between multiple software applications or mixed hardware-software intermediaries.
+- **Web APIS are web-based interfaces that are HTTP-based and make requests to specific *endpoints/URL* that provide specified data.**
   - Endpoints respond with information for other pieces of software to consume.
   - A "portal" into a different application/database.
-  - i.e., fetching, loading, exposing data.
-  - Responds with JSON.
+- The messenger that take requests and tells a system what you want to do, and then returns the response back to you.
+  - Ex: waiter that takes your order to the kitchen, and then deliver your food back to your table.
 ### JSON
 - JavaScript Object Notation (JSON)
 - Methods
@@ -221,53 +224,55 @@ asyncOpFunction (url1,
 - Query Strings & Headers
   - Query String
     - Key-Value pairs representing additional information that we pass in to any URL.
-    - Ex: ?q=query
+    - Ex: ?q=?:query
       - query is a parameter for which the client provides.
-  - Header
+  - Headers
     - Key-Value pairs that are like meta data for a request or response.
       - Key is the parameter.
       - Value is the argument.
+      - Ex: Content-Type, Last-Modified, etc.
     - Some APIs require certain headers to be specified when sending request. Read the docs!
 
 ### Sending HTTP Requests via JS
-#### XHR
-- XMLHttpRequest
+#### Making XHRs
+- XMLHttpRequest (XHR)
 - Does not support `Promises` (so, callback hell esp. when making subsequent requests).
 ![XHR](refImg/XHR.png)
 #### Fetch API
-- Promise-based approach.
 - Syntax: `fetch("url")`
-  - Returns a `Promise` that is resolved with a response object.
+- **Returns a `Promise` that is fulfilled with a *response object*, which contains **
 - Caveat:
-  - `fetch()` resolves the `Promise` as soon as it gets the first bit of headers even if the data (body/content that was requested) has not arrived yet. Hence, the     data may not be included in the response object that was returned.
-- So, use the **`.json()`** method.
-  - `.json()` returns a `Promise` object after waiting for the body/content to arrive.
-##### Approach 1
+  - `fetch()` fulfills the `Promise` as soon as it gets the first bit of headers even if the data (body/content that was requested) has not arrived yet. Hence, the data may not be included in the response object that was returned.
+- So, use the **`.json()`** method on the response.
+  - `res.json()` returns a `Promise` object after waiting for the body/content to arrive.
+##### Approach 1 - `.then()` and `.catch()`
 ![fetchAPI1](refImg/fetchAPI1.png)
-##### Approach 2
+##### Approach 2 - `async` and `await`
 ![fetchAPI2](refImg/fetchAPI2.png)
 #### AXIOS
 - An external library for making HTTP Requests.
 - Built on top of Fetch, with less steps.
-- Works with both client-side and server-side (Node.js).
+- Works with both client-side and server-side (Node.js) with the same syntax.
 - Methods
   - **`axios.get()`**
-    - Returns a `Promise` object that has already parsed data in it.
-      - No need for `json.parse()` or multiple `.then()s`.
+    - Returns a `Promise` object that already has parsed data in it.
+      - No need for `res.json()` and multiple `.then()s`.
       - Unlike `fetch()`, the `Promise` is returned once everything is finished (requested data is included).
-##### Approach 1
+##### Approach 1 - `.then()` and `.catch()`
 ![axiosGetApproach1](refImg/axiosGetApproach1.png)
-##### Approach 2
+##### Approach 2 - `async` and `await`
 ![axiosGetApproach2](refImg/axiosGetApproach2.png)
-- Configuring Request Headers
-  - `axios.get()` accepts a second argument after the endpoint url for configuration information.
-  - Ex: `const config = {headers: {Accept: "applcation/json"}, params: {q: searchInput}}`
-    - `params` for query strings, ID, country, embed etc.
-##### Example
+##### Configuring Request Headers with AXIOS
+- `axios.get()` accepts a second argument after the endpoint url for configuration information.
+- Ex: `const config = {headers: {Accept: "applcation/json"}, params: {q: searchInput}}`
+  - `params` for query strings, ID, country, embed etc.
+###### Example
 ![axiosHeadersConfig](refImg/axiosHeadersConfig.png)
-- AXIOS and DOM
-##### Example
+##### AXIOS and DOM
+###### Example
 ![axiosAndDOM](refImg/axiosAndDOM.png)
 
 ## Reference
-[Asynchronous JavaScript | MDN](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous)
+[Asynchronous JavaScript | MDN](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous)  
+[What is an API? (Application Programming Interface) | MuleSoft](#https://www.mulesoft.com/resources/api/what-is-an-api#:~:text=API%20is%20the%20acronym%20for,you're%20using%20an%20API.)  
+[axios/axios: Promise based HTTP client for browser and node.js](https://github.com/axios/axios)
