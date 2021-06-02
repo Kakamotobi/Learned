@@ -14,6 +14,8 @@
 - [Mongoose Schema Validations](#mongoose-schema-validations)
 - [Adding Model Instance Methods](#adding-model-instance-methods)
 - [Adding Model Static Methods](#adding-model-static-methods)
+- [Mongoose Virtuals](#mongoose-virtuals)
+- [Defining Mongoose Middleware](#defining-mongoose-middleware)
 
 ## What is Mongoose?
 - An ODM that provides ways for us to model out our application data and define a schema. It offers easy ways to validate and build complex queries from the comfort of JS.
@@ -269,6 +271,46 @@ productSchema.statics.fireSale = function () {
 const Product = mongoose.model("Product", productSchema);
 
 Product.fireSale().then((res) => console.log(res));
+```
+
+## Mongoose Virtuals
+> Virtuals are document properties that you can `get` and `set` but that do not get persisted to MongoDB. The getters are useful for formatting or combining fields, while setters are useful for de-composing a single value into multiple values for storage.
+  - Doesn’t exist in the database. Only on the mongoose side of things in JS.
+- Usually use these if we have some information that we are accessing quite commonly that we could derive from existing data.
+### Example
+```
+const personSchema = new mongoose.Schema({
+  first: String,
+  last: STring,
+});
+personSchema.virtual(“fullName”).get(function () {
+  return `${this.first} ${this.last}`;
+});
+
+const Person = mongoose.model(“Person”, personSchema);
+```
+
+## Defining Mongoose Middleware
+> Middleware (also called pre and post hooks) are functions which are passed control during execution of asynchronous functions. Middleware is specified on the schema level and is useful for writing plugins.
+- **`.pre`**
+ - `.pre` middleware will execute before a particular method.
+- **`.post`**
+  - `.post` middleware will execute after a particular method.
+### Example
+```
+// Runs before save executes.
+personSchema.pre(“save”, async function () {
+  this.first = “Troll”;
+  this.last = “Lolol”;
+  console.log(“About to save!!!”);
+});
+
+// Runs after save executes.
+personSchema.post(“save”, async function () {
+  console.log(“Just saved!!”);
+});
+
+const Person = mongoose.model(“Person”, personSchema);
 ```
 
 ## Reference
