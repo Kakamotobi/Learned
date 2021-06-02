@@ -12,6 +12,8 @@
   - [Updating with Mongoose](#updating-with-mongoose)
   - [Deleting with Mongoose](#deleting-with-mongoose)
 - [Mongoose Schema Validations](#mongoose-schema-validations)
+- [Adding Model Instance Methods](#adding-model-instance-methods)
+- [Adding Model Static Methods](#adding-model-static-methods)
 
 ## What is Mongoose?
 - An ODM that provides ways for us to model out our application data and define a schema. It offers easy ways to validate and build complex queries from the comfort of JS.
@@ -221,6 +223,53 @@ bike.save()
 - `enum`
   - Creates a validator that checks if the value is in the given array.
   - Ex: `size: {type: String, enum: ["S", "M", "L"]}`
+
+## Adding Model Instance Methods
+- Instances of `Models` are documents. Documents have many of their own built-in instance methods. We may also define our own custom document instance methods.
+- `this` keyword refers to the individual instance.
+### Examples
+```
+productSchema.methods.greet = function () {
+  console.log("Hello!!!!");
+  console.log(`- from ${this.name}`);
+};
+productSchema.methods.toggleOnSale = function () {
+  this.onSale = !this.onSale;
+  return this.save();
+};
+productSchema.methods.addCategory = function (newCategory) {
+  this.categories.push(newCategory);
+  return this.save();
+};
+
+const Product = mongoose.model("Product", productSchema);
+
+const findProduct = async () => {
+  const foundProduct = await Product.findOne({ name: "Bike Helmet" });
+  console.log(foundProduct);
+  await foundProduct.toggleOnSale();
+  console.log(foundProduct);
+  await foundProduct.addCategory("Outdoors");
+  console.log(foundProduct);
+};
+
+findProduct();
+```
+
+## Adding Model Static Methods
+- Methods that live on the `Model` itself, not on instances.
+- `this` keyword refers to the `Model` class itself.
+- Usually create model static methods that are customized versions of finding, updating, removing methods to the `Model` itself (doesn't have to do with instances).
+### Example
+```
+productSchema.statics.fireSale = function () {
+  return this.updateMany({}, { onSale: true, price: 0 });
+};
+
+const Product = mongoose.model("Product", productSchema);
+
+Product.fireSale().then((res) => console.log(res));
+```
 
 ## Reference
 [Mongoose v5.12.12: Getting Started](https://mongoosejs.com/docs/)
