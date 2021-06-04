@@ -10,7 +10,7 @@ function name([param[, param,[..., param]]]) {
 }
 ```
 - Example: `function doStuff() {};`
-- Function declarations are hoisted to the top of the enclosing block or global scope, hence can be used before it has been declared.
+- **Function declarations are hoisted to the top of the enclosing block or global scope, hence can be used before it has been declared.**
 
 ### Function Expression
 - Syntax:
@@ -20,7 +20,9 @@ const variable = function [name]([param1[, param2[, ..., paramN]]]) {
 }
 ```
 - Example: `const doStuff = function() {};`
-- A function expression is stored in a variable, which can now be used as a function.
+- **The reference to a function expression is stored in a variable, which can now be used to call the function.**
+  - Meaning that `doStuff` is not the name of the function, and is merely a reference to the function.
+  - Even if the function is given a name (Ex: `const doStuff = function doingStuff() {}`), the variable name has to be used to call the function.
 - Function expressions are not hoisted.
 - The function name can be omitted to create *anonymous* (unnamed) functions.
 - Immediately Invoked Function Expressions run as soon as they are defined.
@@ -60,4 +62,5 @@ bar.name // "baz"
 - Example: `(function() => {}))` or `(() => {})()`
 
 ## Reference
-[Function - MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions)
+[Function - MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions)  
+[JavaScript - 함수 선언문, 함수 표현식 그리고 화살표 함수 비교](https://velog.io/@bigbrothershin/%EC%98%A4%EB%8A%98-%EA%B3%B5%EB%B6%80%ED%95%A0-%EA%B2%832020.1.30)
