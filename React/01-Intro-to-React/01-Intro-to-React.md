@@ -83,10 +83,10 @@
 - ***Order of script tags in index.html.***
   - Prerequisite components need to be run first.
 ### Example
-![Layout Example index.html](refImg/layout-example-index-html)
-![Layout Example index.js](refImg/layout-example-index-js)
-![Layout Example Hello.js](refImg/layout-example-hello-js)
-![Layout Example Numpicker.js](refImg/layout-example-numpicker-js)
+![Layout Example index.html](refImg/layout-example-index-html.png)
+![Layout Example index.js](refImg/layout-example-index-js.png)
+![Layout Example Hello.js](refImg/layout-example-hello-js.png)
+![Layout Example Numpicker.js](refImg/layout-example-numpicker-js.png)
 
 ## JSX
 - JavaScript Syntax Extension / JavaScript + XML
