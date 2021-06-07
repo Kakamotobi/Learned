@@ -2,8 +2,11 @@
 > Connects web pages to scripts or programming languages by representing the structure of a document in memory.  
 > **Represents a document with a logical tree. Each branch of the tree ends in a node, and each node contains objects.**  
 > DOM methods allow programmatic access to the tree. With them, you can change the document's structure, style, or content.  
-> Nodes can also have event handlers attached to them. Once an event is triggered, the event handlers get executed.
-- Basically, JS "window"/access portal into the contents of the page.
+> Nodes can also have event handlers attached to them. Once an event is triggered, the event handlers get executed.  
+
+> *The web browser provides an API for accessing the HTML document in a tree structure known as the DOM.*  
+> *The combination of JS and the DOM is what allows us to create interactive, dynamic websites.*
+> *JS is the client-side scripting language taht connects to the DOM in an internet browser.*
 
 ## Table of Contents
 - [Terminologies](#terminologies)
@@ -51,6 +54,25 @@
 - `document.querySelectorAll("")`
   - Selects all matches.
 ### Frequently Used Methods and Properties
+#### Traversing the DOM
+- `.parentElement`
+  - Returns the parent element.
+  - Ex: when user clicks on an element, a change occurs in the parent element.
+- `.children`
+  - Returns the children element.
+- `.previousSibling`
+  - Returns the corresponding previous node.
+- `.nextSibling`
+  - Returns the corresponding next node.
+  - *Some browsers automatically make white space / new lines into a text node.*
+    - Ex: `#text` is a DOM node (not an HTML element).
+- `.previousElementSibling`
+  - Returns the previous element.
+- `.nextElementSibling`
+  - Returns the next element.
+#### Making Changes to the DOM
+- `.createElement("elementName")
+  - Create a new empty DOM element.
 - `.innerText`
   - Text/content between the opening and closing tag.
 - `.textContent`
@@ -58,75 +80,14 @@
   - Returns every element/piece of content inside (both displayed and hidden).
 - `.innerHTML`
   - Returns all the HTML markup of an element including tag names.
-- `.getAttribute()`
-  - Gets the value of the attribute directly from the HTML.
-  ```
-  const link = document.querySelector("a");
-  
-  // Option 1 - directly from the object.
-  link.href;
-  
-  // Option 2 - directly from the HTML.
-  link.getAttribute("href");
-  ```
-- `.setAttribute()`
-  - Syntax: `.setAttribute(attributeName, newValue);`
--`.style`
-  - Object containing all the corresponding CSS styles for the selected element.
-  - *Empty at first (Doesn't contain styles from stylesheets).*
-  - Using `.style` will and inline styles **(not ideal)**.
-  - Camel cased.
-  - Example
-    - `link.style.textDecorationColor = "blue";`
-  - `window.getComputedStyle(varName);`
-    - Used in JS to access the CSS styles.
-    - Example
-      ```
-      const h1 = document.querySelector("h1");
-      window.getComputedStyle(h1).color;
-      window.getComputedStyle(h1).fontSize;
-      ```
-- `.classList`
-  - Returns the class(es) of the element.
-  - A better way to apply styles to elements.
-    - Create a CSS class with styles and add that class to the elements.
-  - `.classList.toggle()`
-    - Turn class on/off.
-- `.parentElement`
-  - Returns the parent element.
-  - Ex: when user clicks on an element, a change occurs in the parent element.
-- `.children`
-  - Returns the children element.
-- `.nextSibling`
-  - Returns the corresponding next node.
-  - *Some browsers automatically make white space / new lines into a text node.*
-    - Ex: `#text` is a DOM node (not an HTML element).
-- `.previousSibling`
-  - Returns the corresponding previous node.
-- `.nextElementSibling`
-  - Returns the next element.
-- `.previousElementSibling`
-  - Returns the previous element.
-- `.document.createElement("elementName")
-  - Create a new empty DOM element.
-- `.appendChild()`
-  - Append the element in `()` as the last child of the location.
 - `.append()`
   - Append multiple nodes/objects/elements/strings/etc. at the end of the element.
 - `.prepend()`
   - Prepend multiple nodes/objects/elements/strings/etc. as the first child of the element.
-- `.insertAdjacentElement()`
-  - Insert an element next to another element.
-  - Syntax: `targetElement.insertAdjacentElement(position, element);`
-    - Position Values:
-      - "beforebegin"
-      - "afterbegin"
-      - "beforeend"
-      - "afterend"
-- `.after()`
-  - Insert an element after some other element.
-- `.before()`
-  - Insert an element before some other element.
+- `.appendChild()`
+  - Append the element in `()` as the last child of the location.
+- `.replaceChild()`
+  - Replace an existing node with a new node.
 - `.removeChild()`
   - Select the parent and remove a child from it.
   - Using `.removeChild()` to remove an element.
@@ -146,6 +107,69 @@
     // Option 2 - .remove()
     firstLi.remove();
     ```
+- `.insertBefore()`
+  - Insert a node into the parent element before a specified sibling node.
+- `.before()`
+  - Insert an element before some other element.
+- `.after()`
+  - Insert an element after some other element.
+- `.insertAdjacentElement()`
+  - Insert an element next to another element.
+  - Syntax: `targetElement.insertAdjacentElement(position, element);`
+    - Position Values:
+      - "beforebegin"
+      - "afterbegin"
+      - "beforeend"
+      - "afterend"
+#### Modify Attributes, Classes, and Styles in the DOM
+##### Attributes
+- `.hasAttribute()`
+  - Returns a true or false.
+- `.getAttribute()`
+  - Gets the value of the attribute directly from the HTML.
+  ```
+  const link = document.querySelector("a");
+  
+  // Option 1 - directly from the object.
+  link.href;
+  
+  // Option 2 - directly from the HTML.
+  link.getAttribute("href");
+  ```
+- `.removeAttribute()`
+  - Remove the specified attribute.
+- `.setAttribute(attributeName, newValue)`
+  - Set a new value for the specified attribute.
+##### CSS Classes
+- `.className`
+  - Gets or sets class value. 
+- `.classList`
+  - Returns the class(es) of the element.
+- `.classList.contains()`
+  - Checks if class value exists.
+- `.classList.add()`
+  - Adds one or more class values.
+- `.classList.remove()`
+  - Removes a class value.
+- `.classList.toggle()`
+  - Toggles a class on or off.
+##### Styles
+-`.style`
+  - Object containing all the corresponding CSS styles for the selected element.
+  - *Empty at first (Doesn't contain styles from stylesheets).*
+  - Using `.style` will and inline styles **(not ideal)**.
+  - Camel cased.
+  - Example
+    - `link.style.textDecorationColor = "blue";`
+  - `window.getComputedStyle(varName);`
+    - Used in JS to access the CSS styles.
+    - Example
+      ```
+      const h1 = document.querySelector("h1");
+      window.getComputedStyle(h1).color;
+      window.getComputedStyle(h1).fontSize;
+      ```
+
 ## DOM Events
 ### Some Events
 - Click, drag, drop, hover, scroll, form submission, key presses, focus/blur, mouse wheel, double click, copying, pasting, audio start, screen size, printing.
@@ -178,6 +202,13 @@ btn.onclick = clicked;
 - *Can have multiple callback functions for the same event.*
 - `.removeEventListener()`
   - Remove event listener.
+##### Events
+- "click"
+- "dblclick"
+- "mouseenter"
+- "mouseleave"
+- "mousemove"
+
 ##### Example 1
 ```
 const btn = document.querySelector("button");
@@ -391,4 +422,5 @@ tweetsContainer.addEventListener("click", function (evt) {
 ```
 
 ## Reference
-[Introduction to the DOM | MDN](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Introduction)
+[Introduction to the DOM | MDN](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Introduction)  
+[Understanding the DOM - Document Object model](https://assets.digitalocean.com/books/understanding-the-dom.pdf)
