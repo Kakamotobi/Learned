@@ -26,8 +26,8 @@
 - For other types, embed JS expression using `{}`.
   - Ex: `<User name="Tom" salary={999999} hobbies={["chasing", "piano", "games"]}/>`
 #### Example
-![Types of Props Example index.js](refImg/types-of-props-example-index-js)
-![Types of Props Example Hello.js](refImg/types-of-props-example-hello-js)
+![Types of Props Example index.js](refImg/types-of-props-example-index-js.png)
+![Types of Props Example Hello.js](refImg/types-of-props-example-hello-js.png)
 ### Default Props
 - Components can specify default values for missing props.
 - Simply, define an object called **`defaultProps`** with key-value pairs using the **`static`** keyword.
