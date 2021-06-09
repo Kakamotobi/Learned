@@ -12,7 +12,8 @@
 - [Terminal Commands in New Directory](#terminal-commands-in-new-directory)
 - [Webpack](#webpack)
 - [Modules](#modules)
-- [CRA and Components](#cra-and-components)
+- [CRA Conventions for Components](#cra-conventions-for-components)
+- [CSS and Assets in CRA](#css-and-assets-in-cra)
 
 ## Installing Create React App
 ### Installation Method 1 - using NPX
@@ -81,9 +82,35 @@ npm start
 ![Modules Example index.js](refImg/modules-example-index-js.png)
 ![Modules Example helper.js](refImg/modules-example-helper-js.png)
 
-## CRA and Components
+## CRA Conventions for Components
+- Each React component goes in separate files.
+  - Ex: src/Car.js for Car component.
+  - Ex: src/House.js for House component.
+  - Ex: src/App.js for App component.
+- Components should extend **Component** (imported from React).
+  - Export the component as the default object from its given file.
+    - Allows for other files to import by doing: `import App from "./App.js";`
+  - Example
+    - ![Import React Component Example](refImg/import-react-component-example.png)
+- Skeletons assumes top-level object is App in App.js.
+  - *Best to keep this.*
 
-
-
-
-
+### CSS and Assets in CRA
+- To include images and CSS, we can import them in JS files.
+  - Example
+    - ![Import CSS and Assets Example](refImg/import-css-and-assets-example.png)
+#### CSS
+- Make a CSS file for each React component
+  - Ex: House.css for House component.
+- Import it at the top of the corresponding JS file.
+  - Ex: import it at the top of House.js.
+  - *CRA will automatically load that CSS.*
+- Conventional to add `className="NameOfTheComponent"` onto the top-level element in the component.
+  - And use that prefix for sub-items to style.
+  - Example
+    - ![CSS className Convention Example](refImg/css-classname-convention-example.png)
+#### Images
+- Store images in src/ folder along with the components.
+- Load them where needed, and use imported name where path should go.
+  - Example
+    - ![Import Images Example](refImg/import-images-example.png)
