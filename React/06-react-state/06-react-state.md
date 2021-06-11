@@ -8,6 +8,7 @@
   - [Setting State](#setting-state)
 - [React Events](#react-events)
   - [this and .bind()](#this-and-bind)
+  - [React Event Example](#react-event-example)
 
 ## State
 - Internal data specific to a component.
@@ -41,16 +42,7 @@
   - Must call `super(props)` at the start of the constructor, which "registers" your class as a React Component.
     - `super` is a reference to the constructor of the component.
 #### Example
-```
-class ClickCount extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      numClicks: 0  // start at zero clicks
-    };
-  }
-}
-```
+![Initializing React State](refImg/initializing-react-state.png)
 #### `super()` and `super(props)`
 ##### **`super()`**
   - Making sure that we call the constructor in the base Component class.
@@ -88,7 +80,7 @@ class App extends Component {
 <<Demo.js>>
 class Demo extends Component {
   constructor(props) {
-    super();
+    super(props);
     
   }
   render() {
@@ -128,47 +120,20 @@ class Demo extends Component {
 - Therefore, we need to **`.bind()`** the function.
   - We're setting the context of the function by binding `this`.
   - ***The value of `this` inside the constructor is of the individual component.***
+### React Event Example
+![React Event Example App.js](refImg/react-event-example-app-js.png)
+![React Event Example Clicker.js](refImg/react-event-example-clicker-js.png)
+
+## State vs. Props
+| term | structure | mutable | purpose                                        |
+| :--: | :-------: | :-----: | :--------------------------------------------: |
+| state| POJO `{}` | yes     | stores changing data relating to the component |
+| props| POJO `{}` | no      | stores component configuration information     |
+
+### "State as Props"
+- A comon pattern we will see often is a stateful ("smart") parent component passing down its state values as props to stateless ("dumb") child components.
+- This idea is generalized in React as "downward data flow".
+  - Means that components get simpler as you go down the component hierarchy, and parents tend to be more stateful than their children.
 #### Example
-```
-<<App.js>>
-import React, {Component} from "react";
-import BrokenClick from "./Brokenclick";
+![State as Props Example](refImg/state-as-props-example.png)
 
-class App extends Component {
-  render() {
-    return (
-      <div>
-         <BrokenClick />
-      </div>
-    )
-  }
-}
-
-export default App;
-
-<<BrokenClick>>
-import React, {Component} from "react";
-
-class BrokenClick extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      clicked: false;
-    }
-    this.handleClick = this.handleClick.bind(this);
-  }
-
-  handleClick(evt) {
-    this.setState({clicked: true});
-  }
-
-  render() {
-    return (
-      <div>
-        <h1>{this.state.clicked ? "Clicked!" : "Not Clicked!"}</h1>
-        <button onclick={this.handleClick}>Click Me!</button>
-      </div>
-    )
-  }
-}
-```
