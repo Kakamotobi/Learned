@@ -1,7 +1,8 @@
 # Create React App
 - A utility script that:
-  - Creates a a skeleton react project with a files and folders already created.
+  - Creates a a skeleton react project with files and folders already created.
     - The "src" folder is where all the components we make go in.
+    - The "public" folder is where the index.html file is in.
   - Sets it so that JS files are run through Babel automatically.
   - Lets us use super-modern JavaScript features/idioms.
   - Makes testing and deployment much easier.
