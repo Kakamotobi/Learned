@@ -14,7 +14,7 @@
 ## What is it?
 - Front-end framework/library for building user interfaces.
 - Helps us make individual components and then combine them to make larger applications.
-- Usually combinedwith other tools like React Router, Webpack, Redux, etc.
+- Usually combined with other tools like React Router, Webpack, Redux, etc.
 ### Main Goals
 - Make it easy to make reusabale "view components".
 - These "encapsulate" logic and HTML into a class.
@@ -23,7 +23,7 @@
 ## Components
 - The building blocks of React.
   - Components let you split the UI into independent, reusable pieces and think about each piece in isolation.
-- Reusable pieces of JS logic, HTML, CSS thata re combined into one modular component that can then be used to build a larger application.
+- Reusable pieces of JS logic, HTML, CSS that are combined into one modular component that can then be used to build a larger application.
   - Typically combine UI (HTML/CSS) with JS logic, into a single wrapped up component.
 - Classes that know how to render themselves into HTML.
 ### Creating Components
@@ -91,7 +91,7 @@
 ## JSX
 - JavaScript Syntax Extension / JavaScript + XML
 - Tool that allows us to write HTML-looking code directly in JS.
-- Allows us to combine our UI with our JS logic directly in the script rather than having a separate template file in HTML taht we then call up on in JS.
+- Allows us to combine our UI with our JS logic directly in the script rather than having a separate template file in HTML that we then call up in JS.
 - JSX is not legal JavaScript.
   - Therefore, it has to be "transpiled" to JavaScript using a transpiler like Babel.
   - Babel converts the HTML characters into valid JS code.
