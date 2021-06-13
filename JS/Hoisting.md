@@ -1,6 +1,6 @@
 # Hoisting
 
-Variable and function **declarations** (not initializations) are all given space in memory before they get an actual value, but stay exactly where you typed them in your code.  
+Variable (using `var`) and function **declarations** (not initializations) are all given space in memory before they get an actual value, but stay exactly where you typed them in your code.  
 They are not physically hoisted to the top of the script.
 
 
@@ -58,7 +58,7 @@ console.log("Your rate is: " getRate());
 
 ### Work-Around
 - Use `let` and `const`.
-  - Both are also hoisted but are not set to undefined.
+  - Both are not hoisted.
     - Therefore, leads to reference error if the variable is used before the initialization occurs.
   - Both are scoped to blocks (ex: conditionals, loops, etc.) rather than current execution contexts (ex: functions) like `var` does.
 
