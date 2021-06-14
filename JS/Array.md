@@ -50,6 +50,9 @@ Accepts a callback function as its argument.
   - Executes a function given in `()` once for each element in the array, and also creates a new array with the results.
   - Typically used when we need a portion of our data. Or when we need to transform every element in the starting array and create a new array based upon it.
   - Ex: `arr.map(x => x + 1)`
+- **`.find()`**
+  - Returns the value of the first element in the array that satisfies the provided testing function.
+  - Ex: `let movies = movies.find(movie => { return movie.includes("Bat") })`
 - **`.filter()`**
   - Creates a new array of all the elements of the array that passed the test implemented in `()`.
   - Ex: `arr.filter(x => x > 0)`
