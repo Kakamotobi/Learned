@@ -1,6 +1,12 @@
 # Functions
 Create a `Function` object that have access to methods, properties etc.
 
+## Table of Contents
+- [Function Declaration vs. Function Expression](#function-declaration-vs-function-expression)
+- [Arrow Functions](#arrow-functions)
+- [Immediately Invoked Function Expressions (IIFE)](#immediately-invoked-function-expressions-iife)
+- [Higher Order Functions](#higher-order-functions)
+
 ## Function Declaration vs. Function Expression
 ### Function Declaration
 - Syntax:
@@ -23,7 +29,7 @@ const variable = function [name]([param1[, param2[, ..., paramN]]]) {
 - **The reference to a function expression is stored in a variable, which can now be used to call the function.**
   - Meaning that `doStuff` is not the name of the function, and is merely a reference to the function.
   - Even if the function is given a name (Ex: `const doStuff = function doingStuff() {}`), the variable name has to be used to call the function.
-- Function expressions are not hoisted.
+- **Function expressions are not hoisted.**
 - The function name can be omitted to create *anonymous* (unnamed) functions.
 - Immediately Invoked Function Expressions run as soon as they are defined.
   - Functions that are used only once.
@@ -60,6 +66,46 @@ bar.name // "baz"
 ## Immediately Invoked Function Expressions (IIFE)
 - A function is created at the same time it is called.
 - Example: `(function() => {}))` or `(() => {})()`
+
+## Higher Order Functions
+- Functions that operate on/with other functions. They can:
+  - accept other functions as arguments.
+    - Example
+      ```
+      function callTwice(func) {
+        func();
+        func();
+      }
+      
+      function laugh() {
+        console.log("hahaha";
+      }
+      
+      callTwice(laugh);
+      ```
+  - return a function.
+    - "Function factories"
+      - The higher order function is making a new function.
+    - Example
+      ```
+      function makeBetweenFunc(min, max) {
+        return function (val) {
+          return val >= min && val <= max;
+        }
+      }
+      
+      const inAgeRange = makeBetweenFunc(18, 100);
+      inAgeRange(17); // false
+      inAgeRange(68); // true
+      
+      const isChild = makeBetweenFunc(0, 17);
+      isChild(5); // true
+      isChild(35); // false
+      
+      const isInNineties = makeBetweenFunc(1990, 1999);
+      isInNineties(1996); // true
+      isInNineties(2000); // false
+      ```
 
 ## Reference
 [Function - MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions)  
