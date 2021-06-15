@@ -37,10 +37,23 @@
   - Syntax: `arr.splice(start[, deleteCount[, item1[, item2[, ...]]]])`
 - **`.sort()`**
   - By default, converts all entries into strings and order them according to UTF-16 code unit values.
-  - Syntax: `arr.sort([compareFunction])`
-    - `compareFunction` defines the sort order.
-      - For array of numbers (ascending): `(a, b) => a - b;`
-      - For array of objects: `(a, b) => {a.propertyName - b.propertyName;}`
+  - Syntax: `arr.sort([compareFunc(a, b)])`
+    - `arr.sort()`
+      - Sorts elements by their unicodes.
+    - `compareFunc(a, b)` defines the sort order.
+    - If `compareFunc(a, b)` returns less than 0,
+      - Sort `a` before `b`.
+      - Ascending order.
+      - Ex: `arr.sort((a, b) => a - b);`
+    - If `compareFunc(a, b)` returns 0,
+      - Leave `a` and `b` unchanged with respect to each other.
+    - If `compareFunc(a, b)` returns greater than 0,
+      - Sort `b` before `a`.
+      - Descending order.
+      - Ex: `arr.sort((a, b) => b - a);`
+    - For array of objects: `(a, b) => {a.propertyName - b.propertyName;}`
+    - *`.sort()` changes the original array. So if needed, use `.slice()` and store in new variable.*
+      - Ex: `const ascSort = arr.slice().sort((a,b) => a - b)`
 
 ## Array Callback Methods
 Accepts a callback function as its argument.
@@ -63,19 +76,73 @@ Accepts a callback function as its argument.
 - **`.reduce()`**
   - Executes a reducer function (with two parameters: `accumulator`, `currentValue`) on each element of the array, resulting in a single output value.
     - `accumulator`: represents the single output value that will be reduced down to.
-      - The reducer function's returned value is assigned to the `accumulator`, which is remembered and updated throughout each iteration.
-      - Can set a starting point for the accumulator.
+      - **The reducer function's returned value is assigned to the `accumulator`, which is remembered and updated throughout each iteration.**
+        - **Whatever value that is returned will be stored as the accumulator.**
+      - **Can set an initial value (starting point) for the accumulator.**
         - Ex: `arr.reduce((accumulator, x) => accumulator + x, 10)`
     - `currentValue`: represents each individual element in the array.
-  - Array of Numbers Ex: `arr.reduce((accumulator, x) => accumulator + x)`
-  - Array of Objects Ex:  
-    ```
-    movies.reduce((bestMovie, currMovie) => {
-      if (currMovie.score < bestMovie.score) {
-        return bestMovie;
-      } return currMovie;
-    });
-    ```
+  - Array of Numbers Ex: 
+    - **Summing up an array.**
+      ```
+      arr.reduce((accumulator, x) => accumulator + x)
+      ```
+    - **Finding the maximum value in an array.**
+      - The "accumulator" tracks the max.
+      ```
+      const topScore = grades.reduce((max, currVal) => {
+        if (currVal > max) return currVal;
+        return max;
+      })
+      
+      // OR
+      
+      const topScore = grades.reduce((max, currVal) => (
+        Math.max(max, currVal)
+      ))
+      ```
+  - Array of Strings Ex:
+    - **Tallying data in an array.**
+      - Group different values in an array using an object.
+      - The "accumulator" is going to be an object (initial value is an empty object).
+        ```
+        const votes = ["y", "y", "n", "y", "n", "y", "n", "y", "n", "n", "n", "y", "y"];
+
+        const tally = votes.reduce((tally, val) => {
+          if (tally[val]) {
+            tally[val]++
+          } else {
+            tally[val] = 1;
+          }
+          return tally;
+        }, {})
+
+        // OR
+
+        const tally = votes.reduce((tally, val) => {
+          tally[val] = (tally[val] || 0) + 1;
+          return tally;
+        }, {});
+
+        tally; // {y: 7, n: 6}
+        ```
+  - Array of Objects Ex:
+    - **Finding the movie with the highest score.**
+      ```
+      movies.reduce((bestMovie, currMovie) => {
+        if (currMovie.score < bestMovie.score) {
+          return bestMovie;
+        } return currMovie;
+      });
+      ```
+    - **Grouping books in an object by rating.**
+      ```
+      const groupedByRatings = books.reduce((groupedBooks, book) => {
+        const key = Math.floor(book.rating);
+        if(!groupedBooks[key]) groupedBooks[key] = [];
+        groupedBooks[key].push(book);
+        return groupedBooks;
+      }, {})
+      ```
 
 ## Reference
 [Array - JavaScript | MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)
