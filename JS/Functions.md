@@ -30,9 +30,8 @@ const variable = function [name]([param1[, param2[, ..., paramN]]]) {
   - Meaning that `doStuff` is not the name of the function, and is merely a reference to the function.
   - Even if the function is given a name (Ex: `const doStuff = function doingStuff() {}`), the variable name has to be used to call the function.
 - **Function expressions are not hoisted.**
-- The function name can be omitted to create *anonymous* (unnamed) functions.
-- Immediately Invoked Function Expressions run as soon as they are defined.
-  - Functions that are used only once.
+- **The function name can be omitted to create *anonymous* (unnamed) functions.**
+- A function expression can be used as an IIFE, which runs as soon as it is defined.
 #### Named Function Expressions
 - When a function expression is assigned to a variable, it has a name property.
 ```
