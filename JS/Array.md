@@ -35,6 +35,15 @@
 - **`.splice()`**
   - Removes/replaces existing elements in an array and/or add new elements.
   - Syntax: `arr.splice(start[, deleteCount[, item1[, item2[, ...]]]])`
+- **`.split()`**
+  - Split the given string into an array of strings by separating it into substrings using a specified separator provided in the argument.
+  - Syntax: `arr.split(separator, limit)`
+  - Example
+    ```
+    const str = 'The quick brown fox jumps over the lazy dog.';
+    const words = str.split(' '); // split the string with a whitespace and place each as an element in an array.
+    words; // ["The", "quick", "brown", "fox", "jumps", "over", "the", "lazy", "dog."]
+    ```
 - **`.sort()`**
   - By default, converts all entries into strings and order them according to UTF-16 code unit values.
   - Syntax: `arr.sort([compareFunc(a, b)])`
