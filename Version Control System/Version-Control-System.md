@@ -50,11 +50,12 @@
 ##### 2) Staging Area
 > The staging area is a file, generally contained in your Git directory, that stores information about what will go into your next commit.
 - Files that are ready to be saved in the version history.
-- Use **`git commit fileName(s)`** to save the file(s) to the .git Directory.
+- Use **`git commit fileName(s) -m "message"`** to save the file(s) to the .git Directory.
 ##### 3) .git Directory (Repository)
 > The Git directory is where Git stores the metadata and object database for your project. This is the most important part of Git, and it is what is copied when you clone a repository from another computer.
 - The directory/respository that contains the version history.
-- Use the **`git checkout fileName`** to return to any previous version.
+- Use **`git checkout fileName`** to return to any previous version.
+- Use **`git push origin <branch>`** to push to GitHub.
 ### Git Configs
 - **`git config --list`**
   - Check all configurations for Git.
