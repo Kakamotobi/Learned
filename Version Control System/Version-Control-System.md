@@ -36,7 +36,7 @@
 3) You do a commit, which takes the files as they are in the staging area and stores that snapshot permanently to your Git directory.
 #### The Three States
 - The three main states that our files can reside in.  
-  ![Three Main States](#refImg/three-main-states.png)
+  ![Three Main States](refImg/three-main-states.png)
 ##### 1) Working Directory
 > The working tree is a single checkout of one version of the project. These files are pulled out of the compressed database in the Git directory and placed on disk for you to use or modify.
 - Use **`git add fileName(s)`** to move file(s) to the Staging Area.
