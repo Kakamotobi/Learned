@@ -97,8 +97,16 @@
   - i.e., update remote repo with changes made in local repo.
 - **`git fetch`**
   - Download objects and refs from another repository.
-- **`git checkout [<branch>]`**
+- **`git checkout <branch>`**
   - Switch branches or restore working tree files.
+- **`git checkout <commitId>`**
+  - Overwrites your current working directory with the specified snapshot (commit) of your repo from history and make that your new working-set which you can stage and commit as you wish.
+  - Example
+    ```
+    git log // find the commit id you want.
+    git checkout <commitId> . // the "." refers to the current directory.
+    git commit -m "Restoring old source code" // make a new commit with the restored one.
+    ```
 
 ## What is GitHub?
 - Online service that provides Internet hosting for software development and version control using Git.
