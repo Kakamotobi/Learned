@@ -34,6 +34,8 @@ const variable = function [name]([param1[, param2[, ..., paramN]]]) {
 - A function expression can be used as an IIFE, which runs as soon as it is defined.
 #### Named Function Expressions
 - When a function expression is assigned to a variable, it has a name property.
+- Use named function expressions if you want to refer to the current function inside the function body.
+- This name is the local only to the function scope.
 ```
 // If function name is omitted, the variable name is the name.
 let foo() = function() {};
