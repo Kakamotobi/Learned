@@ -1,7 +1,7 @@
 # Random Bits
 
 ## `innerText` vs. `textContent`
-- `innerText` returns the visible text contained in a node, while `textContent` returns the full text.
+- `innerText` returns the visible text contained in a node, while `textContent` returns the full text as it is.
 - `innerText` is more performance-heavy.
 ### Example
 ```
