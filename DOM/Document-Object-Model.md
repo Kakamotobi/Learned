@@ -62,7 +62,7 @@
   - Returns the parent element.
   - Ex: when user clicks on an element, a change occurs in the parent element.
 - `.children`
-  - Returns the children element.
+  - Returns the children element in an array-like object.
 - `.previousSibling`
   - Returns the corresponding previous node.
 - `.nextSibling`
@@ -74,7 +74,7 @@
 - `.nextElementSibling`
   - Returns the next element.
 #### Making Changes to the DOM
-- `.createElement("elementName")
+- `.createElement("elementName")`
   - Create a new empty DOM element.
 - `.innerText`
   - Text/content between the opening and closing tag.
@@ -157,7 +157,7 @@
 - `.classList.toggle()`
   - Toggles a class on or off.
 ##### Styles
--`.style`
+- `.style`
   - Object containing all the corresponding CSS styles for the selected element.
   - *Empty at first (Doesn't contain styles from stylesheets).*
   - Using `.style` will and inline styles **(not ideal)**.
@@ -172,6 +172,8 @@
       window.getComputedStyle(h1).color;
       window.getComputedStyle(h1).fontSize;
       ```
+- `getComputedStyle(element)`
+  - Returns all the styles applied from CSS on that element.
 
 ## DOM Events
 ### Some Events
