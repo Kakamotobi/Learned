@@ -66,8 +66,18 @@
 
 ## Array Callback Methods
 Accepts a callback function as its argument.
-- **`.forEach()`**
-  - Executes a function given in `()` once for each element in the array.
+- **`.forEach((el[, index][, array]) => {})`**
+  - Executes a function given in once for each element in the array.
+  - Ex:
+    ```
+    const allLis = document.querySelectorAll("li");
+    const colors = ["red", "orange", "yellow", "green", "blue", "purple"];
+    
+    allLis.forEach((li, i) => {
+      const color = colors[i];
+      li.style.color = color;
+    }
+    ```
 - **`.map()`**
   - Executes a function given in `()` once for each element in the array, and also creates a new array with the results.
   - Typically used when we need a portion of our data. Or when we need to transform every element in the starting array and create a new array based upon it.
