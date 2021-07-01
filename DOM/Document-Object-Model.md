@@ -44,7 +44,7 @@
 - `document.getElementsByTagName("")`
   - Returns HTMLCollection, which is *array-like*.
   - Example
-    ```
+    ```js
     const allImages = document.getElementsByTagName("img");
     for (let img of allImages) {
       img.src = ""
@@ -98,7 +98,7 @@
 - `.remove()`
   - Removes the selected node from the tree.
   - Example
-    ```
+    ```js
     const firstLi = document.querySelector("li");
     const ul = document.querySelector("ul");
     
@@ -130,7 +130,7 @@
   - Returns a true or false.
 - `.getAttribute()`
   - Gets the value of the attribute directly from the HTML.
-  ```
+  ```js
   const link = document.querySelector("a");
   
   // Option 1 - directly from the object.
@@ -167,7 +167,7 @@
   - `window.getComputedStyle(varName);`
     - Used in JS to access the CSS styles.
     - Example
-      ```
+      ```js
       const h1 = document.querySelector("h1");
       window.getComputedStyle(h1).color;
       window.getComputedStyle(h1).fontSize;
@@ -182,13 +182,13 @@
 #### Inline Events
 - Directly in the HTML markup.
 ##### Example
-```
+```js
 <button onclick="alert('clicked!'); alert('clicked again!')">Click Me</button>
 ```
 #### Property Approach
 - Create selector/variable with method properties (ex: .onclick) and store function in it.
 ##### Example
-```
+```js
 const btn = document.querySelector("button");
 
 // Option 1
@@ -215,7 +215,7 @@ btn.onclick = clicked;
 - "mousemove"
 
 ##### Example 1
-```
+```js
 const btn = document.querySelector("button");
 
 btn.addEventListener("click", () => {
@@ -223,7 +223,7 @@ btn.addEventListener("click", () => {
 });
 ```
 ##### Example 2
-```
+```js
 const btn = document.querySelector("button");
 
 btn.addEventListener("click", clicked);
@@ -233,7 +233,7 @@ function clicked() {
 }
 ```
 ##### Example 3
-```
+```js
 // Listening for events on the window as a whole.
 window.addEventListener("", function(){});`
 ```
@@ -243,7 +243,7 @@ window.addEventListener("", function(){});`
 - The event object is always automatically passed in to the callback.
 - Contains information about the interaction with the event object.
   - Ex: clientX, clientY indicates where the click occured relative to the window.
-    ```
+    ```js
     .addEventListener("click", function(evt) {
       console.log(evt);
     });
@@ -252,7 +252,7 @@ window.addEventListener("", function(){});`
 #### Keyboard Events
 - Often need to rely on the event object when working with keyboard events.
 ##### Example
-```
+```js
 const input = document.querySelector("input");
 
 input.addEventListener("keydown", function() {
@@ -273,7 +273,7 @@ input.addEventListener("keyup", function() {
 ##### `switch` statement, `case`, `break`
 - Listening for specific keyboard events.
 ##### Example
-```
+```js
 window.addEventListener("keydown", function(evt) {
   switch (evt.code) {
     case "ArrowUp":
@@ -299,7 +299,7 @@ window.addEventListener("keydown", function(evt) {
 - Prevents the default behavior that will happen as a result of the event.
 - *After forms are submitted, the web page continues to the next page (action) and doesn't stay in the original page.*
 ##### Example
-```
+```js
 const form = document.querySelector("form");
 
 form.addEventListener("submit", function(evt) {
@@ -309,7 +309,7 @@ form.addEventListener("submit", function(evt) {
 #### `.value` attribute
 - Direct property to access the content/value of something.
 ##### Example
-```
+```js
 const tweetForm = document.querySelector("#tweetForm");
 
 tweetForm.addEventListener("submit", function(evt) {
@@ -325,7 +325,7 @@ tweetForm.addEventListener("submit", function(evt) {
   - Form property containing HTML name attributes.
   - *Can also iterate over the elements.*
 ##### Example
-```
+```js
 const tweetForm = document.querySelector("#tweetForm");
 const tweetsContainer = document.querySelector("#tweets");
 
@@ -358,11 +358,34 @@ const addTweet = (usernameInput, tweetInput) => {
 #### Input Event
 - Fires whenever what's in the input changes (not on blur).
 - Keys that don't impact the value of the input (ex: shift, tab, arrow keys, etc.) do not fire the change event.
-##### Example
-```
+##### Example 1
+```js
 input.addEventListener("input", function () {
   h2.innerText = input.value;
 });
+```
+##### Example 2
+```js
+const creditCardInput = document.querySelector("#cc");
+const termsCheckbox = document.querySelector("#terms);
+const veggieSelect = document.querySelector("#veggie);
+
+const inputs = [ creditCardInput, termsCheckbox, veggieSelect];
+
+const formData = {}; // object to contain form data.
+
+// These events trigger before the user submits the form.
+for (let input of inputs) {
+  // Destructure target from event property.
+  input.addEventListener("input", ({ target }) => {
+    // Destructure name, type, value, checked from target.
+    const { name, type, value, checked } = target;
+  
+    formData[name] = type === "checkbox" ? checked : value;
+  });
+}
+
+formData; // contains information in sync to user input.
 ```
 
 ### Event Bubbling and `.stopPropagation()`
@@ -372,7 +395,7 @@ input.addEventListener("input", function () {
 #### `.stopPropagation()`
 - After running the current element's event handlers, stop and don't run parent/ancestors' handlers.
 #### Example
-```
+```js
 const container = document.querySelector("#container"); // Parent
 const btn = document.querySelector("button); // Child
 
@@ -392,7 +415,7 @@ btn.addEventListener("click", function(evt) {
 #### `evt.target`
 - Reference to the object onto which the event was dispatched.
 #### Example
-```
+```js
 const tweetForm = document.querySelector("#tweetForm");
 const tweetsContainer = document.querySelector("#tweets");
 
