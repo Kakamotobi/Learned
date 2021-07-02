@@ -8,6 +8,13 @@
 - **`.clientHeight`**
   - Height of the client's screen.
 
+## `.getBoundingClientRect()`
+- Returns a "DOMRect" object that provides information about the size of an element and its position relative to the viewport.
+- Example
+  ```js
+  btn.getBoundingClientRect().right; //
+  ```
+
 ## `window`
 - **`.scrollY`**
   - The number of pixels that the document is currently scrolled vertically.
