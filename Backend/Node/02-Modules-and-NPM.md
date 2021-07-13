@@ -7,6 +7,11 @@
 - [Example - Language Guesser](#example---language-guesser)
 
 ## Node Modules
+- By default, we cannot share variables, etc. between files.
+- Hence, we need to use Node Modules.
+- **Files get required just once in the lifecycle of a project.**
+  - If file is required again, we get whatever is inside of the *Require Cache*.
+  
 ### `module.exports` and `require("")`
 #### `module.exports` (shorthand: `exports`)
 - An empty object that we add methods and properties onto that we then explicitly export.
@@ -14,6 +19,8 @@
 #### `require("")`
 - Returns the `exports` object from another file/directory.
 - *For Node modules, when a file is created, the content of the file is not automatically available everywhere else when the file is `require`d*.
+- `console.log(require.cache)`
+  - Object that stores the result of requiring in any file to our project.
 #### Example
 ```
 <mathFormulas.js>
