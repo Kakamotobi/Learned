@@ -16,6 +16,28 @@
   - Top level scope containing the built-in functions, etc.
   - Equivalent of `window` in browser.
 
+## Debugging Node JS
+- `node inspect filename.js`
+  - Start up a debugger CLI and pause execution whenever a 'debugger' statement is hit.
+- `node --inspect filename.js`
+  - Start up a debugger instance and pause execution whenever a 'debugger' statement is hit.
+  - Access the debugger at 'chrome://inspect'.
+- `node --inspect-brk filename.js`
+  - Start up a debugger instance and *wait to execute* until a debugger is connected.
+  - Access the debugger at 'chrome://inspect'.
+
+## CLI Debugger Commands
+- `c`
+  - Continue execution until program ends or next debugger statement.
+- `n`
+  - Run the next line of code.
+- `s`
+  - Step into a function.
+- `o`
+  - Step out of the current function.
+- `repl`
+  - Start up an execution environment where we can reference the different variables inside of our program.
+
 ## `process` and `process.argv`
 ### `process`
 - Object that provides information about, and control over, the current Node.js process.
