@@ -1,5 +1,5 @@
 # Express
-- Framework for creating servers.
+- Framework for creating full-featured web servers that can receive and respond to network requests.
 
 ## Table of Contents
 - [What It Does](#what-it-does)
