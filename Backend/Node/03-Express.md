@@ -26,6 +26,7 @@
   - Return the `exports` object from Express.
 - **`const app = express();`**
   - Execute Express package and save to a variable.
+  - `app` is an object that describes all the things that the web server can do.
 - **`app.use([path,] callback [,callback...])`**
   - This callback will run every time ANY request hits the server.
   - Handles every incoming request the exact same way.
