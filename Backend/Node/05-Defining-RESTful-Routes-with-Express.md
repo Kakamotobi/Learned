@@ -58,6 +58,9 @@ app.listen(3000, () => {
     - `undefined` boils down to the fact that data can be sent in different formats.
 - So, explicitly indicate how Express should parse request bodies.
   - If the different formats of data are not indicated to be parsed, that format will not be parsed.
+- ***The server runs the appropriate callback method before receiving the full request.***
+  - As soon as the server receives the HTTP headers containing the path, the method of the request, and any relevant headers from the browser, the server runs the appropriate callback method.
+
 ### Example
 ```
 <<index.js>>
