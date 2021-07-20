@@ -1,14 +1,13 @@
 # Button Inside Input Field
-```
-<HTML>
+```html
 <body>
   <div class="container">
     <input type="text">
     <button>Button</button>
   </div>
 </body>
-
-<CSS>      
+```
+```css
 .container {
   position: relative;
 }
