@@ -8,6 +8,7 @@
   - [Frequently Used Git Commands](#frequently-used-git-commands)
 - [What is GitHub?](#what-is-github)
   - [Setting Up Git and GitHub](#setting-up-git-and-github)
+- [Git Branches](#git-branches)
 - [Reference](#reference)
 
 ## What is a Version Control System (VCS)?
@@ -83,6 +84,7 @@
 - **`git diff`**
   - Check the changes made between commits, commit and working tree, etc.
 - **`git branch`**
+  - Check existing branches.
   - Check what branch you're in.
 - **`git show-ref`**
   - List the references in the local repository
@@ -123,8 +125,83 @@
   - `git push origin <branch>`
     - Now, push your branch to GitHub.
 
+## Git Branches
+> A branch represents an independent line of development. Branches serve as an abstraction for the edit/stage/commit process. You can think of them as a way to request a brand new working directory, staging area, and project history.
 
+> A pointer to a snapshot of your changes. When you want to add a new feature or fix a bug-no matter how big or how small-you spawn a new branch to encapsulate your changes. This makes it harder for unstable code to getm erged into the main code base, and it gives you the change to clean up your future's history before merging it into the main branch.
+
+- *Leave the main branch to always be in deployable state.*
+
+### Core Concepts
+- **The "HEAD" Branch**
+  - The single currently "active" or "checked out" branch.
+- **Local vs Remote Branches**
+  - Most of the times we are working with the local branches as we are mostly working on our local machines.
+
+### Working with Branches
+#### Creating New Branches
+- **`git branch <new-branch-name>`**
+  -  Git will start the new branch based on the currently checked out revision (the situation that I was to this point).
+  -  **`git branch <new-branch-name> <revision-hash-of-a-particular-commit>`**
+    -  Starts the branch on the specified revision.
+#### Switching Branches
+- **`git switch <other-branch-name>`**
+  - Switch to another branch.
+- **`git checkout <other-branch-name>`**
+  - Switch to another branch.
+  - Versatile command that is used for a lot of things.
+#### Renaming Branches
+- **`git branch -m <new-name>`**
+  - Rename the HEAD branch.
+- **`git branch -m <old-name> <new-name>`**
+  - Renaming a non-HEAD branch.
+#### Publishing Branches
+- **`git push -u origin <branch-name>`**
+  - Upload local branch to the remote repository.
+  - `-u` set upstream for git pull/status.
+#### Tracking Branches
+- Connecting local and remote branches with each other.
+  - Ex: you're trying to join in on a remote branch that someone else is working on.
+- **`git branch --track <new-local-branch-name> origin/<base-branch>`**
+  - Create a local branch with the specified base remote branch.
+  - Ex: `git branch --track feature/login origin/feature/login`
+- **`git checkout --track origin<base-branch>`**
+  - If a local branch name to use is not specified, Git automatically uses the name of the remote branch for the local.
+#### Pulling and Pushing Branches
+- Synchronizing your local and remote branches.
+- **`git pull`**
+  - Download new commits from the remote.
+- **`git push`**
+  - Upload my local commits to the remote.
+- **`git branch -v`**
+  - Shows any discrepancies in commits between local and remote.
+  - Ex: ahead 1, behind 2
+#### Deleting Branches
+- **`git branch -d <branch-name>`**
+  - Delete a branch in your local repository. 
+  - *Cannot delete the HEAD branch! So switch to another branch, then delete.*
+- **`git push origin --delete <branch-name>`**
+  - Delete a branch in the remote repository.
+  - *Might also make sense to delete other branches that are tracking that remote branch!*
+#### Merging Branches
+- Integrating changes (bringing new commits) from another branch *into* your current local HEAD branch.
+- **2 Step Process**
+  - **`git switch <branch-name>`**
+    - Switch to the branch that you want to receive the changes.
+  - **`git merge <branch-name>`**
+    - Execute the `merge` command with the name of the branch that contains the desired changes.
+- Merging creates a merge commit (the "melting point").
+#### Rebasing Branches
+- An alternative way to integrate changes from another branch *into* your current local HEAD branch.
+- **`git rebase <`**
+  - There is no separate merge commit that will be created. So, development history appears to have happened in a straight line.
+#### Comparing Branches
+- Checking which commits are in branch-B, but not in branch-A.
+- **`git log <branch-A>..<branch-B>`**
+  - Ex: `git log main..feature/uploader`
+  - Ex: `git log origin/main..main`
 
 ## Reference
 [Git - Book](https://git-scm.com/book/en/v2)  
-[깃, 깃허브 제대로 배우기 - YouTube](https://www.youtube.com/watch?v=Z9dvM7qgN9s&ab_channel=%EB%93%9C%EB%A6%BC%EC%BD%94%EB%94%A9by%EC%97%98%EB%A6%AC)
+[깃, 깃허브 제대로 배우기 - YouTube](https://www.youtube.com/watch?v=Z9dvM7qgN9s&ab_channel=%EB%93%9C%EB%A6%BC%EC%BD%94%EB%94%A9by%EC%97%98%EB%A6%AC)  
+[Git Branches Tutorial](https://www.youtube.com/watch?v=e2IbNHi4uCI&ab_channel=freeCodeCamp.org)
