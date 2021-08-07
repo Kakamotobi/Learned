@@ -169,8 +169,15 @@
   - If a local branch name to use is not specified, Git automatically uses the name of the remote branch for the local.
 #### Pulling and Pushing Branches
 - Synchronizing your local and remote branches.
+- Process Ex:
+  - Push local branch to remote repository.
+  - In GitHub, accept the pull request and merge to main branch.
+  - In GitHub, delete branch.
+  - In local, pull main branch.
+  - In local, delete branch.
 - **`git pull`**
   - Download new commits from the remote.
+  - Ex: `git pull origin main`
 - **`git push`**
   - Upload my local commits to the remote.
 - **`git branch -v`**
