@@ -1,16 +1,16 @@
 # Node JS
-- A JavaScript runtime environment that executes outside of the browser (runs directly on a computer or server OS), and allows us to create server-side tools and apps.
+- A JavaScript runtime environment that executes outside of the browser (runs directly on a computer or server OS), and allows us to create web servers, command line tools, native apps (ex: VSCode), etc.
 - Use the same syntax as JS to write server-side code.
 - Notes
   - No window, document, DOM API.
-  - Built-in modules that help us do things like interact with the operating system and files/folders.
+  - Have built-in modules that help us do things like interact with the operating system and files/folders.
 
 ## Node REPL in Terminal
 - `node`
   - Open Node REPL.
 - `node script.js`
-  - Run Node files.
-- `.exit`
+  - Run Node file.
+- `.exit` or "ctrl + d" or "ctrl + c" twice
   - Exit Node REPL.
 - `global`
   - Top level scope containing the built-in functions, etc.
@@ -51,14 +51,17 @@
   - Second Element: the file that we are executing.
   - Any remaining elements will be additional command line arguments.
 #### Example
-```
-<greeter.js>
+```js
+// greeter.js
+
 const args = process.argv.slice(2);
 for (let arg of args) {
   console.log(`Hi there, ${arg}`);
 }
+```
+```zsh
+// Terminal
 
-<Terminal>
 node greeter.js tom jerry spike
 ```
 
@@ -68,7 +71,9 @@ node greeter.js tom jerry spike
   - `const fs = require("fs");`
 - *File system operations have synchronous and asynchronous (callback and promise-based) forms.*
 ### Example
-```
+```js
+// boilerplate.js
+
 const fs = require("fs");
 
 // Make first argument the folder name (default: Project).
