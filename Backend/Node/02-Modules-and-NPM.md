@@ -2,6 +2,7 @@
 
 ## Table of Contents
 - [Node Modules](#node-modules)
+  - [`module.exports` and `require("")`](#moduleexports-and-require)
 - [Node Package Manager (NPM)](#node-package-manager-npm)
 - [package.json](#packagejson)
 - [Example - Language Guesser](#example---language-guesser)
@@ -22,55 +23,64 @@
 - `console.log(require.cache)`
   - Object that stores the result of requiring in any file to our project.
 #### Example
-```
-<mathFormulas.js>
+```js
+// mathFormulas.js
+
 const PI = 3.14159;
 const square = (x) => x * x;
 
 // Saving properties and functions onto the exports object.
 exports.PI = PI;
 exports.square = square;
+```
+```js
+// app.js
 
-<app.js>
 // Importing exports object from mathFormulas.js.
-// No need to include ".js".
 // ./ refers to current directory.
-const mathFormulas = require("./mathFormulas");
+const mathFormulas = require("./mathFormulas.js");
 
 // OR we can destructure as well.
 const { PI, square } = require("./mathFormulas");
+```
+```zsh
+//Terminal
 
-<Terminal>
 node app.js
 ```
 #### `require("")` an Entire Directory
 - Node looks for an index.js file and whatever the file exports is what the directory will export.
 
 ## Node Package Manager (NPM)
-1. A library (standardized repository) of thousands of packages published by other developers that we can use for free.
+- A library (standardized repository) of thousands of packages published by other developers that we can use for free.
   - Ex: package for React, package for Express, package for making rainbow text, etc.
-2. Comes with a command line tool that we can use to easily install and manage those packages in our Node projects.
+- A command line tool that we can use to easily install and manage those packages in our Node projects.
 ### Installing Packages (in the current directory)
-```
-<Terminal>
+```zsh
+// Terminal
+
 npm install packageName
 ```
 - Downloads a folder called **"node_modules"**, which contain all the **dependencies** for that package.
 - Also downloads a file called **"package-lock.json"**, which is a record of the contents of the **"node_modules"** directory.
 - *Need to `require("")` the package name (not file path) to use it.*
 #### Example
-```
-<Terminal>
+```zsh
+// Terminal
 npm install give-me-a-joke
+```
+```js
+//index.js
 
-<index.js>
 const jokes = require("give-me-a-joke");
 // from the package docs
 jokes.getRandomDadJoke (function(joke) {
   console.log(joke);
 });
+```
+```zsh
+// Terminal
 
-<Terminal>
 node index.js
 ```
 ### Local vs. Global Installation of Packages
@@ -92,7 +102,7 @@ node index.js
 - ***Make sure to keep this record in sync with the "node_modules" folder.***
 - *Typically placed in the root directory of a project.*
 ### Using the package.json File to Install All Packages/Dependencies
-- `npm install` inside the root directory containing the package.json file of the project.
+- **`npm install`** inside the root directory containing the package.json file of the project.
   - Installs the **"node_modules"** directory.
 ### package-lock.json
 > package-lock.json is automatically generated for any operations where npm modifies either the node_modules tree, or package.json.  
@@ -101,13 +111,16 @@ node index.js
   - *Describes a single representation of a dependency tree such that teammates, deployments, and continuous integration are guaranteed to install exactly the same dependencies.*
 
 ## Example - Language Guesser
-```
-<Terminal>
+```zsh
+// Terminal
+
 npm install franc
 npm install langs
 npm install colors
+```
+```js
+// index.js
 
-<index.js>
 const franc = require("franc");
 const langs = require("langs");
 const colors = require("colors");
@@ -119,8 +132,10 @@ try {
 } catch (err) {
   console.log("Could not match a language. Please try again with a longer sample".red);
 }
+```
+```zsh
+// Terminal
 
-<Terminal>
 node index.js "Bonjour, je m'appelle Etienne" // returns French
 ```
 
