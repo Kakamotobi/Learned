@@ -46,15 +46,16 @@
 - On every incoming request, Express gives us access to these two parameters.
 ### Request Object
 > The `req` object represents the incoming HTTP request and has properties for the request query string, parameters, body, HTTP headers, and so on.
+- *HTTP requests are text information but Express takes it and turns it into an object.*
 ### Response Object
 > The `res` object represents the outgoing HTTP response that an Express app sends when it gets an HTTP request.
 #### `res.send()`
-  - Generates and sends the HTTP response content.
-  - Accepts a string, a string containing HTML tags, a JS object (JSON representation of it), etc.
-    - HTML tags are rendered in the browser.
-  - *Once we send something back, we're done for that one request because we can't have an HTTP request that gets more than one response.*
+- Generates and sends the HTTP response content.
+- Accepts a string, a string containing HTML tags, a JS object (JSON representation of it), etc.
+  - HTML tags are rendered in the browser.
+- *Once we send something back, we're done for that one request because we can't have an HTTP request that gets more than one response.*
 ### Example
-```
+```js
 app.get("/user/:id", (req, res) => {
   res.send("user " + req.params.id)
 })
@@ -78,13 +79,13 @@ app.get("/user/:id", (req, res) => {
     - *Always place at the end of the other routes for the same request type.*
 #### Examples
 - Home/Root Route
-  ```
+  ```js
   app.get("/", (req, res) => {
     res.send("Here is your response")
   })
   ```
 - Other Routes
-  ```
+  ```js
   // Route for GET request on /dogs.
   app.get("/dogs", (req, res) => {
     res.send("Woof!");
@@ -107,7 +108,7 @@ app.get("/user/:id", (req, res) => {
 - `req.params`
   - Contains the key-value pairs from the path string.
 #### Examples
-```
+```js
 app.get("/r/:subreddit", (req, res) => {
   const { subreddit } = req.params;
   res.send(`<h1>Browsing on the Subreddit: ${subreddit}!</h1>`);
@@ -115,7 +116,7 @@ app.get("/r/:subreddit", (req, res) => {
 
 app.get("/r/:subreddit/:postId", (req, res) => {
   const { subreddit, postId } = req.params;
-  res.send(`<h1>Viewing POST ID: ${postId} on the subreddit: ${subreddit}!</h1>`);
+  res.send(`<h1>Viewing POST ID: ${postId} on the Subreddit: ${subreddit}!</h1>`);
 });
 ```
 
@@ -126,7 +127,7 @@ app.get("/r/:subreddit/:postId", (req, res) => {
 ### `req.query`
 > Object containing a property for each query string parameter in the route.
 ### Example
-```
+```js
 app.get("/search", (req, res) => {
   const { q } = req.query;
   if (!q) {
@@ -138,12 +139,15 @@ app.get("/search", (req, res) => {
 ```
 
 ## Server Example
-```
-<Terminal>
-node init
-npm install express
+```zsh
+// Terminal
 
-<index.js>
+node init -y
+npm install express
+```
+```js
+// index.js
+
 const express = require("express");
 const app = express();
 
@@ -168,12 +172,19 @@ app.get("*", (req, res) => {
 app.listen(3000, () => {
   console.log("Listening on Port 3000!");
 });
+```
 
-<Terminal>
+```zsh
+// Terminal
+
 node index.js
+```
+```
+// Browser
 
-<Browser>
 localhost:3000/r/chickens/7777 // send request.
+
+// Response
 Viewing Post ID: 7777 on the Subreddit: chickens! // response received.
 ```
 
