@@ -9,6 +9,7 @@
 - [Conditionals in EJS](#conditionals-in-ejs)
 - [Loops in EJS](#loops-in-ejs)
 - [Serving Static Assets in Express](#serving-static-assets-in-express)
+- [EJS and Partials/Includes](#ejs-and-partialsincludes)
 - [Template Demo Example](#template-demo-example)
 
 ## Templating
@@ -30,16 +31,17 @@
 - `app.set("view engine", "ejs")`
   - Have to indicate to Express that EJS is the templating engine that we will use.
 - `npm install ejs`
-  - Install EJS
+  - Install EJS.
   - *Don't have to `require("ejs")` because `app.set(propertyName, value)` did it for us.*
 - `mkdir views` in current working directory.
-  - Setting the Views Directory
+  - *By default, when we create a new Express app and use a some view engine, Express assumes that our views/templates exist in a directory called "views".*
+  - Setting the views directory so that the file could be run from anywhere in the terminal.
     - The views folder's path: `process.cwd() + "/views"`
     - `const path = require("path")`
-      - Require Path that is built in Node.
+      - Require Path that is built in to Express.
     - `app.set("views", path.join(__dirname, "/views"));`
-      - Join the full path to the index.js file with "/views".
-      - `__dirname` references the absolute path starting from the root until the current working directory.
+      - *Join the full path to the index.js file with "/views".*
+      - `__dirname` references the absolute path starting from the root until where the file (ex: index.js) is located in.
       - Now, add the relative path pointing to the folder where the index.js file is in, to start the server from any directory.
       - Ex: `nodemon previousFolder/index.js`
 - `touch home.ejs` in the views folder.
@@ -61,11 +63,12 @@
   - "Escaping" content means we're treating it as a string (not as HTML and rendering it).
 
 ## Passing Data to Templates
-- Generally, remove as much logic from the templates since templates are best to simply display things.
+- **Generally, remove as much logic from the templates since templates are best to simply display things.**
 - So, generate logic, values, etc. first and then pass it as an object to the templates.
 ### Example
-```
-<<index.js>>
+```js
+// index.js
+
 app.get("/random", (req, res) => {
   const randNum = Math.floor(Math.random() * 10) + 1;
   // The object will be passed through and made available to the template "random.ejs".
@@ -74,8 +77,10 @@ app.get("/random", (req, res) => {
 app.listen(3000, () => {
   console.log("Listening on Port 3000!");
 });
+```
+```ejs
+// random.ejs
 
-<<random.ejs>>
 <body>
   <h1>Your random number is: <%= randNum %></h1>
 </body>
@@ -83,8 +88,9 @@ app.listen(3000, () => {
 
 ## Conditionals in EJS
 ### Example 1 
-```
-<<index.js>>
+```js
+// index.js 
+
 // Random Route
 app.get("/random", (req, res) => {
   const randNum = Math.floor(Math.random() * 10) + 1;
@@ -92,8 +98,10 @@ app.get("/random", (req, res) => {
   // The object will be passed through to the template.
   res.render("random.ejs", { randNum: randNum });
 });
+```
+```ejs
+// random.ejs
 
-<<random.ejs>>
 <body>
   <h1>Your random number is: <%= randNum %></h1>
 
@@ -106,8 +114,9 @@ app.get("/random", (req, res) => {
 </body>
 ```
 ### Example 2
-```
-<<random.ejs>>
+```ejs
+// random.ejs
+
 <body>
   <h1>That number is: <%= randNum % 2 === 0 ? "Even" : "Odd" %></h1>
 </body>
@@ -115,16 +124,19 @@ app.get("/random", (req, res) => {
 
 ## Loops in EJS
 ### Example
-```
-<<index.js>>
+```js
+//index.js
+
 // Cats Route
 app.get("/cats", (req, res) => {
   // Pretend this is a cats database
   const cats = ["Blue", "Rocket", "Monty", "Stephanie", "Winston"];
   res.render("cats.ejs", { cats: cats });
 });
+```
+```ejs
+// cats.ejs
 
-<<cats.ejs>>
 <body>
   <h1>All The Cats</h1>
   
@@ -169,8 +181,9 @@ app.get("/cats", (req, res) => {
   - Ex: `<%- include("partials/head.ejs") %>`
 
 ## Template Demo Example
-```
-<<index.js>>
+```js
+// index.js
+
 const express = require("express");
 const app = express();
 const path = require("path");
@@ -180,7 +193,7 @@ const fakeData = require("./fakeData.json")
 // -----Static Assets Setup----- //
 app.use(express.static(path.join(__dirname, "/public")));
 
-// -----EJS Setup----- //
+// -----EJS Setup----- // 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "/views"));
 
@@ -202,8 +215,10 @@ app.get("/r/:subreddit", (req, res) => {
 app.listen("3000", () => {
   console.log("Listening on Port 3000!");
 });
+```
+```ejs
+// subreddit.ejs
 
-<<subreddit.ejs>>
 <body>
   <%- include("partials/navbar.ejs") %>
   
@@ -221,13 +236,17 @@ app.listen("3000", () => {
   </article>
   <% } %>
 </body>
+```
+```ejs
+// notfound.ejs
 
-<<notfound.ejs>>
 <body>
   <%- include("partials/navbar.ejs") %>
-  <h1>Sorry. We couldn't find the <%= subreddit> subreddit.</h1>
+  <h1>Sorry. We couldn't find the <%= subreddit %> subreddit.</h1>
 </body>
+```
+```ejs
+// navbar.ejs
 
-<<navbar.ejs>>
 <nav></nav>
 ```
