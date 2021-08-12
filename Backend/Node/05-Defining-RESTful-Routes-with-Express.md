@@ -36,8 +36,9 @@
 ## Defining POST Routes in Express
 - Receiving and handling POST requests in Express.
 ### Example
-```
-<<index.js>>
+```js
+//index.js
+
 const express = require("express");
 const app = express();
 
@@ -56,14 +57,15 @@ app.listen(3000, () => {
   - Payload of incoming request.
   > Contains key-value pairs of data submitted in the request body. By default, it is `undefined`, and is populated when you use body-parsing middleware such as body-parser and multer.
     - `undefined` boils down to the fact that data can be sent in different formats.
-- So, explicitly indicate how Express should parse request bodies.
+- **So, explicitly indicate how Express should parse request bodies (choose a built-in parsing middleware) to parse the payload of incoming requests.**
   - If the different formats of data are not indicated to be parsed, that format will not be parsed.
 - ***The server runs the appropriate callback method before receiving the full request.***
   - As soon as the server receives the HTTP headers containing the path, the method of the request, and any relevant headers from the browser, the server runs the appropriate callback method.
 
 ### Example
-```
-<<index.js>>
+```js
+//index.js
+
 // For parsing URL encoded form data.
 app.use(express.urlencoded({ extend: true}));
 
@@ -73,27 +75,27 @@ app.use(express.json());
 
 ## Representational State Transfer (REST)
 > Architectural style for distributed hypermedia systems.
-- A set of guidelines for how a client and server should communicate and perform CRUD operations on a given resource.
+- **A set of guidelines for how a client and server should communicate and perform CRUD operations on a given resource.**
 - "RESTful" means that it complies with the REST guidelines.
 - **Main Idea:** treat data on the server-side as resources that can be CRUDed.
 - HTTP URI(Uniform Resource Identifier)를 통해 자원(Resource)을 명시하고, HTTP Method(POST, GET, PUT, DELETE)를 통해 해당 자원에 대한 CRUD Operation을 적용하는 것을 의미한다.
   - 웹 사이트의 이미지, 텍스트, DB 내용 등의 모든 자원에 고유한 ID인 HTTP URI를 부여한다.
 ### Architectural Constraints
-- Client-Server Architecture
+- **Client-Server Architecture**
   - Client and Server are separated, and we could swap in a different client.
   - It doesn't matter where the request comes from because the client and server are not linked.
   - Ex: making requests from either the browser or from Postman works.
-- Stateless
+- **Stateless**
   - HTTP is a stateless protocol.
   - Every request is on its own in a vacuum.
     - Ex: it doesn't have access to the request that came before.
-- Uniform Interface
+- **Uniform Interface**
   - Every RESTful system has a uniform interface, which most of the time, consists of some consistent URL pattern matched with different HTTP verbs/methods.
   - Combine the base URL with different HTTP verbs/methods to expose full CRUD operations over HTTP.
   - Pattern: having a resource name and then matching that path with an HTTP verb/method.
-- Cache
-- Layered System
-- Code-On-Demand
+- **Cache**
+- **Layered System**
+- **Code-On-Demand**
 ### Example
 ```
 // IG Comment
@@ -134,22 +136,25 @@ DELETE /{ig-comment-id}
 
 ## CRUD Implementation of RESTful Routes Example
 - *Match HTTP verbs with a base URL (often pluralized resource), to which a unique identifier is added on when appropriate.*
-```
-// Resource: comment
-// Resource Components: username, comment text
 
-// Blueprint
-Route Name | Path | Verb | Purpose
+### Example
+- Resource: comment
+- Resource Components: username, comment text
+- Blueprint
 
-Index | /comments | GET | Display all comments
-New | /comments/new | GET | Form to create new comment
-Create | /comments | POST | Create a new comment
-Show | /comments/:id | GET | Details for one specific comment (using ID)
-Edit | /comments/:id | GET | Form to edit specific comment (using ID)
-Update | /commends/:id | PATCH | Update a specific comment on server
-Delete | /commends/:id | DELETE | Delete specific item on server
+| Route Name | Path          | Verb   | Purpose                                     |
+| ---------- | ------------- | ------ | ------------------------------------------- |
+| Index      | /comments     | GET    | Display all comments                        |
+| New        | /comments/new | GET    | Form to create new comment                  |
+| Create     | /comments     | POST   | Create a new comment                        |
+| Show       | /comments/:id | GET    | Details for one specific comment (using ID) |
+| Edit       | /comments/:id | GET    | Form to edit specific comment (using ID)    |
+| Update     | /commends/:id | PATCH  | Update a specific comment on server         |
+| Delete     | /commends/:id | DELETE | Delete specific item on server              |
 
-<<index.ejs>>
+```ejs
+// index.ejs
+
 <body>
   <h1>Comments</h1>
 
@@ -161,8 +166,10 @@ Delete | /commends/:id | DELETE | Delete specific item on server
 
   <a href="/comments/new">New Comment</a>
 </body>
+```
+```ejs
+// new.ejs
 
-<<new.ejs>>
 <body>
   <h1>Create a New Comment</h1>
 
@@ -184,8 +191,10 @@ Delete | /commends/:id | DELETE | Delete specific item on server
 
   <a href="/comments">Back to Comments</a>
 </body>
+```
+```ejs
+// show.ejs
 
-<<show.ejs>>
 <body>
   <h1>Comment ID: <%= comment.id %></h1>
 
@@ -197,8 +206,10 @@ Delete | /commends/:id | DELETE | Delete specific item on server
   </form>
   <a href="/comments">Back to Comments</a>
 </body>
+```
+```ejs
+// edit.ejs
 
-<<edit.ejs>>
 <body>
   <h1>Edit</h1>
   <form method="POST" action="/comments/<%= comment.id %>?_method=PATCH">
@@ -208,8 +219,10 @@ Delete | /commends/:id | DELETE | Delete specific item on server
     <button>Update Comment</button>
   </form>
 </body>
+```
+```js
+// index.js
 
-<<index.js>>
 // ----------Setup---------- //
 const express = require("express");
 const app = express();
