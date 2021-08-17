@@ -159,8 +159,11 @@ DELETE /{ig-comment-id}
   <h1>Comments</h1>
 
   <ul>
-    <% for(let c of comments) { %>
-    <li><%=c.comment%> - <b><%= c.username%></b><a href="/comments/<%= c.id %>">Details</a></li>
+    <% for (let c of comments) { %>
+    <li>
+      <a href="/comments/<%= c.id%>"> <%= c.comment %></a> -
+      <b><%= c.username %></b>
+    </li>
     <% } %>
   </ul>
 
@@ -172,37 +175,40 @@ DELETE /{ig-comment-id}
 
 <body>
   <h1>Create a New Comment</h1>
-
   <form action="/comments" method="POST">
     <section>
-      // name attr. is what the data will be sent under when the POST request is sent off.
-      <label for="username">Username:</label>
-      <input type="text" id="username" placeholder="username" name="username" />
+      <label for="username">Enter Username:</label>
+      <input
+        type="text"
+        placeholder="username"
+        name="username"
+        id="username"
+      />
     </section>
 
     <section>
       <label for="comment">Comment:</label>
       <br />
-      <textarea id="comment" cols="26" rows="5" name="comment"></textarea>
+      <textarea name="comment" id="comment" cols="30" rows="5"></textarea>
     </section>
 
     <button>Submit</button>
   </form>
-
-  <a href="/comments">Back to Comments</a>
+  <a href="/comments">Back to All Comments</a>
 </body>
 ```
 ```ejs
 // show.ejs
 
 <body>
-  <h1>Comment ID: <%= comment.id %></h1>
+  <h1>Comment ID: <%= comment.id%></h1>
 
-  <h2><%= comment.comment %> - <%= comment.username %></h2>
+  <h2><%= comment.comment %> - <%= comment.username%></h2>
 
   <a href="/comments/<%= comment.id %>/edit">Edit Comment</a>
-  <form method="POST" action="/comments/<%= comment.id %>?_method=DELETE">
-    <button>Delete<Button>
+  <br />
+  <form method="POST" action="/comments/<%=comment.id%>?_method=DELETE">
+    <button>Delete</button>
   </form>
   <a href="/comments">Back to Comments</a>
 </body>
@@ -211,103 +217,109 @@ DELETE /{ig-comment-id}
 // edit.ejs
 
 <body>
-  <h1>Edit</h1>
+  <h1>Edit Comment</h1>
   <form method="POST" action="/comments/<%= comment.id %>?_method=PATCH">
     <textarea name="comment" id="" cols="30" rows="10">
-      <%= comment.comment %>
+      <%= comment.comment%>
     </textarea>
-    <button>Update Comment</button>
+    <button>Save</button>
   </form>
 </body>
 ```
 ```js
 // index.js
 
-// ----------Setup---------- //
+// -----Setup----- //
 const express = require("express");
 const app = express();
 const path = require("path");
-const { v4: uuidv4 } = require("uuid");
 const methodOverride = require("method-override");
+const { v4: uuid } = require("uuid");
 
-app.use(express.urlencoded({ extend: true })); // For parsing url form body request.
-app.use(express.json()); // For parsing JSON body request.
-app.use(methodOverride("_method")); // For overriding form method.
-app.set("view engine", "ejs");
+// -----Middleware----- //
+
+app.use(express.urlencoded({ extended: true }));
+app.use(methodOverride("_method"));
 app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "ejs");
 
-// ----------Comments (Fake Database)---------- //
+// -----Fake Data----- //
 let comments = [
-  {
-    id: uuidv4(),
-    username: "Tom",
-    comment: "I like to fight Jerry",
-  },
-  {
-    id: uuidv4(),
-    username: "Jerry",
-    comment: "I like to fight Tom",
-  },
-  {
-    id: uuidv4(),
-    username: "Spike",
-    comment: "I like to sleep",
-  },
+	{
+		id: uuid(),
+		username: "Todd",
+		comment: "lol that is so funny",
+	},
+	{
+		id: uuid(),
+		username: "Skyler",
+		comment: "I like to go birdwatching with my dog",
+	},
+	{
+		id: uuid(),
+		username: "Sk8erBoi",
+		comment: "Plz delete your account Todd",
+	},
+	{
+		id: uuid(),
+		username: "onlysayswoof",
+		comment: "woof woof woof",
+	},
 ];
 
-// ----------Routes---------- //
-// Reading all comments
+// -----Routes----- //
+
+//-- View all comments-- //
 app.get("/comments", (req, res) => {
-    res.render("comments/index.ejs", { comments });
+	res.render("comments/index.ejs", { comments });
 });
 
-// Creating new comment (2 routes needed)
-// 1. GET route to serve the form page.
+// --Create new comment-- //
+// Render a form to create comment
 app.get("/comments/new", (req, res) => {
-  res.render("comments/new.ejs");
+	res.render("comments/new.ejs");
 });
-// 2. When that form is submitted, its data is sent as a POST request to a different path.
+// Route to submit the form to
 app.post("/comments", (req, res) => {
-  const { username, comment } = req.body;
-  comments.push({ id: uuidv4(), username, comment });
-  res.redirect("/comments");
+	const { username, comment } = req.body;
+	comments.push({ username, comment, id: uuid() });
+	res.redirect("/comments");
 });
 
-// Details for one specific comment (using ID)
+// --Show route (details for one specific resource)-- //
 app.get("/comments/:id", (req, res) => {
-  const { id } = req.params;
-  const comment = comments.find(c => c.id === id);
-  res.render("comments/show.ejs", { comment });
+	// Use id from the url to find the matching post.
+	const { id } = req.params;
+	const comment = comments.find((c) => c.id === id);
+	res.render("comments/show.ejs", { comment });
 });
 
-// Update specific comment (using ID)
-// 1. GET route to serve the form
+// --Edit comment-- //
+// Render form to edit
 app.get("/comments/:id/edit", (req, res) => {
-  const { id } = req.params;
-  const comment = comments.find((c) => c.id === id);
-  res.render("comments/edit.ejs", { comment });
+	const { id } = req.params;
+	const comment = comments.find((c) => c.id === id);
+	res.render("comments/edit.ejs", { comment });
 });
-// 2. PATCH route to update comment
+// Route to submitt he editted comment to
 app.patch("/comments/:id", (req, res) => {
-  const { id } = req.params;
-  const originalComment = comments.find((c) => c.id === id);
-  const updateComment = req.body.comment;
-  originalComment.comment = updateComment;
-  res.redirect("/comments");
+	const { id } = req.params;
+	const foundComment = comments.find((c) => c.id === id);
+	const newCommentText = req.body.comment;
+	foundComment.comment = newCommentText;
+	res.redirect("/comments");
 });
 
-// Delete specific comment
+// --Delete comment-- //
 app.delete("/comments/:id", (req, res) => {
-  const { id } = req.params;
-  const comment = comments.find((c) => c.id === id);
-  comments = comments.filter((c) => c.id !== id);
-  res.redirect("/comments");
+	const { id } = req.params;
+	comments = comments.filter((c) => c.id !== id);
+  res.redirect("/comments")
 });
 
-// ----------Port---------- //
-
+// -----Port----- //
 app.listen(3000, () => {
-  console.log("Listening on Port 3000!");
+	console.log("Listening on port 3000!");
 });
 ```
 
