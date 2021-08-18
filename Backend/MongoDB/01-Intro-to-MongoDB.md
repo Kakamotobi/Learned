@@ -65,23 +65,23 @@
 [Install MongoDB Community Edition on macOS - MongoDB](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-os-x/)
 
 ## The Mongo Shell
-- `mongo`
+- **`mongo`**
   - Initiate the Mongo Shell (REPL).
   - *Mongod needs to be running in the background as it will try to connect to that daemon.*
-- `help`
+- **`help`**
   - Shows some commands that we can use.
-- `db`
+- **`db`**
   - The current database.
   - Returns "test" if not using any.
-- `show dbs`
+- **`show dbs`**
   - Prints a list of all databases on the server.
-- `use <db>`
+- **`use <db>`**
   - Switch current database to that db.
   - If that db doesn't exist, it will be created and switched to.  
     - Doesn't show in `show dbs` until there's something in it.
-- `show collections`
+- **`show collections`**
   - Shows the collections (groupings of data in the current db).
-- ctrl + c
+- **ctrl + c**
   - Quit mongo.
 
 ## Binary JSON (BSON)
@@ -96,10 +96,10 @@
   - Collection: grouping of data in a database.
   - Inserting into a collection that doesn't exist will make that collection.
 - Ways to Insert
-  - `db.collection.insertOne({})`
+  - **`db.collection.insertOne({})`**
     - Insert a single document into a collection.
     - Ex: `db.dogs.insert({name: "Charlie", age: 3, breed: "corgi", catFriendly: true})`
-  - `db.collection.insertMany([{},{}])`
+  - **`db.collection.insertMany([{},{}])`**
     - Insert multiple documents into a collection.
     - Expects an array of documents to be passed in.
   - **`db.collection.insert()`**
