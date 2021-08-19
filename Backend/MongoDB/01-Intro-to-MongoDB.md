@@ -96,28 +96,28 @@
   - Collection: grouping of data in a database.
   - Inserting into a collection that doesn't exist will make that collection.
 - Ways to Insert
-  - **`db.collection.insertOne({})`**
+  - **`db.<collection>.insertOne({})`**
     - Insert a single document into a collection.
     - Ex: `db.dogs.insert({name: "Charlie", age: 3, breed: "corgi", catFriendly: true})`
-  - **`db.collection.insertMany([{},{}])`**
+  - **`db.<collection>.insertMany([{},{}])`**
     - Insert multiple documents into a collection.
     - Expects an array of documents to be passed in.
-  - **`db.collection.insert()`**
+  - **`db.<collection>.insert([{},{}])`**
     - Insert a single or multiple documents into a collection.
     - Ex: `db.dogs.insert([{name: "Wyatt", breed: "Golden Retriever", age: 14, catFriendly: false}, {name: "Tonya", breed: "Chihuahua", age: 17, catFriendly: true}])`
     - If an inserted document omits the `_id` field, the MongoDB driver automatically generates an ObjectId for the `_id` field.
       - *A unique reference for each individual document in a collection.*
 ### Finding/Querying with Mongo
-- **`db.collection.find({})`**
+- **`db.<collection>.find({})`**
   - Selects documents in a collection or view and return a cursor to the selected documents.
     - Cursor: a pointer/reference to the results of a query.
   - Ex: `db.dogs.find()`
   - Ex: `db.dogs.find({breed: "corgi"})`
   - Ex: `db.dogs.find({catFriendly: true, age: 17})`
-- **`db.collection.findOne({})`**
+- **`db.<collection>.findOne({})`**
   - Finds one document and return it.
 ### Updating with Mongo
-- **`db.collection.updateOne(<filter>, <update>, <options>)`**
+- **`db.<collection>.updateOne(<filter>, <update>, <options>)`**
   - Updates the first thing that matches.
   - Filter: find a document based upon some criteria.
   - Update: use atomic operator.
@@ -125,17 +125,17 @@
     - Find Charlie and set its age to 4, and breed to "Lab".
   - If setting something that is not currently in the matched document, it will create and include the key-value pair in the document.
     - Ex: `db.dogs.updateOne({name: "Charlie"}, {$set: {color: "chocolate"}})`
-- **`db.collection.updateMany(<filter>, <update>, <options>)`**
+- **`db.<collection>.updateMany(<filter>, <update>, <options>)`**
   - Update many documents at once.
   - Ex: `db.dogs.updateMany({catFriendly: true}, {$set: {isAvailable: false}})`
-- **`db.collection.replaceOne(<filter>, <update>, <options>)`**
+- **`db.<collection>.replaceOne(<filter>, <update>, <options>)`**
   - Replaces a single document within the collection based on the filter.
 ### Deleting with Mongo
-- **`db.collection.deleteOne()`**
+- **`db.<collection>.deleteOne()`**
   - Removes a single document from a collection.
   - Ex: `db.cats.deleteOne({name: "Blue Steele"})`
   - *Empty `{}` will delete the first document returned in the collection.*
-- **`db.collection.deleteMany()`**
+- **`db.<collection>.deleteMany()`**
   - Removes multiple documents from a collection.
   - Ex: `db.dogs.deleteMany({isAdopted: true})`
   - *Empty `{}` will delete everything in the collection.
