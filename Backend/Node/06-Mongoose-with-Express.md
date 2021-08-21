@@ -22,28 +22,34 @@ const mongoose = require("mongoose");
 
 const Product = require("./models/product.js");
 
-mongoose.connect('mongodb://localhost:27017/farmStand', {useNewUrlParser: true, useUnifiedTopology: true})
-  .then(() => {
-    console.log("Mongo Connection Open!")
-  })
-  .catch(err => {
-    console.log("Mongo Connection Error!");
-    console.log(err);
-  })
+mongoose
+	.connect("mongodb://localhost:27017/farmStand", {
+		useNewUrlParser: true,
+		useUnifiedTopology: true,
+	})
+	.then(() => {
+		console.log("Mongo Connection Open!");
+	})
+	.catch((err) => {
+		console.log("Mongo Connection Error!");
+		console.log(err);
+	});
 
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
-app.get("/dog", (req, res) => {
-  res.send("woof")
-})
+app.get("/products", async (req, res) => {
+	const products = await Product.find({});
+	res.render("products/index.ejs", { products });
+});
 
 app.listen(3000, () => {
-  console.log("Listening on port 3000!")
-})
+	console.log("Listening on port 3000!");
+});
 ```
 ```js
 //product.js
+
 const mongoose = require("mongoose");
 
 const productSchema = new mongoose.Schema({
@@ -123,7 +129,18 @@ Product.insertMany(seedProducts)
 		console.log(err);
 	});
 ```
+```ejs
+// index.ejs
 
+<body>
+	<h1>All Products</h1>
+	<ul>
+		<% for (let product of products) { %>
+		<li><%= product.name %></li>
+		<% } %>
+	</ul>
+</body>
+```
 
 
 
