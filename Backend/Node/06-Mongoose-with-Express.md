@@ -22,6 +22,7 @@ const mongoose = require("mongoose");
 
 const Product = require("./models/product.js");
 
+// -----Mongoose connect----- //
 mongoose
 	.connect("mongodb://localhost:27017/farmStand", {
 		useNewUrlParser: true,
@@ -35,17 +36,42 @@ mongoose
 		console.log(err);
 	});
 
+// -----EJS----- //
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
+app.use(express.urlencoded({ extended: true }));
+
+// -----Routes----- //
+// Serve the form
+app.get("/products/new", (req, res) => {
+	res.render("products/new.ejs");
+});
+// Route to submit the form
+app.post("/products", async (req, res) => {
+	const newProduct = new Product(req.body);
+	await newProduct.save();
+	res.redirect(`/products/${newProduct._id}`)
+});
+
+// All products
 app.get("/products", async (req, res) => {
 	const products = await Product.find({});
 	res.render("products/index.ejs", { products });
 });
 
+// Product details
+app.get("/products/:id", async (req, res) => {
+	const { id } = req.params;
+	const product = await Product.findById(id);
+	res.render("products/show.ejs", { product });
+});
+
+// -----Port----- //
 app.listen(3000, () => {
 	console.log("Listening on port 3000!");
 });
+
 ```
 ```js
 //product.js
@@ -136,11 +162,49 @@ Product.insertMany(seedProducts)
 	<h1>All Products</h1>
 	<ul>
 		<% for (let product of products) { %>
-		<li><%= product.name %></li>
+		<li><a href="/products/<%= product._id %>"><%= product.name %></a></li>
 		<% } %>
 	</ul>
 </body>
 ```
+```ejs
+// show.ejs
 
+<body>
+	<h1><%= product.name %></h1>
+	<ul>
+		<li>Price: $<%= product.price %></li>
+		<li>Category: <%= product.category %></li>
+	</ul>
+
+	<a href="/products">All Products</a>
+</body>
+```
+```ejs
+// new.ejs
+
+<body>
+	<h1>Add A Product</h1>
+
+	<form action="/products" method="POST">
+		<label for="name">Product Name</label>
+		<input type="text" name="name" id="name" placeholder="Product Name" />
+		<label for="price">Price (Unit)</label>
+		<input
+			type="number"
+			name="price"
+			id="price"
+			placeholder="Product Price"
+		/>
+		<label for="category">Select Category</label>
+		<select name="category" id="category">
+			<option value="fruit">Fruit</option>
+			<option value="vegetable">Vegetable</option>
+			<option value="dairy">Dairy</option>
+		</select>
+		<button type="submit">Add Product</button>
+	</form>
+</body>
+```
 
 
