@@ -19,6 +19,7 @@ const express = require("express");
 const app = express();
 const path = require("path");
 const mongoose = require("mongoose");
+const methodOverride = require("method-override");
 
 const Product = require("./models/product.js");
 
@@ -40,7 +41,9 @@ mongoose
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
+// -----Middleware----- //
 app.use(express.urlencoded({ extended: true }));
+app.use(methodOverride("_method"));
 
 // -----Routes----- //
 // Serve the form
@@ -51,7 +54,7 @@ app.get("/products/new", (req, res) => {
 app.post("/products", async (req, res) => {
 	const newProduct = new Product(req.body);
 	await newProduct.save();
-	res.redirect(`/products/${newProduct._id}`)
+	res.redirect(`/products/${newProduct._id}`);
 });
 
 // All products
@@ -67,11 +70,26 @@ app.get("/products/:id", async (req, res) => {
 	res.render("products/show.ejs", { product });
 });
 
+// Serve form to edit product
+app.get("/products/:id/edit", async (req, res) => {
+	const { id } = req.params;
+	const product = await Product.findById(id);
+	res.render("products/edit.ejs", { product });
+});
+// Route to submit the form
+app.put("/products/:id", async (req, res) => {
+	const { id } = req.params;
+	const product = await Product.findByIdAndUpdate(id, req.body, {
+		runValidators: true,
+		new: true,
+	});
+	res.redirect(`/products/${product._id}`);
+});
+
 // -----Port----- //
 app.listen(3000, () => {
 	console.log("Listening on port 3000!");
 });
-
 ```
 ```js
 //product.js
@@ -195,6 +213,39 @@ Product.insertMany(seedProducts)
 			name="price"
 			id="price"
 			placeholder="Product Price"
+		/>
+		<label for="category">Select Category</label>
+		<select name="category" id="category">
+			<option value="fruit">Fruit</option>
+			<option value="vegetable">Vegetable</option>
+			<option value="dairy">Dairy</option>
+		</select>
+		<button type="submit">Add Product</button>
+	</form>
+</body>
+```
+```ejs
+// edit.ejs
+
+<body>
+	<h1>Edit Product</h1>
+
+	<form action="/products/<%= product._id %>?_method=PUT" method="POST">
+		<label for="name">Product Name</label>
+		<input
+			type="text"
+			name="name"
+			id="name"
+			placeholder="Product Name"
+			value="<%= product.name %>"
+		/>
+		<label for="price">Price (Unit)</label>
+		<input
+			type="number"
+			name="price"
+			id="price"
+			placeholder="Product Price"
+			value="<%= product.price %>"
 		/>
 		<label for="category">Select Category</label>
 		<select name="category" id="category">
