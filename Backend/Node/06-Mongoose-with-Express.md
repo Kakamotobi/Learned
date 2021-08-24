@@ -45,10 +45,13 @@ app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 
+// -----Categories----- //
+const categories = ["fruit", "vegetable", "dairy"];
+
 // -----Routes----- //
 // Serve the form
 app.get("/products/new", (req, res) => {
-	res.render("products/new.ejs");
+	res.render("products/new.ejs", { categories });
 });
 // Route to submit the form
 app.post("/products", async (req, res) => {
@@ -74,7 +77,7 @@ app.get("/products/:id", async (req, res) => {
 app.get("/products/:id/edit", async (req, res) => {
 	const { id } = req.params;
 	const product = await Product.findById(id);
-	res.render("products/edit.ejs", { product });
+	res.render("products/edit.ejs", { product, categories });
 });
 // Route to submit the form
 app.put("/products/:id", async (req, res) => {
@@ -183,6 +186,8 @@ Product.insertMany(seedProducts)
 		<li><a href="/products/<%= product._id %>"><%= product.name %></a></li>
 		<% } %>
 	</ul>
+	
+	<a href="/products/new">Add New Product</a>
 </body>
 ```
 ```ejs
@@ -217,9 +222,9 @@ Product.insertMany(seedProducts)
 		/>
 		<label for="category">Select Category</label>
 		<select name="category" id="category">
-			<option value="fruit">Fruit</option>
-			<option value="vegetable">Vegetable</option>
-			<option value="dairy">Dairy</option>
+			<% for (let category of categories) { %>
+			<option value="<%=category%>"><%=category%></option>
+			<% } %>
 		</select>
 		<button type="submit">Add Product</button>
 	</form>
@@ -250,13 +255,13 @@ Product.insertMany(seedProducts)
 		/>
 		<label for="category">Select Category</label>
 		<select name="category" id="category">
-			<option value="fruit">Fruit</option>
-			<option value="vegetable">Vegetable</option>
-			<option value="dairy">Dairy</option>
+			<% for (let category of categories) { %>
+			<option value="<%=category%>" <%= product.category === category ? "selected" : "" %> ><%=category%></option>
+			<% } %>
 		</select>
 		<button type="submit">Add Product</button>
 	</form>
-	
+
 	<a href="/products/<%= product._id %>">Cancel</a>
 </body>
 ```
