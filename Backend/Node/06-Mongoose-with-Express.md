@@ -256,6 +256,8 @@ Product.insertMany(seedProducts)
 		</select>
 		<button type="submit">Add Product</button>
 	</form>
+	
+	<a href="/products/<%= product._id %>">Cancel</a>
 </body>
 ```
 
