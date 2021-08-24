@@ -195,6 +195,7 @@ Product.insertMany(seedProducts)
 		<li>Category: <%= product.category %></li>
 	</ul>
 
+	<a href="/products/<%= product._id %>">Edit Product</a>
 	<a href="/products">All Products</a>
 </body>
 ```
