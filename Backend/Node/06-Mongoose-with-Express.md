@@ -1,9 +1,9 @@
 # Mongoose with Express
 
 ## Table of Contents
-- [Express + Mongoose Basic Setup](#express-mongosee-basic-setup)
+- [Express + Mongoose Basic Setup (CRUD)](#express--mongoose-basic-setup-crud)
 
-## Express + Mongoose Basic Setup
+## Express + Mongoose Basic Setup (CRUD)
 ```zsh
 // Terminal
 
@@ -87,6 +87,13 @@ app.put("/products/:id", async (req, res) => {
 		new: true,
 	});
 	res.redirect(`/products/${product._id}`);
+});
+
+// Delete product
+app.delete("/products/:id", async (req, res) => {
+	const { id } = req.params;
+	const deletedProduct = await Product.findByIdAndDelete(id);
+	res.redirect("/products");
 });
 
 // -----Port----- //
@@ -200,8 +207,11 @@ Product.insertMany(seedProducts)
 		<li>Category: <%= product.category %></li>
 	</ul>
 
-	<a href="/products/<%= product._id %>">Edit Product</a>
 	<a href="/products">All Products</a>
+	<a href="/products/<%= product._id %>/edit">Edit Product</a>
+	<form action="/products/<%= product._id %>?_method=DELETE" method="POST">
+		<button>Delete</button>
+	</form>
 </body>
 ```
 ```ejs
