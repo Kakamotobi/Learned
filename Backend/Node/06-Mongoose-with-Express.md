@@ -62,8 +62,14 @@ app.post("/products", async (req, res) => {
 
 // All products
 app.get("/products", async (req, res) => {
-	const products = await Product.find({});
-	res.render("products/index.ejs", { products });
+	const { category } = req.query;
+	if (category) {
+		const products = await Product.find({ category });
+		res.render("products/index.ejs", { products, category });
+	} else {
+		const products = await Product.find({});
+		res.render("products/index.ejs", { products, category: "All" });
+	}
 });
 
 // Product details
@@ -187,14 +193,17 @@ Product.insertMany(seedProducts)
 // index.ejs
 
 <body>
-	<h1>All Products</h1>
+	<h1><%= category %> Products</h1>
 	<ul>
 		<% for (let product of products) { %>
 		<li><a href="/products/<%= product._id %>"><%= product.name %></a></li>
 		<% } %>
 	</ul>
-	
+
 	<a href="/products/new">Add New Product</a>
+	<% if (category !== "All") {%>
+	<a href="/products">All Products</a>
+	<% } %>
 </body>
 ```
 ```ejs
@@ -204,7 +213,12 @@ Product.insertMany(seedProducts)
 	<h1><%= product.name %></h1>
 	<ul>
 		<li>Price: $<%= product.price %></li>
-		<li>Category: <%= product.category %></li>
+		<li>
+			Category:
+			<a href="/products?category=<%= product.category %>"
+				><%= product.category %></a
+			>
+		</li>
 	</ul>
 
 	<a href="/products">All Products</a>
