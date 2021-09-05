@@ -3,7 +3,7 @@
 ## Table of Contents
 - [Express' Built-In Error Handler](#express-built-in-error-handler)
 - [Defining Custom Error handlers](#defining-custom-error-handlers)
-- 
+- [Handling Async Errors](#handling-async-errors)
 
 ## Express' Built-In Error Handler
 - Express handles all errors encountered inside of any routes and middlewares, and responds with a default 500 status code and an html page.
@@ -12,5 +12,69 @@
 
 ## Defining Custom Error Handlers
 - We can define error-handling middleware functions just like any other middleware, except that error-handling functions have four arguments (`err`, `req`, `res`, `next`) instead of three.
-- 
+  - Override the default error handling (500 status code and html template with stack trace).
+- The `err` object needs to be passed in to `next()`.
+  - Then, Express will consider the current request as being an error and skip any remaining non-error handling routing and middleware functions.
+  - Pass on to the next error handler.
+### Example
+```js
+app.use((err, req, res, next) => {
+	console.log("**************************")
+	console.log("**********Error***********")
+	console.log("**************************")
+	console.log(err);
+	next(err);
+});
+```
+### Defining Custom Error Class
+- Respond with some status code and corresponding message.
+```js
+// AppError.js
+
+class AppError extends Error {
+	constructor(message, status) {
+		super();
+		this.message = message;
+		this.status = status;
+	}
+}
+
+module.exports = AppError;
+
+```
+```js
+// index.js
+
+const express = require("express");
+const app = express();
+
+constAppError = require("./AppError.js");
+
+// -----Routes----- //
+app.get("/error", (req, res) => {
+  chicken.fly();
+});
+
+app.get("/secret", (req, res) => {
+  throw new AppError("Password Required", 401);
+}
+
+app.get("/admin", (req, res) => {
+	throw new AppError("You're not an Admin!", 403);
+});
+
+// -----Error Handling Middleware----- //
+app.use((err, req, res, next) => {
+	const { status = 500, message = "Something Went Wrong!" } = err;
+	res.status(status).send(message);
+});
+
+// -----Port----- //
+app.listen(3000, () => {
+	console.log("Listening on Port 3000");
+});
+```
+
+## Handling Async Errors
+
 
