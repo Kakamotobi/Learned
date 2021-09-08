@@ -6,11 +6,11 @@
   - [Creating Components](#creating-components)
     - [Class-based Components](#class-based-components)
     - [Funciton-based Components](#function-based-components)
-- [Standard React App Layout](#standard-react-app-layout)
 - [JSX](#jsx)
   - [Basic JSX Rules](#basic-jsx-rules)
   - [Embedding JS in JSX](#embedding-js-in-jsx)
   - [Conditionals in JSX](#conditionals-in-jsx)
+- [Standard React App Layout](#standard-react-app-layout)
 
 ## What is it?
 - Front-end framework/library for building user interfaces.
@@ -109,36 +109,6 @@ ReactDOM.render(<Hello />, document.getElementById("root"));
 - However, with the introduction of Hooks, we can now write full-featured function components.
 ### Reference
 [Components and Props - React](https://reactjs.org/docs/components-and-props.html)
-
-## Standard React App Layout
-- **1 component per file, with capitalized component name as filename.**
-  - Keep individual components in separate js files.
-  - Ex: `Hello` component in Hello.js, and not in index.js
-- **Create an App component file App.js**
-  - Top-level component is called *App*.
-  - Combines whatever components that we want into a single element/component that we then render.
-  - It's usually the only thing that's being rendered in index.js.
-  - Example
-    ```js
-    class App extends React.Components {
-      render() {
-        return (
-          <div>
-            <h1>Greetings!</h1>
-            <Hello />
-            <Goodbye />
-          </div>
-        )
-      }
-    }
-    ```
-- ***Order of script tags in index.html.***
-  - Prerequisite components need to be run first.
-### Example
-![Layout Example index.html](refImg/layout-example-index-html.png)
-![Layout Example index.js](refImg/layout-example-index-js.png)
-![Layout Example Hello.js](refImg/layout-example-hello-js.png)
-![Layout Example Numpicker.js](refImg/layout-example-numpicker-js.png)
 
 ## JSX
 - JavaScript Syntax Extension / JavaScript + XML
@@ -241,6 +211,105 @@ ReactDOM.render(<NumPicker />, document.getElementById("root"));
 [JSX In Depth - React](https://reactjs.org/docs/jsx-in-depth.html)  
 [ConditionalRendering - React](https://reactjs.org/docs/conditional-rendering.html)
 
+## Standard React App Layout
+- **1 component per file, with capitalized component name as filename.**
+  - Keep individual components in separate js files.
+  - Ex: `Hello` component in Hello.js, and not in index.js
+- **Create an App component file App.js**
+  - Top-level component is called *App*.
+  - Combines whatever components that we want into a single element/component that we then render.
+  - **It's usually the only thing that's being rendered in index.js.**
+  - Example
+    ```js
+    // App.js
+    
+    class App extends React.Components {
+      render() {
+        return (
+          <div>
+            <h1>Greetings!</h1>
+            <Hello />
+            <Goodbye />
+          </div>
+        )
+      }
+    }
+    
+    ReactDOM.render(<App />, document.getElementById("root"));
+    ```
+- ***Order of script tags in index.html.***
+  - Prerequisite components need to be run first.
+### Example
+```html
+<!-- index.html -->
 
+  <body>
+    <div id="root"></div>
 
+    <script src="https://unpkg.com/react/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom/umd/react-dom.development.js"></script>
 
+    <script src="https://unpkg.com/babel-standalone"></script>
+    
+    <script src="Hello.js" type="text/jsx"></script>
+    <script src="NumPicker.js" type="text/jsx"></script>
+    <script src="index.js" type="text/jsx"></script>
+  </body>
+```
+```js
+// index.js
+
+class App extends React.Components {
+  render() {
+    return (
+      <div>
+        <Hello />
+        <Hello />
+        <NumPicker />
+      </div>
+    );
+  }
+}
+
+ReactDOM.render(<App />, document.getElementById("root"));
+```
+```js
+// Hello.js
+
+class Hello extends React.Components {
+  render() {
+    return <h1>Hello There!!!</h1>
+  }
+}
+```
+```js
+// NumPicker.js
+
+function getNum() {
+    return Math.floor(Math.random() * 10) + 1;
+}
+
+class NumPicker extends React.Component {
+  render() {
+    const num = getNum();
+    let msg;
+    if (num === 7) {
+      msg = (
+        <div>
+          <h2>Congrats! You Win!</h2>
+          <img src="https://i.giphy.com/media/nXxOjZrbnbRxS/giphy.webp" />
+        </div>
+      );
+    } else {
+      msg = <h2>Sorry! You Lose!</h2>;
+    }
+    
+    return (
+      <div>
+        <h1>Your number is: {num}</h1>
+        {msg}
+      </div>
+    );
+  }
+}
+```
