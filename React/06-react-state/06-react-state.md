@@ -9,7 +9,8 @@
 - [React Events](#react-events)
   - [this and .bind()](#this-and-bind)
   - [React Event Example](#react-event-example)
-- ["State as Props"](#state-as-props)
+- [State vs Props](#state-vs-props)
+  - ["State as Props" Design Pattern](#state-as-props-design-pattern)
 
 ## State
 - **Internal data specific to a component.**
@@ -255,10 +256,10 @@ export default Clicker;
 | state| POJO `{}` | yes     | stores changing data relating to the component |
 | props| POJO `{}` | no      | stores component configuration information     |
 
-### "State as Props"
-- A comon pattern we will see often is a stateful ("smart") parent component passing down its state values as props to stateless ("dumb") child components.
-- This idea is generalized in React as "downward data flow".
-  - Means that components get simpler as you go down the component hierarchy, and parents tend to be more stateful than their children.
+### "State as Props" Design Pattern
+- A comon pattern we will see often is a **stateful ("smart") parent component passing down its state values as props to stateless ("dumb") child components.**
+- This idea is generalized in React as **"downward data flow"**.
+  - *Means that components get simpler as you go down the component hierarchy, and parents tend to be more stateful than their children.*
 #### Example
 ```js
 class CounterParent extends Component {
@@ -270,7 +271,7 @@ class CounterParent extends Component {
   render() {
     return(
       <div>
-        <CounterChild count={this.state.count}
+        <CounterChild count={this.state.count} // The CounterParent Component is passing its state as a prop to the CounterChild Component (which is not stateful and use the parent's state as a prop).
       </div>
     )
   }
