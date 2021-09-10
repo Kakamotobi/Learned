@@ -9,6 +9,7 @@
 - [React Events](#react-events)
   - [this and .bind()](#this-and-bind)
   - [React Event Example](#react-event-example)
+- ["State as Props"](#state-as-props)
 
 ## State
 - **Internal data specific to a component.**
