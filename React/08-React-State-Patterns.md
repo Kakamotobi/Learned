@@ -3,6 +3,10 @@
 ## Table of Contents
 - [Updating Existing State](#updating-existing-state)
 - [Mutable Data Structures in State](#mutable-data-structures-in-state)
+- [Rules of Thumb for Designing State](#rules-of-thumb-for-designing-state)
+  - [Minimize Your State](#minimize-your-state)
+  - [State Should Live on the Parent](#state-should-live-on-the-parent)
+  - [Example](#example)
 
 ## Updating Existing State
 - Setting state using existing values in state.
@@ -91,3 +95,44 @@ completeTodo(id) {
   })
 }
 ```
+
+## Rules of Thumb for Designing State
+### Minimize Your State
+- Put as little data in state as possible.
+- Litmus Test
+  - Does x change? if not, x should not be part of state. It should be a prop.
+  - Is x already captured by some other value y in state or props? If so, derive it from there instead.
+### State Should Live on the Parent
+- We want to support the "downward data flow" philosophy of React.
+- This makes debugging easier, because the state is centralized.
+- Example
+  - `TodoList` is a smart parent with lots of methods, while the individual Todo ietms are just `<li>` tags with some text and styling.
+  ```js
+  // TodoList.js
+  
+  class TodoList extends Component {
+    constructor(props) {
+      super(props);
+      this.state = {
+        todos: [
+          { task: "do the dishes", done: false, id: 1 }
+          { task: "vacuum the floor", done: false, id: 2 }
+        ]
+      };
+    }
+    
+    // ... other methods ... //
+    
+    render() {
+      return (
+        <ul>
+          {this.state.todos.map(t => <Todo {...t} />)}
+        </ul>
+      );
+    }    
+  }
+  ```
+### Example
+
+
+
