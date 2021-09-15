@@ -133,6 +133,70 @@ completeTodo(id) {
   }
   ```
 ### Example
+```js
+// Lottery.js
 
+import React, { Component } from "react";
+import LottoBall from "./LottoBall.js";
+import "./Lottery.css";
 
+class Lottery extends Component {
+	static defaultProps = {
+		title: "Lotto",
+		numBalls: 6,
+		maxNum: 40,
+	};
 
+	constructor(props) {
+		super(props);
+		this.state = {
+			// Create numBalls amount of indices in an array.
+			nums: Array.from({ length: this.props.numBalls }),
+		};
+		this.handleClick = this.handleClick.bind(this);
+	}
+
+	generate() {
+		this.setState((currState) => ({
+			// Fill array with random numbers.
+			nums: currState.nums.map(
+				(n) => Math.floor(Math.random() * this.props.maxNum) + 1
+			),
+		}));
+	}
+
+	handleClick() {
+		this.generate();
+	}
+
+	render() {
+		return (
+			<section className="Lottery">
+				<h1 className="Lottery__title">{this.props.title}</h1>
+				<div className="Lottery__LottoBall-container">
+					{this.state.nums.map((n) => (
+						<LottoBall num={n} />
+					))}
+				</div>
+				<button className="Lottery__btn" onClick={this.handleClick}>Generate</button>
+			</section>
+		);
+	}
+}
+
+export default Lottery;
+```
+```js
+// LottoBall.js
+
+import React, { Component } from "react";
+import "./LottoBall.css";
+
+class LottoBall extends Component {
+	render() {
+		return <div className="LottoBall">{this.props.num}</div>;
+	}
+}
+
+export default LottoBall;
+```
