@@ -8,6 +8,7 @@
   - [Computed Property Names](#computed-property-names)
   - [Multiple Inputs Example](#multiple-inputs-example)
 - [Passing Data Upwards](#passing-data-upwards)
+  - [Upward Data Flow Example](#upward-data-flow-example)
 
 ## Forms in React
 - There will be a function that handles the submission of the form AND has access to the data that he user entered.
@@ -140,5 +141,102 @@ class Form extends Component {
 ```
 
 ## Passing Data Upwards
+- Define the method to be passed on to the child comopnent in the parent component.
+- Call that method and update the state from the child component.
+### Upward Data Flow Example
+```js
+// ShoppingList.js
 
+class ShoppingList extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      items: [
+        { name: "Milk", qty: "2 gallons", id: uuid() },
+        { name: "Bread", qty: "2 loaves", id: uuid() }
+      ]
+    };
+    this.addItem = this.addItem.bind(this);
+  }
+  
+  // Define method to be passed on to the child component in the parent component.
+  addItem(item) {
+    let newItem = { ...item, id: uuid() };
+    this.setState(state => ({
+      items: [...state.items, newItem]
+    }));
+  }
+  
+  renderItems() {
+    return (
+      <ul>
+        {this.state.items.map(item => (
+          <li key={item.id}>
+            {item.name}:{item.qty}
+          </li>
+        ))}
+      </ul>
+    );
+  }
+  
+  render() {
+    return (
+      <div>
+        <h1>Shopping List</h1>
+        {this.renderItems()}
+        <ShoppingListForm addItem={this.addItem} />
+      </div>
+    );
+  }
+}
 
+export default ShoppingList;
+```
+```js
+// ShoppingListForm.js
+
+class ShoppingListForm extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { name: "", qty: "" };
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+  
+  handleSubmit(evt) {
+    evt.preventDefault();
+    this.props.addItem(this.state);
+    this.setState({ name: "", qty: "" });
+  }
+  
+  handleChange(evt) {
+    this.setState({
+      [evt.target.name]: evt.target.value
+    });
+  }
+  
+  render() {
+    return (
+      <form onSubmit={this.handleSubmit}>
+        <label htmlFor='name'>Name: </label>
+        <input
+          id='name'
+          name='name'
+          value={this.state.name}
+          onChange={this.handleChange}
+        />
+        <label htmlFor='qty'>Quantity: </label>
+        <input
+          id='qty'
+          name='qty'
+          value={this.state.qty}
+          onChange={this.handleChange}
+        />
+        <button>Add Item</button>
+      </form>
+    );
+  }
+}
+
+export default ShoppingListForm;
+```
