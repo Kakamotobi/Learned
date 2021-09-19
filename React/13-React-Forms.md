@@ -141,7 +141,7 @@ class Form extends Component {
 ```
 
 ## Passing Data Upwards
-- Define the method to be passed on to the child comopnent in the parent component.
+- *Define the **method** to be passed on to the child component and the **target state** in the parent component.*
 - Call that method and update the state from the child component.
 ### Upward Data Flow Example
 ```js
