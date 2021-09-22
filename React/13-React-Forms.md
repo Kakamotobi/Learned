@@ -11,7 +11,7 @@
   - [Upward Data Flow Example](#upward-data-flow-example)
 
 ## Forms in React
-- There will be a function that handles the submission of the form AND has access to the data that he user entered.
+- There will be a function that handles the submission of the form AND has access to the data that the user entered.
   - The technique to get this is ***controlled components***.
 ### Controlled Components
 - In HTML, form elements such as `<input>`, `<textarea>`, and `<select>` typically maintain their own state and update it based on user input.
