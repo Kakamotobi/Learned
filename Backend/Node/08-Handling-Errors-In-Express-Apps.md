@@ -65,16 +65,91 @@ app.get("/admin", (req, res) => {
 
 // -----Error Handling Middleware----- //
 app.use((err, req, res, next) => {
-	const { status = 500, message = "Something Went Wrong!" } = err;
-	res.status(status).send(message);
+  const { status = 500, message = "Something Went Wrong!" } = err;
+  res.status(status).send(message);
 });
 
 // -----Port----- //
 app.listen(3000, () => {
-	console.log("Listening on Port 3000");
+  console.log("Listening on Port 3000");
 });
 ```
 
 ## Handling Async Errors
+- For errors returned from asynchronous functions invoked by route handlers and middleware, you must pass them to the `next()` function, where Express will catch and process them.
+	- In an async function, in order to have Express catch and process errors, we have to call `next()` manually.
 
+```js
+// AppError.js
 
+class AppError extends Error {
+  constructor(message, status) {
+    super();
+    this.message = message;
+    this.status = status;
+  }
+}
+
+module.exports = AppError;
+```
+```js
+//index.js
+
+const express = require("express");
+const app = express();
+
+constAppError = require("./AppError.js");
+
+const categories = ["fruit", "vegetable", "dairy"];
+
+// -----Routes----- //
+app.get("/products", async (req, res) => {
+  const { category } = req.query;
+  if (category) {
+    const products = await Product.find({ category });
+    res.render("products/index", { products, category });
+  } else {
+    const products = await Product.find({});
+    res.render("products/index", { products, category: "All" });
+  }
+});
+
+app.get("/products/new", (req, res) => {
+  res.render("products/new", { categories });
+});
+
+app.post("/products", async (req, res) => {
+  const newProduct = new Product(req.body);
+  await newProduct.save();
+  res.redirect(`/products/${newProduct._id}`);
+});
+
+app.get("/products/:id", async (req, res, next) => {
+  const { id } = req.params;
+  const product = await Product.findById(id);
+  if (!product) {
+    next(new AppError("Product Not Found", 404)); // Handling async error
+  }
+  res.render("products/show", { product });
+});
+
+app.get("/products/:id/edit", async (req, res, next) => {
+  const { id } = req.params;
+  const product = await Product.findById(id);
+  if (!product) {
+    next(new AppError("Product Not Found", 404)); // Handling async error
+  }
+  res.render("products/edit", { product, categories });
+});
+
+// -----Error Handling Middleware----- //
+app.use((err, req, res, next) => {
+  const { status = 500, message = "Something Went Wrong!" } = err;
+  res.status(status).send(message);
+});
+
+// -----Port----- //
+app.listen(3000, () => {
+  console.log("Listening on Port 3000");
+});
+```
