@@ -71,7 +71,8 @@ export default Game;
 #### `super()` and `super(props)`
 - Need to include when using states.
 ##### **`super()`**
-- **Since we are extending React's Component class, we need to call its constructor through `super()`.**
+- `super()` provides access and call functions on an object's parent.
+- **Since we are extending React's Component class, we need to call its constructor through `super()` to use and call React functions.**
 ###### Example
 ```js
 // Ordinary Class
