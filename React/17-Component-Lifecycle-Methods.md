@@ -19,6 +19,7 @@
 - Things that could trigger a change(re-render) are: `setState()`, new props (ex: passed in from a parent component with new values), `forceUpdate()` (useful for when data is not part of the state, or is not a prop, and it's changing. some external data that we want to manually force a re-render).
 - After a re-render, we have access to `componentDidUpdate()`.
 <hr />
+- We have access to `componentWillUnMount()` right before a component is unmounted/destroyed/removed from the page.
 
 ![Common Lifecycles](refImg/common-lifecycles.png)
 
@@ -335,6 +336,9 @@ class TodoList extends Component {
 
 export default TodoList;
 ```
+- **Important!**
+  - The edit toggle uses the state "isEditting" to hide or show the form. So it triggers `componentDidUpdate()` in Todo.js.
+  - `componentDidUpdate()` also runs over and over upon the typing in the input because of the onChange event handler that sets the state "edittedTask" anytime an input changes (controlled component).
 ```js
 // Todo.js
 
@@ -440,7 +444,143 @@ class Todo extends Component {
 
 export default Todo;
 ```
-- **Important!**
-  - The edit toggle uses the state "isEditting" to hide or show the form. So it triggers `componentDidUpdate()` in Todo.js.
-  - `componentDidUpdate()` also runs over and over upon the typing in the input because of the onChange event handler that sets the state "edittedTask" anytime an input changes (controlled component).
 #### 3) Unmounting
+- **`componentWillUnmount()`** is a lifecycle method that runs right before a component is unmounted/destroyed/removed from the page.
+- We can perform any necessary cleanup in this method.
+  - Ex: invalidating timers.
+  - Ex: cancelling network requests.
+  - Ex: handling web sockets, shutting down any open sockets.
+  - Ex: cleaning up any subscriptions that were created in `componentDidMount()`.
+  - Ex: removing event handlers directly put on DOM.
+- `setState()` in `componentWillUnmount()` is useless because the component will never be re-rendered.
+  - Once a component instance is unmounted, it will never be mounted again.
+##### Example 1 - use case
+- Clear the timer when the <Clock /> component is removed(unmounted).
+  - We don't want to keep the timer running.
+```js
+// Clock.js
+
+class Clock extends Component {
+  componentDidMount() {
+    this.timerID = setInterval(() => {
+      this.tick()
+    }, 1000);
+  }
+  
+  componentWillUnmount() {
+    clearInterval(this.timerID);
+  }
+}
+```
+##### Example 2
+- Removing a todo from the list will invoke `componentWillUnmount()` as it is removing that instance of the component `<Todo />`.
+
+```js
+// Todo.js
+
+import React, { Component } from "react";
+import "./Todo.css";
+
+class Todo extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isEditting: false,
+      edittedTask: this.props.task,
+    };
+
+    this.toggleEditting = this.toggleEditting.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleEditTodo = this.handleEditTodo.bind(this);
+    this.handleRemoveTodo = this.handleRemoveTodo.bind(this);
+    this.handleToggleCompletion = this.handleToggleCompletion.bind(this);
+  }
+
+  toggleEditting() {
+    this.setState({
+      isEditting: !this.state.isEditting,
+    });
+  }
+
+  handleChange(evt) {
+    this.setState({
+      [evt.target.name]: evt.target.value,
+    });
+  }
+
+  handleEditTodo(evt) {
+    evt.preventDefault();
+
+    console.dir(evt.target);
+
+    this.props.editTodo(this.props.id, this.state.edittedTask);
+    this.setState({
+      isEditting: false,
+    });
+  }
+
+  handleRemoveTodo() {
+    this.props.removeTodo(this.props.id);
+  }
+
+  handleToggleCompletion(evt) {
+    this.props.toggleCompletion(this.props.id);
+  }
+
+  // componentDidUpdate(prevProps, prevState) {
+    // console.log("In Todo componentDidUpdate");
+    // console.log(prevProps.task);
+    // console.log(this.props.task);
+  // }
+
+  componentWillUnmount() {
+    console.log("In componentWillUnmount");
+  }
+
+  render() {
+    let displayResult;
+
+    if (this.state.isEditting) {
+      displayResult = (
+        <div className="Todo">
+          <form className="Todo__edit-form" onSubmit={this.handleEditTodo}>
+            <input
+              className="Todo__edit-input"
+              name="edittedTask"
+              value={this.state.edittedTask}
+              onChange={this.handleChange}
+            />
+            <button className="Todo__save-btn">Save</button>
+          </form>
+        </div>
+      );
+    } else {
+      displayResult = (
+        <li className={this.props.completed ? "Todo completed" : "Todo"}>
+          <div className="Todo__task" onClick={this.handleToggleCompletion}>
+            {this.props.task}
+          </div>
+          <button
+            className="Todo__editBtn"
+            type="button"
+            onClick={this.toggleEditting}
+          >
+            Edit
+          </button>
+          <button
+            className="Todo__removeBtn"
+            type="button"
+            onClick={this.handleRemoveTodo}
+          >
+            X
+          </button>
+        </li>
+      );
+    }
+
+    return displayResult;
+  }
+}
+
+export default Todo;
+```
