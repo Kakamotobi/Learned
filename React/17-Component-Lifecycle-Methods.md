@@ -6,6 +6,7 @@
     - [1) Mounting](#1-mounting)
     - [2) Updating](#2-updating)
     - [3) Unmounting](#3-unmounting)
+- [Reference](#reference)
 
 ## What are Component Lifecycle Methods?
 - Every component comes with methods that allow developers to update application state and reflect the changes to the UI before/after key react "events" (events/stages in the lifecycle of a component).
@@ -584,3 +585,6 @@ class Todo extends Component {
 
 export default Todo;
 ```
+
+## Reference
+[React Lifecycle Methods Diagram](https://projects.wojtekmaj.pl/react-lifecycle-methods-diagram/)
