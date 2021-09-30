@@ -20,7 +20,7 @@
 - Things that could trigger a change(re-render) are: `setState()`, new props (ex: passed in from a parent component with new values), `forceUpdate()` (useful for when data is not part of the state, or is not a prop, and it's changing. some external data that we want to manually force a re-render).
 - After a re-render, we have access to `componentDidUpdate()`.
 <hr />
-- We have access to `componentWillUnMount()` right before a component is unmounted/destroyed/removed from the page.
+- We have access to `componentWillUnmount()` right before a component is unmounted/destroyed/removed from the page.
 
 ![Common Lifecycles](refImg/common-lifecycles.png)
 
