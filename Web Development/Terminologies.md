@@ -156,3 +156,12 @@
 
 ---
 
+## Transpiler a.k.a. Source-to-Source Compiler
+- A tool that converts a source code written in one programming language to another language.
+- Ex: Babel is a JavaScript transpiler which is usually used to convert ES6 code to previous version of JavaScript that is able to run on older JavaScript engines.
+
+### Reference
+[Transpiler - devopedia](https://devopedia.org/transpiler)  
+
+---
+
