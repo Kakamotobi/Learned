@@ -150,7 +150,7 @@
 | The source code is translated to object code successfully if it is free of errors.  | The interpreter moves on only after the error has been removed.  |
 ### Note
 - Most modern dynamic languages have implementations that use both interpreters and compilers.
-- JavaScript used to be purely interpreted years ago. Now, it is JIT-compiled to native machine code in all major JavaScript implementations.
+- ***JavaScript used to be purely interpreted years ago. Now, it is JIT-compiled to native machine code in all major JavaScript implementations.***
 ### Reference
 [Language Processors: Assembler, Compiler and Interpreter](https://www.geeksforgeeks.org/language-processors-assembler-compiler-and-interpreter/)  
 
@@ -170,6 +170,42 @@
 ### Reference
 [Transpiler - devopedia](https://devopedia.org/transpiler)  
 [Polyfills and transpilers - javascript.info](https://javascript.info/polyfills)
+
+---
+
+## JavaScript Engine vs. JavaScript Runtime Environment
+### JavaScript Engine
+- **A program that reads, interprets, compiles the source code and executes the corresponding machine code.**
+- Used in JavaScript runtime environments like web browsers and Node.js.
+- Ex: Google's V8
+#### Process
+1. **Parser**
+  - While parsing through the HTML, JS script tags are encountered. 
+  - The source code in these scripts are loaded to a byte stream decoder as a UTF-16 byte stream.
+  - The byte stream decoder decodes the bytes into token and sends to the parser.
+2. **Abstract Syntax Tree (AST)**
+  - The parser creates nodes based on the tokens it receives.
+  - These nodes are used to create an AST.
+3. **Interpreter**
+  - The interpreter walks through the AST and generates byte code, reading the code line by line.
+  - When the byte code is generated, the AST is deleted, clearing up memory space.
+  - Note: interpreters running the same code multiple times can get slow, so compiler is used for code that appear multiple times.
+4. **Profiler**
+  - Monitors and watches code to optimize it.
+5. **Compiler**
+  - The compiler works ahead of time and creates a translation of the source code into machine language.
+  - Ex: Babel (modern JS to browser compatible JS), Typescript (transcompiles to JS).
+### JavaScript Runtime Environment
+- **The location/environment where your program will be executed in.**
+  - Ex: web browsers'(ex: chrome, firefox, safari) runtime environment, Node.js
+- It uses a JavaScript engine and provide APIs for some functionalities.
+  - Browser APIs Ex: DOM manipulation APIs, window and document APIs.
+  - Node.js APIs Ex: APIs for server application (require, process, buffer APIs).
+
+### Reference
+[A brief explanation of the Javascript Engine and Runtime | Medium](https://medium.com/@sanderdebr/a-brief-explanation-of-the-javascript-engine-and-runtime-a0c27cb1a397)  
+[Uncover the JavaScript: Engine vs Runtime](https://medium.com/@misbahulalam/uncover-the-javascript-engine-vs-runtime-6556ef449634)  
+[Introduction to JavaScript Runtime Environments](https://www.codecademy.com/articles/introduction-to-javascript-runtime-environments)
 
 ---
 
