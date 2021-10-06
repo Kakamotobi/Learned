@@ -145,14 +145,19 @@
 ### Comparison
 | Compiler  | Interpreter |
 | ------------- | ------------- |
-| Converts the entire source code (written in high level lang.) into executable machine code.  | Immediately executes and then translates a single statement of the source code into machine code before the next line is translated.  |
+| **Converts the entire source code (written in high level lang.) into executable machine code and then executes.**  | **Immediately executes and then translates a single statement of the source code into machine code before the next line is translated.**  |
 | Any errors are informed at the end of the compilation.  | Any error in the particular statement will terminate its translating process and display the error(s).  |
 | The source code is translated to object code successfully if it is free of errors.  | The interpreter moves on only after the error has been removed.  |
 ### Note
 - Most modern dynamic languages have implementations that use both interpreters and compilers.
 - ***JavaScript used to be purely interpreted years ago. Now, it is JIT-compiled to native machine code in all major JavaScript implementations.***
+### Just-In-Time(JIT) Compiler
+- With JavaScript, compilation is done during execution.
+- Every browser, and runtime in general, implements its own version of a JIT compiler.
+- Source Code --> Machine Code --> Execute --> Source Code
 ### Reference
 [Language Processors: Assembler, Compiler and Interpreter](https://www.geeksforgeeks.org/language-processors-assembler-compiler-and-interpreter/)  
+[The JIT in JavaScript: Just In Time Compiler](https://blog.bitsrc.io/the-jit-in-javascript-just-in-time-compiler-798b66e44143)
 
 ---
 
@@ -189,7 +194,7 @@
 3. **Interpreter**
   - The interpreter walks through the AST and generates byte code, reading the code line by line.
   - When the byte code is generated, the AST is deleted, clearing up memory space.
-  - Note: interpreters running the same code multiple times can get slow, so compiler is used for code that appear multiple times.
+  - Note: interpreters running the same code multiple times can get slow, so compiler is used for those code.
 4. **Profiler**
   - Monitors and watches code to optimize it.
 5. **Compiler**
