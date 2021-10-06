@@ -134,3 +134,25 @@
 
 ---
 
+## Compiler vs. Interpreter
+> ...two different ways to translate a program form programming or scripting language to machine language.
+### Compiler
+- Source Code (high level lang.) --> Compiler --> Object Code (machine language a.k.a. binary code)
+- Generates a stand alone machine code program.
+### Interpreter
+- Source Code (high level lang.) --> Interpreter --> Executable Code (machine language) --> Get Next Instruction --> Source Code
+- Performs the actions described by the high level program.
+### Comparison
+| Compiler  | Interpreter |
+| ------------- | ------------- |
+| Converts the entire source code (written in high level lang.) into executable machine code.  | Immediately executes and then translates a single statement of the source code into machine code before the next line is translated.  |
+| Any errors are informed at the end of the compilation.  | Any error in the particular statement will terminate its translating process and display the error(s).  |
+| The source code is translated to object code successfully if it is free of errors.  | The interpreter moves on only after the error has been removed.  |
+### Note
+- Most modern dynamic languages have implementations that use both interpreters and compilers.
+- JavaScript used to be purely interpreted years ago. Now, it is JIT-compiled to native machine code in all major JavaScript implementations.
+### Reference
+[Language Processors: Assembler, Compiler and Interpreter](https://www.geeksforgeeks.org/language-processors-assembler-compiler-and-interpreter/)  
+
+---
+
