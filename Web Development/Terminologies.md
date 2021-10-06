@@ -211,11 +211,17 @@
 - It uses a JavaScript engine and provide APIs for some functionalities.
   - Browser APIs Ex: DOM manipulation APIs, window and document APIs.
   - Node.js APIs Ex: APIs for server application (require, process, buffer APIs).
+#### Runtime
+- Refers to the period when your program is executing commands (after compilation, if compiled).
+- **Runtime error** refers to an error that occurs while a program is running.
+  - Distingiushed from *syntax* errors and *compilation* errors, which occur before a program is run.
+- When a program is in runtime, the application is loaded into memory (RAM). When the program is done, the runtime period ends and the memory that was being used by the program is made available again.
 
 ### Reference
 [A brief explanation of the Javascript Engine and Runtime | Medium](https://medium.com/@sanderdebr/a-brief-explanation-of-the-javascript-engine-and-runtime-a0c27cb1a397)  
 [Uncover the JavaScript: Engine vs Runtime](https://medium.com/@misbahulalam/uncover-the-javascript-engine-vs-runtime-6556ef449634)  
 [Introduction to JavaScript Runtime Environments](https://www.codecademy.com/articles/introduction-to-javascript-runtime-environments)
+[Runtime Definition](https://techterms.com/definition/runtime)
 
 ---
 
