@@ -125,12 +125,17 @@
 ### Library
 - When using a library, we are in charge. We control the flow of the application code and decide when to use the library.
 - Libraries often do smaller things or are single-purpose.
-- Ex: AXIOS (making http requests), color libraries, ASCII art libraries.
+- Ex: React, AXIOS (making http requests), color libraries, ASCII art libraries.
 ### Framework
 - When using a framework, the framework is in charge. The framework provides the structure for an application and we incorporate our code according to how the framework works.
 - Trade-off between control, and speed of development and features.
 - Frameworks are geared into helping us make full applications.
-- Ex: Express, Ruby on Rails.
+- Ex: Vue, Angular, Express, Ruby on Rails.
+### React
+- React is a library, not a framework.
+- React is concerned only with rendering the UI and leaves many things up to each project to put together.
+- However, upon using other react libraries (Ex: react-router, redux, etc.), the system may resemble a framework.
+  - Standard React stack: React, Redux, react-router, webpack, ESLint, etc.
 
 ---
 
