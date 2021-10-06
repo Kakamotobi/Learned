@@ -156,12 +156,20 @@
 
 ---
 
-## Transpiler a.k.a. Source-to-Source Compiler
-- A tool that converts a source code written in one programming language to another language.
+## Transpiler (Source-to-Source Compiler) and Polyfill
+### Transpiler
+- A tool that converts a source code written in one programming language to soruce code in another language.
 - Ex: Babel is a JavaScript transpiler which is usually used to convert ES6 code to previous version of JavaScript that is able to run on older JavaScript engines.
-
+- It parses ("read and understand") modern code and rewrite it using older syntax for it to work in older engines as well.
+### Polyfill
+- A polyfill is a script that updates and adds new functions.
+> New language features may include not only syntax constructs and operators, but also built-in functions.  
+> As we're talking about new functions, not syntax changes, there's no need to transpile anything here. We just need to declare the missing function. A polyfill "fills in" the gap and adds missing implementations.
+- A polyfill emulates certain APIs, so that we can use them as though they were already implemented.
+- Polyfill libraries: core-js, polyfill.io
 ### Reference
 [Transpiler - devopedia](https://devopedia.org/transpiler)  
+[Polyfills and transpilers - javascript.info](https://javascript.info/polyfills)
 
 ---
 
