@@ -160,7 +160,7 @@
 ### Transpiler
 - A tool that converts a source code written in one programming language to soruce code in another language.
 - Ex: Babel is a JavaScript transpiler which is usually used to convert ES6 code to previous version of JavaScript that is able to run on older JavaScript engines.
-- It parses ("read and understand") modern code and rewrite it using older syntax for it to work in older engines as well.
+  - It parses ("read and understand") modern code and rewrite it using older syntax for it to work in older engines as well.
 ### Polyfill
 - A polyfill is a script that updates and adds new functions.
 > New language features may include not only syntax constructs and operators, but also built-in functions.  
