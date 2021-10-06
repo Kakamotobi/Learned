@@ -1,40 +1,32 @@
 # Basics
 
-## HTTP vs HTTPS
-### Hypertext Transfer Protocol (HTTP)
-- Allows for the communication between different systems (most commonly used to transfer data from a web server to a browser to allow users to view web pages).
-- Information that flows from server to browser is not encrypted, which means it can easily be stolen.
-### Hypertext Transfer Protocol Secure (HTTPS)
-- Uses a **Secure Sockets Layer (SSL) certificate** or **Transport Layer Security (TLS) certificate**, which is an upgraded version of SSL, to create a secure encrypted connection between the server and the browser, thereby protecting potentially sensitive information from being stolen as it is transferred between the server and the browser.
-- Crucial especially for websites requiring sensitive data (ex: credit card info, password).
-- Can also boost SEO efforts.
-- It is required for Accelerated Mobile Pages (AMP).
-  - AMP: a way to load content onto mobile devices at a much faster rate.
-### Mixed Content
-> An HTTPS page that includes content fetched using cleartext HTTP is called a **mixed content page**. Pages like this are only partially encrypted, leaving the unencrypted content accessible to sniffers and man-in-the-middle attackers. That leaves the pages unsafe.
-- Fix
-  - Serve all the content as HTTPS instead of HTTP (http:// --> https://).
+## Typing
+### Static Typing vs. Dynamic Typing
+#### Static Typing
+- Variable types are checked at "compile-time" or before runtime.
+- So, compilation error will be thrown before the code runs.
+- Ex: if a function receives a string as an argument, when in fact it's expecting a number, a compilation error is thrown.
+#### Dynamic Typing
+- Variable types are checked on the go as the code is executed.
+- Ex: a function accepts any type of argument, and only knows which type it is when the code is executed.
+### Strong Typing vs. Weak Typing
+### Strong Typing
+- Converts a variable or value's type to suit the current situation automatically.
+- Ex: "123" will always be treated as a string (never used as a number unless otherwise manually converted).
+- Python Example
+  ```py
+  x = 1
+  y = "2"
+  z = x + y # TypeError
+  ```
+### Weak Typing
+- The interpreter or compiler attempts to make the best of what it is given.
+- Ex: in some situations an integer miht be treated as if it were a string to suit the context of the situation.
+- JavaScript Example
+  ```js
+  const x = 1;
+  const y = "2";
+  const z = x + y; // "12" because JS treated both values as strings and concatenated them together.
+  ```
 ### Reference
-[HTTP vs HTTPS](https://seopressor.com/blog/http-vs-https/)  
-[Mixed content - Web security | MDN](https://developer.mozilla.org/en-US/docs/Web/Security/Mixed_content)  
-[How to fix a website with blocked mixed content - Web security | MDN](https://developer.mozilla.org/en-US/docs/Web/Security/Mixed_content/How_to_fix_website_with_mixed_content)
-
-## Cookies
-- Short for magic cookie.
-  > A packet of data that a computer receives and then sends back without changing or altering it.
-  - a.k.a. HTTP cookie, web cookie, internet/browser cookie.
-- Upon visiting a website, the website sends the cookie to the computer. Then the cookie is stored in a file located inside the web browser.
-- Purpose
-  - To help the website keep track of your visits and activity.
-  - Ex: online retailers use cookies to keep track of the items in a user's shopping cart as they explore the site. Without cookies, the cart would reset to zero every time a new link is clicked on the site.
-  - Ex: imdb recently viewed.
-  - Ex: record login information.
-- Types of Cookies
-  - Session Cookies: used only when a user is actively navigating a website. Once the user leaves the site, the session cookie disappears.
-  - Tracking Cookies: can be used to create long-term records of multiple visits to the same site.
-  - Authentication Cookies: track whether a user is logged in, and if so, under what name.
-- Note
-  - The data in a cookie doesn't change when it travels back and forth, hence safe from virus/malware.
-
-### Reference
-[What are computer cookies?](https://us.norton.com/internetsecurity-privacy-what-are-cookies.html)
+[Understanding Types: Static vs. Dynamic, & Strong vs. Weak](https://medium.com/@cpave3/understanding-types-static-vs-dynamic-strong-vs-weak-88a4e1f0ed5f)
