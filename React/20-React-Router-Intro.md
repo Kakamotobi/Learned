@@ -21,7 +21,7 @@
 - React Router is not built-in to React as it is its own tool.
 ### `react-router-dom`
 - `npm install react-router-dom`
-- Wrap the entire `<App />` component in **`BrowserRouter`**.
+- Wrap the entire `<App />` component using **`BrowserRouter`** in index.js file.
 - **`<Route path="" component={} [exact]/>`**
   - Define routes using the `<Route />` component.
   - The `exact` attribute indicates that the path has to exactly match.
@@ -36,7 +36,7 @@
   - Clicking on `<Link>` does not issue a GET request (hence, page doesn't refresh).
     - JS intercepts the click and executes client-side routing.
 - **`<NavLink></NavLink>`**
-  - Works like the `<Link>` component with just one additional featuer.
+  - Works like the `<Link>` component with just one additional feature.
     - We can style the `<a>` tags selectively based off of which ones are *active*.
   - Lets us stylize links to the page that the user is "already at" using the `activeStyle` (in-line) or **`activeClassName`** props.
   - Include the `exact` attribute to indicate that the `activeClassName` should only be applied when the path is matched to the current route.
