@@ -16,7 +16,6 @@
 - It is possible to display different information/content to the user based off of the URL without having to refresh the page.
 - Sites that exclusively use client-side routing are SPAs.
 - The JS is used to manipulate the URL with the "History" Web API.
-- 
 
 ## React Router
 - React Router is not built-in to React as it is its own tool.
@@ -31,6 +30,29 @@
   - Switch makes sure only one of the routes that match the URL is rendered.
   - Whichever path is matched first will be routed to.
   - If all the routes have the `exact` attribute, we don't have to wrap the routes around with `<Switch>`.
+- **`<Link></Link>`**
+  - Use `<Link>` components instead of `<a>` tags.
+  - Instead of an `href` attribute, `<Link>` uses a `to` property.
+  - Clicking on `<Link>` does not issue a GET request (hence, page doesn't refresh).
+    - JS intercepts the click and executes client-side routing.
+- **`<NavLink></NavLink>`**
+  - Works like the `<Link>` component with just one additional featuer.
+    - We can style the `<a>` tags selectively based off of which ones are *active*.
+  - Lets us stylize links to the page that the user is "already at" using the `activeStyle` (in-line) or **`activeClassName`** props.
+  - Include the `exact` attribute to indicate that the `activeClassName` should only be applied when the path is matched to the current route.
+### Render Prop vs. Component Prop in Routes
+- Both have a function that returns JSX.
+- Both work for what we wish to accomplish.
+- Use either one accordingly.
+#### Component Prop
+- Doesn't reuse an old component. Instead creates a new one each time (going through the whole lifecycle of mounting and unmounting).
+- Ex: `<Route exact path="/dog/c" component={() => <Dog name="Muffins" />} />`
+- ***Use when not passing in props.***
+  - Ex: `<Route exact path="/dog" component={Dog} />`
+#### Render Prop
+- Doesn't make a new component each time. Instead, reuses/remounts the existing component that has already been made.
+- *Use when passing in props.*
+- Ex: `<Route exact path="/dog/r" render={() => <Dog name="Muffins" />} />`
 ### Example
 ```zsh
 // Terminal
@@ -56,19 +78,28 @@ ReactDOM.render(
 // App.js
 
 import React, { Component } from "react";
-import { Route, Switch } from "react-router-dom"
+import { Route, Switch, NavLink } from "react-router-dom"
 import About from "./About.js";
 import Dog from "./Dog.js";
 import Contact from "./Contact.js";
+import "./App.css"
 
 class App extends Component {
   render() {
     return (
       <div className="App">
+        <nav className="App-nav">
+          <NavLink exact to="/" activeClassName="active-link">About</NavLink>
+          <NavLink exact to="/contact" activeClassName="active-link">Contact</NavLink>
+          <NavLink exact to="/dog" activeClassName="active-link">Dog</NavLink>
+          <NavLink exact to="/dog/c" activeClassName="active-link">Dog(c)</NavLink>
+          <NavLink exact to="/dog/r" activeClassName="active-link">Dog(r)</NavLink>
+        </nav>
         <Switch>
           <Route exact path="/" component={About} />
           <Route exact path="/contact" component={Contact} />
-          <Route exact path="/dog" component={Dog} />
+          <Route exact path="/dog/c" component={() => <Dog name="Muffins" />} />
+          <Route exact path="/dog/r" render={() => <Dog name="Biscuits" />} />
           <Route exact path="/dog/puppy" component={Puppy} />
         <Switch>
       </div>
@@ -77,6 +108,30 @@ class App extends Component {
 }
 
 export default App;
+```
+```js
+// Dog.js
+
+import React, { Component } from "react";
+
+class Dog extends Component {
+  render() {
+    return (
+      <div className="Dog">
+        <h1>Dog!</h1>
+        <h3>This dog's name is: {this.props.name}</h3>
+      </div>
+    );
+  }
+}
+```
+```css
+/* App.css */
+
+.active-link {
+  color: blue;
+  border-bottom: 1px solid blue;
+}
 ```
 
 ## Reference
