@@ -6,6 +6,7 @@
   - [Properties Requirements](#properties-requirements)
   - [Other Types of Properties](#other-types-of-properties)
   - [Default Props](#default-props)
+  - [`props.children`](#propschildren)
 - [Looping in JSX](#looping-in-jsx)
 - [The 2 Ways of Styling React](#the-2-ways-of-styling-react)
 
@@ -131,6 +132,128 @@ class Hello extends React.Component {
     );
   }
 }
+```
+### `props.children`
+- React has a composition model that allows us to reuse code between components.
+- Allows other components to pass arbitrary children to the component by nesting the JSX. 
+  - This takes whatever was nestled between the opening and closing tag of the wrapping component and displays it in the wrapping component.
+  - Ex: anything inside the `<Message></Message>` JSX tag gets passed to into the `Message` component as a `children` prop.
+- This is useful for but not limited to styling.
+#### Example
+```js
+// Message.js
+
+import React, { Component } from "react";
+import "./Message.css";
+
+class Message extends Component {
+  render() {
+    return <div className="Message">{this.props.children}</div>;
+  }
+}
+
+export default Message;
+```
+```css
+/* Message.css */
+
+.Message {
+  margin: 1rem;
+  padding: 2rem;
+  background-color: rgba(0, 0, 0, 0.4);
+  border-radius: 10px;
+  color: white;
+  text-align: center;
+  text-transform: uppercase;
+}
+```
+```js
+// VendingMachine.js
+
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import Message from "./Message.js";
+import "./VendingMachine.css";
+
+class VendingMachine extends Component {
+  render() {
+    return (
+      <div className="VendingMachine">
+        <Message>
+          <h1>Vending Machine</h1>
+        </Message>
+        <Message>
+          <div>
+            <Link to="/soda">Soda</Link>
+            <Link to="/chips">Chips</Link>
+            <Link to="sardines">Sardines</Link>
+          </div>
+        </Message>
+      </div>
+    );
+  }
+}
+
+export default VendingMachine;
+```
+```js
+// Chips.js
+
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import Message from "./Message.js";
+import chips from "./images/Chips.png";
+import "./Chips.css";
+
+class Chips extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      bagOfChips: [],
+    };
+
+    this.eatChips = this.eatChips.bind(this);
+  }
+
+  eatChips() {
+    const x = window.innerWidth * Math.random();
+    const y = window.innerHeight * Math.random();
+
+    this.setState((prevState) => ({
+      bagOfChips: [...prevState.bagOfChips, { x, y }],
+    }));
+  }
+
+  render() {
+    const bagOfChips = this.state.bagOfChips.map((c, i) => (
+      <img
+        key={i}
+        className="bag-of-chips"
+        src={chips}
+        style={{ top: `${c.y}px`, left: `${c.x}px` }}
+        alt="Bag of Chips"
+      />
+    ));
+
+    return (
+      <div className="Chips">
+        <Message>
+          <h2>Chips!</h2>
+          <div>
+            <h3>Bags Eaten: {this.state.bagOfChips.length}</h3>
+            <button type="button" onClick={this.eatChips}>
+              NOM NOM NOM
+            </button>
+          </div>
+          <Link to="/vendingmachine">Go Back</Link>
+        </Message>
+        {bagOfChips}
+      </div>
+    );
+  }
+}
+
+export default Chips;
 ```
 
 ## Looping in JSX
