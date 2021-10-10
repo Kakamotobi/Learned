@@ -4,6 +4,7 @@
 - [Route Render Methods and URL Parameters](#route-render-methods-and-url-parameters)
 - [Multiple Route Params](#multiple-route-params)
 - [Example](#example)
+- [404 Route](#404-route)
 - [Reference](#reference)
 
 ## Route Render Methods and URL Parameters
@@ -123,6 +124,46 @@ class Meal extends Component {
 }
 
 export default Meal;
+```
+
+## 404 Route
+- Add a Route component that does not have path below the other routes.
+  - *Note: make sure to wrap the Route components around using the Switch component.*
+### Example
+```js
+// Routes.js
+
+import React, {Component} from "react";
+import { Route, Switch } from "react-router-dom";
+import NotFound from "./NotFound.js"
+
+class Routes extends Component {
+  render() {
+    return (
+      <Switch>
+        <Route exact path="/about" render={() => <About />} />
+        <Route exact path="/contact" render={(routeProps) => <Contact {...routeProps} />} />
+        <Route exact path="/blog/:slug" render={(routeProps) => <BlogPost {...routeProps} />} />
+        <Route exact path="/" render={() => <Home />} />
+        <Route render={() => <NotFound />} />
+      </Switch>
+    );
+  }
+}
+
+export default Routes;
+```
+```js
+// NotFound.js
+import React, {Component} from "react";
+
+class NotFound extends Component {
+  render() {
+    return (
+      <h1>404: Not Found</h1>
+    );
+  }
+}
 ```
 
 ## Reference
