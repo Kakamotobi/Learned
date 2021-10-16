@@ -35,6 +35,7 @@
   - Instead of an `href` attribute, `<Link>` uses a `to` property.
   - Clicking on `<Link>` does not issue a GET request (hence, page doesn't refresh).
     - JS intercepts the click and executes client-side routing.
+  - *Note: it's not a good idea to put interactive content inside `<Link>`/`<a>` tags.*
 - **`<NavLink></NavLink>`**
   - Works like the `<Link>` component with just one additional feature.
     - We can style the `<a>` tags selectively based off of which ones are *active*.
