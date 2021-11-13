@@ -4,6 +4,7 @@
 - [What are Hooks](#what-are-hooks)
 - [Hooks](#hooks)
   - [`useState()`](#usestate)
+- [Creating Custom Hooks](#creating-custom=hooks)
 
 ## What are Hooks
 - Hooks allow us to use state and other React features without writing a class.
@@ -36,6 +37,39 @@ function CounterHooks() {
 export default CounterHooks;
 ```
 
+## Creating Custom Hooks
+### Example - Before Using Custom Hook
+```js
+// Toggler.js
+
+import React, { useState } from "react";
+
+function Toggler() {
+  const [isHappy, setIsHappy] = useState(true);
+  const [isHeartbroken, setIsHeartbroken] = useState(false);
+  
+  const toggleIsHappy = () => {
+    setIsHappy(!isHappy);
+  };
+  
+  const toggleIsHeartbroken = () => {
+    setIsHeartbroken(!isHeartbroken);
+  }
+  
+  return (
+    <div>
+      <h1 onClick={toggleIsHappy}>{isHappy ? "Happy!" : "Sad!"}</h1>
+      <h1 onClick={toggleIsHeartbroken}>{isHeartbroken ? "Heart Broken!" : "Heart Not Broken!"}</h1>
+    </div>
+  );
+}
+
+export default Toggler;
+```
+### Example - Custom Hook
+```js
+
+```
 
 ## Reference
 [Introducing Hooks - React](https://reactjs.org/docs/hooks-intro.html)
