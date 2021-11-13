@@ -66,9 +66,47 @@ function Toggler() {
 
 export default Toggler;
 ```
-### Example - Custom Hook
+### Example - Custom Hook using `useState()`
 ```js
+// useToggle.js
 
+import {useState} from "react";
+
+function useToggle(initialVal = false) {
+  // Call useState, "reserve piece of state".
+  const [state, setState] = useState(initialVal);
+  
+  // Define function to update state.
+  const toggle = () => {
+    setState(!state);
+  };
+  
+  // Return piece of state AND a function to toggle it.
+  return [state, toggle];
+}
+
+export default useToggle;
+```
+- Move a lot of functionality from the component to a custom hook.
+```js
+// Toggler.js
+
+import React, { useState } from "react";
+import useToggle from "./hooks/useToggle.js";
+
+function Toggler() {
+  const [isHappy, toggleIsHappy] = useToggle(true);
+  const [isHeartbroken, togleIsHeartbroken] = useToggle(false);
+  
+  return (
+    <div>
+      <h1 onClick={toggleIsHappy}>{isHappy ? "Happy!" : "Sad!"}</h1>
+      <h1 onClick={toggleIsHeartbroken}>{isHeartbroken ? "Heart Broken!" : "Heart Not Broken!"}</h1>
+    </div>
+  );
+}
+
+export default Toggler;
 ```
 
 ## Reference
