@@ -67,6 +67,8 @@ function Toggler() {
 export default Toggler;
 ```
 ### Example - Custom Hook using `useState()`
+- Moved a lot of functionality from the component to a custom hook.
+- Cleaned up the component significantly and made a reusable piece of stateful logic for anything to do with toggling.
 ```js
 // useToggle.js
 
@@ -87,7 +89,6 @@ function useToggle(initialVal = false) {
 
 export default useToggle;
 ```
-- Move a lot of functionality from the component to a custom hook.
 ```js
 // Toggler.js
 
@@ -96,7 +97,7 @@ import useToggle from "./hooks/useToggle.js";
 
 function Toggler() {
   const [isHappy, toggleIsHappy] = useToggle(true);
-  const [isHeartbroken, togleIsHeartbroken] = useToggle(false);
+  const [isHeartbroken, toggleIsHeartbroken] = useToggle(false);
   
   return (
     <div>
