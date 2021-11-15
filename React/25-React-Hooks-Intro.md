@@ -4,7 +4,9 @@
 - [What are Hooks](#what-are-hooks)
 - [Hooks](#hooks)
   - [`useState()`](#usestate)
-- [Creating Custom Hooks](#creating-custom=hooks)
+- [Creating Custom Hooks](#creating-custom-hooks)
+  - [Example 1 - Toggle](#example-1---toggle)
+  - [Example 2 - Controlled Inputs in Forms](#example-2---controlled-inputs-in-forms)
 
 ## What are Hooks
 - Hooks allow us to use state and other React features without writing a class.
@@ -38,7 +40,8 @@ export default CounterHooks;
 ```
 
 ## Creating Custom Hooks
-### Example - Before Using Custom Hook
+### Example 1 - Toggle
+#### Before Using Custom Hook
 ```js
 // Toggler.js
 
@@ -66,13 +69,13 @@ function Toggler() {
 
 export default Toggler;
 ```
-### Example - Custom Hook using `useState()`
+#### After Using Custom Hook with `useState()`
 - Moved a lot of functionality from the component to a custom hook.
 - Cleaned up the component significantly and made a reusable piece of stateful logic for anything to do with toggling.
 ```js
 // useToggle.js
 
-import {useState} from "react";
+import { useState } from "react";
 
 function useToggle(initialVal = false) {
   // Call useState, "reserve piece of state".
@@ -92,7 +95,7 @@ export default useToggle;
 ```js
 // Toggler.js
 
-import React, { useState } from "react";
+import React from "react";
 import useToggle from "./hooks/useToggle.js";
 
 function Toggler() {
@@ -109,6 +112,72 @@ function Toggler() {
 
 export default Toggler;
 ```
+### Example 2 - Controlled Inputs in Forms
+#### Before Using Custom Hooks
+```js
+// Form.js
 
+import React, { useState } from "react";
+
+function Form() {
+  const [email, setEmail] = useState("");
+  
+  const handleChange = (evt) => {
+    setEmail(evt.target.value);
+  }
+
+  return (
+    <div>
+      <h1>The value is... {email}</h1>
+      <input type="text" value={email} onChange={handleChange} />
+      <button onClick={() => setEmail("")}>Submit</button>
+    </div>
+  );
+}
+
+export default Form;
+```
+#### After Using Custom Hooks with `useState()` 
+```js
+// useInputState.js
+
+import { useState } from "react";
+
+function useInputState(initialVal) {
+  const [value, setValue] = useState(initialVal);
+  
+  const handleChange = (evt) => {
+    setValue(evt.target.value);
+  }
+  const reset = () => {
+    setValue("");
+  }
+  
+  // Return three items in an array
+  return [value, handleChange, reset];
+}
+
+export default useInputState;
+```
+```js
+// Form.js
+
+import React from "react";
+import useInputState from "./hooks/useInputState.js";
+
+function Form() {
+  const [email, updateEmail, resetEmail] = useInputState("");
+
+  return (
+    <div>
+      <h1>The value is... {email}</h1>
+      <input type="text" value={email} onChange={updateEmail} />
+      <button onClick={resetEmail}>Submit</button>
+    </div>
+  );
+}
+
+export default Form;
+```
 ## Reference
 [Introducing Hooks - React](https://reactjs.org/docs/hooks-intro.html)
