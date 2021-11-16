@@ -4,6 +4,7 @@
 - [What are Hooks](#what-are-hooks)
 - [Hooks](#hooks)
   - [`useState()`](#usestate)
+  - [`useEffect()`](#useeffect)
 - [Creating Custom Hooks](#creating-custom-hooks)
   - [Example 1 - Toggle](#example-1---toggle)
   - [Example 2 - Controlled Inputs in Forms](#example-2---controlled-inputs-in-forms)
@@ -13,7 +14,6 @@
 - Allows us to write functional components that have all the features of a class-based component.
 - Benefit:
   - Write code that is shorter and easier to understand, and also reusable.
-  - Allows 
 
 ## Hooks
 ### `useState()`
@@ -37,6 +37,35 @@ function CounterHooks() {
 }
 
 export default CounterHooks;
+```
+### `useEffect()`
+- Syntax: `useEffect(() => {})`
+- Runs after every single render (including the very first render) by default.
+- Commonly used for getting data from an API, save something to a database, manipulate the DOM.
+- Notes
+  - Think of `useEffect()` as `componentDidMount`, `componentDidUpdate`, and `comopnentWillUnmount` combined.
+    - Functional components do not have access to React class lifecycle methods.
+  - Class-based comopnents accept a second callback to be executed after manipulating state. However, function-based components do not.
+    - Instead, to execute a side effect after rendering, declare it in the comopnent body with `useEffect()`.
+#### Example
+```js
+// Clicker.js
+
+import React, { useState, useEffect } from "react";
+
+function Clicker() {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    document.title = `You clicked ${count} times`;
+  });
+
+  return (
+    <button onClick={() => setCount(count+1)}>Click Me</button>
+  )
+}
+
+export default Clicker;
 ```
 
 ## Creating Custom Hooks
