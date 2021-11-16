@@ -40,14 +40,19 @@ export default CounterHooks;
 ```
 ### `useEffect()`
 - Syntax: `useEffect(() => {})`
-- Runs after every single render (including the very first render) by default.
+- **Runs after every single render (including the very first render) by default.**
 - Commonly used for getting data from an API, save something to a database, manipulate the DOM.
 - Notes
   - Think of `useEffect()` as `componentDidMount`, `componentDidUpdate`, and `comopnentWillUnmount` combined.
     - Functional components do not have access to React class lifecycle methods.
   - Class-based comopnents accept a second callback to be executed after manipulating state. However, function-based components do not.
     - Instead, to execute a side effect after rendering, declare it in the comopnent body with `useEffect()`.
-#### Example
+- **IMPORTANT**
+  - Since `useEffect()` runs any time there is a re-render, changing state in it will result in an endless re-render.
+  - Therefore, `useEffect()` accepts a second argument in the form of an array, which consists dependencies.
+    - Dependencies can be any number of pieces of data or things in the state.
+    - `useEffect()` will only run if they change.
+#### Example 1 - `useEffect()` with DOM Manipulation
 ```js
 // Clicker.js
 
@@ -66,6 +71,43 @@ function Clicker() {
 }
 
 export default Clicker;
+```
+#### Example 2 - `useEffect()` with API Call
+```js
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+
+function SWMovies() {
+  const [number, setNumber] = useState(1);
+  const [movie, setMovie] = useState("");
+
+  useEffect(() => {
+    async function getData() {
+      const res = await axios.get(`https://swapi.dev/api/films/${number}/`);
+      setMovie(res.data);
+    }
+    getData();
+  }, [number]);
+
+  return (
+    <div>
+      <h1>Pick A Movie</h1>
+      <h4>{movie.title}</h4>
+      <p>{movie.opening_crawl}</p>
+      <select value={number} onChange={evt => setNumber(evt.target.value)}>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+      </select>
+    </div>
+  );
+}
+
+export default SWMovies;
 ```
 
 ## Creating Custom Hooks
