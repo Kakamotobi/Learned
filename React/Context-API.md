@@ -32,6 +32,9 @@
 	- You can pass in states, methods, and any other props (all as a single object).
 - Note:
   - *All consumers that are descendants of a Provider will re-render whenever the Provider’s value prop changes.*
+	  - ***Whenever something in the value changes, the Context passes down the newly changed value to all consuming components of that Context.***
+	  - ***Hence, all consuming components, whether using or not using the particular data that has been changed, will rerender.***
+	  - Possible Solution: split up context (one for state, one for methods using that state).
   - *The propagation from Provider to its descendant consumers (including .contextType and useContext) is not subject to the shouldComponentUpdate method, so the consumer is updated even when an ancestor component skips an update.*
 ### Example
 ```js
