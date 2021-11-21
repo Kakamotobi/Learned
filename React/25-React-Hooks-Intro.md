@@ -2,9 +2,10 @@
 
 ## Table of Contents
 - [What are Hooks](#what-are-hooks)
-- [Hooks](#hooks)
+- [Basic Hooks](#basic-hooks)
   - [`useState()`](#usestate)
   - [`useEffect()`](#useeffect)
+  - [`useContext()`](#usecontext)
 - [Creating Custom Hooks](#creating-custom-hooks)
   - [Example 1 - Toggle](#example-1---toggle)
   - [Example 2 - Controlled Inputs in Forms](#example-2---controlled-inputs-in-forms)
@@ -15,7 +16,7 @@
 - Benefit:
   - Write code that is shorter and easier to understand, and also reusable.
 
-## Hooks
+## Basic Hooks
 ### `useState()`
 - Syntax: `const [stateName, setState] = useState(initStateVal)`
 - **`useState()` returns an array with two different pieces.**
@@ -109,6 +110,8 @@ function SWMovies() {
 
 export default SWMovies;
 ```
+### `useContext()`
+- Refer [here](`useContext()`).
 
 ## Creating Custom Hooks
 ### Example 1 - Toggle
