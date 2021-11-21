@@ -7,7 +7,7 @@
 	- [Option 1 (Consuming One Context) - `Class.contextType`](#option-1-consuming-one-context---classcontexttype)
 	- [Option 2 (Consuming Multiple Context) - `Context.Consumer`](#option-2-consuming-multiple-context---contextconsumer)
 - [Hooks-based Approach](#hooks-based-approach)
-	- [useContext() Hook](#usecontext-hook)
+	- [`useContext()` Hook](#usecontext-hook)
 
 ## What is Context API
 > Context provides a way to pass data through the component tree without having to pass props down manually at every level.
