@@ -29,6 +29,8 @@ const [state, dispatch] = useReducer(reducer, initialArg, init);
 - `initialArg`
   - Initial version of the state.
   - Ex: `{ state1: "" }`
+- `init`
+  - Function used to establish the initial state.
 ### Example
 ```js
 // Counter.js
