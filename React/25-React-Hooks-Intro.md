@@ -50,9 +50,9 @@ export default CounterHooks;
     - Instead, to execute a side effect after rendering, declare it in the comopnent body with `useEffect()`.
 - **IMPORTANT**
   - Since `useEffect()` runs any time there is a re-render, changing state in it will result in an endless re-render.
-  - Therefore, `useEffect()` accepts a second argument in the form of an array, which consists dependencies.
+  - **Therefore, `useEffect()` accepts a second argument in the form of an array, which consists dependencies.**
     - Dependencies can be any number of pieces of data or things in the state.
-    - `useEffect()` will only run if they change.
+    - *`useEffect()` will only run if they change.*
 #### Example 1 - `useEffect()` with DOM Manipulation
 ```js
 // Clicker.js
