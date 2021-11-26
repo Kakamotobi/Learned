@@ -1,9 +1,14 @@
 # Higher Order Components
 
 ## Table of Contents
-- [React.memo](#reactmemo)
+- [`withRouter`](#withrouter)
+- [`React.memo`](#reactmemo)
 
-## React.memo
+## `withRouter`
+- react-router-dom HOC.
+- [Check here](https://github.com/Kakamotobi/Learned/blob/main/React/22-React-Router-Patterns.md#withrouter-higher-order-component)
+
+## `React.memo`
 - Memoization
   > ... an optimization technique used primarily to speed up computer programs by storing the results of expensive function calls and returning the cached result when the same inputs occur again.
 - **React will skip rendering the component and reuse the last rendered result if the same props renders the same result as before.**
