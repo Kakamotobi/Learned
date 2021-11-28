@@ -19,6 +19,7 @@
 - *Note*
   - React.memo only checks for prop changes. So, if your function component wrapped in React.memo has a `useState`, `useReducer`, or `useContext` Hook in its implementation, the component will still rerender when state or context change.
   - React.memo is used for performance optimization, not to "prevent" a render from happening.
+  - Check [here](https://github.com/Kakamotobi/Learned/blob/main/React/Context-API.md#contextprovider) for more on render issues with Context API.
 ### Syntax
 ```js
 function MyComponent(props) {
