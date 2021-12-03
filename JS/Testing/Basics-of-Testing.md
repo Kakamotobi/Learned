@@ -7,6 +7,9 @@
   - [Issues with the Example](#issues-with-the-example)
   - [Solution](#solution)
 - [Mocha.js](#mochajs)
+- [Testing in the Browser](#testing-in-the-browser)
+	- [Mocha in the Browser](#mocha-in-the-browser)
+	- [Chai.js](#chaijs)
 
 ## Goals of Testing
 - Automate the process of ensuring that our app works as we expect.
@@ -202,3 +205,24 @@ it("map function", () => {
 ```zsh
 mocha index.test.js
 ```
+
+## Testing in the Browser
+- Testing Node.js code is easy and straightforward but testing code in the browser is more challenging and involves more setup because of the DOM.
+### Mocha in the Browser
+- Setup an HTML document that is dedicated specifically to testing different things inside of our application.
+- Ex: Make sure test.html loads up autocomplete widget. And inside of autocomplete.test.js, write code that tests the autocomplete widget.
+- If we try to reuse the same widget between tests, the test will break. So after every test, delete the widget that is being displayed on the screen and recreate it from scratch for the next test.
+	- **`beforeEach()`**
+		- Hook built-in to Mocha.
+		- We can write code that is going to setup our testing environment for every single test.
+### Chai.js
+- The official recommendation is to make use of the Chai.js assertion/expectation library along with Mocha.js.
+- It is a library that allows us to use the same kind of assert statements available with Node.
+	- Gives you 3 different ways of doing the exact same thing:
+		- `chai.should()`
+		- `chai.expect()`
+		- `chai.assert()`
+
+## Reference
+[Mocha.js](https://mochajs.org/)  
+[Chai.js](https://www.chaijs.com/)
