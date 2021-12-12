@@ -17,6 +17,8 @@
   - [Example SC-1](#example-sc-1)
   - [Example SC-2](#example-sc-2)
 - [Logarithms](#logarithms)
+  - [Rules of Thumb (logarithms)](#rules-of-thumb-logarithms)
+  - [Occasions](#occasions)
 - [Analyzing the Performance of Objects and Arrays](#analyzing-the-performance-of-objects-and-arrays)
   - [Objects](#objects)
     - [Big O of Objects](#big-o-of-objects)
@@ -37,7 +39,7 @@
 
 ## What is Big O?
 > Big O notation, also called Laundau's symbol, is a symbolism used in complexity theory, computer sciences, and mathematics to describe the asymptotic behavior of functions. Basically, it tells you how fast a function grows or declines.
-- *Big O notation can give us a high level understanding of the time or space complexity of an algorithm.*
+- ***Big O notation can give us a high level understanding of the time or space complexity of an algorithm.***
 - *Big O notation is not about precision. It's about general trends (linear? quadratic? constant?).*
 - *The time or space complexity (as measured by Big O) depends only on the algorithm, not the hardware used to run the algorithm.*
 - An algorithm is O(f(n)) if the number of simple operations that the computer has to do is eventually less than a constant times f(n), as n increases.
@@ -49,18 +51,16 @@
     - As n grows, the runtime scales proportionate to n.
     - Ex: if n doubles, runtime doubles.
     - O(n).
-  - **f(n) could be quadratic (f(n) = n^2).**
-    - As n grows, the runtime scales proportionate to n^2.
-    - Ex: if n doubles, runtime quadruples.
-    - O(n^2).
+  - **f(n) could be quadratic (f(n) = n<sup>2</sup>).**
+    - As n grows, the runtime scales proportionate to n<sup>2</sup>.
+    - Ex: if n doubles, runtime is (n doubled) * (n doubled).
+    - O(n<sup>2</sup>).
   - **f(n) could be something entirely different.**
 - How complex the algorithm is with respect to the input size.
   - **i.e. how the runtime of an algorithm grows as the input grows.**
 
 ## Big O Complexity Chart
 ![Big O Complexity Chart](refImg/big-o-complexity-chart.png)
-
----
 
 ## Time Complexity
 - In computer science, the time complexity is **the computational complexity that describes the amount of computer time it takes to run an algorithm as the size of the input increases.**
@@ -143,24 +143,28 @@ function printAllPairs(n) {
 }
 ```
 - O(n) inside O(n).
-  - Therefore, O(n^2).
+  - Therefore, O(n<sup>2</sup>).
 ### Rules of Thumb (time complexity)
-**1. Arithmetic operations are constant.**  
-**2. Variable assignment is constant.**  
-**3. Accessing elements in an array (by index) or object (by key) is constant.**  
-**4. In a loop, the complexity is the length of the loop times the complexity of whatever happened inside of the loop.**
-
----
+1) **Arithmetic operations are constant.**
+2) **Variable assignment is constant.**
+3) **Accessing elements in an array (by index) or object (by key) is constant.**
+4) **In a loop, the complexity is the length of the loop times the complexity of whatever happened inside of the loop.**
 
 ## Space Complexity
-- The space complexity of an algorithm or a computer program is the amount of memory space required to solve an instance of the computational problem as a function of characteristics of the input. It is the memory required by an algorithm until it executes completely.
+- The **(auxiliary) space complexity** of an algorithm or a computer program is **the amount of memory space required to solve an instance of the computational problem as a function of characteristics of the input. It is the memory required by an algorithm until it executes completely.**
+  - **Auxiliary Space Complexity**
+    - **The space required by the algorithm only, not including the space taken up by the inputs.**
+    - Obviously, as n grows, the input grows. So, ignore that part. Focus on what repercussions that has *inside the algorithm.*
 - The space that an algorithm takes up as the size of the input increases.
 - Big O notation can also be used to analyze space complexity.
 ### Rules of Thumb (space complexity)
-**1. Most primitives (booleans, numbers, undefined, null) are constant space.**  
-**2. Strings require O(n) space (where n is the string length).**  
-**3. Reference types are generally O(n), where n is the length (for arrays) or the number of keys (for objects).**
-### Example SC-1 
+1) **Most primitives (booleans, numbers, undefined, null) are constant space (O(1)).**
+    - 1 takes up the same space as 1000.
+2) **Strings require O(n) space (where n is the string length).**
+    - A string containing 50 characters takes up 50 times more space than a string with a single character.
+3) **Reference types are generally O(n), where n is the length (for arrays) or the number of keys (for objects).**
+    - An array containing 4 elements takes up twice as much space as an array containing 2 elements.
+### Example SC-1
 ```js
 function sum(arr) {
   let total = 0;
@@ -170,9 +174,10 @@ function sum(arr) {
   return total;
 }
 ```
-- 1 number.
-- 1 number.
-- *`total+= arr[i]` is not new space because the variables have already been allocated space.*
+- Line 1: 1 number.
+- Line 2: 1 number.
+- *`total+= arr[i]` in the loop is not new space because the variable has already been allocated that space.*
+- The space is always the same no matter the size of the input `arr`.
   - Therefore, O(1).
 ### Example SC-2
 ```js
@@ -184,17 +189,20 @@ function double(arr) {
   return newArr;
 }
 ```
-- If `arr` has length of n, `newArr` will be length of n.
-  - Space that's being taken up is directly proportionate to n.
+- Line 1: 1 array reference.
+- Line 3: If `arr` has length of n, `newArr` will end up with length of n.
+  - The space that's being taken up is directly proportionate to the size of the input.
   - Therefore, O(n).
 
 ## Logarithms
+- **The binary logarithm of a number roughly measures the number of times you can divide that number by 2 before you get a value that's less than or equal to one.**
 - Inverse of exponentiation.
-### Rule of Thumb
-- The binary logarithm of a number roughly measures the number of times you can divide that number by 2 before you get a value that's less than or equal to one.
-- log === log2
-  - log === log base 2.
+  - log<sub>2</sub>(value) = exponent ⇨ 2<sup>exponent</sup> = value
+### Rules of Thumb (logarithms)
+- log === log<sub>2</sub>
   - Use shorthand because it is the general trend that we care about.
+- Time complexity of O(log n) is great.
+- Time complexity of O(nlog n) is ok.
 ### Occasions
 - Certain searching algorithms have logarithmic time complexity.
 - Efficient sorting algorithms involve logarithms.
