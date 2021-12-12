@@ -2,14 +2,14 @@
 
 ## Table of Contents
 - [What Is Better Code?](#what-is-better-code)
-- [What is it?](#what-is-it)
+- [What is Big O?](#what-is-big-o)
 - [Big O Complexity Chart](#big-o-complexity-chart)
 - [Time Complexity](#time-complexity)
   - [The Problem with Time](#the-problem-with-time)
   - [Counting Operations Instead of Measuring Time](#counting-operations-instead-of-measuring-time)
     - [Example TC-1](#example-tc-1)
-    - [Example TC-2 (multiple for loops)](#example-tc-2-multiple-for-loops)
-    - [Example TC-3 (static for loop)](#example-tc-3-static-for-loop)
+    - [Example TC-2 (static for loop)](#example-tc-2-static-for-loop)
+    - [Example TC-3 (multiple for loops)](#example-tc-3-multiple-for-loops)
     - [Example TC-4 (nested for loops)](#example-tc-4-nested-for-loops)
   - [Rules of Thumb (time complexity)](#rules-of-thumb-time-complexity)
 - [Space Complexity](#space-complexity)
@@ -32,26 +32,30 @@
 - More readable?
   - Faster and less memory-intensive often come at the expense of readableness.
 - Brevity?
+  - Minimizing number of characters used.
+- **Aim: write efficient code that does not use a lot of memory but is also readable.**
 
-## What is it?
+## What is Big O?
 > Big O notation, also called Laundau's symbol, is a symbolism used in complexity theory, computer sciences, and mathematics to describe the asymptotic behavior of functions. Basically, it tells you how fast a function grows or declines.
 - *Big O notation can give us a high level understanding of the time or space complexity of an algorithm.*
 - *Big O notation is not about precision. It's about general trends (linear? quadratic? constant?).*
 - *The time or space complexity (as measured by Big O) depends only on the algorithm, not the hardware used to run the algorithm.*
 - An algorithm is O(f(n)) if the number of simple operations that the computer has to do is eventually less than a constant times f(n), as n increases.
-  - f(n) could be linear (f(n) = n).
-    - As n grows, the runtime scales as well.
-    - O(n).
-  - f(n) could be quadratic (f(n) = n^2).
-    - As n grows, the runtime squares.
-    - O(n^2).
-  - f(n) could be constant (f(n) = 1).
+  - **f(n) could be constant (f(n) = 1).**
     - As n grows, the runtime stays constant.
     - Has the least complexity.
     - O(1).
-  - f(n) could be something entirely different.
-- **Describes the complexity of your code using algebraic terms.**
-  - How complex the algorithm is with respect to the input size.
+  - **f(n) could be linear (f(n) = n).**
+    - As n grows, the runtime scales proportionate to n.
+    - Ex: if n doubles, runtime doubles.
+    - O(n).
+  - **f(n) could be quadratic (f(n) = n^2).**
+    - As n grows, the runtime scales proportionate to n^2.
+    - Ex: if n doubles, runtime quadruples.
+    - O(n^2).
+  - **f(n) could be something entirely different.**
+- How complex the algorithm is with respect to the input size.
+  - **i.e. how the runtime of an algorithm grows as the input grows.**
 
 ## Big O Complexity Chart
 ![Big O Complexity Chart](refImg/big-o-complexity-chart.png)
@@ -59,11 +63,11 @@
 ---
 
 ## Time Complexity
-- In computer science, the time complexity is the computational complexity that describes the amount of computer time it takes to run an algorithm as the size of the input increases.
+- In computer science, the time complexity is **the computational complexity that describes the amount of computer time it takes to run an algorithm as the size of the input increases.**
 - `performance.now()` Method
   - Number of ms since the document was created (opened the page).
   - Example
-    ```
+    ```js
     let t1 = performance.now();
     functionTest();
     let t2 = performance.now();
@@ -74,9 +78,10 @@
 - The same machine will record different times.
 - For fast algorithms, speed measurements may not be precise enough.
 ### Counting Operations Instead of Measuring Time
-- Count the number of simple operations that the computer has to perform.
+- Count the **number of simple operations** that the computer has to perform, instead of trying to count the exact seconds that it takes for a code to run.
+- Generalize, regardless of the exact number.
 #### Example TC-1
-```
+```js
 // Approach 1
 function sumFromOneTo(n) {
     let sum = 0;
@@ -92,17 +97,27 @@ function sumFromOneTo(n) {
 }
 ```
 - Approach 1 (for loop)
-  - 1 assignment.
-  - 1 assignment, 1 comparison, n additions and n assignments.
-  - n additions and n assignments.
+  - Line 1: 1 assignment (`=`).
+  - Line 2: 1 assignment (`=`), n comparisons (`<=`), n additions and n assignments (`++`).
+  - Line 3: n additions and n assignments (`+=`).
   - As n grows, the number of operations and the time it takes, roughly grow in proportion to it.
     - Therefore, O(n).
 - Approach 2
-  - 3 simple operations (*, +, /).
+  - 3 simple operations (`*`, `+`, `/`).
   - As n grows, the number of operations and the time it takes, roughly stay constant.
     - Therefore, O(1).
-#### Example TC-2 (multiple for loops)
+#### Example TC-2 (static for loop)
+```js
+function logAtMost5(n) {
+  for (let i = 0; i <= Math.min(5, n); i++) {
+    console.log(i);
+  }
+}
 ```
+- As n grows, it stays static at 5 iterations.
+  - Therefore, O(1).
+#### Example TC-3 (multiple for loops)
+```js
 function countUpAndDown(n) {
   console.log("Going up!");
   for (let i = 0; i < n; i++) {
@@ -117,18 +132,8 @@ function countUpAndDown(n) {
 ```
 - For loops are O(n).
   - Therefore, O(n).
-#### Example TC-3 (static for loop)
-```
-function logAtMost5(n) {
-  for (let i = 0; i <= Math.min(5, n); i++) {
-    console.log(i);
-  }
-}
-```
-- As n grows, it stays static at 5 iterations.
-  - Therefore, O(1).
 #### Example TC-4 (nested for loops)
-```
+```js
 function printAllPairs(n) {
   for (let i = 0; i < n; i++) {
     for (let j = 0; j < n; j++) {
@@ -156,7 +161,7 @@ function printAllPairs(n) {
 **2. Strings require O(n) space (where n is the string length).**  
 **3. Reference types are generally O(n), where n is the length (for arrays) or the number of keys (for objects).**
 ### Example SC-1 
-```
+```js
 function sum(arr) {
   let total = 0;
   for (let i = 0; i < arr.length; i++) {
@@ -170,7 +175,7 @@ function sum(arr) {
 - *`total+= arr[i]` is not new space because the variables have already been allocated space.*
   - Therefore, O(1).
 ### Example SC-2
-```
+```js
 function double(arr) {
   let newArr = [];
   for (let i = 0; i < arr.length; i++) {
