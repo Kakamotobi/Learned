@@ -2,18 +2,28 @@
 
 ## Table of Contents
 - [What is an Algorithm?](#what-is-an-algorithm)
-- [Problem Solving](#problem-solving)
+- [Problem Solving Approach](#problem-solving-approach)
   - [Step 1: Understand the Problem](#step-1-understand-the-problem)
   - [Step 2: Explore Concrete Examples](#step-2-explore-concrete-examples)
   - [Step 3: Break it Down](#step-3-break-it-down)
-  - [Step 4: Solve/Simplify](#step-3-solvesimplify)
+  - [Step 4: Solve/Simplify](#step-4-solvesimplify)
   - [Step 5: Look Back and Refactor](#step-5-look-back-and-refactor)
+- [Problem Solving Patterns](#problem-solving-patterns)
+  - [Frequency Counter](#frequency-counter)
+  - [Multiple Pointers](#multiple-pointers)
+  - [Sliding Window](#sliding-window)
+  - [Divide and Conquer](#divide-and-conquer)
+  - [Dynamic Programming](#dynamic-programming)
+  - [Greedy Algorithm](#greedy-algorithm)
+  - [Backtracking](#backtracking)
+  - [Many more](#many-more)
 
 ## What is an Algorithm?
 - A **process** or **set of steps** to accomplish a certain task.
 - The foundation for successfully solving problems and becoming a better developer.
 
-## Problem Solving
+## Problem Solving Approach
+- Devise a plan.
 ### Step 1: Understand the Problem
 1) **Can I restate the problem in my own words?**
     - Make sure to understand what the question is.
@@ -180,3 +190,118 @@ function isAlphaNumeric(char) {
   return false;
 }
 ```
+
+## Problem Solving Patterns
+### Frequency Counter
+- **This pattern uses objects or sets to collect values and their frequencies.**
+- ***Useful for algorithms with multiple pieces of data/inputs that need to be compared.***
+- This can often avoid the need for nested loops or O(n<sup>2</sup>) operations with arrays/strings.
+#### Example 1
+- Write a function called 'same', which accepts two arrays. The function should return true if every value in the array has its corresponding value squared in the second array. The order doesn't matter but the frequency of values must be the same (i.e., arr1.length === arr2.length).
+##### Expectation
+```js
+same([1,2,3], [4,1,9]) // true
+same([1,2,3], [1,9]) // false (doesn't include the square of 2)
+same([1,2,1], [4,4,1]) // false (the frequency must be the same)
+```
+##### Naive Solution - O(n<sup>2</sup>)
+```js
+// inputs: arr1, arr2
+// output: true/false
+
+function same(arr1, arr2){
+  if (arr1.length !== arr2.length) return false;
+  
+  for (let i = 0; i < arr1.length; i++) {
+    const correspondingIndex = arr2.indexOf(arr1[i] ** 2);
+    if (correspondingIndex === -1) return false;
+    arr2.splice(correspondingIndex, 1);
+  }
+  
+  return true;
+}
+```
+##### Frequency Counter Solution - O(n)
+```js
+// Break down the arrays into objects comprised of the values and their corresponding frequencies.
+// Then compare those objects.
+
+function same(arr1, arr2) {
+  // If lengths are different, return false.
+  if (arr1.length !== arr2.length) return false;
+  
+  // To store the frequency of each individual values in each array.
+  const freqCounter1 = {};
+  const freqCounter2 = {};
+  
+  // Loop over arr1 and fill in freqCounter1.
+  for (let val of arr1) {
+    freqCounter1[val] = ++freqCounter1[val] || 1;
+  }
+  // Loop over arr2 and fill in freqCounter2.
+  for (let val of arr2) {
+    freqCounter2[val] = ++freqCounter2[val] || 1;
+  }
+
+  // Loop over freqCounter1 and compare with freqCounter2
+  for (let key in freqCounter1) {
+    // If the squared value doesn't exist (as a key in freqCounter2), return false.
+    if (!(key ** 2 in freqCounter2)) return false;
+    // If the frequencies do not match, return false.
+    if (freqCounter2[key ** 2] !== freqCounter1[key]) return false;
+  }
+
+  return true;
+}
+```
+#### Example 2 - Anagram Challenge
+- Given two strings, write a function to determine if the second string is an anagram of the first.
+- An anagram is a word, phrase, or name formed by rearranging the letters of another, such as 'cinema', formed from 'iceman'.
+##### Expectation
+```js
+validAnagram("", "") // true
+validAnagram("hello", "hello") // true
+validAnagram("aaz", "zza") // false
+validAnagram("anagram", "nagaram") // true
+validAnagram("awesome", "awesom") // false
+validAnagram("qwerty", qeywrt") // true
+validAnagram("chickenwings", "wingchickens") // true
+```
+##### Frequency Counter Solution - O(n)
+```js
+// inputs: str1, str2
+// output: true/false
+// length of both strings should equal
+
+function validAnagram(str1, str2) {
+  // Initialize frequency counter object for both strings.
+  const freqCounter1 = {};
+  const freqCounter2 = {};
+  
+  // Loop over each string and record frequency of each character in each corresponding frequency counter object.
+  for (let char of str1) {
+    freqCounter1[char] = ++freqCounter1[char] || 1;
+  }
+  for (let char of str2) {
+    freqCounter2[char] = ++freqCounter2[char] || 1;
+  }
+  
+  // Loop over freq counter object of str1 and compare with freq counter object of str2.
+  for (key in freqCounter1) {
+    // If the value doesn't exist in freq counter object of str2, return false.
+    if (!(key in freqCounter2)) return false;
+    // If the frequencies don't match, return false. 
+    if (freqCounter1[key] !== freqCounter2[key]) return false;
+  }
+  
+  return true;
+}
+```
+
+### Multiple Pointers
+### Sliding Window
+### Divide and Conquer
+### Dynamic Programming
+### Greedy Algorithm
+### Backtracking
+### Many more
