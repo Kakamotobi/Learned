@@ -55,6 +55,9 @@
     - As n grows, the runtime scales proportionate to n<sup>2</sup>.
     - Ex: if n doubles, runtime is (n doubled) * (n doubled).
     - O(n<sup>2</sup>).
+  - **f(n) could be factorial (f(n) = n!).**
+    - As n grows, the runtime grows by factorials.
+    - O(n!).
   - **f(n) could be something entirely different.**
 - How complex the algorithm is with respect to the input size.
   - **i.e. how the runtime of an algorithm grows as the input grows.**
