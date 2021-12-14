@@ -194,17 +194,17 @@ function isAlphaNumeric(char) {
 ## Problem Solving Patterns
 ### Frequency Counter
 - **This pattern uses objects or sets to collect values and their frequencies.**
-- ***Useful for algorithms with multiple pieces of data/inputs that need to be compared.***
+- ***Useful for algorithms with multiple pieces of data/inputs that need to be compared (in particular, if they consist of the same individual pieces).***
 - This can often avoid the need for nested loops or O(n<sup>2</sup>) operations with arrays/strings.
 #### Example 1
-- Write a function called 'same', which accepts two arrays. The function should return true if every value in the array has its corresponding value squared in the second array. The order doesn't matter but the frequency of values must be the same (i.e., arr1.length === arr2.length).
+- Write a function called same, which accepts two arrays. The function should return true if every value in the array has its corresponding value squared in the second array. The order doesn't matter but the frequency of values must be the same (i.e., arr1.length === arr2.length).
 ##### Expectation
 ```js
 same([1,2,3], [4,1,9]) // true
 same([1,2,3], [1,9]) // false (doesn't include the square of 2)
 same([1,2,1], [4,4,1]) // false (the frequency must be the same)
 ```
-##### Naive Solution - O(n<sup>2</sup>)
+##### Naive Solution - TC: O(n<sup>2</sup>)
 ```js
 // inputs: arr1, arr2
 // output: true/false
@@ -221,7 +221,7 @@ function same(arr1, arr2){
   return true;
 }
 ```
-##### Frequency Counter Solution - O(n)
+##### Frequency Counter Solution - TC: O(n)
 ```js
 // Break down the arrays into objects comprised of the values and their corresponding frequencies.
 // Then compare those objects.
@@ -267,7 +267,7 @@ validAnagram("awesome", "awesom") // false
 validAnagram("qwerty", qeywrt") // true
 validAnagram("chickenwings", "wingchickens") // true
 ```
-##### Frequency Counter Solution - O(n)
+##### Frequency Counter Solution - TC: O(n)
 ```js
 // inputs: str1, str2
 // output: true/false
@@ -323,8 +323,121 @@ function validAnagram(str1, str2) {
   return true;
 }
 ```
-
 ### Multiple Pointers
+- **Create pointers or values that correspond to an index or position and move towards the beginning, end, or middle based on a certain condition.**
+- Very efficient for solving problems with minimal space complexity as well.
+- The Idea:
+  - Given some sort of linear structure (ex: string, array, singly or doubly linked list).
+  - Search for a pair of values, or something that meets a condition.
+- Use two references (ex: one at the beginning, one at the end) and work towards the middle.
+#### Example 1 - one pointer at beginning, one pointer at the end
+- Write a function called sumZero which accepts a sorted array of integers. The function should find the first pair where the sum is 0. Return an array that includes both values that sum to zero or undefined if a pair does not exist.
+##### Expectation
+```js
+sumZero([-3,-2,-1,0,1,2,3]) // [-3,3]
+sumZero([-4,-3,-2,-1,0,1,2,5]) // [-2,2]
+sumZero([-2,0,1,3]) // undefined
+sumZero([1,2,3]) // undefined
+```
+##### Naive Solution - TC: O(n<sup>2</sup>), SC: O(1)
+```js
+// Input: ordered array of integers.
+// Output: array of the pair of numbers that add up to 0. Else, undefined.
+
+function sumZero(arr) {
+  for (let i = 0; i < arr.length; i++) {
+    for (let j = i+1; j < arr.length; j++) {
+      if (arr[i] + arr[j] === 0) return [arr[i], arr[j]];
+    }
+  }
+  return undefined;
+}
+```
+##### Multiple Pointers Solution - TC: O(n), SC: O(1)
+```js
+function sumZero(arr) {
+  // Start with one pointer at the beginning and one at the end.
+  let left = 0;
+  let right = arr.length - 1;
+  
+  while (left < right) {
+    // Add numbers at each point together.
+    const sum = arr[left] + arr[right];
+    // If the sum is 0, return the two numbers.
+    if (sum === 0 ) return [arr[left], arr[right]];
+    // If the sum is greater than 0 (meaning that there is no equivalent negative value), move the right pointer inwards.
+    if (sum > 0) right--;
+    // If the sum is less than 0, move the left pointer inwards.
+    if (sum < 0) left++;
+  }
+  
+  return undefined;
+}
+```
+#### Example 2 - two pointers at the beginning
+- Write a function called countUniqueValues, which accepts a sorted array, and counts the unique values in the array. There can be negative numbers in the array, but it will always be sorted.
+##### Expectation
+```js
+countUniqueValues([1,1,1,1,1,2]) // 2
+countUniqueValues([1,2,3,4,4,4,7,7,12,12,13]) // 7
+countUniqueValues([]) // 0
+countUniqueValues([-2,-1,-1,0,1]) // 4
+```
+##### Multiple Pointers Solution - TC: O(n), SC: O(1)
+```js
+// Input: sorted array of integers.
+// Output: the number of unique values.
+
+// Approach 1 - mutate original array
+function countUniqueValues(arr) {
+  // If arr is empty, return 0.
+  // Start pointers at the beginning (i, j). The second pointer being the "scout".
+  // Compare the two pointers.
+  //   If the number is the same, move j up once and start next comparison.
+  //   If arr[i] !== arr[j], move i up once and replace that value with the new number (build up unique values).
+  
+  if (arr.length === 0) return 0;
+  
+  let i = 0;
+  
+  for (let j = 0; j < arr.length; j++) {
+    if (arr[i] !== arr[j]) {
+      i++;
+      arr[i] = arr[j];
+    }
+  }
+  
+  return i+1;
+}
+
+// Approach 2 - use separate counter variable
+function countUniqueValues(arr){
+  // If arr is empty, return 0.
+  // Initiate countOfUniqueValues = 1.
+  // Set two pointers at the beginning of arr. The second pointer being the "scout".
+  // if arr[pointer1] === arr[pointer2], pointer2++ and move on to next iteration.
+  // if arr[pointer1] !== arr[pointer2], means that a unique value has been encountered.
+  //   countOfUniqueValues++;
+  //   set pointer1 = pointer2
+  // When iteration is over, return countOfUniqueValues.
+  
+  if (arr.length === 0) return 0;
+  
+  let countOfUniqueValues = 1;
+  
+  let i = 0;
+  
+  for (let j = 0; j < arr.length; j++) {
+      if (arr[i] !== arr[j]) {
+          countOfUniqueValues++;
+          i = j;
+      }
+  }
+  
+  return countOfUniqueValues;
+}
+```
+
 ### Sliding Window
 ### Divide and Conquer
 ### Dynamic Programming
