@@ -273,7 +273,10 @@ validAnagram("chickenwings", "wingchickens") // true
 // output: true/false
 // length of both strings should equal
 
+// Approach 1 - two objects, three loops
 function validAnagram(str1, str2) {
+  if (str1.length !== str2.length) return false;
+
   // Initialize frequency counter object for both strings.
   const freqCounter1 = {};
   const freqCounter2 = {};
@@ -292,6 +295,35 @@ function validAnagram(str1, str2) {
     if (!(key in freqCounter2)) return false;
     // If the frequencies don't match, return false. 
     if (freqCounter1[key] !== freqCounter2[key]) return false;
+  }
+  
+  return true;
+}
+
+// Approach 2 - one object, three loops
+function validAnagram(str1, str2) {
+  if (str1.length !== str2.length) return false;
+  
+  // Initialize frequency counter object for str1.
+  const freqCounter1 = {};
+  
+  // Loop over str1 and record frequency of each character in the frequency counter object.
+  for (let char of str1) {
+    freqCounter1[char] = ++freqCounter1[char] || 1;
+  }
+  
+  // Loop over str2 and compare with freqCounter1.
+  for (let char of str2) {
+    // If char doesn't exist in freqCounter1, return false.
+    if (!(char in freqCounter1)) return false;
+    // Else if char exists in freqCounter1, deduct its frequency.
+    else --freqCounter1[char];
+  }
+  
+  // Loop over freqCounter1.
+  for (let key in freqCounter1) {
+    // If the frequencies do not equal 0, return false;
+    if (freqCounter1[key] !== 0) return false;
   }
   
   return true;
