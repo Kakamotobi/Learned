@@ -191,6 +191,8 @@ function isAlphaNumeric(char) {
 }
 ```
 
+---
+
 ## Problem Solving Patterns
 ### Frequency Counter
 - **This pattern uses objects or sets to collect values and their frequencies.**
@@ -394,13 +396,13 @@ function countUniqueValues(arr) {
   // Start pointers at the beginning (i, j). The second pointer being the "scout".
   // Compare the two pointers.
   //   If the number is the same, move j up once and start next comparison.
-  //   If arr[i] !== arr[j], move i up once and replace that value with the new number (build up unique values).
+  //   If arr[i] !== arr[j], move i up once and then replace that value with the new number (build up unique values).
   
   if (arr.length === 0) return 0;
   
   let i = 0;
   
-  for (let j = 0; j < arr.length; j++) {
+  for (let j = 1; j < arr.length; j++) {
     if (arr[i] !== arr[j]) {
       i++;
       arr[i] = arr[j];
@@ -410,7 +412,7 @@ function countUniqueValues(arr) {
   return i+1;
 }
 
-// Approach 2 - use separate counter variable
+// Approach 2 - use a separate counter variable
 function countUniqueValues(arr){
   // If arr is empty, return 0.
   // Initiate countOfUniqueValues = 1.
@@ -427,7 +429,7 @@ function countUniqueValues(arr){
   
   let i = 0;
   
-  for (let j = 0; j < arr.length; j++) {
+  for (let j = 1; j < arr.length; j++) {
       if (arr[i] !== arr[j]) {
           countOfUniqueValues++;
           i = j;
@@ -437,8 +439,78 @@ function countUniqueValues(arr){
   return countOfUniqueValues;
 }
 ```
-
 ### Sliding Window
+- **Create a window which can either be an array or number from one position to another.**
+  - Depending on a certain condition, the window either increases or closes (and a new window is created).
+- Useful for keeping track of a subset of data that is **continuous** in some way in an array/string, etc.
+#### Example
+- Write a function called maxSubarraySum which accepts an array of integers and a number called n. The function should calculate the maximum sum of n consecutive elements in the array.
+##### Expectation
+```js
+maxSubarraySum([1,2,5,2,8,1,5], 2) // 10
+maxSubarraySum([1,2,5,2,8,1,5], 4) // 17
+maxSubarraySum([4,2,1,6], 1) // 6
+maxSubarraySum([4,2,1,6,2], 4) // 13
+maxSubarraySum([], 4) // null
+```
+##### Naive Solution - TC: O(n<sup>2</sup>)
+```js
+// Input: array of integers, number (representing the num of consecutive elements in the array that add up to the largest sum.
+// Output: the largest sum
+
+function maxSubarraySum(arr, num) {
+  // If arr is less than num, return null.
+  if (arr.length < num) return null;
+  
+  // Initialize maxSum to store max sum. -Infinity to account for if all numbers in arr are negative (in this case, starting it at 0 will always return 0).
+  let maxSum = -Infinity;
+  
+  // Loop: until the last consecutive num combination.
+  for (let i = 0; i < arr.length - num + 1; i++) {
+    // Initialize tempMax to store temporary max.
+    let tempMax = 0;
+    // Loop: consecutive numbers.
+    for (let j = 0; j < num; j++) {
+      // Accumulate max in tempMax   
+      tempMax += arr[i+j];
+    }
+    // Compare maxSum and tempMax and store the larger one.
+    if (tempMax > max) max = tempMax;
+  }
+  
+  return maxSum;
+}
+```
+##### Sliding Window Solution - TC: O(n)
+```js
+// Rather than readding every single combination, subtract the first number and add the next number (effectively creating the next combination/window).
+
+function maxSubarraySum(arr, num) {
+  // Initilalize maxSum and tempSum variables;
+  let maxSum = 0;
+  let tempSum = 0;
+  
+  // Edge case: if arr is less than num, return null.
+  if (arr.length < num) return null;
+
+  // Store the first combination in maxSum.
+  for (let i = 0; i < num; i++) {
+     maxSum += arr[i];
+  }
+  // Sync tempMax with maxSum.
+  tempSum = maxSum;
+
+  // Loop: starting from the number after the first combination.
+  for (let j = num; j < arr.length; j++) {
+    // Calculate next tempSum by subtracting the first number and adding the next number (sliding window).
+    tempSum = tempSum - arr[j-num] + arr[j];
+    // Compare new tempSum and maxSum, and update maxSum if necessary.
+    if (tempSum > maxSum) maxSum = tempSum;
+  }
+  
+  return maxSum;
+}
+```
 ### Divide and Conquer
 ### Dynamic Programming
 ### Greedy Algorithm
