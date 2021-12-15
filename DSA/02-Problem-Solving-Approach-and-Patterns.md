@@ -486,12 +486,12 @@ function maxSubarraySum(arr, num) {
 // Rather than readding every single combination, subtract the first number and add the next number (effectively creating the next combination/window).
 
 function maxSubarraySum(arr, num) {
-  // Initilalize maxSum and tempSum variables;
-  let maxSum = 0;
-  let tempSum = 0;
-  
   // Edge case: if arr is less than num, return null.
   if (arr.length < num) return null;
+  
+  // Initilalize maxSum and tempSum variables.
+  let maxSum = 0;
+  let tempSum = 0;
 
   // Store the first combination in maxSum.
   for (let i = 0; i < num; i++) {
