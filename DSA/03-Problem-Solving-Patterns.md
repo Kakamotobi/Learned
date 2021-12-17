@@ -303,7 +303,7 @@ function areThereDuplicates(...args) {
 - **Create a window which can either be an array or number from one position to another.**
   - Depending on a certain condition, the window either increases or closes (and a new window is created).
 - Useful for keeping track of a subset of data that is **continuous** in some way in an array/string, etc.
-### Example
+### Example 1
 - Write a function called maxSubarraySum which accepts an array of integers and a number called n. The function should calculate the maximum sum of n consecutive elements in the array.
 #### Expectation
 ```js
@@ -369,6 +369,42 @@ function maxSubarraySum(arr, num) {
   }
   
   return maxSum;
+}
+```
+### Example 2
+- Write a function called findLongestSubstring, which accepts a string and returns the length of the longest substring with all distinct characters.
+#### Expectation
+```js
+findLongestSubstring("") // 0
+findLongestSubstring("rithmschool") // 7
+findLongestSubstring("thisisawesome") // 6
+findLongestSubstring("thecatinthehat") // 7
+findLongestSubstring("bbbbbb") // 1
+```
+#### Sliding Window Solution - TC: O(n)
+```js
+function findLongestSubstring(str){
+    // Initialize longestLength = 0.
+    let longestLength = 0;
+    // Initialize start.
+    let start = 0;
+    // Initialize already seen object with values as the next character's index (start of new window).
+    let alreadySeen = {};
+    
+    // Loop: i represents the end of the window.
+    for (let i = 0; i < str.length; i++) {
+        let char = str[i];
+        // If char exists in alreadySeen, move start point to the next character of the first of the duplicate.
+        if (alreadySeen[char]) {
+            start = Math.max(start, alreadySeen[char]);
+        }
+        // Update the longestLength if necessary. +1 because index is 0-based.
+        longestLength = Math.max(longestLength, i - start + 1);
+        // Record the index/location of the next character (new start of window).
+        alreadySeen[char] = i + 1;
+    }
+    
+    return longestLength;
 }
 ```
 
