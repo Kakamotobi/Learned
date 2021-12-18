@@ -114,13 +114,13 @@ function collectOddValues(arr) {
   
   helper(arr);
   
-  return result;  
+  return result;
 }
 ```
 ```js
 // Pure Recursion Approach
 
-function collecOddValues(arr) {
+function collectOddValues(arr) {
   let newArr = [];
   
   // If arr is empty, return newArr.
