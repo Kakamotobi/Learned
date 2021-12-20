@@ -535,3 +535,28 @@ function collectStrings(obj) {
 // collectStrings(collectStrings(collectStrings(collectStrings(collectStrings(evenMoreInfo)))))
 // ["foo", "bar", "baz"]
 ```
+#### Pure Recursion Solution
+```js
+function collectStrings(obj) {
+	let arr = [];
+	
+	for (let key in obj) {
+		if (typeof obj[key] === "string") {
+			arr.push(obj[key]);
+		}
+		if (typeof obj[key] === "object") {
+			return arr = arr.concat(collectStrings(obj[key]));
+		}
+	}
+	
+	return arr;
+}
+
+// collectStrings(obj)
+// ["foo"].concat(collectStrings(obj[data]))
+                  // collectStrings(obj[val])
+                     // collectStrings(obj[thing])
+                        // ["bar"].concat(collectStrings(obj[moreInfo]))
+                                          // collectStrings(obj[evenMoreInfo])
+                                             // ["baz"]
+```
