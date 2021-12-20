@@ -362,6 +362,176 @@ function capitalizeFirst(arr) {
 	return newArr;
 }
 ```
+### Problem 6
+- Write a recursive function called nestedEvenSum, which returns the sum of all even numbers in an object which may contain nested objects.
+#### Expectation
+```js
+const obj1 = {
+  outer: 2,
+  obj: {
+    inner: 2,
+    otherObj: {
+      superInner: 2,
+      notANumber: true,
+      alsoNotANumber: "yup"
+    }
+  }
+};
 
+nestedEvenSum(obj1) // 6
+```
+#### Pure Recursion Solution
+```js
+function nestedEvenSum (obj) {
+	let sum = 0;
 
+	// Essentially Base Case
+	if (typeof obj === "object") {
+		for (let key in obj) {
+			// If even number, add to sum.
+			if (obj[key] % 2 === 0) sum += obj[key];
+			// If is an object, recursive call.
+			if (typeof obj[key] === "object") sum += nestedEvenSum(obj[key]);
+		}
+	}
 
+	return sum;
+}
+
+// nestedEvenSum(obj1)
+// 2 + nestedEvenSum(obj)
+	   // 2 + nestedEvenSum(otherObj)
+	   		  // 2
+```
+### Problem 7
+- Write a recursive function called capitalizeWord, which accepts an array of words and returns an array containing each word capitalized.
+#### Expectation
+```js
+capitalizedWords(["i", "am", "learning", "recursion"]) // ["I", "AM", "LEARNING", "RECURSION"]
+```
+#### Pure Recursion Solution
+```js
+function capitalizeWords(words) {
+	let capitalizedWords = [];
+	// Base Case
+	if (words.length === 0) return [];
+
+	capitalizedWords.push(words[0].toUpperCase());
+
+	// Call
+	return capitalizedWords.concat(capitalizeWords(words.slice(1)));
+}
+
+// capitalizedWords(['i', 'am', 'learning', 'recursion'])
+// ["I"].concat(capitalizeWords(["am", "learning", "recursion"]))
+								// ["AM"].concat(capitalizeWords(["learning", "recursion"]))
+								 								 // ["LEARNING"].concat(capitalizeWords(["recursion"]))
+								 																				// ["RECURSION"].concat(capitalizeWords([]))
+								 																																// []
+```
+### Problem 8
+- Write a function called stringifyNumbers, which takes in an object and finds all of the values which are numbers and converts them to strings.
+#### Expectation
+```js
+let obj = {
+	num: 1,
+	test: [],
+	data: {
+		val: 4,
+		info: {
+			isRight: true,
+			random: 66
+		}
+	}
+}
+
+stringifyNumbers(obj)
+// obj = {
+//   num: "1",
+//   test: [],
+//   data: {
+//     val: "4",
+//     info: {
+//       isRight: true,
+//       random: "66"
+//     }
+//   }
+// }
+```
+#### Pure Recursion Solution
+```js
+function stringifyNumbers(obj) {
+	const newObj = {};
+
+	for (let key in obj) {
+		if (typeof obj[key] === "number") {
+			newObj[key] = obj[key].toString();
+		} else if (typeof obj[key] === "object" && !Array.isArray(obj[key])) {
+			newObj[key] = stringifyNumbers(obj[key]);
+		} else {
+			newObj[key] = obj[key];
+		}
+	}
+	
+	return newObj;
+}
+
+// let obj = {num: 1, test: [], data: {val: 4, info: {isRight: true, random: 66}}}
+// stringifyNumbers(obj)
+// newObj = {num: "1", test: [], data: stringifyNumbers(obj[key])}
+// newObj = {num: "1", test: [], data: {val: "4", info: stringifyNumbers(obj[key])}}
+// newObj = {num: "1", test: [], data: {val: "4", info: {isRight: true, random: "66"}}}
+```
+### Problem 9
+- Write a function called collectStrings which accepts an object and returns an array of all the values in the object that have a type of string.
+#### Expectation
+```js
+const obj = {
+	stuff: "foo",
+	data: {
+		val: {
+			thing: {
+				info: "bar",
+				moreInfo: {
+					evenMoreInfo: {
+						weMadeIt: "baz"
+					}
+				}
+			}
+		}
+	}
+}
+
+collectStrings(obj) // ["foo", "bar", "baz"]
+```
+#### Helper Method Recursion Solution
+```js
+function collectStrings(obj) {
+	let arr = [];
+
+	function helper(helperInput) {
+		for (let key in helperInput) {
+			if (typeof helperInput[key] === "string") {
+				arr.push(helperInput[key]);
+			}
+			if (typeof helperInput[key] === "object") {
+				return helper(helperInput[key]);
+			}
+		}
+	}
+
+	helper(obj);
+
+	return arr;
+}
+
+// collectStrings(obj)
+// ["foo"]
+// collectStrings(data)
+// collectStrings(collectStrings(val))
+// collectStrings(collectStrings(collectStrings(thing)))
+// ["foo", "bar"]
+// collectStrings(collectStrings(collectStrings(collectStrings(moreInfo))))
+// collectStrings(collectStrings(collectStrings(collectStrings(collectStrings(evenMoreInfo)))))
+// ["foo", "bar", "baz"]
+```
