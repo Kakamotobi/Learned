@@ -167,8 +167,40 @@ stringSearch("wzomgwomg", "omg") // 2
 #### Implementation
 ```js
 // LPS Array
-function lpsArray(str) {
+function lpsArray(patternStr) {
+  const table = new Array(patternStr.length);
+  table[0] = 0;
+  let i = 0;
+  let j = 1;
   
+  while (j < table.length) {
+    // If the values at i and j are equal.
+    if (patternStr[i] === patternStr[j]) {
+      // Set table value at position j to be i + 1.
+      table[j] = i + 1;
+      // Increment i and j.
+      i++;
+      j++;
+    } 
+    // Else if the values at i and j are not equal.
+    else {
+      // If value exists at index i - 1.
+      if (i - 1 >= 0) {
+        const valAtiMinus1 = table[i-1];
+        // Move back i to that index.
+        i = valAtiMinus1;
+      } 
+      // If there is no value at index i - 1.
+      else {
+        // Set table value at position j to the index of i.
+        table[j] = i;
+        //Increment j;
+        j++;
+      }
+    }
+  }
+  
+  return table;
 }
 ```
 #### Reference
