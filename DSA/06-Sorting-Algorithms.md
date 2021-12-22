@@ -93,7 +93,53 @@ function selectionSort(arr) {
 }
 ```
 ### Insertion Sort
+- **A sorting algorithm where an unsorted element is placed at its suitable position in the already sorted part of the array.**
+- Builds up the sort by gradually creating a larger left portion which is always sorted.
+- Situations where insertion sort does well.
+  - When an array is mostly/nearly sorted.
+  - Doesn't have to have the data all at once. Insertion Sort can receive data while sorting (online algorithm).
+#### Big O
+- **TC: O(n<sup>2</sup>)**
+#### Implementation
+```js
+// Implementation 1
 
+function insertionSort(arr) {
+  // For loop for each index of arr; excluding index 0.
+  for (let i = 1; i < arr.length; i++) {
+    // The key value for this iteration.
+    let key = arr[i];
+    // Pointer for sorted portion.
+    let j = i - 1;
+    // While the preceding element (value in the sorted array) is greater than the current key value. For descending order, check arr[j] < key.
+    while (arr[j] > key && j >= 0) {
+      // Save the preceding element arr[j] at index j+1, effectively "shifting" it to the right. It is safe to overwrite arr[j+1] because its value is stored in key anyways.
+      arr[j+1] = arr[j];
+      // Decrement j to preceding index.
+      j--;
+    }
+    // If the right index for key has been found. j+1 because j is currently the index of the value less than key. So, insert key in front of j.
+    arr[j+1] = key;
+  }
+  
+  return arr;
+}
+```
+```js
+// Implementation 2
+
+function insertionSort(arr) {
+  let j;
+  for (let i = 1; i < arr.length; i++) {
+    let key = arr[i];
+    for (j = i - 1; j >= 0 && arr[j] > key; j--) {
+      arr[j+1] = arr[j]
+    }
+    arr[j+1] = key;
+  }
+  return arr;
+}
+```
 
 ## Reference
 [Sorting Algorithms Animations](https://www.toptal.com/developers/sorting-algorithms)  
