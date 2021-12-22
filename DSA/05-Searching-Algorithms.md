@@ -136,6 +136,21 @@ stringSearch("wzomgwomg", "omg") // 2
         // 0s mean that the longest prefix and suffix doesn't exist up to that point; hence, indicates the amount that we can shift forward.
         // Shift by = length of the pattern string at comparison point - corresponding value in the prefix length array.
         ```
+        ```js
+        // Example 2
+        index:         0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17
+        pattern:       a c a c a b a c a c a  b  a  c  a  c  a  c
+        prefix length: 0 0 1 2 3 0 1 2 3 4 5  6  7  8  9  10 11 4 
+                                              i                 j
+                                 i                              j
+                             i                                  j
+
+        // At this point, "a" !== "c". So, i = table[i-1].
+          // Get i's new position by getting the corresponding prefix/suffix length of the character right before. 11 - 1 = 10. Longest prefix/suffix length at that point is 5. So move i to index 5. Why? Because between index 0 and index 10, the longest prefix/suffix of length 5 means that there must be five characters for the prefix/suffix.
+        // The prefix/suffix from index 0 to 4 and index 12 to 16 has already been matched. So, we need to compare index 5 and index 17.
+        // At this point, "b" !== "c". So, i = table[i-1] again.
+        // At this point, "c" === "c". So, table[j] = i + 1.
+        ```
 
 2) **Search the Pattern String in the Main String**
     - **Everytime a mismatch is encountered (with the main string), find out the longest suffix that is also a prefix in the pattern string before the mismatch.**
@@ -167,6 +182,7 @@ stringSearch("wzomgwomg", "omg") // 2
 #### Implementation
 ```js
 // LPS Array
+
 function lpsArray(patternStr) {
   const table = new Array(patternStr.length);
   table[0] = 0;
@@ -186,15 +202,16 @@ function lpsArray(patternStr) {
     else {
       // If value exists at index i - 1.
       if (i - 1 >= 0) {
+        // Find the length of the longest prefix/suffix right before the mismatch at i's position.
         const valAtiMinus1 = table[i-1];
-        // Move back i to that index.
+        // Move back i to that index. Why?? because it gives us the next longest prefix/suffix.
         i = valAtiMinus1;
       } 
       // If there is no value at index i - 1.
       else {
         // Set table value at position j to the index of i.
         table[j] = i;
-        //Increment j;
+        //Increment j.
         j++;
       }
     }
@@ -202,6 +219,55 @@ function lpsArray(patternStr) {
   
   return table;
 }
+```
+```js
+// KMP Search
+
+function kmpSearch(str, pattern) {
+  // Get lps array.
+  const table = lpsArray(pattern);
+  
+  // Pointer for str.
+  let i = 0;
+  // Pointer for table.
+  let j = 0;
+  
+  while (i < str.length) {
+    // If the values as i and j are equal.
+    if (str[i] === pattern[j]) {
+      // If j has reached the end of the table.
+      if (j === pattern.length - 1) {
+        // We found a match starting at index i - j.
+        return i - j;
+      }
+      // Increment i and j.
+      i++;
+      j++;
+    } 
+    // Else if the values at i and j are not equal.
+    else {
+      // If value exists at j - 1. 
+      if (j - 1 >= 0) {
+        // Find the length of the longest prefix/suffix right before the mismatch at i's position.
+        const valAtjMinus1 = table[j-1];
+        // Move back j to that index.
+        j = valAtjMinus1;
+      }
+      // If there is no value at j - 1.
+      else {
+        // Increment i.
+        i++;
+      }
+    }
+  }
+  return -1;
+}
+
+kmpSearch("aaabbbccc", "bbb") // 3
+kmpSearch("aaabbbccc", "xxx") // -1
+kmpSearch("a", "a") // 0
+kmpSearch("This is a test", " ") // 4
+kmpSearch("", "a") // -1
 ```
 #### Reference
 [Knuth Morris Pratt (KMP) String Search Algorithm](https://www.youtube.com/watch?v=EL4ZbRF587g&ab_channel=StableSort)  
