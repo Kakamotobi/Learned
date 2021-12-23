@@ -28,11 +28,12 @@
 ### Bubble Sort
 - **A sorting algorithm where when sorting in ascending order, the largest values "bubble" up to the top.**
 - For each iteration, compare two adjacent values and swap the larger one to the right. Then move on to the next pair and repeat until the largest value reaches the end.
-- Not commonly used because it is inefficient except for one use case where it excels.
+- Not commonly used because it is inefficient but works well on nearly sorted data.
 #### Big O
 - **TC: O(n<sup>2</sup>)**
   - Best Case: O(n)
   - Average/Worst Case: O(n<sup>2</sup>)
+- **SC: O(1)**
 #### Implementation
 ```js
 function bubbleSort(arr) {
@@ -67,6 +68,8 @@ function bubbleSort(arr) {
   - *Selection Sort is better than Bubble Sort in the scenario when you want to minimize swaps.*
 #### Big O
 - **TC: O(n<sup>2</sup>)**
+  - Best/Average/Worst Case: O(n<sup>2</sup>)
+- **SC: O(1)**
 #### Implementation
 ```js
 function selectionSort(arr) {
@@ -100,6 +103,9 @@ function selectionSort(arr) {
   - Doesn't have to have the data all at once. Insertion Sort can receive data while sorting (online algorithm).
 #### Big O
 - **TC: O(n<sup>2</sup>)**
+  - Best Case: O(n)
+  - Average/Worst Case: O(n<sup>2</sup>)
+- **SC: O(1)**
 #### Implementation
 ```js
 // Implementation 1
