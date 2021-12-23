@@ -7,6 +7,10 @@
   - [Bubble Sort](#bubble-sort)
   - [Selection Sort](#selection-sort)
   - [Insertion Sort](#insertion-sort)
+- [Intermediate Sorting Algorithms](#intermediate-sorting-algorithms)
+  - [Merge Sort](#merge-sort)
+  - [Quick Sort](#quick-sort)
+  - [Radix Sort](#radix-sort)
 
 ## Sorting
 - **The process of rearranging the items in a collection (ex: array, string) so that the items are in some kind of order.**
@@ -25,6 +29,7 @@
 
 ## Elementary Sorting Algorithms
 - Less commonly used because they are less efficient.
+- Do not scale well.
 ### Bubble Sort
 - **A sorting algorithm where when sorting in ascending order, the largest values "bubble" up to the top.**
 - For each iteration, compare two adjacent values and swap the larger one to the right. Then move on to the next pair and repeat until the largest value reaches the end.
@@ -146,6 +151,146 @@ function insertionSort(arr) {
   return arr;
 }
 ```
+
+## Intermediate Sorting Algorithms
+- More complex but faster sorting algorithms.
+### Merge Sort
+- **Works by decomposing an array into smaller arrays of 0 or 1 elements, then building up a newly sorted array.**
+  - Exploits the fact that arrays of 0 or 1 element are always sorted.
+  - Divide and Conquer approach. 
+- A combination of splitting up, sorting, merging.
+- Most merge sort implementations use recursion.
+- Process
+  - Split up until we end up with sorted arrays (length of 0 or 1).
+  - Then merge the sorted arrays step by step until everything is merged back to one array.
+#### Big O
+- **TC: O(n log n)**
+  - Best/Average/Worst Case: O(n log n).
+  - If n is 8, it takes 3 splits/decompositions to get single lengthed arrays.
+    - log<sub>2</sub>8 = 3.
+  - If n is 32, it takes 5 splits/decompositions to get single lengthed arrays.
+    - log<sub>2</sub>32 = 5.
+  - **As n grows, the number of splits/decompositions needed grows at a rate of log n. Hence, O(log n).**
+  - **However, for each split/decomposition, there are O(n) comparisons (when merging).**
+    - Ex: merge([3,4,5,8], [1,2,6,7]). As n grows, the `merge` algorithm has time complexity of O(n).
+  - **Hence, O(n log n).**
+- **SC: O(n)**
+#### Implementation
+```js
+// Function to merge sorted arrays.
+// TC: O(n+m), SC: O(n+m)
+// Should not modify the parameters passed to it.
+
+// Approach 1
+
+function merge(arr1, arr2) {
+  // Initialize empty array.
+  let results = [];
+  
+  // Initialize pointers
+  let i = 0;
+  let j = 0;
+  
+  // While i and j are both less than their respective lengths.
+  while (i < arr1.length && j < arr2.length) {
+    // If value in arr1 is less than value in arr2.
+    if (arr1[i] <= arr2[j]) {
+      // Push value in arr1 to results.
+      results.push(arr1[i]);
+      // Increment i.
+      i++;
+    }
+    // If value in arr2 is less than value in arr1.
+    else if (arr2[j] < arr1[i]) {
+      // Push value in arr2 to results.
+      results.push(arr2[j]);
+      // Increment j.
+      j++;
+    }
+  }
+  
+  // While i hasn't reached its end (meaning, j has reached its end first, effectively breaking out of the above while loop).
+  while (i < arr1.length) {
+    // Loop through remaining values and push them to results.
+    results.push(arr1[i]);
+    // Increment i.
+    i++;
+  }
+  
+  // While j hasn't reached its end (meaning, i has reached its end first, effectively breaking out of the above while loop).
+  while (j < arr2.length) {
+    // Loop through remaining values and push them to results.
+    results.push(arr2[j]);
+    // Increment j.
+    j++;
+  }
+
+  return results;
+}
+
+// Approach 2
+
+function merge(arr1, arr2) {
+  let results = [];
+  let i = 0;
+  let j = 0;
+  
+  while (i < arr1.length || j < arr2.length) {
+    // j >= arr2.length accounts for when values in arr2 have all been merged but there are still values in arr1 remaining.
+    if (arr1[i] <= arr2[j] || j >= arr2.length) {
+      results.push(arr1[i]);
+      i++;
+    }
+    // i >= arr1.length accounts for when values in arr1 have all been merged but there are still values in arr2 remaining.
+    else if (arr2[j] < arr[i] || i >= arr1.length) {
+      results.push(arr2[j]);
+      j++;
+    }
+  }
+  
+  return results;
+}
+```
+```js
+// Function to merge sort.
+
+function mergeSort(arr) {
+  // Base Case: if 
+  if (arr.length <= 1) return arr;
+  
+  // Recursive call on each half of arr until each value is in its own array (i.e., sorted array).
+  // Ends up looking like merge([10, 24],[43, 67]) right before the value is returned.
+  return merge(mergeSort(arr.slice(0, Math.floor(arr.length / 2))), mergeSort(arr.slice(Math.floor(arr.length / 2))));
+}
+```
+#### Process Example
+```js
+mergeSort([10,24,67,43]);
+
+// "Left" portion
+// mergeSort([10,24])
+   // mergeSort([10]) // "left" portion
+      // [10]
+   // mergeSort([24]) // "right" portion
+      // [24]
+// merge([10], [24]) // merge "left" and "right" portion
+   // [10,24]
+
+// "Right" portion
+// mergeSort([67,43])
+   // mergeSort([67]) // "left" portion
+      // [67]
+   // mergeSort([43]) // "right" portion
+      // [43]
+// merge([67], [43]) // merge "left" and "right" portion
+  // [43,67]
+
+// Merge "left" and "right" portion (the very first merge() that has been waiting in the call stack).
+// merge([10,24], [43,67])
+// [10,24,43,67]
+```
+### Quick Sort
+### Radix Sort
 
 ## Reference
 [Sorting Algorithms Animations](https://www.toptal.com/developers/sorting-algorithms)  
