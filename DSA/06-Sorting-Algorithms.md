@@ -159,7 +159,7 @@ function insertionSort(arr) {
   - Exploits the fact that arrays of 0 or 1 element are always sorted.
   - Divide and Conquer approach. 
 - A combination of splitting up, sorting, merging.
-- Most merge sort implementations use recursion.
+- *Most merge sort implementations use recursion.*
 - Process
   - Split up until we end up with sorted arrays (length of 0 or 1).
   - Then merge the sorted arrays step by step until everything is merged back to one array.
@@ -182,7 +182,6 @@ function insertionSort(arr) {
 // Should not modify the parameters passed to it.
 
 // Approach 1
-
 function merge(arr1, arr2) {
   // Initialize empty array.
   let results = [];
@@ -229,7 +228,6 @@ function merge(arr1, arr2) {
 }
 
 // Approach 2
-
 function merge(arr1, arr2) {
   let results = [];
   let i = 0;
@@ -252,7 +250,7 @@ function merge(arr1, arr2) {
 }
 ```
 ```js
-// Function to merge sort.
+// Merge Sort Implementation
 
 function mergeSort(arr) {
   // Base Case: if 
@@ -290,6 +288,103 @@ mergeSort([10,24,67,43]);
 // [10,24,43,67]
 ```
 ### Quick Sort
+- **Works by decomposing an array into smaller arrays of 0 or 1 elements, then building up a newly sorted array.**
+  - Exploits the fact that arrays of 0 or 1 element are always sorted.
+  - Divide and Conquer approach.
+- **However, different from merge sort in that, it works by selecting one element (called the "pivot") and finding the index where the pivot should end up in the sorted array.**
+  - Ex: if the pivot is the values in the middle, all the values that are lower than that value will be moved to the left and all the values that are greater than that value will be moved to the right (not sorted yet). Then repeat the process for the left and right again until the length of arrays are equal to or less than 1.
+  - You know for certain that the pivot is in the right spot.
+- The runtime of quick sort depends in part on how one selects the pivot.
+  - Ideally, the pivot should be chosen so that it's roughly the median value in the data set that you're sorting.
+- *Most quick sort implementations use recursion.*
+#### Big O
+#### Implementation
+```js
+// Pivot Helper Function
+
+function pivotHelper(arr, startIdx = 0, endIdx = arr.length - 1) {
+  // Grab the pivot from the start of the arr.
+  let pivot = arr[startIdx];
+  
+  // Initialize pivotIdx to keep track of how many elements are less than pivot (ultimately becomes pivot's correct position).
+  let pivotIdx = 0
+
+  // Loop through arr from start to end.
+  for (let i = 1; i < arr.length; i++) {
+  	// If this element is less than the pivot.
+  	if (arr[i] < pivot) {
+  		// Increment pivotIdx.
+  		pivotIdx++;
+  		// Swap the current element with the element at the pivot index.
+  		[arr[i], arr[pivotIdx]] = [arr[pivotIdx], arr[i]];
+  	}
+  }
+
+  // Swap the pivot with the number at the pivot index.
+  [arr[startIdx],arr[pivotIdx]] = [arr[pivotIdx], arr[startIdx]];
+
+  return pivotIdx;
+}
+```
+```js
+// Implementation 1 - In Place
+
+function quickSort(arr, startIdx = 0, endIdx = arr.length - 1) {
+	// Base Case: as soon as startIdx and endIdx are equal, we have 1 element in the subarray.
+	if (startIdx < endIdx) {
+		// Get pivot index.
+		let pivotIdx = pivotHelper(arr, startIdx, endIdx);
+
+		// Recursively call pivotHelper on the "left" portion (excl. pivot).
+		quickSort(arr, startIdx, pivotIdx - 1)
+
+		// Recursively call pivotHelper on the "right" portion (excl. pivot).
+		quickSort(arr, pivotIdx + 1, endIdx);
+	}
+	return arr;
+}
+```
+```js
+// Implementation 2 - Not In Place
+// More readable and simple but memory exhaustive.
+
+function quickSort(arr) {
+  // Base Case: if array length is equal to or less than 1, return it and push it up the stack.
+  if (arr.length <= 1) return arr;
+  
+  // Initialize pivot.
+  let pivot = arr[0];
+  // Initialize subarrays.
+  let left = [];
+  let right = [];
+  
+  // Loop over passed in array.
+  for (let i = 1; i < arr.length; i++) {
+    // If value is equal to or less than pivot, push to left array.
+    if (arr[i] <= pivot) left.push(arr[i]);
+    // Else if value is greater than pivot, push to right array.
+    else if (arr[i] > pivot) right.push(arr[i]);
+  }
+  
+  // Recursive call on subarrays, then concatenate the returned sorted arrays.
+  return quickSort(left).concat([pivot], right);
+}
+```
+#### Process Example - Implementation 1 (in place)
+```js
+quickSort([4,6,9,1,2,5,3])
+          // pivotHelper(arr, 0, 6) // pivotIdx: 3, arr: [3,1,2,4,9,5,6]
+          // quickSort(arr, 0, 3-1) // "left" portion [3,1,2]
+                       // pivotHelper(arr, 0, 2) // pivotIdx: 2, arr: [2,1,3,4,9,5,6]
+                       // quickSort(arr, 0, 2-1) // [2,1]
+                                    // pivotHelper(arr, 0, 1) // pivotIdx: 1, arr: [1,2,3,4,9,5,6]
+                                    // quickSort(arr, 0, 1-1) // [1]. Base Case reached. Return [1,2,3,4,9,5,6]
+          // quickSort(arr, 2+1, 6) // "right" portion [9,5,6]
+                       // pivotHelper(arr, 4, 6) // pivotIdx: 6, arr: [1,2,3,4,6,5,9]
+                       // quickSort(arr, 4, 6-1) // [6,5]
+                                    // pivotHelper(arr, 4, 5) // pivotIdx: 5, arr: [1,2,3,4,5,6,9]
+                                    // quickSort(arr, 4, 5-1) // [5]. Base Case reached. Return [1,2,3,4,5,6,9]
+```
 ### Radix Sort
 
 ## Reference
