@@ -298,6 +298,12 @@ mergeSort([10,24,67,43]);
   - Ideally, the pivot should be chosen so that it's roughly the median value in the data set that you're sorting.
 - *Most quick sort implementations use recursion.*
 #### Big O
+- **TC: O(n<sup>2</sup>)**
+	- Best/Average Case: O(n log n)
+	- Worst Case: O(n<sup>2</sup>)
+		- If the pivot is the minimum/maximum value and the array is already sorted.
+		- Solution: pick a random pivot point or the middle value instead of first or last value.
+- **SC: O(log n)**
 #### Implementation
 ```js
 // Pivot Helper Function
