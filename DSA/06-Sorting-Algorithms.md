@@ -395,7 +395,7 @@ quickSort([4,6,9,1,2,5,3])
 - **A special sorting algorithm that works on lists of numbers and does not make direct comparisons (ex: is i greater than i+1).**
 - It exploits the fact that information about the size of a number is encoded in the number of digits.
 	- More digits means a larger number.
-- Usually used with anything that can be expressed in binary numbers (ex: numbers, strings, images).
+- Usually used with anything that can be expressed in numbers (ex: numbers, strings, images).
 - Process
 	- Group each number in the array based off of the ones digit (ex: 5 from 425).
 	- Put them back in a list, keeping the order they are in (not sorted yet).
@@ -405,25 +405,82 @@ quickSort([4,6,9,1,2,5,3])
 	- Put them back in a list, keeping the order they are in.
 	- *Repeat this for the number of digits that the largest number has.*
 	- Now array is sorted.
+- ***Note***
+	- Radix Sort (O(n\*k)) can be significantly better than a comparison sort algorithm (O(n log n)).
+	- However, if all numbers are distinct, k has to be at least log n because of the way that computers store information. Resulting to O(n log n).
 #### Big O
-- **TC:**
+- n: number of things being sorted (length of array).
+- k: the number of digits in those numbers (word size).
+- **TC: O(n\*k)**
+	- Best/Average/Worst Case: O(n\*k)
+- **SC: O(n+k)**
 #### Implementation
 ```js
-// Helper Function
+// Helper Functions
 
+// Returns the digit in num at the given place value (ones, tens, hundreds, ...).
+function getDigit(num, i) {
+	// Divide num by 10^i. Then floor it. Then mod 10.
+	// 10^i gives 0, 10, 100, ...
+	return Math.floor(Math.abs(num) / Math.pow(10, i)) % 10;
+}
+
+// Returns the number of digits in a number.
+function digitCount(num) {
+	// Edge case
+	if (num === 0) return 1;
+	// 10 to what power gives us num? Add 1 to it.
+	return Math.floor(Math.log10(Math.abs(num))) + 1;
+}
+
+// Returns the largest number of digits in an array of numbers.
+function mostDigits(nums) {
+	let result = 0;
+	
+	for (let i = 0; i < nums.length; i++) {
+		result = Math.max(result, digitCount(nums[i]));
+	}
+	
+	return result;
+}
 ```
 ```js
-function radixSort() {
+function radixSort(arr) {
+	// Figure out how many digits the largest number has.
+	let mostDigitCount = mostDigits(arr);
 	
+	// Loop largest number of digits times.
+	for (let i = 0; i < mostDigitCount; i++) {
+		// For each iteration, create buckets for each digit (0 to 9). An array of 10 subarrays.
+		let digitBuckets = Array.from({length: 10}, () => []);
+		
+		// Loop over each number in arr.
+		for (let j = 0; j < arr.length; j++) {
+			// Access the ith digit of each number.
+			let digit = getDigit(arr[j], i);
+			// Push each number in the corresponding bucket based on its ith digit.
+			digitBuckets[digit].push(arr[j]);
+		}
+		
+		// After each number is placed in its corresponding bucket, flatten the array.
+		arr = [].concat(...digitBuckets);
+	}
+	
+	return arr;
 }
 ```
 #### Process Example
 ```js
+radixSort([23,345,5467,12,2345,9852]);
+// i = 0 // digitBuckets = [[],[],[12,9852],[23],[],[345,2345],[],[5467],[],[]]
+	// arr = [12,9852,23,345,2345,5467]
+// i = 1 // digitBuckets = [[],[12],[23],[],[345,2345],[9852],[5467],[],[],[]]
+	// arr = [12,23,345,2345,9852,5467]
+// i = 2 // digitBuckets = [[12,23],[],[],[345,2345],[5467],[],[],[],[9852],[]]
+	// arr = [12,23,345,2345,5467,9852]
+// i = 3 // digitBuckets = [[12,23,345],[],[2345],[],[],[5467],[],[],[],[9852]]
+	// arr = [12,23,345,2345,5467,9852]
 ```
-
-Comparison Sorts vs 
-- Takes advantage of special properties of the data.
-
 
 ## Reference
 [Sorting Algorithms Animations](https://www.toptal.com/developers/sorting-algorithms)  
