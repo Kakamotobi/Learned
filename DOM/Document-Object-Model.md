@@ -397,7 +397,7 @@ formData; // contains information in sync to user input.
 #### Example
 ```js
 const container = document.querySelector("#container"); // Parent
-const btn = document.querySelector("button); // Child
+const btn = document.querySelector("button"); // Child
 
 // When clicking on either the container or btn, the background color changes.
 container.addEventListener("click", function() {
