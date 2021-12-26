@@ -58,7 +58,7 @@ function bubbleSort(arr) {
         noSwaps = false;
       }
     }
-    // If noSwaps were made, break the loop.
+    // If noSwaps were made, meaning that arr is already sorted, break the loop.
     if (noSwaps) break;
     
   }
@@ -68,7 +68,7 @@ function bubbleSort(arr) {
 ### Selection Sort
 - **A sorting algorithm where when sorting in ascending order, the lowest value is replaced to be at the front of the array.**
   - Index 0: find the lowest value and replace with the value at index 0.
-  - Index 1 and on: find the lowest value from the target index to the end and replace with the value at the target index.
+  - Index 1 and on: find the lowest value between the target index and the end, then replace it with the value at the target index.
 - Similar to bubble sort, but instead of first placing large values into sorted position, it places small values into sorted position one at a time (sorted data accumulates at the beginning).
   - *Selection Sort is better than Bubble Sort in the scenario when you want to minimize swaps.*
 #### Big O
@@ -116,7 +116,7 @@ function selectionSort(arr) {
 // Implementation 1
 
 function insertionSort(arr) {
-  // For loop for each index of arr; excluding index 0.
+  // For loop for each index of arr; starting from index 0.
   for (let i = 1; i < arr.length; i++) {
     // The key value for this iteration.
     let key = arr[i];
@@ -157,7 +157,7 @@ function insertionSort(arr) {
 ### Merge Sort
 - **Works by decomposing an array into smaller arrays of 0 or 1 elements, then building up a newly sorted array.**
   - Exploits the fact that arrays of 0 or 1 element are always sorted.
-  - Divide and Conquer approach. 
+  - Divide and Conquer approach.
 - A combination of splitting up, sorting, merging.
 - *Most merge sort implementations use recursion.*
 - Process
@@ -253,7 +253,7 @@ function merge(arr1, arr2) {
 // Merge Sort Implementation
 
 function mergeSort(arr) {
-  // Base Case: if 
+  // Base Case: if length of arr is equal to or less than 1, return arr.
   if (arr.length <= 1) return arr;
   
   // Recursive call on each half of arr until each value is in its own array (i.e., sorted array).
@@ -306,7 +306,7 @@ mergeSort([10,24,67,43]);
 - **SC: O(log n)**
 #### Implementation
 ```js
-// Pivot Helper Function
+// Pivot/Partition Helper Function
 
 function pivotHelper(arr, startIdx = 0, endIdx = arr.length - 1) {
   // Grab the pivot from the start of the arr.
@@ -315,7 +315,7 @@ function pivotHelper(arr, startIdx = 0, endIdx = arr.length - 1) {
   // Initialize pivotIdx to keep track of how many elements are less than pivot (ultimately becomes pivot's correct position).
   let pivotIdx = 0
 
-  // Loop through arr from start to end.
+  // Loop through arr.
   for (let i = 1; i < arr.length; i++) {
   	// If this element is less than the pivot.
   	if (arr[i] < pivot) {
@@ -388,10 +388,43 @@ quickSort([4,6,9,1,2,5,3])
           // quickSort(arr, 2+1, 6) // "right" portion [9,5,6]
                        // pivotHelper(arr, 4, 6) // pivotIdx: 6, arr: [1,2,3,4,6,5,9]
                        // quickSort(arr, 4, 6-1) // [6,5]
-                                    // pivotHelper(arr, 4, 5) // pivotIdx: 5, arr: [1,2,3,4,5,6,9]
+                                    // (arr, 4, 5) // pivotIdx: 5, arr: [1,2,3,4,5,6,9]
                                     // quickSort(arr, 4, 5-1) // [5]. Base Case reached. Return [1,2,3,4,5,6,9]
 ```
 ### Radix Sort
+- **A special sorting algorithm that works on lists of numbers and does not make direct comparisons (ex: is i greater than i+1).**
+- It exploits the fact that information about the size of a number is encoded in the number of digits.
+	- More digits means a larger number.
+- Usually used with anything that can be expressed in binary numbers (ex: numbers, strings, images).
+- Process
+	- Group each number in the array based off of the ones digit (ex: 5 from 425).
+	- Put them back in a list, keeping the order they are in (not sorted yet).
+	- Now group each number based off of the tens digit (ex: 2 from 425).
+	- Put them back in a list, keeping the order they are in (not sorted yet).
+	- Now group each number based off of the 100s digit (ex: 4 from 425).
+	- Put them back in a list, keeping the order they are in.
+	- *Repeat this for the number of digits that the largest number has.*
+	- Now array is sorted.
+#### Big O
+- **TC:**
+#### Implementation
+```js
+// Helper Function
+
+```
+```js
+function radixSort() {
+	
+}
+```
+#### Process Example
+```js
+```
+
+Comparison Sorts vs 
+- Takes advantage of special properties of the data.
+
 
 ## Reference
 [Sorting Algorithms Animations](https://www.toptal.com/developers/sorting-algorithms)  
+[visualising data structures and algorithms through animation](https://visualgo.net/en)  
