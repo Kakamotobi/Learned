@@ -2,10 +2,12 @@
 
 ## Table of Contents
 - [Object Oriented Programming (OOP)](#object-oriented-programming-oop)
-- [Object Prototypes](#object-prototypes)
+- [JavaScript and OOP](#javascript-and-oop)
+  - [Object Prototypes](#object-prototypes)
 - [Factory Function](#factory-function)
 - [Constructor Function](#constructor-function)
 - [Class](#class)
+  - [Instance Methods vs. Class Methods](#instance-methods-vs-class-methods)
   - [`extends` and `super` Keywords](#extends-and-super-keywords)
 
 ## Object Oriented Programming (OOP)
@@ -17,7 +19,11 @@
 ### Reference
 [What is Object Oriented Programming? OOP Explained in Depth](https://www.educative.io/blog/object-oriented-programming)
 
-## Object Prototypes
+## JavaScript and OOP
+- JavaScript is not a class-based object-oriented language.
+- Rather, it is a *prototype-based language*.
+  - This prototype object serves as a template for which features, methods, functionalities can be inherited.
+### Object Prototypes
 - The mechanism by which JS objects inherit features from one another.
 - Objects can have a prototype object, which acts as a *template object* that it inherits properties and methods from.
 - `.prototype` vs. `__proto__`
@@ -60,11 +66,79 @@
   - The constructor function and methods, are defined separately.
 
 ## Class
-- Syntactic sugar for what factory and construction functions do.
+- **A blueprint for creating objects with pre-defined properties and methods.**
+- JavaScript does not really have classes.
+  - *`class` is just syntactic sugar over JavaScript's existing prototype-based inheritance.*
+    - Syntactic sugar for what factory and construction functions do.
+  - It does not introduce a new object-oriented inheritance model to JavaScript.
+  - `class` is merely a dressed up function.
+    - The below are the same.
+      ```js
+      const Pic = function(x,y,image) {
+        this.x = x;
+        this.y = y;
+        this.image = image;
+      }
+
+      let dogPic = new Pic(300,300,"dog.jpg");
+      ```
+      ```js
+      class Pic {
+        constructor(x,y,image) {
+          this.x = x;
+          this.y = y;
+          this.image = image;
+        }
+      }
+
+      let dogPic = new Pic(300,300,"dog.jpg");
+      ```
 - Notes
   - Capital first letter indicates a class.
   - There is always a `constructor(){}` function, which executes immediately whenever a new class is created. 
   - Add properties and methods in one go.
+  - Instances of classes are created with the `new` keyword.
+### Instance Methods vs. Class Methods
+#### Instance Methods
+- Methods that provide functionality that pertains to an individual instance of a class.
+- Example
+  ```js
+  class Student {
+    constructor(firstName, lastName) {
+      this.firstName = firstName;
+      this.lastName = lastName;
+    }
+
+    fullName() {
+      return `${this.firstname} ${this.lastName}`;
+    }
+  }
+
+  let student1 = new Student("Daeram", "Chung");
+  student1.fullName(); // "Daeram Chung"
+  ```
+#### Class Methods
+- Using the `static` keyword, define methods or functionalities that is pertinent to classes but not necessarily to individual instances of a class.
+- Static methods are called without instantiating their class and cannot be called through a class instance.
+- Static methods are often used to create utility functions for an application.
+- Example
+  ```js
+  class Student {
+    constructor(firstName, lastName) {
+      this.firstName = firstName;
+      this.lastName = lastName;
+    }
+    
+    static enrollStudents(...students) {
+      // send an email, etc.
+    }
+  }
+  
+  let student1 = new Student("Daeram", "Chung");
+  let student2 = new Student("Tom", "Jerry");
+  
+  Student.enrollStudents([student1, student2])
+  ```
 ### Example
 ![class](refImg/class.png)
 ### Outcome
