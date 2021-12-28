@@ -353,11 +353,11 @@ function maxSubarraySum(arr, num) {
   let maxSum = 0;
   let tempSum = 0;
 
-  // Store the first combination in maxSum.
+  // Store the first combination in maxSum. We need to initialize first value to be able to implement a sliding window.
   for (let i = 0; i < num; i++) {
      maxSum += arr[i];
   }
-  // Sync tempMax with maxSum.
+  // Sync tempSum with maxSum.
   tempSum = maxSum;
 
   // Loop: starting from the number after the first combination.
@@ -406,6 +406,70 @@ function findLongestSubstring(str){
     
     return longestLength;
 }
+```
+### Example 3
+- Write a function called sumOddLengthSubarrays, which accepts an array of positive integers and calculates the sum of all possible odd-length subarrays.
+#### Expectation
+```js
+sumOddLengthSubarrays([1,4,2,5,3]) // 58
+sumOddLengthSubarrays([1,2]) // 3
+sumOddLengthSubarrays([10,11,12]) // 66
+```
+#### Sliding Window Solution - TC: O(n<sup>2</sup>)
+```js
+function sumOddLengthSubarrays(arr) {
+  // Initialize sum variable.
+  let sum = 0;
+
+  // Loop 1 (i simply represents the current odd length. Ex: 1,3,5,7,9)
+  for (let i = 1; i <= arr.length; i+=2) {
+      // Initialize currSum.
+      let currSum = 0;
+
+      // Loop 2 (0 to current odd length) to initialize the first sum of each odd subarray length (necessary to implement a sliding window).
+      for (let j = 0; j < i; j++) {
+          // Calculate currSum.
+          currSum += arr[j];
+      }
+
+      // Update sum with currSum.
+      sum += currSum;
+
+      // Loop 3 (odd Length to arr.length) to add up the rest of Loop 1's iteration.
+      for (let j = i; j < arr.length; j++) {
+          // Calculate currSum by subtracting first number and adding next number (sliding window).
+          currSum = currSum - arr[j-i] + arr[j];
+          // Update sum with currentSum;
+          sum += currSum;
+      }
+  }
+
+  return sum;
+}
+```
+#### Process Example
+```js
+sumOddLengthSubarrays([1,4,2,5,3])
+// i = 1. Subarrays of length of 1.
+  // currSum = 0.
+  // currSum = 1.
+  // sum = 1.
+  // currSum = 1-1+4 = 4. sum = 1+4 = 5.
+  // currSum = 4-4+2 = 2. sum = 5+2 = 7.
+  // currSum = 2-2+5 = 5. sum = 7+5 = 12.
+  // currSum = 5-5+3 = 3. sum = 12+3 = 15.
+// i = 3. Subarrays of length of 3.
+  // currSum = 0.
+  // currSum = 1+4+2 = 7.
+  // sum = 15+7 = 22.
+  // currSum = 7-1+5 = 11. sum = 22+11 = 33
+  // currSum = 11-4+3 = 10. sum = 33+10 = 43.
+// i = 5. Subarrays of length of 5.
+  // currSum = 0.
+  // currSum = 1+4+2+5+3 = 15.
+  // sum = 43+15 = 58.
+  // Loop 3 doesn't run.
+// 58
 ```
 
 ## Divide and Conquer
