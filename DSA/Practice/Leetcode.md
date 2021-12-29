@@ -1,6 +1,6 @@
-# Practice Problems
+# Leetcode
 
-## Leetcode 1913. Maximum Product Difference Between Two Pairs
+## 1913. Maximum Product Difference Between Two Pairs
 - Input: array of integers called nums.
 - Output: largest product difference between pairs `(nums[w], nums[x])` and `(nums[y], nums[z])`.
 ### Solution 1
@@ -62,7 +62,7 @@ const maxProductDifference = (nums) => {
 }
 ```
 
-## Leetcode 1588. Sum of All Odd Length Subarrays
+## 1588. Sum of All Odd Length Subarrays
 - Input: an array of positive integers.
 - Output: the sum of all possible odd-length subarrays.
 ### Solution - Sliding Window
@@ -100,7 +100,7 @@ const sumOddLengthSubarrays = function(arr) {
 };
 ```
 
-## Leetcode 88. Merge Sorted Array
+## 88. Merge Sorted Array
 - Input: two integer arrays `nums1` and `nums2`, each in non-decreasing order. Two integers `m` and `n` representing the number of elements in `nums1` and `nums2` respectively.
   - `nums1` is accommodated to have length of `m + n`. `m` elements are `nums1`'s numbers and `n` elements are set to `0`.
   - `nums2` has a length of `n`.
