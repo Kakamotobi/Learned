@@ -65,7 +65,7 @@ const maxProductDifference = (nums) => {
 ## Leetcode 1588. Sum of All Odd Length Subarrays
 - Input: an array of positive integers.
 - Output: the sum of all possible odd-length subarrays.
-### Solution 1 - Sliding Window
+### Solution - Sliding Window
 - TC: O(n<sup>2</sup>)
 - SC: O(1)
 ```js
@@ -99,4 +99,88 @@ const sumOddLengthSubarrays = function(arr) {
   return sum;
 };
 ```
+
+## Leetcode 88. Merge Sorted Array
+- Input: two integer arrays `nums1` and `nums2`, each in non-decreasing order. Two integers `m` and `n` representing the number of elements in `nums1` and `nums2` respectively.
+  - `nums1` is accommodated to have length of `m + n`. `m` elements are `nums1`'s numbers and `n` elements are set to `0`.
+  - `nums2` has a length of `n`.
+- Output: do not return the final sorted array. Store it inside the array `nums1`.
+### Solution 1
+- TC: O(n<sup>2</sup>)
+- SC: O(1)
+```js
+const merge = function(nums1, m, nums2, n) {
+  // Get rid of the 0s accounting for n in nums1.
+  nums1.splice(nums1.length - n);
+
+  // Initialize pointer j for nums2.
+  let j = 0;
+
+  // Loop over nums1.
+  for (let i = 0; i < nums1.length; i++) {
+    // If number in nums2 is less than current number in nums1.
+    if (nums2[j] < nums1[i]) {
+      // Insert the nums2 number in that position in nums1.
+      nums1.splice(i, 0, nums2[j]);
+      // Move on to next number in nums2.
+      j++;
+    }
+  }
+
+  // Loop over nums2.
+  for (let k = j; k < nums2.length; k++) {
+    // Push in any remaining numbers in nums2.
+    nums1.push(nums2[k]);
+  }
+};
+```
+### Solution 2
+- TC: O(n)
+- SC: O(1)
+```js
+// Idea: start from the end and decrement indices.
+
+// Version 1
+const merge = (nums1, m, nums2, n) => {
+  // Initialize three pointers to the last index of each corresponding array.
+  let pointer1 = m - 1;
+  let pointer2 = n - 1;
+  let pointer3 = m + n - 1;
+
+  // While pointer2 is a valid index for nums2.
+  while (pointer2 >= 0) {
+    // if number at nums1 is greater than number at nums2.
+    if (nums1[pointer1] > nums2[pointer2]) {
+      // Set the number at pointer3 of nums1 to be the number at pointer1 of nums1.
+      nums1[pointer3] = nums1[pointer1]
+      // Decrement pointer3 and pointer1.
+      pointer3--;
+      pointer1--;
+    }
+    // else (if number at nums1 is less than or equal to number at nums2).
+    else {
+      // Set the number at pointer3 of nums1 to be the number at pointer2 of nums2.
+      nums1[pointer3] = nums2[pointer2]
+      // Decrement pointer3 and pointer2.
+      pointer3--;
+      pointer2--;
+    }
+  }
+}
+
+// Version 2
+const merge = (nums1, m, nums2, n) => {
+  let pointer1 = m - 1;
+  let pointer2 = n - 1;
+  let pointer3 = m + n - 1;
+  
+  while (pointer2 >= 0) {
+    nums1[pointer3--] = nums1[pointer1] > nums2[pointer2] ? nums1[pointer1--] : nums2[pointer2--];
+  }
+}
+```
+
+
+
+
 
