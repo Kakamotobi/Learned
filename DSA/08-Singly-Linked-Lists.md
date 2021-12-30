@@ -12,7 +12,10 @@
   - If you need to access a node/element, you need to start from the beginning.
 - ***Singly*** refers to the fact that each node is only connected one directionally to the next node.
 
-![Singly Linked List](refImg/singly-linked-list.png)
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/DSA/refImg/singly-linked-list.png"/ alt="Singly Linked Lists">
+</p>
+
 ### Singly Linked Lists vs. Arrays
 - Linked lists
   - Do not have indices.
