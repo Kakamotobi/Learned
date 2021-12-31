@@ -1,4 +1,4 @@
-# Leetcode
+# Leetcode - Easy
 
 ## 1913. Maximum Product Difference Between Two Pairs
 - Input: array of integers called nums.
