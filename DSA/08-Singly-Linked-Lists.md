@@ -206,6 +206,27 @@ class SinglyLinkedList {
       return removeTarget;
     }
   }
+  
+  // Reverse the linked list in place.
+  reverse() {
+    // Swap the head and tail.
+    [this.head, this.tail] = [this.tail, this.head];
+    // Initialize currNode, prevNode, nextNode.
+    let currNode = this.tail;
+    let prevNode = null;
+    let nextNode = null;
+    // Loop through the list.
+    for (let i = 0; i < this.length; i++) {
+      // Preserve the reference to the nextNode before effectively reversing currNode's link direction.
+      nextNode = currNode.next;
+      // Reverse the link direction.
+      currNode.next = prevNode;
+      // Move on.
+      prevNode = currNode;
+      currNode = nextNode;
+    }
+    return this;
+  }
 }
 ```
 
