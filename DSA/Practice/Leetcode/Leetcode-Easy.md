@@ -180,7 +180,35 @@ const merge = (nums1, m, nums2, n) => {
 }
 ```
 
-
-
-
+## 278. First Bad Version
+- Input
+  - Function called `isBadVersion` that determines whether a version is bad or not.
+    - *Every version after the first bad version are bad.*
+  - `n` versions.
+- Output: a function to find the first bad version.
+### Solution - Binary Search
+- TC: O(log n)
+- SC: O(1)
+```js
+const solution = function(isBadVersion) {
+  return function(n) {
+    // Initialize pointers.
+    let start = 1;
+    let end = n;
+    let mid;
+    
+    // While start and end have not passed each other.
+    while (start <= end) {
+      // Update mid.
+      mid = Math.floor((start+end)/2);
+      // If mid is a bad version and mid - 1 is not a bad version, return mid (the first bad version).
+      if (isBadVersion(mid) && !isBadVersion(mid-1)) return mid;
+      // If mid is a bad version, update end.
+      if (isBadVersion(mid)) end = mid - 1;
+      // Else mid is not a bad version.
+      else start = mid + 1;
+    }
+  }
+}
+```
 
