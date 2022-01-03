@@ -2,6 +2,8 @@
 
 ## Table of Contents
 - [What are Singly Linked Lists](#what-are-singly-linked-lists)
+  - [Singly Linked Lists vs. Arrays](#singly-linked-lists-vs-arrays)
+- [Singly Linked List Big O](#singly-linked-list-big-o)
 - [Singly Linked List Implementation](#singly-linked-list-implementation)
 
 ## What are Singly Linked Lists
@@ -26,6 +28,17 @@
   - Insertion and deletion can be expensive (reindexing required).
     - *One of the biggest reason to use a linked list is if you need to care for insertion/deletion of data and random access is not needed.*
   - Can quickly be accessed at a specific index.
+- *Singly linked lists are an excellent alternative to arrays when insertion and deletion at the beginning are frequently required and random access is not needed.*
+
+## Singly Linked List Big O
+- Insertion - depends
+  - Finding the index to insert at - O(1) or O(n)
+  - Performing the insertion - O(1)
+- Removal - depends
+  - Finding the index to remove - O(1) or O(n)
+  - Performing the removal - O(1)
+- Searching - O(n)
+- Access - O(n)
 
 ## Singly Linked List Implementation
 ```js
