@@ -1,5 +1,44 @@
 # Leetcode - Medium
 
+## 1010. Pairs of Songs With Total Durations Divisible by 60.
+- Input: array of integers representing song durations in seconds.
+- Output: the number of pairs whose sum is divisible by 60.
+  - `(time[i] + time[j]) % 60 === 0`
+  - i.e., `(time[i] % 60) + (time[j] % 60) === 60`
+### Example
+```js
+numPairsDivisibleBy60([30,20,150,100,40]) // 3
+numPairsDivisibleBy60([60,60,60]) // 3
+```
+### Solution
+```js
+const numPairsDivisibleBy60 = (time) => {
+  // Initialize counter.
+  let counter = 0;
+  
+  // Initialize freq object.
+  const freq = {};
+  
+  // Loop over time array.
+  for (let t of time) {
+    // Calculate mod of t.
+    let mod = t % 60;
+    // Calculate pair of t's mod.
+    let otherModHalf;
+    // Edge Case: mod === 0 refers to multiples of 60 (they need pair that is a 0 or another multiple of 60). So, otherModHalf needs to be 0.
+    if (mod === 0) otherModHalf = 0;
+    else otherModHalf = 60 - mod;
+    
+    // If otherModHalf exists in freq, add the value of otherModHalf to counter. 
+    if (freq[otherModHalf]) counter += freq[otherModHalf];
+    
+    // Record mod in freq.
+    freq[mod] = ++freq[mod] || 1;
+  }
+  
+  return counter;
+}
+```
 ## 969. Pancake Sorting
 - Input: array of integers.
 - Output: an array of `k` values corresponding to a sequence of pancake flips that sort `arr`.
