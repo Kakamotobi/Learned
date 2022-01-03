@@ -55,7 +55,7 @@ function binarySearch(sortedArr, val) {
   let end = sortedArr.length - 1;
   let mid;
   
-  while (left <= right) {
+  while (start <= end) {
     mid = Math.floor((start + end) / 2);
     
     if (val < sortedArr[mid]) {
