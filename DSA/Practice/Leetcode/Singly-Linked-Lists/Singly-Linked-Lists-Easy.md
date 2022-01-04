@@ -119,3 +119,36 @@ const removeElements = (head, val) => {
   return head;
 }
 ```
+
+## 83. Remove Duplicates from Sorted List
+- Input: the `head` of a sorted linked list.
+- Output: return the `head` of the sorted linked list without duplicates.
+### Example
+```js
+// Input: [1,1,2]
+// Output: [1,2]
+
+// Input: [1,1,2,3,3]
+// Output: [1,2,3]
+```
+### Solution
+```js
+const deleteDuplicates = (head) => {
+  // Initialize currNode with head.
+  let currNode = head;
+  
+  // While the end of the list hasn't been reached yet.
+  while (currNode) {
+    // If currNode's next is not null (currNode is not the tail) and currNode's next's value is the same as currNode's value.
+    if (currNode.next !== null && currNode.next.val === currNode.val) {
+      // Set currNode's next to be its next next.
+      currNode.next = currNode.next.next;
+    } else {
+      // Move currNode forwards.
+      currNode = currNode.next;
+    }
+  }
+  
+  return head;
+}
+```
