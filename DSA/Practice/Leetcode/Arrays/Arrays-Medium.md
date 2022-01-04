@@ -1,4 +1,4 @@
-# Leetcode - Medium
+# Arrays - Medium
 
 ## 1010. Pairs of Songs With Total Durations Divisible by 60
 - Input: array of integers representing song durations in seconds.
