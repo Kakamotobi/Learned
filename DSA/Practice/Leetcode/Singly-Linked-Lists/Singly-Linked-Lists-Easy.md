@@ -68,3 +68,54 @@ const mergeTwoLists = (list1, list2) => {
   return mergedHead.next;
 }
 ```
+## 203. Remove Linked List Elements
+- Input: the `head` of a linked list and an integer `val`.
+- Output: return the new `head` of the linked list with all nodes with a value of `val` removed.
+### Example
+```js
+// Input: [6,6,1,6,6,2,3,4,5,6]
+// Output: [1,2,3,4,5]
+
+6 -> 6 -> 1 -> 6 -> 6 -> 2 -> 3 -> 4 -> 5 -> 6 -> null
+h
+          h
+          c ------>
+          c ----------->
+                         c
+                              c
+                                   c
+                                        c
+                                        c ------>
+```
+### Solution
+```js
+const removeElements = (head, val) => {
+  // If there is no head, return it.
+  if (!head) return head;
+  
+  // While head starts out to be val, and immediately following nodes' values are val.
+  // Objective: skip ahead of continuous nodes with val.
+  while (head && head.val === val) {
+    // Move head forwards.
+    head = head.next;
+  }
+  
+  // Initialize current node to be head.
+  let currNode = head;
+  
+  // While currNode and currNode's next exist.
+  // Objective: skip nodes with values of val.
+  while (currNode && currNode.next) {
+    // If currNode's next's value is val.
+    if (currNode.next.val === val) {
+      // Set currNode's next to be its next next.
+      currNode.next = currNode.next.next;
+    } else {
+      // Move currNode forwards.
+      currNode = currNode.next;
+    }
+  }
+  
+  return head;
+}
+```
