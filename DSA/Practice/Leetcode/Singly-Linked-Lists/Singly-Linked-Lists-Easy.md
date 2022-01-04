@@ -152,3 +152,41 @@ const deleteDuplicates = (head) => {
   return head;
 }
 ```
+
+## 160. Intersection of Two Linked Lists
+- Input: the heads of two singly linked-lists `headA` and `headB`.
+- Output: return the node at which the two lists intersect (`null` if no intersection).
+  - *Intersecting node is the first node that is shared by the two lists.*
+### Example
+```js
+// A: 4 -> 1 -> 8 -> 4 -> 5
+// B: 5 -> 6 -> 1 -> 8 -> 4 -> 5
+// intersectVal = 8.
+
+// Objective: align the two linked lists (line up the ends of the two lists) by concatenating them in opposite orders.
+
+     <---------- A --------->      <------------ B ------------>
+A+B: 4 -> 1 -> 8 -> 4 -> 5 -> null -> 5 -> 6 -> 1
+                                                  -> 8 -> 4 -> 5
+B+A: 5 -> 6 -> 1 -> 8 -> 4 -> 5 -> null -> 4 -> 1
+     <------------ B ------------>      <---------- A --------->
+```
+### Solution
+```js
+const getIntersectionNode = (headA, headB) => {
+  // Initialize copies of headA and headB.
+  let a = headA;
+  let b = headB;
+  
+  // While a and b are not referring to the exact same node.
+  while (a !== b) {
+    // If a is null, concatenate headB. Else, move on to the next node.
+    a = a === null ? headB : a.next;
+    // If b is null, concatenate headA. Else, move on to the next node.
+    b = b === null ? headA : b.next;
+  }
+  
+  // Return either a or b (if no intersection was encountered, it will be null).
+  return a;
+}
+```
