@@ -288,3 +288,35 @@ const isPalindrome = (head) => {
   return true;
 }
 ```
+
+## 141. Linked List Cycle
+- Input: the `head` of a linked list.
+- Output: return `true` if the linked list has a cycle in it. Else return `false`.
+### Example
+```js
+// Input
+3 -> 2 -> 0 -> -4
+     ↑__________↓
+// Output: true
+```
+### Solution - Floyd's Cycle Detection Algorithm (Slow/Fast Runner)
+```js
+const hasCycle = (head) => {
+  // Initialize pointers.
+  let slow = head;
+  let fast = head;
+  
+  // While fast, fast's next, fast's next next do not pass the tail.
+  while (fast !== null; fast.next !== null) {
+    // Move slow and fast.
+    slow = slow.next;
+    fast = fast.next.next;
+    // If slow and fast are pointing to the same node, return true.
+    if (slow === fast) return true.
+  }
+  
+  return false;
+}
+```
+
+
