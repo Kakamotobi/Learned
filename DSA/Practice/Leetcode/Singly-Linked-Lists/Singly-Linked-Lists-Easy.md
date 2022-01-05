@@ -190,3 +190,101 @@ const getIntersectionNode = (headA, headB) => {
   return a;
 }
 ```
+
+## 234. Palindrome Linked List
+- Input: the `head` of a singly linked list.
+- Output: return `true` if it is a palindrome.
+### Example
+```js
+// Input: head = [1,7,2,8,2,7,1]
+// Output: true
+
+// Using Solution 2.
+// Find the middle.
+1 -> 7 -> 2 -> 8 -> 2 -> 7 -> 1
+               s              f
+// Reverse the second half.
+1 -> 7 -> 2 -> 8 <- 2 <- 7 <- 1
+                              f
+                                   s
+// Compare node values from both ends.
+1 -> 7 -> 2 -> 8 <- 2 <- 7 <- 1
+f                             s
+```
+### Solution 1
+- TC: O(n)
+- SC: O(n)
+```js
+const isPalindrome = (head) => {
+  let str = "";
+  while (head) {
+    str += head.val;
+    head = head.next;
+  }
+  
+  let reversed = "";
+  
+  for (let i = str.length-1; i >= 0; i--) {
+    reversed += str[i];
+  }
+  
+  return str === reversed ? true : false;
+}
+```
+### Solution 2 - Slow and Fast Runner
+- TC: O(n)
+- SC: O(1)
+- **Idea:**
+  - Find the middle using slow/fast runner, reverse the second half of the list to the middle.
+  - Compare node values starting from both ends to the middle.
+```js
+const isPalindrome = (head) => {
+  // Initialize pointers.
+  let slow = head;
+  let fast = head;
+  
+  // While fast hasn't passed/reached the end yet.
+  while (fast !== null && fast.next !== null) {
+    // Move slow and fast.
+    slow = slow.next;
+    fast = fast.next.next;
+  }
+  // At this point, slow is in the middle and fast is at the tail or passed the tail (null).
+  
+  // Initialize prev and next.
+  let prev = slow;
+  let next;
+  // Move slow.
+  slow = slow.next;
+  // Set middle node's next to be null to avoid infinite loop.
+  prev.next = null;
+  // While slow hasn't passed the end yet.
+  while (slow !== null) {
+    // Preserve next node.
+    next = slow.next;
+    // Set slow's next to be prev.
+    slow.next = prev;
+    // Move prev and slow.
+    prev = slow;
+    slow = next;
+  }
+  // At this point, slow is the tail's next (null). 
+  
+  // Set fast to the head, and set slow to the tail (prev).
+  fast = head;
+  slow = prev;
+  
+  // While fast and slow have not passed the middle.
+  while (slow !== null) {
+    // If fast's value and slow's value are not equal, return false.
+    if (fast.val !== slow.val) return false;
+    else {
+      // Move fast and slow to their next nodes.
+      fast = fast.next;
+      slow = slow.next;
+    }
+  }
+  
+  return true;
+}
+```
