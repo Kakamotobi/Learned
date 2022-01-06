@@ -96,3 +96,49 @@ const mergeInBetween = (list1, a, b, list2) => {
 }
 ```
 
+## 1721. Swapping Nodes in a Linked List
+- Input: `head` of a linked list and an integer `k`.
+- Output: return the `head` of the linked list after swapping the values of the `k`th node from the beginning and the `k`th node from the end (1-indexed).
+### Example
+```js
+// Input
+k = 2
+1 -> 2 -> 3 -> 4 -> 5
+// Output
+1 -> 4 -> 3 -> 2 -> 5
+
+// Input
+k = 2
+100 -> 90
+// Output
+90 -> 100
+```
+### Solution
+```js
+const swapNodeValues = (head, k) => {
+  // Initialize two strands of the list.
+  let A = head;
+  let B = head;
+  
+  // Objective: move A to kth node.
+  for (let i = 1; i < k; i++) A = A.next;
+  // Preserve kthNode.
+  let kthNode = A;
+  
+  // Move A to its next in order to align with B.
+  A = A.next;
+  // Objective: move B to the kth node from the back.
+  while (A !== null) {
+    A = A.next;
+    B = B.next;
+  }
+  
+  // Swap node values.
+  [kthNode.val, B.val] = [B.val, kthNode.val];
+  
+  return head;
+}
+```
+
+
+
