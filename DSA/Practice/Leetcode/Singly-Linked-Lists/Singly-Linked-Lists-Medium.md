@@ -140,5 +140,56 @@ const swapNodeValues = (head, k) => {
 }
 ```
 
+## 2095. Delete the Middle Node of a Linked List
+- Input: the `head` of a singly linked list.
+- Output: return the `head` of the list after deleting the middle node.
+- Constraints
+  - The middle node of a linked list of size `n` is the `[n/2]`th node from the start using 0-based indexing.
+### Example
+```js
+// Input
+1 -> 3 -> 4 -> 7 -> 1 -> 2 -> 6
+// Output
+1 -> 3 -> 4 ------> 1 -> 2 -> 6
+
+// Input
+1 -> 2 -> 3 -> 4
+// Output
+1 -> 2 ------> 4
+```
+### Solution
+```js
+const deleteMiddle = (head) => {
+  // Initialize prevMid, mid, scout.
+  let prevMid = head;
+  let mid = head;
+  let scout = head;
+  // Initialize numNodes.
+  let numNodes = 1;
+  
+  // Objective: get prevMid to be the (middle-1)th node.
+  while (scout && scout.next) {
+    // Skip the first iteration for prevMid.
+    if (numNodes !== 1) prevMid = prevMid.next;
+    mid = mid.next;
+    scout = scout.next.next;
+    numNodes++;
+  }
+  
+  // Edge Case: if length is 1.
+  if (numNodes === 1) {
+    head = null;
+    return head;
+  }
+  
+  // Delete the middle node.
+  prevMid.next = mid.next;
+  mid.next = null;
+  
+  return head;
+}
+```
+
+
 
 
