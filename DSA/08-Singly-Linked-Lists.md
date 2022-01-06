@@ -114,7 +114,7 @@ class SinglyLinkedList {
   
   // Remove a node from the beginning of the linked list.
   shift() {
-    if (!this.length) return undefined;
+    if (this.length === 0) return undefined;
     // Store the current head property in a variable (to return at the end).
     const shiftTarget = this.head;
     // Set the head property to be the current head's next property.
@@ -122,7 +122,7 @@ class SinglyLinkedList {
     // Decrement length.
     this.length--;
     // If list is empty after shift, set the tail to null.
-    if (this.length ===0) this.tail = null;
+    if (this.length === 0) this.tail = null;
     return shiftTarget;
   }
   
