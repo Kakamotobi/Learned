@@ -31,10 +31,10 @@
 - *Singly linked lists are an excellent alternative to arrays when insertion and deletion at the beginning are frequently required and random access is not needed.*
 
 ## Singly Linked List Big O
-- Insertion - depends
+- Insertion - O(1)
   - Finding the index to insert at - O(1) or O(n)
   - Performing the insertion - O(1)
-- Removal - depends
+- Removal - O(1)
   - Finding the index to remove - O(1) or O(n)
   - Performing the removal - O(1)
 - Searching - O(n)
@@ -182,7 +182,7 @@ class SinglyLinkedList {
     if (idx === this.length) return !!this.push(val);
     // If idx is 0, unshift new node to the start of the list.
     if (idx === 0) return !!this.unshift(val);
-    // Else idx is in the middle.
+    // Else idx is somewhere in the middle.
     else {
       const newNode = new Node(val);
       // Get the previous node.
@@ -204,9 +204,10 @@ class SinglyLinkedList {
     // If idx is invalid, return undefined.
     if (idx < 0 || idx >= this.length) return undefined;
     // If idx is 0, shift.
-    if (idx === 0) this.shift();
+    if (idx === 0) return this.shift();
     // If idx is the last node, pop.
     if (idx === this.length - 1) return this.pop();
+    // Else idx is somewhere in the middle.
     else {
       // Get the previous node. 
       const prevNode = this.get(idx-1);
