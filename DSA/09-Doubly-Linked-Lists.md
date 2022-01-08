@@ -234,9 +234,43 @@ class DoublyLinkedList {
       return removeTarget;
     }
   }
+  
+  // Reverse the linked list in place.
+  reverse() {
+    // Initialize newNextNode and currNode.
+    let newNextNode = null;
+    let currNode = this.head;
+    // While currNode hasn't reached the end yet.
+    while (currNode !== null) {
+      // Preserve currNode's previous node.
+      newNextNode = currNode.prev;
+      // Reverse currNode's next and prev.
+      currNode.prev = currNode.next;
+      currNode.next = newNextNode;
+      // Move currNode.
+      currNode = currNode.prev;
+    }
+    // Swap the head and tail.
+    [this.head, this.tail] = [this.tail, this.head];
+    return this;
+  }
 }
 ```
-
+```js
+// Different approach to reverse.
+reverse() {
+  let currNode = this.head;
+  [this.head, this.tail] = [this.tail, this.head];
+  let nextNode;
+  for (let i = 0; i < this.length; i++) {
+    nextNode = currNode.next;
+    currNode.next = currNode.prev;
+    currNode.prev = nextNode;
+    currNode = nextNode;
+  }
+  return this;
+}
+```
 
 
 
