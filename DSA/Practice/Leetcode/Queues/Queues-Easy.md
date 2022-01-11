@@ -48,3 +48,45 @@ MyQueue.prototype.empty = function () {
   return this.stack1.length === 0 ? true : false;
 }
 ```
+
+## 225. Implement Stack using Queues
+- Description
+  - Implement a queue using only two stacks.
+- Instructions
+  - `push(x)` pushes x to the top of the stack.
+  - `pop()` removes the element on the top of the stack and returns it.
+  - `top()` returns the element on the top of the stack.
+  - `empty()` returns `true` if stack is empty, otherwise `false`.
+- Constraints
+  - Must only use standard operations of a queue (`push to back`, `peek/pop from front`, `size`, and `is empty`).
+### Solution
+```js
+const MyStack = function() {
+  this.queue = [];
+}
+
+MyStack.prototype.push = function(x) {
+  this.queue.push(x);
+}
+
+MyStack.prototype.pop = function() {
+  for (let i = 0; i < this.queue.length - 1; i++) {
+    this.queue.push(this.queue.shift());
+  }
+  return this.queue.shift();
+}
+
+MyStack.prototype.top = function() {
+  for (let i = 0; i < this.queue.length - 1; i++) {
+    this.queue.push(this.queue.shift());
+  }
+  const topTarget = this.queue.shift();
+  this.queue.push(topTarget);
+  return topTarget;
+}
+
+MyStack.prototype.empty = function() {
+  return this.queue.length === 0 ? true : false;
+}
+```
+
