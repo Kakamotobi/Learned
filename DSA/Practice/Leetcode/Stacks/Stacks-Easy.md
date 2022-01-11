@@ -112,3 +112,36 @@ function handleSkip(str, idx) {
   return idx;
 }
 ```
+
+## 1021. Remove Outermost Parentheses
+- Input: a string of parentheses `s`.
+- Output: the string with the outermost parentheses of every primitive string in the primitive decomposition of `s`.
+### Example
+```js
+// Input: "(()())(())"
+// Output: "()()()"
+
+// Input: "(()(()))"
+// Output: "()(())"
+```
+### Solution
+- Idea:
+  - Determine outermost parentheses by counting the number of parentheses opened.
+```js
+const removeOuterParentheses = (s) => {
+  let newS = "";
+  let numOpen = 0;
+  
+  for (let char of s) {
+    // If char is "(" and at least one parenthesis was opened already (the "first"/outermost parenthesis is skipped).
+    if (char === "(" && numOpen > 0) res += char;
+    // Else if char is ")" and it is not the closing pair of the "first"/outermost parenthesis.
+    else if (char === ")" && numOpen > 1) res += char;
+    // Update numOpen.
+    numOpen += char === "(" ? 1 : -1;
+  }
+  
+  return newS;
+}
+```
+
