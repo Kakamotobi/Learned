@@ -15,7 +15,7 @@
 - ***Singly*** refers to the fact that each node is only connected one directionally to the next node.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/DSA/refImg/singly-linked-list.png"/ alt="Singly Linked Lists">
+  <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/DSA/refImg/singly-linked-list.png" alt="Singly Linked Lists" width="80%" />
 </p>
 
 ### Singly Linked Lists vs. Arrays
