@@ -363,6 +363,36 @@ function capitalizeFirst(arr) {
 }
 ```
 ### Problem 6
+- Input: positive integer `n`.
+- Output: return the `n`th number in the Fibonnaci sequence.
+- Fibonnaci Sequence
+	- Every number thereafter is equal to the sum of the previous two numbers.
+#### Expectation
+```js
+// Fibonnaci Sequence: 1, 1, 2, 3, 5, 8, 13, 21, 44 ...
+// f(n) = f(n-1) + f(n-2)
+
+fib(5)
+fib(4)+fib(3)
+fib(3)+fib(2) + fib(2)+fib(1)
+fib(2)+fib(1)+fib(1)+fib(0) + fib(1)+fib(0)+fib(1)
+fib(1)+fib(0)+fib(1)+fib(1)+fib(0) + fib(1)+fib(0)+fib(1)
+1+0+1+1+0 + 1+0+1
+5
+```
+#### Pure Recursion Solution
+```js
+function fib(n) {
+	// Base Case
+	if (n === 0) return 0;
+	if (n === 1) return 1;
+	
+	// Recursive Call
+	return fib(n - 1) + fib(n - 2);
+}
+```
+
+### Problem 7
 - Write a recursive function called nestedEvenSum, which returns the sum of all even numbers in an object which may contain nested objects.
 #### Expectation
 ```js
@@ -403,7 +433,7 @@ function nestedEvenSum (obj) {
 	   // 2 + nestedEvenSum(otherObj)
 	   		  // 2
 ```
-### Problem 7
+### Problem 8
 - Write a recursive function called capitalizeWord, which accepts an array of words and returns an array containing each word capitalized.
 #### Expectation
 ```js
@@ -429,7 +459,7 @@ function capitalizeWords(words) {
 								 																				// ["RECURSION"].concat(capitalizeWords([]))
 								 																																// []
 ```
-### Problem 8
+### Problem 9
 - Write a function called stringifyNumbers, which takes in an object and finds all of the values which are numbers and converts them to strings.
 #### Expectation
 ```js
@@ -482,7 +512,7 @@ function stringifyNumbers(obj) {
 // newObj = {num: "1", test: [], data: {val: "4", info: stringifyNumbers(obj[key])}}
 // newObj = {num: "1", test: [], data: {val: "4", info: {isRight: true, random: "66"}}}
 ```
-### Problem 9
+### Problem 10
 - Write a function called collectStrings which accepts an object and returns an array of all the values in the object that have a type of string.
 #### Expectation
 ```js
