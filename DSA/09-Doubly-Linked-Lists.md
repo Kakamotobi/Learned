@@ -14,7 +14,7 @@
   - Browser history (back, forward).
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/DSA/refImg/doubly-linked-list.png" alt="Singly Linked Lists" />
+  <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/DSA/refImg/doubly-linked-list.png" alt="Singly Linked Lists" width="80%" />
 </p>
 
 ## Doubly Linked List Big O
