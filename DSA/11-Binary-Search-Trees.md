@@ -15,7 +15,7 @@
 - Below: general tree example.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/DSA/refImg/tree.png" alt="Tree" />
+  <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/DSA/refImg/tree.png" alt="Tree" width="80%" />
 </p>
 
 ### Terminology
@@ -45,7 +45,7 @@
 - Below: binary search tree example.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/DSA/refImg/binary-search-tree.png" alt="Tree" />
+  <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/DSA/refImg/binary-search-tree.png" alt="Tree" width="80%" />
 </p>
 
 ### Binary Search Tree Big O
@@ -138,12 +138,3 @@ class BinarySearchTree {
   }
 }
 ```
-
-
-
-
-
-
-
-
-
