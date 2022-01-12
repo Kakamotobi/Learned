@@ -16,17 +16,24 @@
 ### What is a Distributed Version Control System (DVCS)?
 > A system that fully mirrors the repository, including its full history.  
 - Every clone is really a full backup of all the data.  
-- Can have several remote repositories they can work with, so that we can collaborate with different groups of people in different ways simultaneously within the same project.  
+- Can have several remote repositories they can work with, so that we can collaborate with different groups of people in different ways simultaneously within the same project.
 
-![DVCS](refImg/dvcs.png)
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/Version%20Control%20System/refImg/dvcs.png" alt="DVCS" width="60%" height="650px" />
+</p>
+
 
 ## What is Git?
 - Git is a distributed version control system.
 - Data is treated like a series of snapshots of a miniature filesystem.
   - *Stream of snapshots.*
 - For every commit, Git takes a snapshot of what all the files look like at that moment and stores a reference to that snapshot.  
-- If files have not changed, Git doesn’t store the file again. It stores just a link to the previous identical file that it has already stored.  
-  ![Git Check Ins Overtime](refImg/git-check-ins-overtime.png)
+- If files have not changed, Git doesn’t store the file again. It stores just a link to the previous identical file that it has already stored.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/Version%20Control%20System/refImg/git-check-ins-overtime.png" alt="Git Checkins Over Time" width="80%" />
+</p>
+  
 - Everything in Git is checksummed before it is stored and is then referred to by that checksum.
   - The mechanism that Git uses for this checksumming is called a SHA-1 hash (a 40-character string composed of hexadecimal characters).
 - .gitignore includes files that we don't want Git to track and don't want to upload to GitHub.
@@ -37,8 +44,12 @@
 
 3) You do a commit, which takes the files as they are in the staging area and stores that snapshot permanently to your Git directory.
 #### The Three States
-- The three main states that our files can reside in.  
-  ![Three Main States](refImg/three-main-states.png)
+- The three main states that our files can reside in.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/Version%20Control%20System/refImg/three-main-states.png" alt="Three Main States" width="80%" />
+</p>
+
 ##### 1) Working Directory
 > The working tree is a single checkout of one version of the project. These files are pulled out of the compressed database in the Git directory and placed on disk for you to use or modify.
 - Use **`git add <file(s)>`** to move file(s) to the Staging Area.
