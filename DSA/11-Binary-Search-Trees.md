@@ -136,5 +136,27 @@ class BinarySearchTree {
       }      
     }
   }
+  
+  // Breadth-First Search
+  BFS() {
+    // Initialize queue with root.
+    const queue = [this.root];
+    // Initialize array to store the visited node values.
+    const visited = [];
+    // Initialize currNode.
+    let currNode;
+    // While there is something in the queue.
+    while (queue.length !== 0) {
+      // Dequeue from the queue.
+      currNode = queue.shift();
+      // Record currNode's val in visited array.
+      visited.push(currNode.val);
+      // If currNode has a left property, add it to the queue.
+      if (currNode.left) queue.push(currNode.left);
+      // If currNode has a right property, add it to the queue.
+      if (currNode.right) queue.push(currNode.right);
+    }
+    return visited;
+  }
 }
 ```
