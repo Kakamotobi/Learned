@@ -63,7 +63,11 @@
   - **i.e. how the runtime of an algorithm grows as the input grows.**
 
 ## Big O Complexity Chart
-![Big O Complexity Chart](refImg/big-o-complexity-chart.png)
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/DSA/refImg/big-o-complexity-chart.png" alt="Big O Complexity Chart" width="80%" />
+</p>
+
 
 ## Time Complexity
 - In computer science, the time complexity is **the computational complexity that describes the amount of computer time it takes to run an algorithm as the size of the input increases.**
