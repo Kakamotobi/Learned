@@ -158,5 +158,62 @@ class BinarySearchTree {
     }
     return visited;
   }
+  
+  // Depth-First Search Preorder
+  DFSPreorder() {
+    // Initialize array to store the visited node values.
+    const visited = [];
+    // Initialize currNode.
+    let currNode = this.root;
+    // Recursive helper function.
+    function traverse(node) {
+      // Record currNode's val in visited array.
+      visited.push(node.val);
+      // If the node has a left property, recursively call its left property.
+      if (node.left) traverse(node.left);
+      // If the node has a right property, recursively call its right property.
+      if (node.right) traverse(node.right);
+    }
+    traverse(currNode);
+    return visited;
+  }
+  
+  // Depth-First Search Postorder
+  DFSPostorder() {
+    // Initialize array to store the visited node values.
+    const visited = [];
+    // Initialize currNode.
+    let currNode = this.root;
+    // Recursive helper function.
+    function traverse(node) {
+      // If the node has a left property, recursively call its left property.
+      if (node.left) traverse(node.left);
+      // If the node has a right property, recursively call its right property.
+      if (node.right) traverse(node.right);
+      // Base Case: once node has reached the end of a branch, record node's val in visited array.
+      visited.push(node.val);
+    }
+    traverse(currNode);
+    return visited;
+  }
+  
+  // Depth-First Search Inorder
+  DFSInorder() {
+    // Initialize array to store the visited node values.
+    const visited = [];
+    // Initialize currNode.
+    let currNode = this.root;
+    // Recursive helper function.
+    function traverse(node) {
+      // If the node has a left property, recursively call its left property.
+      if (node.left) traverse(node.left);
+      // Record node's val in visited array.
+      visited.push(node.val);
+      // If the node has a right property, recursively call its right property.
+      if (node.right) traverse(node.right);
+    }
+    traverse(currNode);
+    return visited;
+  }
 }
 ```
