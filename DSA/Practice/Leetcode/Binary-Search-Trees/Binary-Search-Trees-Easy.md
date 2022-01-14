@@ -118,6 +118,18 @@ const increasingBST = (root) => {
 ```js
 // Input: [-10,-3,0,5,9]
 // Output: [0,-3,9,-10,null,5] or [0,-10,5,null,-3,null,9]
+
+// sortedArrayToBST(nums, 0, 4) // root: 0 // (11) return 0.
+   // sortedArrayToBST(nums, 0, 1) // root's left // currNode = -10 // (5) return -10.
+      // sortedArrayToBST(nums, 0, -1) // -10's left // base case reached. // (1) return null.
+      // sortedArrayToBST(nums, 1, 1) // -10's right // currNode = -3 // (4) return -3.
+         // sortedArrayToBST(nums, 1, 0) // -3's left // base case reached. // (2) return null.
+         // sortedArrayToBST(nums, 2, 1) // -3's right // base case reached. // (3) return null.
+   // sortedArrayToBST(nums, 3, 4) // root's right // currNode = 5 // (10) return 5.
+      // sortedArrayToBST(nums, 3, 2) // 5's left // base case reached. // (6) return null.
+      // sortedArrayToBST(nums, 4, 4) // 5's right // currNode = 9 // (9) return 9.
+         // sortedArrayToBST(nums, 4, -3) // 9's left // base case reached. // (7) return null.
+         // sortedArrayToBST(nums, 5, 4) // 9's left // base case reached. // (8) return null.
 ```
 ### Solution
 ```js
@@ -130,7 +142,7 @@ const sortedArrayToBST = (nums, start=0, end=nums.length-1) => {
   const mid = Math.floor((start+end)/2);
   // Create node (this will be the root in the first recursion).
   const currNode = new TreeNode(nums[mid]);
-  
+
   // Recursive call on left side.
   currNode.left = sortedArrayToBST(nums, start, mid-1);
   // Recursive call on right side.
