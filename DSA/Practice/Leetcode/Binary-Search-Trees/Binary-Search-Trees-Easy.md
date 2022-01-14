@@ -106,3 +106,50 @@ const increasingBST = (root) => {
   return newRoot;
 }
 ```
+
+## 108. Convert Sorted Array to Binary Search Tree
+- Input: an integer array `nums` sorted in **ascending order**.
+- Output: return the array converted into a ***height-balanced*** binary search tree.
+- Constraints
+  - `1 <= nums.length <= 10^4`.
+  - `-10^4 <= nums[i] <= 10^4`.
+  - `nums` is sorted in a strictly increasing order.
+### Example
+```js
+// Input: [-10,-3,0,5,9]
+// Output: [0,-3,9,-10,null,5] or [0,-10,5,null,-3,null,9]
+```
+### Solution
+```js
+// Set default pointer values.
+const sortedArrayToBST = (nums, start=0, end=nums.length-1) => {
+  // Base Case
+  if (start > end) return null;
+
+  // Calculate the mid index between start and end.
+  const mid = Math.floor((start+end)/2);
+  // Create node (this will be the root in the first recursion).
+  const currNode = new TreeNode(nums[mid]);
+  
+  // Recursive call on left side.
+  currNode.left = sortedArrayToBST(nums, start, mid-1);
+  // Recursive call on right side.
+  currNode.right = sortedArrayToBST(nums, mid+1, end);
+  
+  return currNode;
+}
+
+// Binary Tree Node
+// function TreeNode(val, left, right) {
+//   this.val = (val===undefined ? 0 : val);
+//   this.left = (left===undefined ? null : left);
+//   this.right = (right===undefined ? null : right);
+// }
+```
+
+
+
+
+
+
+
