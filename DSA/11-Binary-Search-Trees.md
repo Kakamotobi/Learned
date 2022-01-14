@@ -2,6 +2,7 @@
 
 ## Table of Content
 - [What are Trees?](#what-are-trees)
+  - [Terminology](#terminology)
 - [Binary Trees](#binary-trees)
 - [Binary Search Trees](#binary-search-trees)
   - [Binary Search Tree Implementation](#binary-search-tree-implementation)
@@ -19,12 +20,12 @@
 </p>
 
 ### Terminology
-- Root: top node of a tree.
-- Child: a node directly connected to another node when moving away from the root.
-- Parent: the converse  notion of a child.
-- Siblings: a group of nodes with the same parent.
-- Leaf: a node with no children.
-- Edge: the connection between one node and another.
+- **Root**: top node of a tree.
+- **Child**: a node directly connected to another node when moving away from the root.
+- **Parent**: the converse  notion of a child.
+- **Siblings**: a group of nodes with the same parent.
+- **Leaf**: a node with no children.
+- **Edge**: the connection between one node and another.
 ### Some Uses for Trees
 - HTML DOM.
 - JSON.
