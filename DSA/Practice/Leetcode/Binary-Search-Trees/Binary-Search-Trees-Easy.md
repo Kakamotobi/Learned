@@ -159,8 +159,44 @@ const sortedArrayToBST = (nums, start=0, end=nums.length-1) => {
 // }
 ```
 
+## 530. Minimum Absolute Difference in BST
+- Input: the `root` of a binary tree.
+- Output: return the minimum absolute difference between the values of any two different nodes in the tree.
+- Constraints
+  - Number of nodes is between `[2, 10^4]`.
+  - `0 <= Node.val <= 10^5`.
+### Example
+```js
+// Input: [4,2,6,1,3]
+// Output: 1
 
+// getMinimumDifference(4) // minDiff = 1 // prevNodeValue = 4 // (4)
+   // getMinimumDifference(2) // minDiff = 1 // prevNodeValue = 2 // (2)
+      // getMinimumDifference(1) // minDiff = Infinity // prevNodeValue = 1 // (1)
+      // getMinimumDifference(3) // minDiff = 1 // prevNodeValue = 3 // (3)
+   // getMinimumDifference(6) // minDiff = 1 // prevNodeValue = 6 // (5)
+```
+### Solution
+```js
+// Inorder DFS on a BST will allow us to traverse through each node in sorted order.
+// This means that |node3.val - node1.val| will not be less than |node2.val - node1.val|.
+// Therefore, we only need to get the difference between adjacent node values.
 
+const getMinimumDifference = (root) => {
+  let minDiff = Infinity;
+  let prevNodeVal = -Infinity;
+  function inorderTraverse(node) {
+    if (node.left) inorderTraverse(node.left);
+    // Update minDiff.
+    minDiff = Math.min(minDiff, node.val - prevNodeVal);
+    // Store current node's val for next comparison.
+    prevNodeVal = node.val;
+    if (node.right) inorderTraverse(node.right);
+  }
+  inorderTraverse(root);
+  return minDiff;
+}
+```
 
 
 
