@@ -198,6 +198,30 @@ const getMinimumDifference = (root) => {
 }
 ```
 
+## 235. Lowest Common Ancestor of a Binary Search Tree
+- Input: `root` of a BST, two nodes `p` and `q`.
+- Output: return the lowest common ancestor shared by `p` and `q` in the BST.
+- Constraints
+  - Number of nodes range between `[2, 10^5]`.
+  - `-10^9 <= Node.val <= 10^9`.
+  - All `Node.val` are unique.
+  - `p != q`.
+  - `p` and `q` are guaranteed to exist in the BST.
+### Solution
+```js
+// Initialize variable to keep track of common ancestor with the root.
+// Keep "pushing" down the variable to the node below until p and q split up directions.
 
-
-
+const lowestCommonAncestor = (root, p, q) => {
+  let currNode = root;
+  while (currNode) {
+    // If currNode's value is greater than both p and q's value, move on to currNode's left node.
+    if (currNode.val > p.val && currNode.val > q.val) currNode = currNode.left;
+    // Else if currNode's value is less than both p and q's value, move on to currNode's right node.
+    else if (currNode.val < p.val && currNode.val < q.val) currNode = currNode.right;
+    // Else, p and q split up directions.
+    else break;
+  }
+  return currNode;
+}
+```
