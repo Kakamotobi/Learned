@@ -225,3 +225,31 @@ const lowestCommonAncestor = (root, p, q) => {
   return currNode;
 }
 ```
+
+## 501. Find Mode in Binary Search Tree
+- Input: `root` of a BST with duplicates.
+- Output: return all the modes (i.e., the most frequently occured element) in the BST.
+- Constraint:
+  - `Node.left.val <= Node.val <= Node.right.val`.
+### Solution
+```js
+const findMode = (root) => {
+  const modes = [];
+  const freq = {};
+  let maxMode = -Infinity;
+  
+  function preorder(node) {
+    freq[node.val] = ++freq[node.val] || 1;
+    if (freq[node.val] > maxMode) maxMode = freq[node.val];
+    if (node.left) preorder(node.left);
+    if (node.right) preorder(node.right);
+  }
+  preorder(root);
+  
+  for (let key in freq) {
+    if (freq[key] === maxMode) modes.push(key);
+  }
+  return modes;
+}
+```
+
