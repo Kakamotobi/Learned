@@ -240,6 +240,7 @@ const findMode = (root) => {
   
   function preorder(node) {
     freq[node.val] = ++freq[node.val] || 1;
+    // If necessary, update modeMax after adding to freq.
     if (freq[node.val] > maxMode) maxMode = freq[node.val];
     if (node.left) preorder(node.left);
     if (node.right) preorder(node.right);
