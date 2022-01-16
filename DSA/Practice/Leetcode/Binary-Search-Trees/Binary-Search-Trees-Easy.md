@@ -132,6 +132,7 @@ const increasingBST = (root) => {
          // sortedArrayToBST(nums, 5, 4) // 9's left // base case reached. // (8) return null.
 ```
 ### Solution
+- Since we are given a **sorted array**, use **binary search** to construct the tree.
 ```js
 // Set default pointer values.
 const sortedArrayToBST = (nums, start=0, end=nums.length-1) => {
