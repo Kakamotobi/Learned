@@ -32,3 +32,24 @@ const balanceBST = (root) => {
   return constructBST(values);
 }
 ```
+
+## 230. Kth Smallest Element in a BST
+- Input: `root` of a BST, an integer `k`.
+- Output: return the `k`th smallest value (1-indexed) of all the values of the nodes in the tree.
+### Solution
+```js
+const kthSmallest = (root, k) => {
+  const values = [];
+  function inorder(node) {
+    if (values.length < k) {
+      if (node.left) inorder(node.left);
+      values.push(node.val);
+      if (node.right) inorder(node.right);
+    }
+  }
+  inorder(root);
+  return values[k-1];
+}
+```
+
+
