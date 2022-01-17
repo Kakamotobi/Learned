@@ -190,6 +190,89 @@ const deleteMiddle = (head) => {
 }
 ```
 
+## 143. Reorder List
+- Input: `head` of a singly linked list.
+- Output: reorder the list as such: `L0 → Ln → L1 → Ln - 1 → L2 → Ln - 2 → …`.
+### Solution 1
+```js
+// Store all the values in an array.
+// Then use two pointers to keep track of which value should come next.
 
+const reorderList = (head) => {
+  const values = [];
+  let currNode = head;
+  while (currNode !== null) {
+    values.push(currNode.val);
+    currNode = currNode.next;
+  }
+  
+  currNode = head;
+  let i = 1;
+  let j = 0;
+  for (let k = 1; k < values.length; k++) {
+    // If the index is even.
+    if (k % 2 === 0) {
+      currNode.next = new ListNode(values[i]);
+      i++;
+    }
+    // Else if the index is odd.
+    else if (k % 2 !== 0) {
+      currNode.next = new ListNode(values[values.length-1-j]);
+      j++;
+    }
+    currNode = currNode.next;
+  }
+  
+  return head;
+}
+```
+### Solution 2
+```js
+// Split the linked list into two.
+// Reverse the back half.
+// Merge the two lists together.
 
-
+const reorderList = (head) => {
+  // Split the linked list.
+  let slow = head;
+  let fast = head;
+  while (fast && fast.next) {
+    slow = slow.next;
+    fast = fast.next.next;
+  }
+  // Back portion of the list.
+  let backList = slow.next;
+  
+  // Reverse the back portion.
+  let prevNode = null;
+  let currNode = backList;
+  let nextNode = null;
+  while (currNode) {
+    nextNode = currNode.next;
+    currNode.next = prevNode;
+    prevNode = currNode;
+    currNode = nextNode;
+  }
+  // Set backList to the start of the back portion.
+  backList = prevNode;
+  
+  // Merge the two portions together.
+  currNode = head;
+  let frontTracker;
+  let backTracker;
+  while (currNode && backList) {
+    // Preserve reference to next node in front portion.
+    frontTracker = currNode.next;
+    // Preserve reference to next node in back portion.
+    backTracker = backList.next;
+    // Merge nodes.
+    currNode.next = backList;
+    currNode.next.next = frontTracker;
+    // Move target nodes forward.
+    backList = backTracker;
+    currNode = frontTracker;
+  }
+  
+  return head;
+}
+```
