@@ -52,4 +52,33 @@ const kthSmallest = (root, k) => {
 }
 ```
 
-
+## 1008. Construct Binary Search Tree from Preorder Traversal
+- Input: an array of integers `preorder` that represents the preorder traversal of a BST.
+- Output: construct the BST and return its root.
+- Constraints
+  - `1 <= preorder.length <= 100`.
+  - `1 <= preorder[i] <= 1000`.
+  - All the values of `preorder` are unique.
+### Solution
+```js
+const bstFromPreorder = (preorder) => {
+  const root = new TreeNode(preorder[0]);
+  
+  function insert(node, num) {
+    if (num < node.val) {
+      if (node.left) insert(node.left, num);
+      else node.left = new TreeNode(num);
+    }
+    else if (num > node.val) {
+      if (node.right) insert(node.right, num);
+      else node.right = new TreeNode(num);
+    }
+  }
+  
+  for (let i = 1; i < preorder.length; i++) {
+    insert(root, num);
+  }
+  
+  return root;
+}
+```
