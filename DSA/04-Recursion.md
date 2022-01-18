@@ -6,6 +6,7 @@
 - [Pure Recursion Examples](#pure-recursion-examples)
   - [Pure Recursion Tips](#pure-recursion-tips)
 - [Helper Method Recursion](#helper-method-recursion)
+- [5 Simple Steps to Solve Recursive Problems](#5-simple-steps-to-solve-recursive-problems)
 - [Practice Problems](#practice-problems)
 
 ## What is Recursion?
@@ -13,7 +14,7 @@
 - **Invoke the same function over and over again with a different input each time until you reach your base case.**
 - The two essential parts of a recursive function.
   - **Different Input:** the function is called with a different input each time.
-  - **Base Case:** the condition when the recursion ends.
+  - **Base Case:** the condition when the recursion ends. It is the only input where we provide an explicit answer.
 - Examples
   - `JSON.parse()`, `JSON.stringify()` are often written recursively (based on the browser).
   - `document.getElementById` and DOM traversal algorithms.
@@ -144,6 +145,93 @@ function collectOddValues(arr) {
                               // [3].concat(collectOddValues([]))
                                             // return []
 ```
+
+## 5 Simple Steps to Solve Recursive Problems
+1) **What is the simplest possible input for the function?**
+    - The simplest case often translates itself into a base case for the recursion.
+2) **Play around with examples and visualize.**
+3) **Try relating hard examples to simpler examples.**
+	  - Ex: if we are given the answer to a smaller input, could we solve the case for a bigger input?
+4) **Generalize the pattern.**
+5) **Write code by combining the recursive pattern with the base case.**
+
+### Example 1
+- Write a recursive function that given an input `n`, sums all non-negative integers up to `n`.
+
+1) The simplest possible input is `n = 0`.
+2) Try examples.
+    - `n = 1`: 1
+    - `n = 2`: 3
+    - `n = 3`: 6
+    - `n = 4`: 10
+    - `n = 5`: 15
+3) If we are given the answer to `sumToN(4)`, just add `5` to get `sumToN(5)`.
+4) Generalized the pattern: `sumToN(n) === `sumToN(n-1) + n`.
+5) Combine the recursive pattern with the base case.
+	```js
+	const sumToN = (n) => {
+		if (n === 0) return 0;
+		return sumToN(n-1) + n;
+	}
+	```
+### Example 2
+- Write a function that takes two inputs `n` and `m` and outputs the number of unique paths from the top left corner to the bottom right corner of a `n * m` grid.
+- Constraints: you can only move down or right 1 unit at a time.
+
+1) The simplest possible input is a `1 * 1` grid, where there is exactly one path.
+2) Try examples.
+		- Simple examples.
+	    - `gridPaths(1,1)`: 1 path
+		  - `gridPaths(n,1)`: 1 path
+	  	- `gridPaths(1,m)`: 1 path
+		- Harder examples.
+			- `gridPaths(3,2)`: 3 paths
+			- `gridPaths(2,3)`: 3 paths
+			- `gridPaths(3,3)`: 6 paths
+3) Relate the examples.
+    - If either `n === 1` or `m === 1`, we have only one unique path (base case).
+    - The number of paths of a `3*3` grid is the sum of the number of paths of the `2*3` and `3*2` grid.
+4) Generalize patterns.
+		- `if (n === 1 || m === 1)`, `gridPaths(n,m)` is 1.
+		- `gridPaths(n,m) === gridPaths(n-1,m) + gridPaths(n,m-1)`
+5) Combine the recursive pattern with the base case.
+	```js
+	const gridPaths = (n, m) => {
+		if (n === 1 || m === 1) return 1;
+		return gridPaths(n-1, m) + gridPaths(n, m-1);
+	}
+	```
+### Example 3
+- Write a function that counts the number of ways you can partition `n` objects using parts up to `m` (assuming `m >= 0`).
+	- A partition's max number of objects is `m`.
+
+1) The simplest possible input is when `n === 0` and `m === 0`.
+    - We can partition 0 objects using parts up to 0, *once*.
+2) Try examples
+    - `countPartitions(1, 0)`: 0
+    - `countPartitions(5, 0)`: 0
+		- `countPartitions(0, 1)`: 1
+		- `countPartitions(0, 5)`: 1
+		- `countPartitions(5, 5)`: 7
+		- `countPartitions(6, 4)`: 9
+3) Relate the examples.
+    - If `n === 0`, there is one way (base case 1).
+		- If `m === 0`, there is no way (base case 2).
+		- All partitions of `countPartitions(n, m-1)` are a subset of `countPartitions(n, m)`.
+		- For the remaining, `countPartitions(n-m, m)` gives the required combinations to add to `m` to make `n`.
+4) Generalize pattern.
+    - `countPartitions(n, m) = countPartitions(n-m, m) + countPartitions(n, m-1)`.
+5) Combine the recursive pattern with the base cases.
+	```js
+	const countPartitions = (n, m) => {
+		if (n === 0) return 1;
+		if (m === 0 || n < 0) return 0;
+		return countPartitions(n - m, m) + countPartitions(n, m - 1);
+	}
+	```
+
+### Reference
+[5 Simple Steps for Solving Any Recursive Problem](https://www.youtube.com/watch?v=ngCos392W4w&ab_channel=Reducible)
 
 ## Practice Problems
 ### Problem 1
