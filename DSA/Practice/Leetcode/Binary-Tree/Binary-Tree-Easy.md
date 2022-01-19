@@ -76,3 +76,60 @@ const invertTree = (root) => {
   return root;
 }
 ```
+
+## 100. Same Tree
+- Input: the roots of two binary trees `q` and `p`.
+- Output: return true if they are identical in structure and value.
+### Solution
+```js
+const isSameTree = (p, q) => {
+  // If p and q are both null, return true.
+  if (p === null && q === null) return true;
+  // If either p or q is null (but not both), return false.
+  if (p === null || q === null) return false;
+  // If p and q's values are not equal, return false.
+  if (p.val !== q.val) return false;
+  
+  return isSameTree(p.left, q.left) && isSameTree(p.right, q.right);
+}
+```
+
+## 572. Subtree of Another Tree
+- Input: the root of two binary trees `root` and `subRoot`.
+- Output: return true if there is a subtree of `root` with the same structure and node values of `subRoot`.
+- Constraints
+  - Number of nodes in the root tree is in the range `[1, 2000]`.
+  - Number of nodes in the subRoot tree is in the range `[1, 1000]`.
+  - `-10^4 <= root.val <= 10^4`
+  - `-10^4 <= subRoot.val <= 10^4`
+### Solution
+```js
+// Traverse through the tree.
+// If encountered a node with a value the same as subRoot's val, check for the whole subtree.
+
+const isSubtree = (root, subRoot) => {
+  // Check if subtree is identical.
+  function isSame(treeNode, subRootNode) {
+    if (treeNode === null && subRootNode === null) return true;
+    if (treeNode === null || subRootNode === null) return false;
+    if (treeNode.val !== subRootNode.val) return false;
+    return isSame(treeNode.left, subRootNode.left) && isSame(treeNode.right, subRootNode.right);
+  }
+  
+  // Traverse the tree and check for subtree.
+  function traverse(treeNode) {
+    if (treeNode === null) return false;
+    
+    // If treeNode's val is the same as subRoot's val.
+    if (treeNode.val === subRoot.val) {
+      // If subtree is identical, return true.
+      if (isSame(treeNode, subRoot)) return true;
+    }
+    
+    return traverse(treeNode.left) || traverse(treeNode.right);
+  }
+  
+  return traverse(root);
+}
+```
+
