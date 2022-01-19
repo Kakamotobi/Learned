@@ -82,3 +82,37 @@ const bstFromPreorder = (preorder) => {
   return root;
 }
 ```
+
+## 98. Validate Binary Search Tree
+- Input: `root` of a binary tree.
+- Output: determine if it is a BST.
+### Example
+```js
+// Input (BFS traversal): [5,1,7,null,null,3,9]
+
+// isValidBST(root) // (10) return false.
+   // validate(5, -Infinity, Infinity) // (9) return true && false.
+      // validate(1, -Infinity, 5) // (3) return true && true.
+         // validate(null, -Infinity, 1) // base case reached (node === null) // (1) return true.
+         // validate(null, 1, 5) // base case reached (node === null) // (2) return true.
+      // validate(7, 5, Infinity) // (8) return false && true.
+         // validate(3, 5, 7) // base case reached (node not in range) // (4) return false.
+         // validate(9, 7, Infinity) // (7) return true && true.
+            // validate(null, 7, 9) // base case reached (node === null) // (5) return true.
+            // validate(null, 9, Infinity) // base case reached (node === null) // (6) return true.
+```
+### Solution
+```js
+// For each node, its left property has to be less than node.val, and its right property has to be greater than node.val. Otherwise, it's not a BST.
+// Therefore, for each node's recursive call, pass in its valid range (min, max).
+
+const isValidBST = (root) => {
+  function validate(node, min, max) {
+    if (node === null) return true;
+    // If node's val is not in the valid range.
+    if (node.val <= min || node.val >= max) return false;
+    return validate(node.left, min, node.val) && validate(node.right, node.val, max)
+  }
+  return validate(root, -Infinity, Infinity);
+}
+```
