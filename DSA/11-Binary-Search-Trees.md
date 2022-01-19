@@ -216,5 +216,22 @@ class BinarySearchTree {
     traverse(currNode);
     return visited;
   }
+  
+  // Depth-First Search Preorder using Stack
+  DFSPreorderUsingStack() {
+    // Initialize array to store the visited node values.
+    const visited = [];
+    // Initialize stack with root.
+    const stack = [this.root];
+    // While stack is not empty.
+    while (stack.length) {
+      const currNode = stack.pop();
+      if (currNode !== null) {
+        visited.push(currNode.val);
+        stack.push(currNode.right, currNode.left);
+      }
+    }
+    return visited;
+  }
 }
 ```
