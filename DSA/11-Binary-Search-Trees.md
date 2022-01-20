@@ -219,7 +219,6 @@ class BinarySearchTree {
   
   // Depth-First Search Preorder using Stack
   DFSPreorderUsingStack() {
-    // Initialize array to store the visited node values.
     const visited = [];
     // Initialize stack with root.
     const stack = [this.root];
@@ -234,9 +233,48 @@ class BinarySearchTree {
     return visited;
   }
   
+  // Depth-First Search Postorder using Stack
+  DFSPostorderUsingStack() {
+    const values = [];
+    // Initialize stack with root.
+    const stack = [this.root];
+    // Initialize prevNode to null.
+    let prevNode = null;
+    // While the stack is not empty.
+    while (stack.length) {
+      // Initialize currNode to the top of the stack.
+      let currNode = stack[stack.length-1];
+      // Traverse down the tree to find a leaf. If found, process it and pop stack. Otherwise, move down.
+      if (prevNode === null || prevNode.left === currNode || prevNode.right === currNode) {
+        if (currNode.left !== null) {
+          stack.push(currNode.left);
+        } else if (currNode.right !== null) {
+          stack.push(currNode.right);
+        } else {
+          stack.pop();
+          values.push(currNode.val);
+        }
+      }
+      // Traverse up the tree from the left node. If the child is right, push it onto stack. Otherwise, process parent and pop stack.
+      else if (currNode.left === prevNode) {
+        if (currNode.right !== null) stack.push(currNode.right);
+        else {
+          stack.pop();
+          values.push(currNode.val);
+        }
+      }
+      // Traverse up the tree from the right node. After coming back from right node, process the parent and pop stack.
+      else if (currNode.right === prevNode) {
+        stack.pop();
+        values.push(currNode.val);
+      }
+      prevNode = currNode;
+    }
+    return values;
+  }
+  
   // Depth-First Search Inorder using Stack
   DFSInorderUsingStack() {
-    // Initialize array to store the visited node values.
     const values = [];
     // Initialize stack.
     const stack = [];
