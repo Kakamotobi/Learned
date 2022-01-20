@@ -233,5 +233,31 @@ class BinarySearchTree {
     }
     return visited;
   }
+  
+  // Depth-First Search Inorder using Stack
+  DFSInorderUsingStack() {
+    // Initialize array to store the visited node values.
+    const values = [];
+    // Initialize stack.
+    const stack = [];
+    // Initialize currNode with root.
+    let currNode = this.root;
+    // While currNode is not null or the stack is not empty.
+    while (currNode !== null || stack.length > 0) {
+      // Objective: traverse to the leftmost node.
+      while (currNode !== null) {
+        // Push nodes to the stack along the way.
+        stack.push(currNode);
+        currNode = currNode.left;
+      }
+      // Pop node from stack.
+      currNode = stack.pop();
+      // Push currNode's value to values.
+      values.push(currNode.val);
+      // Move currNode to its right node.
+      currNode = currNode.right;
+    }
+    return values;
+  }
 }
 ```
