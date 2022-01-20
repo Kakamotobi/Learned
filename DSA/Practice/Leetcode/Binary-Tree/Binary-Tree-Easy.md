@@ -133,3 +133,33 @@ const isSubtree = (root, subRoot) => {
 }
 ```
 
+## 1022. Sum of Root to Leaf Binary Numbers
+- Input: `root` of a binary tree where each node has a value of `0` or `1`.
+  - Each root-to-leaf path represents a binary number starting with the most significant bit.
+- Output: for all leaves in the tree, consider the numbers represented by the path from the root to that leaf. Return the sum of these numbers.
+### Example
+```js
+// Input: [1,0,1,0,1,0,1]
+// Output: 22
+```
+### Solution
+- Need to use preorder traversal on the tree.
+- Need a way to keep track of the root to leaf path (use a string).
+- Need a sum variable.
+```js
+const sumRootToLeaf = (root) => {
+  function preorder(root, rootToLeafPath) {
+    if (root === null) return;
+    if (root.left === null && root.right === null) {
+      sum += parseInt(rootToLeafPath + root.val, 2);
+      return;
+    }
+    preorder(root.left, rootToLeafPath + root.val);
+    preorder(root.right, rootToLeafPath + root.val);
+  }
+  
+  let sum = 0;
+  preorder(root, "");
+  return sum;
+}
+```
