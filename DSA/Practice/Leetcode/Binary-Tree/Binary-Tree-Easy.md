@@ -163,3 +163,21 @@ const sumRootToLeaf = (root) => {
   return sum;
 }
 ```
+
+## 112. Path Sum
+- Input: `root` of a binary tree, and an integer `targetSum`.
+- Output: return `true` if the tree has a root-to-leaf path such that sum of the values along the path equals `targetSum`.
+### Solution
+- Need to traverse the tree using DFS.
+- Need a way to keep track of the sum of the root to leaf path.
+  - Do so by subtracting node's val from `targetSum` and checking to see if `targetSum === 0` at the leaf.
+```js
+const hasPathSum = (root, targetSum) => {
+  if (root === null) return false;
+  targetSum -= root.val;
+  if (root.left === null && root.right === null) {
+    return targetSum === 0;
+  }
+  return hasPathSum(root.left, targetSum) || hasPathSum(root.right, targetSum);
+}
+```
