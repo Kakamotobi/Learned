@@ -1,5 +1,29 @@
 # Arrays - Easy
 
+## 1. Two Sum
+- Input: array of integer `nums`, and integer `target`.
+- Output: return the indices of the two numbers that add up to target.
+- Constraints
+  - Each input has exactly one solution.
+  - Cannot use the same element twice.
+### Example
+```js
+// Input: nums = [2,7,11,15], target = 9
+// Output: [0,1]
+```
+### Solution
+- Use an object to store numbers and their indices.
+```js
+const twoSum = (nums, target) => {
+  const obj = {};
+  for (let i = 0; i < nums.length; i++) {
+    const otherHalf = target - nums[i];
+    if (otherHalf in obj) return [obj[otherHalf], i];
+    else obj[nums[i]] = i;
+  }
+}
+```
+
 ## 1913. Maximum Product Difference Between Two Pairs
 - Input: array of integers called nums.
 - Output: largest product difference between pairs `(nums[w], nums[x])` and `(nums[y], nums[z])`.
@@ -211,4 +235,3 @@ const solution = function(isBadVersion) {
   }
 }
 ```
-
