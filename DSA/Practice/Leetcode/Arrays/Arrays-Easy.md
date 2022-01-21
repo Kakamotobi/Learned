@@ -24,6 +24,31 @@ const twoSum = (nums, target) => {
 }
 ```
 
+## 121. Best Time to Buy and Sell Stock
+- Input: array `prices` where `prices[i]` is the price of a given stock on the `i`th day.
+- Output: return the maximum profit that can be achieved (buy low, sell high). Return `0` if no profit can be achieved.
+### Example
+```js
+// Input: [7,1,5,3,6,4]
+// Output: 5
+```
+### Solution
+- Need a variable to keep track of the minimum price, which will be used to subtract from the future prices.
+- Need a variable to keep track of the maximum profit.
+```js
+const maxProfit = (prices) => {
+  let maxProfit = 0;
+  let minPrice = Infinity;
+  for (let price of prices) {
+    // Update minPrice first.
+    minPrice = Math.min(minPrice, price);
+    // Update maxProfit if necessary.
+    maxProfit = Math.max(maxProfit, price - minPrice);
+  }
+  return maxProfit;
+}
+```
+
 ## 1913. Maximum Product Difference Between Two Pairs
 - Input: array of integers called nums.
 - Output: largest product difference between pairs `(nums[w], nums[x])` and `(nums[y], nums[z])`.
