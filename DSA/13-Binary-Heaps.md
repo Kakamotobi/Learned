@@ -4,6 +4,7 @@
 - [What are Heaps?](#what-are-heaps)
 - [Binary Heaps](#binary-heaps)
   - [Binary Heaps vs. Binary Search Trees](#binary-heaps-vs-binary-search-trees)
+  - [Binary Heap Big O](#binary-heap-big-o)
   - [Uses of Binary Heaps](#uses-of-binary-heaps)
   - [Types of Binary Heaps](#types-of-binary-heaps)
     - [Max Binary Heap](#max-binary-heap)
@@ -23,8 +24,12 @@
 ### Binary Heaps vs Binary Search Trees
 - Similar in that each node can have at most two children.
 - However, unlike a binary search tree, *binary heaps have no order to the left or right*.
-- Also, unlike a binary search tree, which can become lop-sided to one side, *binary heaps are compact and take the least amount of space possible*.
-  - i.e., every left and right is filled before going down. All the children of each node are as full as they can be and the left children are filled out first.
+- Also, unlike a binary search tree, which can become lop-sided to one side, binary heaps are compact and take the least amount of space possible.
+  - i.e., ***every left and right is filled before going down. All the children of each node are as full as they can be and the left children are filled out first.***
+### Binary Heap Big O
+- Insertion - O(log n)
+- Removal - O(log n)
+- Searching - O(n)
 ### Uses of Binary Heaps
 - Binary Heaps are commonly used to implement ***Priority Queues***.
 - Binary Heaps are also used with ***Graph Traversal algorithms***.
