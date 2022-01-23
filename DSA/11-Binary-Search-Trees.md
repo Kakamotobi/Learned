@@ -5,6 +5,7 @@
   - [Terminology](#terminology)
 - [Binary Trees](#binary-trees)
 - [Binary Search Trees](#binary-search-trees)
+  - [Binary Search Tree Big O](#binary-search-tree-big-o)
   - [Binary Search Tree Implementation](#binary-search-tree-implementation)
 
 ## What are Trees?
