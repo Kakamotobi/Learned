@@ -122,3 +122,42 @@ const flip = (arr, targetIndex) => {
   return arr;
 }
 ```
+
+## 347. Top K Frequent Elements
+- Input: integer array `nums` and an integer `k`.
+- Output: return the `k` most frequent elements (in any order).
+### Example
+```js
+// Input: nums = [1,1,1,2,2,3], k = 2
+// Output: [1,2]
+```
+### Solution - Bucket Sort
+- Collect each number's frequency.
+- Place each number and its frequency in an array (using its frequency as the index).
+- Pop from the array k times.
+```js
+const topKFrequent = (nums, k) => {
+  const freqMap = {};
+  for (let num of nums) {
+    freqMap[num] = ++freqMap[num] || 1;
+  }
+  
+  const buckets = new Array(nums.length+1);
+  for (let i = 0; i < buckets.length; i++) {
+    buckets[i] = [];
+  }
+  
+  for (let [num, freq] of Object.entries(freqMap)) {
+    buckets[freq].push(num);
+  }
+  
+  const ans = [];
+  for (let i = buckets.length - 1; i > 0; i--) {
+    for (let num of buckets[i]) {
+      ans.push(num);
+      if (ans.length === k) return ans;
+    }
+  }
+}
+```
+
