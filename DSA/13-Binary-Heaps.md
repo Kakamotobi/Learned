@@ -142,11 +142,10 @@ class MaxBinaryHeap {
 ```
 
 ## Priority Queue
-- A data structure where each element has a priority. Elements with higher priorities are served before elements with lower priorities.
+- **A data structure where each element has a priority. Elements with higher priorities are served before elements with lower priorities.**
 - Examples
   - Computer processes.
-- Notes
-  - Priority Queues are an abstract concept separate from heaps. Other data structures such as arrays can be used to implement a priority queue (although not as efficient as using binary heap).
+- *Priority Queues are an abstract concept separate from heaps. Other data structures such as arrays can be used to implement a priority queue (although not as efficient as using binary heap).*
 ### Priority Queue Implementation Using Min Binary Heap
 ```js
 // Each Node has a value and a priority (which is used to build the heap).
