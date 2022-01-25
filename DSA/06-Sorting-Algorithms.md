@@ -11,6 +11,8 @@
   - [Merge Sort](#merge-sort)
   - [Quick Sort](#quick-sort)
   - [Radix Sort](#radix-sort)
+- [Other Sorting Algorithms](#other-sorting-algorithms)
+- [Reference](#reference)
 
 ## Sorting
 - **The process of rearranging the items in a collection (ex: array, string) so that the items are in some kind of order.**
@@ -480,6 +482,56 @@ radixSort([23,345,5467,12,2345,9852]);
 	// arr = [12,23,345,2345,5467,9852]
 // i = 3 // digitBuckets = [[12,23,345],[],[2345],[],[],[5467],[],[],[],[9852]]
 	// arr = [12,23,345,2345,5467,9852]
+```
+
+## Other Sorting Algorithms
+### Bucket/Bin Sort
+- **A sorting algorithm that divides an array's element into multiple buckets, which are then sorted one by one; either using a different sorting algorithm or by recursively applying the bucket sort algorithm.**
+- Bucket Sort vs. Radix Sort
+	- Similar to radix sort in that it is not a comparison sort.
+	- *Upon the initial pass, radix sort appends the buckets without further sorting and 're-buckets' them based on the next digits (tens, hundreds, etc.).*
+		- Hence, radix sort is more efficient in handling spaced-out arrays.
+	- *Upon the initial pass, bucket sort sorts each bucket and then appends them into one array.*
+		- Hence, bucket sort is more efficient in handling dense arrays that are uniformly distributed over a range.
+- Process
+	- Create an array of "buckets" that are initially empty.
+	- Scatter: go through the original array, placing each object in its appropriate bucket.
+	- Each non-empty bucket should be sorted.
+	- Gather: return all elements to the original array after visiting the buckets in order.
+#### Big O
+- n: number of things being sorted (length of array).
+- k: number of buckets.
+- **TC: O(n<sup>2</sup>)**
+	- Best/Average: O(n+k)
+	- Worst Case: O(n<sup>2</sup>)
+- **SC: O(n+k)**
+#### Implementation
+```js
+function bucketSort(arr, b = arr.length) {
+	// Create b empty buckets with empty arrays.
+	const buckets = new Array(b).fill([]);
+	
+	// Place each arr element in corresponding buckets.
+	for (let i = 0; i < b; i ++) {
+		const idx = Math.floor(arr[i] * b);
+		buckets[idx].push(arr[i]);
+	}
+	
+	// Sort individual buckets.
+	for (let bucket of buckets) {
+		bucket.sort((a,b) => a - b);
+	}
+	
+	// Concatenate all buckets into arr.
+	let index = 0;
+	for (let i = 0; i < b; i++) {
+		for (let j = 0; j < buckets[i].length; j++) {
+			arr[index++] = buckets[i][j];
+		}
+	}
+	
+	return arr;
+}
 ```
 
 ## Reference
