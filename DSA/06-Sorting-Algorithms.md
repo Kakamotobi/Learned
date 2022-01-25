@@ -12,6 +12,7 @@
   - [Quick Sort](#quick-sort)
   - [Radix Sort](#radix-sort)
 - [Other Sorting Algorithms](#other-sorting-algorithms)
+	- [Bucket/Bin Sort](#bucketbin-sort)
 - [Reference](#reference)
 
 ## Sorting
