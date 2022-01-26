@@ -116,3 +116,25 @@ const isValidBST = (root) => {
   return validate(root, -Infinity, Infinity);
 }
 ```
+
+## 538. Convert BST to Greater Tree
+- Input: `root` of a BST.
+- Output: return the `root` after changing all node's values to its value plus the sum of all nodes greater than it.
+### Solution
+- Inorder traversal starting from the largest number.
+- While traversing, update each node's val to the sum of what came before it.
+  - Need a variable to keep track of this sum.
+```js
+const convertBST = (root) => {
+  let sum = 0;
+  reversedInorder(root);
+  return root;
+  
+  function reversedInorder(node) {
+    if (node.right) reversedInorder(node.right);
+    node.val = node.val + sum;
+    sum = node.val;
+    if (node.left) reversedInorder(node.left);
+  }
+}
+```
