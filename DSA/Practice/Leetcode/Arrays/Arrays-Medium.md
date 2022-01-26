@@ -161,3 +161,62 @@ const topKFrequent = (nums, k) => {
 }
 ```
 
+## 238. Product of Array Except Self
+- Input: integer array `nums`.
+- Output: return an array `answer` such that `answer[i]` is equal to the product of all elements in `nums` except `nums[i]`.
+- Constraints
+  - `2 <= nums.length <= 105`
+  - `-30 <= nums[i] <= 30`
+  - The product of any prefix or suffix of nums is guaranteed to fit in a 32-bit integer.
+  - O(n) time without using the division operator.
+### Solution 1 - TC: O(n), SC: O(n)
+- Collect products to the left and right of each number.
+- Then multiply the two.
+```js
+const productExceptSelf = (nums) => {
+  const leftPortion = [];
+  // Initialize with 1 for the first num since there is no number to the left of it.
+  leftPortion[0] = 1;
+  for (let i = 1; i < nums.length; i++) {
+    leftPortion[i] = nums[i-1] * leftPortion[i-1];
+  }
+  
+  const rightPortion = [];
+  // Initialize with 1 for the last num since there is no number to the right of it.
+  rightPortion[nums.length-1] = 1;
+  for (let i = nums.length - 2; i >= 0; i--) {
+    rightPortion[i] = nums[i+1] * rightPortion[i+1];
+  }
+  
+  const answer = [];
+  for (let i = 0; i < nums.length; i++) {
+    answer[i] = leftPortion[i] * rightPortion[i];
+  }
+  
+  return answer;
+}
+```
+### Solution 2 - TC: O(n), SC: O(1)
+- Optimize solution 1.
+```js
+const productExceptSelf = (nums) => {
+  const answer = [];
+  
+  // Fill answer with left products first.
+  // Initialize first number's left to 1 since there is no number to the left of it.
+  answer[0] = 1;
+  for (let i = 1; i < nums.length; i++) {
+    answer[i] = nums[i-1] * answer[i-1];
+  }
+  
+  // Then, update answer with right products using a variable to keep track of the accumulated product.
+  let rightProd = 1;
+  for (let i = nums.length - 1; i >= 0; i--) {
+    answer[i] = answer[i] * rightProd;
+    // Update rightProd for next iteration.
+    rightProd = rightProd * nums[i];
+  }
+  
+  return answer;
+}
+```
