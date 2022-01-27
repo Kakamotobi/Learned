@@ -62,12 +62,15 @@
 - Website is rendered on the client-side.
 - *When the client sends a request to the server, the server will send a single HTML index page, which will be the skeleton of the page to the client, followed by the JS file. The JS file, which is large as it contains the logic and the source codes of the framework/library, will turn the page into a fully rendered page. If additional content/data is needed, the client makes a request to the API, which then renders the data (JSON) onto the page. If the client navigates to a different route, instead of the server sending the page again, the client will re-render the page according to the route that the client requested. Hence, the page that is used is always the same page as the first request.*
 #### Illustration
-![CSR](refImg/CSR.png)
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/Web%20Development/refImg/CSR.png" alt="Client-Side Rendering" width="80%" />
+</p>
+
 1. Client requests page.
 2. Server sends an almost empty `index.html` file. // Users see a blank screen.
-3. JS file, linked in the `index.html`, containing all the logic is received from the server.
+3. Client requests the JS files linked in the `index.html` file.
 4. JS file containing web application logic (libraries, frameworks) that creates dynamic HTML is received from the server. // TTV, TTI.
-  - **Users can now see and interact with the site.**
+    - **Users can now see and interact with the site.**
 #### Use If:
 - Website has many user interactions.
 - Building a web application.
@@ -83,12 +86,16 @@
 - *When the client sends a request to the server, the server compiles everything and renders it (including the requested data) into a fully rendered HTML page, and then send it to the client as a response along with JS source code.
 - For every different route that the client navigates to, the server will repeat the steps again.*
 #### Illustration
-![SSR](refImg/SSR.png)
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/Web%20Development/refImg/SSR.png" alt="Server-Side Rendering" width="80%" />
+</p>
+
 1. Client requests page.
 2. Server sends an already made `index.html` file. // TTV.
-  - **Users can see site.**
-3. JS file is received from the server. // TTI.
-  - **Users can now interact with the site.**
+    - **Users can see the site.**
+3. Client requests the JS file linked in the html file.
+4. JS file is received from the server. // TTI.
+    - **Users can now interact with the site.**
 #### Use If:
 - SEO is priority.
 - Need faster initial loading.
