@@ -260,3 +260,34 @@ const solution = function(isBadVersion) {
   }
 }
 ```
+
+## 53. Maximum Subarray
+- Input: integer array `nums`.
+- Output: find the contiguous subarray (containing at least one number) which has the largest sum and return its sum.
+- Constraints
+  - `1 <= nums.length <= 105`
+  - `-104 <= nums[i] <= 104`
+### Solution - Sliding Window
+- We know that negative prefixes should be dismissed.
+  - Therefore, current sum should be reset to 0 if the current sum is negative up to `nums[i]`.
+- Need a variable to keep track of the largest sum.
+- Need a variable to keep track of the current sum through the iteration.
+```js
+const maxSubArray = (nums) => {
+  // Initialize maxSum to the first number in nums.
+  let maxSum = nums[0];
+  // Initialize variable to keep track of current sum.
+  let currSum = 0;
+  
+  for (let num of nums) {
+    // If the prefix to num is negative, reset to 0.
+    if (currSum < 0) currSum = 0;
+    // Update currSum.
+    currSum += num;
+    // Update maxSum.
+    maxSum = Math.max(maxSum, currSum);
+  }
+  
+  return maxSum;
+}
+```
