@@ -319,4 +319,24 @@ const hasCycle = (head) => {
 }
 ```
 
-
+## 206. Reverse Linked List
+- Input: the `head` of a singly linked list.
+- Output: reverse the list, and return it.
+- Constraints
+  - The number of nodes in the list is the range `[0, 5000]`.
+  - `-5000 <= Node.val <= 5000`.
+### Solution
+```js
+const reverseList = (head) => {
+  let currNode = head;
+  let prevNode = null;
+  let nextNode = null;
+  while (currNode !== null) {
+    nextNode = currNode.next;
+    currNode.next = prevNode;
+    prevNode = currNode;
+    currNode = nextNode;
+  }
+  return prevNode;
+}
+```
