@@ -35,3 +35,31 @@ const reverseString = (s) => {
   return s;
 }
 ```
+
+## 242. Valid Anagram
+- Input: two strings `s` and `t`.
+- Output: return `true` if `t` is an anagram of `s`. Otherwise, return `false`.
+- Constraints
+  - `1 <= s.length, t.length <= 5 * 104`.
+  - `s` and `t` consist of lowercase English letters.
+### Solution
+- Accumulate the frequency of the characters of string `s` in a hash table.
+- Deduct each character of string `t` from string `s`'s frequency hash table.
+- Return false if any frequency is not equal to `0`.
+```js
+const isAnagram = (s, t) => {
+  const sFreq = {};
+  for (let char of s) {
+    sFreq[char] = ++sFreq[char] || 1;
+  }
+  
+  for (let char of t) {
+    sFreq[char]--;
+  }
+  
+  for (let key in sFreq) {
+    if (sFreq[key] !== 0) return false;
+  }
+  return true;
+}
+```
