@@ -300,11 +300,33 @@ function areThereDuplicates(...args) {
 ```
 
 ## Sliding Window
-- **Create a window which can either be an array or number from one position to another.**
+- **Create a window which can either be an array or number from one position to another (of some sequential data).**
   - Depending on a certain condition, the window either increases or closes (and a new window is created).
 - Useful for keeping track of a subset of data that is **continuous** in some way in an array/string, etc.
-### Example 1
-- Write a function called maxSubarraySum which accepts an array of integers and a number called n. The function should calculate the maximum sum of n consecutive elements in the array.
+### Types of Sliding Window
+- Fixed-size Sliding Window
+- Dynamically Resizable Window
+  - The window can grow and shrink.
+  - Like a caterpillar moving.
+### How to Recognize a Problem to Apply the Sliding Window
+- **Contiguous sequence of elements.**
+  - These are elements that are grouped next to one another (subarray that occurs one after the other).
+  - Look for words like "subarray", "substring", or any other words that refer to sequential grouping.
+  - Can apply to strings, arrays, linked lists.
+- **Context of the algorithm.**
+  - When we need to calculate something.
+  - Ex: if we need to find the min/max, shortest/longest, or if something is contained within the given dataset.
+- **Some Question Variants**
+  - Fixed-size Sliding Window
+    - Ex: find the max sum of subarray of size `k`.
+  - Dynamically Resizable Window
+    - Ex: find the smallest sum of any window size that is greater than or equal to some value `k`.
+  - Dynamically Resizable Window with Auxiliary Data Structure (we use an additional hashmap, hashset, array, etc.).
+    - Ex: find the longest substring with no more than `k` distinct characters.
+    - String Permutations
+      - Ex: given strings `s` and `t`, does `t` exist as a permutation of `s`?
+### Example 1 - fixed-size sliding window
+- Write a function called `maxSubarraySum` which accepts an array of integers `arr` and a number called `num`. The function should calculate the maximum sum of `num` consecutive elements in `arr`.
 #### Expectation
 ```js
 maxSubarraySum([1,2,5,2,8,1,5], 2) // 10
@@ -343,8 +365,7 @@ function maxSubarraySum(arr, num) {
 ```
 #### Sliding Window Solution - TC: O(n)
 ```js
-// Rather than readding every single combination, subtract the first number and add the next number (effectively creating the next combination/window).
-
+// Implementation 1
 function maxSubarraySum(arr, num) {
   // Edge case: if arr is less than num, return null.
   if (arr.length < num) return null;
@@ -355,15 +376,15 @@ function maxSubarraySum(arr, num) {
 
   // Store the first combination in maxSum. We need to initialize first value to be able to implement a sliding window.
   for (let i = 0; i < num; i++) {
-     maxSum += arr[i];
+     tempSum += arr[i];
   }
   // Sync tempSum with maxSum.
-  tempSum = maxSum;
+  maxSum = tempSum;
 
   // Loop: starting from the number after the first combination.
-  for (let j = num; j < arr.length; j++) {
+  for (let i = num; i < arr.length; i++) {
     // Calculate next tempSum by subtracting the first number and adding the next number (sliding window).
-    tempSum = tempSum - arr[j-num] + arr[j];
+    tempSum = tempSum - arr[i-num] + arr[i];
     // Compare new tempSum and maxSum, and update maxSum if necessary.
     if (tempSum > maxSum) maxSum = tempSum;
   }
@@ -371,7 +392,26 @@ function maxSubarraySum(arr, num) {
   return maxSum;
 }
 ```
-### Example 2
+```js
+// Implementation 2
+function maxSubarray(arr, num) {
+  if (arr.length < num) return null;
+  
+  let maxSum = -Infinity;
+  let tempSum = 0;
+  
+  for (let i = 0; i < arr.length; i++) {
+    tempSum += arr[i];
+    if (i >= k - 1) {
+      maxSum = Math.max(maxSum, tempSum);
+      tempSum -= arr[i - (k - 1)];
+    }
+  }
+  
+  return maxSum;
+}
+```
+### Example 2 - fixed-size sliding window
 - Write a function called findLongestSubstring, which accepts a string and returns the length of the longest substring with all distinct characters.
 #### Expectation
 ```js
@@ -407,7 +447,7 @@ function findLongestSubstring(str){
     return longestLength;
 }
 ```
-### Example 3
+### Example 3 - fixed-size sliding window
 - Write a function called sumOddLengthSubarrays, which accepts an array of positive integers and calculates the sum of all possible odd-length subarrays.
 #### Expectation
 ```js
