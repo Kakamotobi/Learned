@@ -63,3 +63,34 @@ const isAnagram = (s, t) => {
   return true;
 }
 ```
+
+## 20. Valid Parentheses
+- Input: a string `s` containing just the characters `"("`, `")"`, `"{"`, `"}"`, `"["`, `"]"`.
+- Output: return true if the input string is valid.
+  - An input string is valid if:
+    - Open brackets must be closed by the same type of brackets.
+    - Open brackets must be closed in the correct order.
+### Solution - using stack
+- If encountered an opening bracket, push the corresponding closing bracket to the stack.
+- If encountered a closing bracket, pop from the stack and check to see if it is the correct closing bracket.
+```js
+const isValid = (s) => {
+  const brackets = {
+    "(": ")",
+    "{": "}",
+    "[": "]"
+  }
+  
+  const stack = [];
+  
+  for (let char of s) {
+    if (brackets[char]) stacks.push(brackets[char]);
+    else {
+      const topStack = stack.pop();
+      if (char !== topStack) return false;
+    }
+  }
+  
+  return stack.length === 0;
+}
+```
