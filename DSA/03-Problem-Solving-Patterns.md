@@ -511,6 +511,38 @@ sumOddLengthSubarrays([1,4,2,5,3])
   // Loop 3 doesn't run.
 // 58
 ```
+### Example 4 - dynamically resizable window
+- Write a function called `smallestSubarray`, which accepts an array of integers and calculates the smallest size of a subarray that has a sum equal to or greater than a given sum.
+#### Expectation
+```js
+smallestSubarray([4,2,2,7,8,1,2,8,1,0], 8) // 1
+```
+#### Sliding Window Solution
+- If the sum of the window is less than the given sum.
+  - Grow the window.
+- Else if the sum is equal to or greater than the given sum.
+  - Shrink the window.
+  - Update the the smallest subarray size if necessary.
+- Use index pointers (start and end) to maintain the window.
+```js
+function smallestSubarray(arr, targetSum) {
+  let minWindowSize = Infinity;
+  let currWindowSize = 0;
+  let windowStart = 0;
+  for (let windowEnd = 0; windowEnd < arr.length; windowEnd++) {
+    currWindowSize += arr[windowEnd];
+    
+    while(currWindowSum >= targetSum) {
+      // `+1` to account for 0-indexed.
+      minWindowSize = Math.max(minWindowSize, windowEnd - windowStart + 1);
+      currWindowSize -= arr[windowStart];
+      windowStart++;
+    }
+  }
+  
+  return minWindowSize;
+}
+```
 
 ## Divide and Conquer
 - **Involves dividing a data set (array, string, etc.) into smaller chunks and then repeating a process with a subset of data.**
