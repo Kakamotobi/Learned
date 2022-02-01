@@ -512,10 +512,10 @@ sumOddLengthSubarrays([1,4,2,5,3])
 // 58
 ```
 ### Example 4 - dynamically resizable window
-- Write a function called `smallestSubarray`, which accepts an array of integers and calculates the smallest size of a subarray that has a sum equal to or greater than a given sum.
+- Write a function called `smallestSubarrayGivenSum`, which accepts an array of integers and calculates the smallest size of a subarray that has a sum equal to or greater than a given sum.
 #### Expectation
 ```js
-smallestSubarray([4,2,2,7,8,1,2,8,1,0], 8) // 1
+smallestSubarrayGivenSum([4,2,2,7,8,1,2,8,1,0], 8) // 1
 ```
 #### Sliding Window Solution
 - If the sum of the window is less than the given sum.
@@ -525,7 +525,7 @@ smallestSubarray([4,2,2,7,8,1,2,8,1,0], 8) // 1
   - Update the the smallest subarray size if necessary.
 - Use index pointers (start and end) to maintain the window.
 ```js
-function smallestSubarray(arr, targetSum) {
+function smallestSubarrayGivenSum(arr, targetSum) {
   let minWindowSize = Infinity;
   let currWindowSize = 0;
   let windowStart = 0;
@@ -543,6 +543,40 @@ function smallestSubarray(arr, targetSum) {
   return minWindowSize;
 }
 ```
+### Example 5 - dynamically resizable window with auxiliary data structure
+- Write a function called `longestSubstringKDistinct`, which accepts an array of characters and a natural number `k` to calculate the longest contiguous sequence of characters such that the number of distinct characters does not exceed `k`.
+#### Expectation
+```js
+longestSubstring([A,A,A,H,H,I,B,C], 2) // 5
+```
+#### Sliding Window Solution
+- Use a hashtable to keep track of the characters.
+- Keep adding to the hashtable until the condition is violated.
+- While the condition is violated, shrink the window and update hashtable count.
+  - Remove a character from the hashtable if value is decremented to 0.
+```js
+function longestSubstringKDistinct(arr, k) {
+  const charFreqMap = {};
+  
+  let maxLength = 0;
+  
+  let windowStart = 0;
+  for (let windowEnd = 0; windowEnd < arr.length; windowEnd++) {
+    charFreqMap[arr[windowEnd]] = ++charFreqMap[arr[windowEnd]] || 1;
+    
+    while (Object.keys(charFreqMap).length > k) {
+      charFreqMap[arr[windowStart]]--;
+      if (charFreqMap[arr[windowStart]] === 0) delete charFreqMap[arr[windowStart]];
+      windowStart++;
+    }
+    maxLength = Math.max(maxLength, windowEnd - windowStart + 1);
+  }
+  
+  return maxLength;
+}
+```
+### Reference
+[Sliding Window Technique - Algorithmic Mental Models](https://www.youtube.com/watch?v=MK-NZ4hN7rs&ab_channel=RyanSchachte)
 
 ## Divide and Conquer
 - **Involves dividing a data set (array, string, etc.) into smaller chunks and then repeating a process with a subset of data.**
