@@ -291,3 +291,39 @@ const maxSubArray = (nums) => {
   return maxSum;
 }
 ```
+
+## 1876. Substrings of Size Three with Distinct Characters
+- Input: a string `s`.
+- Output: return the number of substrings of length three in `s` that have no repeated characters.
+- Constraints
+  - `1 <= s.length <= 100`.
+  - `s` consists of lowercase English letters.
+### Expectation
+```js
+countGoodSubstrings("xyzzaz") // 1
+countGoodSubstrings("aababcabc") // 4
+```
+### Solution - Sliding Window
+- If current window does not include duplicates, increment the number of good substrings.
+- Slide window.
+```js
+const countGoodSubstrings = (s) => {
+  let numOfGoodSubstrings = 0;
+  let windowStart = 0;
+  for (let windowEnd = 3; windowEnd <= s.length; windowEnd++) {
+    let currWindow = s.slice(windowStart, windowEnd);
+    if (isGoodSubstring(currWindow)) numOfGoodSubstrings++;
+    windowStart++;
+  }
+  return numOfGoodSubstrings;
+}
+
+const isGoodSubstring = (str) => {
+  const freqMap = {};
+  for (let char of str) {
+    freqMap[char] = ++freqMap[char] || 1;
+    if (freqMap[char] > 1) return false;
+  }
+  return true;
+}
+```
