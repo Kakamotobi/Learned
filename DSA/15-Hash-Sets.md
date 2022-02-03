@@ -2,12 +2,11 @@
 
 ## Table of Content
 - [What are Hash Sets?](#what-are-hash-sets)
-- [Hash Sets in JavaScript](#hash-sets-in-javascript)
+- [Sets in JavaScript](#hash-sets-in-javascript)
 
 ## What are Hash Sets?
-- A hash set is an unordered collection of objects in which duplicate values cannot be stored.
+- A hash set is an unordered collection of items in which duplicate values cannot be stored.
   - Hash sets are unordered because each value's distinguished hash is used to determine their order.
-- Hash Sets are often used to simply determine whether or not something is in that set or not.
 - *The underlying data structure is a hash table.*
 ### How it Works
 - With a hash table, the key gets hashed. With a hash set, there is no key. Therefore, the value is hashed.
@@ -20,11 +19,12 @@
   - *O(1) time complexity is not guaranteed. However, the ECMAScript specification requires the method to run in sublinear time.*
 
 ## Hash Sets in JavaScript
-### `Set`
+### `Set` (ES6)
 - `Set` objects are collections of values.
 - `Set` allows storage of unique values of any data type (primitive values, object references, etc).
-- `Set` allows iteration through the elements in insertion order.
+- `Set` is unordered but always has the same iteration order (insertion order).
 
 ## Reference
+[Set - JavaScript | MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set)  
 [ECMAScript 2022 Language Specification](https://tc39.es/ecma262/multipage/keyed-collections.html#sec-set-objects)  
 [Stack Overflow Thread](https://stackoverflow.com/questions/55057200/is-the-set-has-method-o1-and-array-indexof-on)
