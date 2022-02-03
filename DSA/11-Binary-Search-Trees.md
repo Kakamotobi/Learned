@@ -10,6 +10,7 @@
 
 ## What are Trees?
 - A data structure that consists of nodes in a **parent/child** relationship.
+- Trees are a type of graph.
 - A node can only point to children (cannnot point to the parent or siblings).
 - Trees are non-linear (multiple possible paths).
   - cf. linked lists are linear (one way path).
