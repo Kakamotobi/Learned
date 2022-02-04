@@ -2,7 +2,7 @@
 
 ## Table of Content
 - [What are Hash Sets?](#what-are-hash-sets)
-- [Sets in JavaScript](#hash-sets-in-javascript)
+- [Hash Sets in JavaScript](#hash-sets-in-javascript)
 
 ## What are Hash Sets?
 - A hash set is an unordered collection of items in which duplicate values cannot be stored.
