@@ -17,8 +17,12 @@
 - A type of programming paradigm that describes what programs to be executed.
 - ***Declarative programs abstract the flow control process, and instead spend lines of code describing the data flow: What to do.***
 - Concerned with the answer that is received more than the process.
+  - Cannot trace the execution of the program as it runs.
 - Focuses on end result.
-- i.e. "*What* is to be done."
+- Think like a human.
+  - i.e. "*What* is to be done."
+- *Many (if not all) declarative APIs have some sort of underlying imperative implementation.*
+- Ex: event handling code for a button can be encapsulated behind a button component, HTML, CSS.
 - Ex: functional programming, logic programming.
 #### Example
 ```js
@@ -31,8 +35,10 @@ console.log(doubleMap([2, 3, 4])); // [4, 6, 8]
 - A type of programming paradigm that describes how the program executes.
 - ***Imperative programs spend lines of code describing the specific steps used to achieve the desired results — the flow control: How to do things.***
 - Concerned with how to get an answer step by step.
+  - Can trace the execution of the program as it runs.
 - The order of execution is very important.
-- i.e. "*How* it is to be done."
+- Think like a computer.
+  - i.e. "*How* it is to be done."
 - Ex: object-oriented programming, procedural programming.
 #### Example
 ```js
@@ -48,7 +54,8 @@ console.log(doubleMap([2, 3, 4])); // [4, 6, 8]
 ```
   - The flow control is explicitly expressed in step by step order.
 ### Reference
-[Difference Between Imperative and Declarative Programming - GeeksforGeeks](https://www.geeksforgeeks.org/difference-between-imperative-and-declarative-programming/)
+[Difference Between Imperative and Declarative Programming - GeeksforGeeks](https://www.geeksforgeeks.org/difference-between-imperative-and-declarative-programming/)  
+[Imperative vs Declarative Programming - YouTube](https://www.youtube.com/watch?v=E7Fbf7R3x6I&ab_channel=uidotdev)
 
 ## Functional Programming vs Object-Oriented Programming
 ### Functional Programming (FP)
