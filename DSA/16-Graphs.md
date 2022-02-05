@@ -8,6 +8,7 @@
 - [Storing Graphs](#storing-graphs)
   - [Adjacency Matrix](#adjacency-matrix)
   - [Adjacency List](#adjacency-list)
+- [Undirected Graph Implementation - using adjacency list](#undirected-graph-implementation---using-adjacency-list)
 
 ## What are Graphs?
 - A data structure that consists of nodes and connections between those nodes, where there is no specific pattern.
@@ -124,6 +125,49 @@
 
 - Ex: the key `A` contains an array of the connecting edges from the vertex `A`.
 
-
+## Undirected Graph Implementation - using adjacency list
+```js
+class UndirectedGraph {
+  constructor() {
+    this.adjacencyList = {};
+  }
+  
+  // Add a new vertex to the graph.
+  addVertex(vertex) {
+    // If it doesn't exist already, set the vertex to be a key on the adjacency list and set its value to be an empty array.
+    if (!this.adjacencyList[vertex]) this.adjacencyList[vertex] = [];
+  }
+  
+  // Add an edge between two vertices.
+  addEdge(vertex1, vertex2) {
+    // If the vertices are valid.
+    if (this.adjacencyList[vertex1] && this.adjacencyList[vertex2]) {
+      // Find the key of vertex1 and push vertex2 to the array, and vice versa.
+      this.adjacencyList[vertex1].push(vertex2);
+      this.adjacencyList[vertex2].push(vertex1);
+    }
+  }
+  
+  // Remove an edge between two vertices.
+  removeEdge(vertex1, vertex2) {
+    // If the vertices are valid.
+    if (this.adjacencyList[vertex1] && this.adjacencyList[vertex2]) {
+      // Find the key of vertex1 and remove vertex2 to the array, and vice versa.
+      this.adjacencyList[vertex1] = this.adjacencyList[vertex1].filter(v => v !== vertex2);
+      this.adjacencyList[vertex2] = this.adjacencyList[vertex2].filter(v => v !== vertex1);
+    }
+  }
+  
+  // Remove a vertex from the graph.
+  removeVertex(vertex) {
+    // Remove all values in the adjacency list for this vertex.
+    for (let v of this.adjacencyList[vertex]) {
+      this.removeEdge(vertex, v);
+    }
+    // Delete the key in the adjacency list for this vertex.
+    delete this.adjacencyList[vertex];
+  }
+}
+```
 
 
