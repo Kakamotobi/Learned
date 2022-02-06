@@ -8,10 +8,14 @@
 - [Storing Graphs](#storing-graphs)
   - [Adjacency Matrix](#adjacency-matrix)
   - [Adjacency List](#adjacency-list)
+- [Graph Traversal](#graph-traversal)
+  - [Graph Traversal Uses](#graph-traversal-uses)
+  - [Depth-First Traversal](#depth-first-traversal)
+  - [Breadth-First Traversal](#breadth-first-traversal)
 - [Undirected Graph Implementation - using adjacency list](#undirected-graph-implementation---using-adjacency-list)
 
 ## What are Graphs?
-- A data structure that consists of nodes and connections between those nodes, where there is no specific pattern.
+- A data structure that consists of nodes and connections between those nodes, where there is no specific pattern or root.
 - Below: examples of graphs.
 
 <p align="center">
@@ -125,6 +129,36 @@
 
 - Ex: the key `A` contains an array of the connecting edges from the vertex `A`.
 
+## Graph Traversal
+### Graph Traversal Uses
+- Peer to peer networking.
+- Web crawlers.
+- Finding "closest" matches/recommendations.
+- Shortest path problems.
+  - GPS navigation
+  - Solving mazes.
+  - AI (a graph can be used to store different moves. Then traverse it to find the shortest path to win the game).
+### Depth-First Traversal
+- Explore as far as possible down one branch before "backtracking".
+- For graphs, depth-first traversal means following the neighbors before visiting siblings.
+- Keep track of vertices that have already been "visited" in order to "cross it off" from other vertices' list of connections.
+  - Ex: once vertex `A` has been visited, cross it off from `B` and `C`'s list of connections by using a hash table as an auxiliary structure.
+#### Example
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/DSA/refImg/depth-first-graph-traversal.png" alt="Depth-First Graph Traversal" width="60%" />
+</p>
+
+- Depth-first traversal starting from `A` will result to a traversal of `["A","B","D","E","C","F"]` when using the recursive approach and `["A","C","E","F","D","B"]` when using the iterative approach.
+
+### Breadth-First Traversal
+- Explore all neighbors at current depth first before moving on down the branch.
+#### Example
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/DSA/refImg/breadth-first-graph-traversal.png" alt="Breadth-First Graph Traversal" width="60%" />
+</p>
+
+- Breadth-first traversal starting from `A` will result to a traversal of `["A","B","C","D","E","F"]`.
+
 ## Undirected Graph Implementation - using adjacency list
 ```js
 class UndirectedGraph {
@@ -167,7 +201,86 @@ class UndirectedGraph {
     // Delete the key in the adjacency list for this vertex.
     delete this.adjacencyList[vertex];
   }
+  
+  // Depth-First Traversal Recursive
+  DepthFirstTraversalRecursive(startingVertex) {
+    // To account for `this`'s meaning changing in helper function.
+    const adjacencyList = this.adjacencyList;
+    // If starting vertex is invalid, return undefined.
+    if (!adjacencyList[startingVertex]) return undefined;
+    // Initialize array to store the visited node values.
+    const visited = [];
+    // Initialize an object to keep track of visited nodes.
+    const tracker = {};
+    // Recursive helper function.
+    function traverse(vertex) {
+      // Push vertex to visited array and record in tracker.
+      visited.push(vertex);
+      tracker[vertex] = true;
+      // Loop over all neighbors/vertices in the adjacency list for that vertex.
+      for (let neighbor of adjacencyList[vertex]) {
+        // If the neighbor vertex has not been visited, recursive call on that vertex.
+        if (!tracker[neighbor]) traverse(neighbor);
+      }
+    }
+    traverse(startingVertex);
+    return visited;
+  }
+  
+  // Depth-First Traversal Iterative using Stack
+  DepthFirstTraversalIterative(startingVertex) {
+    if (!this.adjacencyList[startingVertex]) return undefined;
+    const visited = [];
+    const tracker = {};
+    // Initialize stack with starting vertex.
+    const stack = [startingVertex];
+    // Variable for current vertex (top stack).
+    let currVertex;
+    // While the stack is not empty.
+    while (stack.length) {
+      // Pop from stack.
+      currVertex = stack.pop();
+      // If currVertex has not been visited yet.
+      if (!tracker[currVertex]) {
+        // Push currVertex to visited array and record in tracker.
+        visited.push(currVertex);
+        tracker[currVertex] = true;
+        // Push currVertex's neighbors onto the stack.
+        stack.push(...this.adjacencyList[currVertex]);
+      }
+    }
+    return visited;
+  }
+  
+  // Breadth-First Traversal using Queue
+  BreadthFirstTraversal(startingVertex) {
+    if (!this.adjacencyList[startingVertex]) return undefined;
+    const visited = [];
+    const tracker = {};
+    // Initialize queue with starting vertex.
+    const queue = [startingVertex];
+    // Record in tracker.
+    tracker[startingVertex] = true;
+    // Variable for current vertex (first in queue).
+    let currVertex;
+    // While the queue is not empty.
+    while (queue.length) {
+      // Dequeue from queue.
+      currVertex = queue.shift();
+      // Push currVertex to visited array and record in tracker.
+      visited.push(currVertex);      
+      // Loop over each neighbor/vertex in the adjacency list for currVertex.
+      for (let neighbor of this.adjacencyList[currVertex]) {
+        // If neighbor has not been visited yet.
+        if (!tracker[neighbor]) {
+          // Enqueue neighbor.
+          queue.push(neighbor);
+          // Record in tracker.
+          tracker[neighbor] = true;
+        }
+      }
+    }
+    return visited;
+  }
 }
 ```
-
-
