@@ -2,7 +2,6 @@
 
 ## Table of Contents
 - [Node Modules](#node-modules)
-  - [`module.exports` and `require("")`](#moduleexports-and-require)
 - [Node Package Manager (NPM)](#node-package-manager-npm)
 - [package.json](#packagejson)
 - [Example - Language Guesser](#example---language-guesser)
@@ -44,21 +43,24 @@ const mathFormulas = require("./mathFormulas.js");
 const { PI, square } = require("./mathFormulas");
 ```
 ```zsh
-//Terminal
-
 node app.js
 ```
 #### `require("")` an Entire Directory
 - Node looks for an index.js file and whatever the file exports is what the directory will export.
 
 ## Node Package Manager (NPM)
+- The default package manager for JavaScript that maintains the installation of packages (libraries).
 - A library (standardized repository) of thousands of packages published by other developers that we can use for free.
   - Ex: package for React, package for Express, package for making rainbow text, etc.
 - A command line tool that we can use to easily install and manage those packages in our Node projects.
+### Clarifications
+- Yarn - another JavaScript package manager.
+- Homebrew - a package management system that maintains the installation of software on maxOS and Linux.
+- NPX
+  - An npm package runner that was introduced from npm@5.2.0.
+  - The same way npm makes it easy to install and manage dependencies hosted on the registry, npx makes it easy to use CLI tools and other executables hosted on the registry.
 ### Installing Packages (in the current directory)
 ```zsh
-// Terminal
-
 npm install packageName
 ```
 - Downloads a folder called **"node_modules"**, which contain all the **dependencies** for that package.
@@ -66,11 +68,10 @@ npm install packageName
 - *Need to `require("")` the package name (not file path) to use it.*
 #### Example
 ```zsh
-// Terminal
 npm install give-me-a-joke
 ```
 ```js
-//index.js
+// index.js
 
 const jokes = require("give-me-a-joke");
 // from the package docs
@@ -79,8 +80,6 @@ jokes.getRandomDadJoke (function(joke) {
 });
 ```
 ```zsh
-// Terminal
-
 node index.js
 ```
 ### Local vs. Global Installation of Packages
@@ -104,16 +103,28 @@ node index.js
 ### Using the package.json File to Install All Packages/Dependencies
 - **`npm install`** inside the root directory containing the package.json file of the project.
   - Installs the **"node_modules"** directory.
+### package.json `"scripts"`
+```json
+"scripts": {
+  "win": "node index.js"
+}
+```
+```zsh
+npm run win # executes `node index.js`
+```
+### dependencies vs. devDependencies
+- dependencies include libraries, etc. necessary for the application.
+  - Ex: express, react. 
+- devDependencies include things that developers need.
+  - Ex: babel, nodemon.
 ### package-lock.json
 > package-lock.json is automatically generated for any operations where npm modifies either the node_modules tree, or package.json.  
 > It describes the exact tree that was generated, such that subsequent installs are able to generate identical trees, regardless of intermediate dependency updates.
-- *Importance:*
-  - *Describes a single representation of a dependency tree such that teammates, deployments, and continuous integration are guaranteed to install exactly the same dependencies.*
+- ***Describes a single representation of a dependency tree such that teammates, deployments, and continuous integration are guaranteed to install exactly the same dependencies.***
+  - i.e., it ensures that the version numbers are the same on everything (dependency versions, etc.).
 
 ## Example - Language Guesser
 ```zsh
-// Terminal
-
 npm install franc
 npm install langs
 npm install colors
@@ -134,9 +145,7 @@ try {
 }
 ```
 ```zsh
-// Terminal
-
-node index.js "Bonjour, je m'appelle Etienne" // returns French
+node index.js "Bonjour, je m'appelle Etienne" # returns French
 ```
 
 ## Reference
