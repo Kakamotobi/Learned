@@ -25,7 +25,7 @@
   - Each middleware has access to the request and response objects and `next`.
   - Middleware can end the HTTP request by sending back a response with methods like `res.send()`.
   - OR middleware can be chained together, one after another by calling `next()`.
-- The "handlers" can be a middleware or a controller.
+- Every handler/controller is a middleware until it responds to the request.
 
 ## Controllers
 - Controllers have access to the request and response objects in order to formulate a response to the client's request.
@@ -43,9 +43,13 @@ app.get("/", handleHome);
 - Use `next()` to execute the following middleware and move on.
 ### Example
 ```js
-// Middleware
-const loggerMiddleware = (req, res, next) => {
-	console.log(req.method, req.url);
+// Middlewares
+const methodLogger = (req, res, next) => {
+	console.log(`METHOD: ${req.method}`);
+	next();
+}
+const routerLogger = (req, res, next) => {
+	console.log(`PATH: ${req.path}`);
 	next();
 }
 
@@ -55,17 +59,17 @@ const handleHome = (req, res) => {
 }
 
 // Routes
-app.use(loggerMiddleware);
-app.get("/", handleHome);
+app.get("/", methodLogger, routerLogger, handleHome);
 ```
 
 ## External Middlewares
 ### Morgan - Logger Middleware
 - Helps us log HTTP request information to our terminal.
   - Useful for when debugging.
+- `morgan()` returns a middleware
 #### Example
 ```zsh
-npm i morgan --save-dev
+npm i morgan
 ```
 ```js
 const express = require("express");
@@ -74,6 +78,9 @@ const morgan = require("morgan");
 const app = express();
 
 app.use(morgan("dev"));
+app.get("/", (req, res) => {
+	return res.send("This is morgan!");
+});
 ```
 
 ## Defining Our Own Middleware
@@ -142,7 +149,7 @@ app.use("/dogs", (req, res, next) => {
 });
 
 // 404 Route
-// At the end of the file (if no preceding middlewares/routes have not been triggered).
+// At the end of the file (if no preceding middlewares/routes have been triggered).
 app.use((req, res) => {
 	res.status(404).send("Not Found!");
 });
