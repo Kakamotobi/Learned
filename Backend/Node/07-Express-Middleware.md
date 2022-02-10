@@ -2,6 +2,7 @@
 
 ## Table of Contents
 - [What is it?](#what-is-it)
+- [Controllers](#controllers)
 - [`next`](#next)
 - [External Middlewares](#external-middlewares)
 - [Defining Our Own Middleware](#defining-our-own-middleware)
@@ -25,6 +26,18 @@
   - Middleware can end the HTTP request by sending back a response with methods like `res.send()`.
   - OR middleware can be chained together, one after another by calling `next()`.
 - The "handlers" can be a middleware or a controller.
+
+## Controllers
+- Controllers have access to the request and response objects in order to formulate a response to the client's request.
+```js
+// Controller
+const handleHome = (req, res) => {
+	return res.send("Welcome!");
+}
+
+// Route
+app.get("/", handleHome);
+```
 
 ## `next`
 - Use `next()` to execute the following middleware and move on.
