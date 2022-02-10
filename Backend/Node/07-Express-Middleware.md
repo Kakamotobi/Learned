@@ -2,9 +2,9 @@
 
 ## Table of Contents
 - [What is it?](#what-is-it)
+- [`next`](#next)
 - [External Middlewares](#external-middlewares)
 - [Defining Our Own Middleware](#defining-our-own-middleware)
-  - [`next`](#next)
   - [Example 1](#example-1)
   - [Example 2](#example-2)
 - [`app.use()`](#appuse)
@@ -21,18 +21,38 @@
 
 - Express middleware are functions that run during the request/response lifecycle.
   - Request --> Middleware --> Response
-  - Each middleware has access to the request and response objects.
+  - Each middleware has access to the request and response objects and `next`.
   - Middleware can end the HTTP request by sending back a response with methods like `res.send()`.
   - OR middleware can be chained together, one after another by calling `next()`.
+- The "handlers" can be a middleware or a controller.
+
+## `next`
+- Use `next()` to execute the following middleware and move on.
+### Example
+```js
+// Middleware
+const loggerMiddleware = (req, res, next) => {
+	console.log(req.method, req.url);
+	next();
+}
+
+// Controller
+const handleHome = (req, res) => {
+	return res.send("Welcome!");
+}
+
+// Routes
+app.use(loggerMiddleware);
+app.get("/", handleHome);
+```
 
 ## External Middlewares
-
 ### Morgan - Logger Middleware
 - Helps us log HTTP request information to our terminal.
   - Useful for when debugging.
 #### Example
 ```zsh
-npm i morgan
+npm i morgan --save-dev
 ```
 ```js
 const express = require("express");
@@ -44,14 +64,12 @@ app.use(morgan("dev"));
 ```
 
 ## Defining Our Own Middleware
-### `next`
-- Use `next()` to execute the following middleware and move on.
 ### Example 1
 ```js
 const express = require("express");
-
 const app = express();
 
+// Routes
 app.use((req, res, next) => {
   console.log("This is my first middleware!");
   next();
@@ -66,6 +84,7 @@ app.get("/", (req, res) => {
   res.send("Home Page!");
 });
 
+// Port
 app.listen(3000, () => {
   console.log("Listening on Port 3000");
 });
@@ -75,8 +94,9 @@ app.listen(3000, () => {
 const express = require("express");
 const app = express();
 
+// Routes
 app.use((req, res, next) => {
-	req.requestTime = Date.now(); // Now, in every one of our route handlers, we have access to req.requestTime
+	req.requestTime = Date.now(); // Now, in every one of our route handlers/controllers, we have access to req.requestTime
 	console.log(req.method, req.path);
 	next();
 });
@@ -91,6 +111,7 @@ app.get("/dogs", (req, res) => {
 	res.send("Woof Woof!");
 });
 
+// Port
 app.listen(3000, () => {
 	console.log("Listening on Port 3000");
 });
