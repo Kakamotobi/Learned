@@ -81,3 +81,52 @@ const validPath = (n, edges, source, destination) => {
 }
 ```
 - Could be optimized by using Set instead of an array for `visited` (quicker look up time).
+
+## 997. Find the Town Judge
+- Description
+  - Among people labeled `1` to `n`, there may be a town judge.
+  - The town judge does not trust anybody, while is trusted by everyone (excl. self).
+  - There may only be one town judge.
+- Inputs
+  - Integer `n` representing `n` people labeled from `1` to `n`.
+  - Array `trust` where `trust[i] = [a,b]` represents that the person labeled `a` trusts the person labeled `b`.
+- Output: return the label of the town judge if the town judge exists and can be identified, or return `-1` otherwise.
+- Constraints
+  - `1 <= n <= 1000`.
+  - `0 <= trust.length <= 104`.
+  - `trust[i].length == 2`.
+  - All the pairs of trust are unique.
+  - `ai != bi`.
+  - `1 <= ai, bi <= n`.
+### Example
+```js
+findJudge(3, [[1,3],[2,3]]) // 3
+findJudge(3, [[1,3],[2,3],[3,1]]) // -1
+findJudge(3, [[1,2],[2,3]]) // -1
+```
+### Solution
+- Since this is a directed graph where for `[a,b]`, `a` trusts `b` but not vice versa, track counts using an array instead of a hash map.
+  - If using a hash map, it is not feasible to simultaneously (1) find the unrecorded vertex (town judge), and (2) check whether the unrecorded vertex (town judge) is trusted by all.
+- Use the array's indices as vertex labels. Update each vertex's value (representing the number of people that trust that vertex) by increment/decrement.
+  - Decrement for `a` since it cannot be the town judge as it trusts `b`.
+  - Increment for `b` since it can possibly be the town judge.
+- The vertex(index) with `n-1` as its value is the town judge.
+```js
+const findJudge = (n, trust) => {
+  const numOfTrusters = new Array(n+1).fill(0);
+  for (const [a,b] of trust) {
+    // We don't really care for the end value of a. We just need to make sure that it is not a potential town judge.
+    numOfTrusters[a]--;
+    // b is a potential town judge.
+    numOfTrusters[b]++;
+  }
+  
+  for (let i = 1; i < numOfTrusters.length; i++) {
+    if (numOfTrusters[i] === n - 1) return i;
+  }
+  
+  return -1;
+}
+```
+
+
