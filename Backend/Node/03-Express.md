@@ -10,12 +10,12 @@
 - [Server Example](#server-example)
 
 ## What It Does
-  - Start up a server to listen for HTTP requests.
-  - Parse incoming HTTP requests.
-    - i.e., turn request(text information) into JS object.
-  - Match those requests to particular routes.
-    - Hence, indicating what codes to run for particular requests.
-  - Craft http response and the associated content.
+- Start up a server to listen for HTTP requests.
+- Parse incoming HTTP requests.
+  - i.e., turn request(text information) into JS object.
+- Match those requests to particular routes.
+  - Hence, indicating what codes to run for particular requests.
+- Craft http response and the associated content.
 
 ## Starting Up the Server
 - **`npm init`**
@@ -140,9 +140,7 @@ app.get("/search", (req, res) => {
 
 ## Server Example
 ```zsh
-// Terminal
-
-node init -y
+npm init -y
 npm install express
 ```
 ```js
@@ -175,8 +173,6 @@ app.listen(3000, () => {
 ```
 
 ```zsh
-// Terminal
-
 node index.js
 ```
 ```
