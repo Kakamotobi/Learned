@@ -1,4 +1,4 @@
-# Networking
+# Computer Network
 
 ## Table of Contents
 - [What is Computer Networking?](#what-is-computer-networking)
