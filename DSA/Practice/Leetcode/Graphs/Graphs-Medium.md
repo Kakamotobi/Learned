@@ -57,8 +57,71 @@ const cloneGraph = (node) => {
    // dfs({val: 4, neighbors: [1,3]}) // return node 4 as 1's neighbor // (8)
 ```
 
-
-
-
-
-
+## 207. Course Schedule
+- Input: 
+  - Integer `numCourses` representing the total number of courses labeled from `0` to `numCourses-`.
+  - Array `prerequisites` representing `prerequisites[i] = [a,b]` where you must take course `b` first if you want to take course `a`.
+- Output: return `true` if you can finish all courses.
+- Constraints
+  - `1 <= numCourses <= 105`.
+  - `0 <= prerequisites.length <= 5000`.
+  - `prerequisites[i].length == 2`.
+  - `0 <= ai, bi < numCourses`.
+  - All the pairs `prerequisites[i]` are unique.
+### Example
+```js
+canFinish(2, [[0,1]); // true
+canFinish(2, [[0,1],[1,0]]); // false
+canFinish(3, [[0,1],[1,2],[2,0]]); // false
+canFinish(4, [[0,1],[1,2],[2,3],[3,1]]); // false;
+```
+### Solution
+- Create an adjacency list representing `prerequisites`. Include empty arrays.
+- Create a set to keep track of visited nodes.
+- Run dfs on each node (recursively call dfs on its prerequisites).
+  - Base Cases:
+    - If this node's prerequisite list is empty, return true.
+    - If this node has already been visited (node is in a loop), return false.
+  - Record node as visited.
+  - Run dfs on each of this node's prerequisites.
+    - If a prerequisite returned false (there is a loop), return false.
+  - Else
+    - Remove node from visited for backtracking.
+    - Empty this node's prerequisites list since there is no loop.
+    - Return true.
+```js
+const canFinish = (numCourses, prerequisites) => {
+  const adjcencyList = {};
+  // Initialize adjacency list with empty arrays.
+  for (let i = 0; i < numCourses; i++) {
+    adjacencyList[i] = [];
+  }
+  // Fill up adjacency list.
+  for (const [a,b] of prerequisites) {
+    adjacencyList[a].push(b);
+  }
+  
+  const visited = new Set();
+  
+  function dfs(course) {
+    if (visited.has(course)) return false;
+    if (!adjacencyList[course]) return true;
+    
+    visited.add(course);
+    for (let prerequisite of adjacencyList[course]) {
+      if (dfs(prerequisite) === false) return false;
+    }
+    // At this point, there is no longer the need to consider this course's prerequisites since they have been verified to be true.
+    adjacencyList[course] = [];
+    // Remove this course from visited since we are backtracking recursively.
+    visited.delete(course);
+    return true;
+  }
+  
+  // Run dfs on each course.
+  for (let course in adjacencyList) {
+    if (dfs(course) === false) return false;
+  }
+  return true;
+}
+```
