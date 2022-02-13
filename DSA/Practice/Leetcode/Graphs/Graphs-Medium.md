@@ -125,3 +125,49 @@ const canFinish = (numCourses, prerequisites) => {
   return true;
 }
 ```
+
+## 797. All Paths from Source to Target
+- Input: an array `graph` where `graph[i]` is a list of nodes that node `i` has a directed edge towards.
+- Output: return all possible paths from node `0` to node `n-1`.
+- Constraints
+  - `n == graph.length`.
+  - `2 <= n <= 15`.
+  - `0 <= graph[i][j] < n`.
+  - `graph[i][j] != i` (i.e., there will be no self-loops).
+  - All the elements of `graph[i]` are unique.
+  - The input graph is guaranteed to be a Directed Acyclic Graph.
+### Example
+```js
+allPathsSourcetoTarget([[1,2],[3],[3],[]]) // [[0,1,3],[0,2,3]]
+allPathsSourcetoTarget([[4,3,1],[3,2,4],[3],[4],[]]) // [[0,4],[0,3,4],[0,1,3,4],[0,1,2,3,4],[0,1,4]]
+```
+### Solution
+- `graph` is an adjacency list.
+- DFS traverse from node `0`.
+  - Need a way to keep track of the current path.
+  - If the current path reaches the last node, record the current path as a possible path.
+  - Backtrack and try other paths.
+```js
+const allPathsSourcetoTarget = (graph) => {
+  const possiblePaths = [];
+  
+  const lastNode = graph.length - 1;
+  
+  function dfs(node, currentPath) {
+    currentPath.push(node);
+    // Base Case
+    if (node === lastNode) {
+      possiblePaths.push(currentPath);
+      return;
+    }
+    
+    for (let neighbor of graph[node]) {
+      dfs(neighbor, [...currentPath];
+    }
+  }
+  
+  dfs(0, []);
+  
+  return possiblePaths;
+}
+```
