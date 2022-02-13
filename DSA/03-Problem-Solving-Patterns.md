@@ -5,9 +5,9 @@
 - [Multiple Pointers](#multiple-pointers)
 - [Sliding Window](#sliding-window)
 - [Divide and Conquer](#divide-and-conquer)
+- [Backtracking](#backtracking)
 - [Dynamic Programming](#dynamic-programming)
 - [Greedy Algorithm](#greedy-algorithm)
-- [Backtracking](#backtracking)
 - [Many more](#many-more)
 
 ## Frequency Counter
@@ -630,7 +630,24 @@ function search(arr, num) {
 }
 ```
 
+## Backtracking
+> Backtracking is an algorithmic-technique for solving problems recursively by trying to build a solution incrementally, one piece at a time, removing those solutions that fail to satisfy the constraints of the problem at any point of time (by time, here, is referred to the time elapsed till reaching any level of the search tree).
+- For example, if there is one solution among three possible candidates, we have to check each solution one by one and discard non-solutions until the solution is found.
+- *Backtracking algorithms are generally exponential in both time and space complexity.*
+### Backtracking Flow
+- The algorithm begins to build up a solution starting with an empty solution set to which moves are added one by one.
+- Add the first remaining move to the solution set. This creates a new sub-tree in the search tree of the algorithm.
+- If the sub-tree satisfies the constraints, then add more moves. Else, discard the entire sub-tree and recurse back to step 1 using the solution set.
+- If the above check turns out to be the solution, output and terminate the program. Else, return that no solution is possible.
+### Recursion and Backtracking
+- A recursive function calls itself until it reaches a base case.
+- Backtracking uses recursion to explore all the possibilities until the solution is reached.
+### How to Recognize a Problem to Apply Backtracking
+- Every constraint satisfaction problem with well-defined constraints on any objective solution that incrementally builds a candidate to the solution and abandons the candidate ("backtracks") as soon as it determines that the candidate cannot possibly be completed to a valid solution.
+- Most problems can be solved using other algorithms like Dynamic Programming or Greedy Algorithms in logarithmic, linear, linear-logarithmic time complexity in order of input size. These algorithms usually perform better than Backtracking.
+### Reference
+[Backtracking | Introduction - GeeksforGeeks](https://www.geeksforgeeks.org/backtracking-introduction/)  
+
 ## Dynamic Programming
 ## Greedy Algorithm
-## Backtracking
 ## Many more
