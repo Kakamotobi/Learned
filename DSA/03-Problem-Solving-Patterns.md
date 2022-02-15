@@ -639,14 +639,35 @@ function search(arr, num) {
 - Add the first remaining move to the solution set. This creates a new sub-tree in the search tree of the algorithm.
 - If the sub-tree satisfies the constraints, then add more moves. Else, discard the entire sub-tree and recurse back to step 1 using the solution set.
 - If the above check turns out to be the solution, output and terminate the program. Else, return that no solution is possible.
+#### Example
+- A tree has some good leaves and some bad leaves. At each node, beginning with the root, choose a child to move to and continue to do this until you reach a leaf.
+- If you get a bad leaf, "backtrack" to continue the search for a good leaf by revoking your most recent choice, and trying out the next option in that set of options. If there are no more options, revoke the choice that got you there and try another choice at that node.
+- If you end up back at the root with no options left, there are no good leaves to be found.
+### Backtracking Pseudo Code
+```js
+// const solve = (node) => {
+  // if n is a leaf node.
+    // if the leaf is the target node, return true.
+    // else return false.
+  // else
+    // for each child of node.
+      // if solve(child) succeeds, return true.
+    // return false.
+// }
+```
+- Eventually, the recursion will "bottom" out at a leaf node.
+- If `solve(node)` is `true`, it means that that `node` is part of a solution (i.e., it is one of the nodes on a path from the root to the target node.
+- If `solve(node)` is `false`. it means that there is no path that includes `node` to the target node. Therefore, backtrack.
 ### Recursion and Backtracking
 - A recursive function calls itself until it reaches a base case.
 - Backtracking uses recursion to explore all the possibilities until the solution is reached.
 ### How to Recognize a Problem to Apply Backtracking
 - Every constraint satisfaction problem with well-defined constraints on any objective solution that incrementally builds a candidate to the solution and abandons the candidate ("backtracks") as soon as it determines that the candidate cannot possibly be completed to a valid solution.
 - Most problems can be solved using other algorithms like Dynamic Programming or Greedy Algorithms in logarithmic, linear, linear-logarithmic time complexity in order of input size. These algorithms usually perform better than Backtracking.
+- ***Use Backtracking when there are multiple solutions and you want ALL those solutions.***
 ### Reference
 [Backtracking | Introduction - GeeksforGeeks](https://www.geeksforgeeks.org/backtracking-introduction/)  
+[Backtracking - UPENN](https://www.cis.upenn.edu/~matuszek/cit594-2012/Pages/backtracking.html)  
 
 ## Dynamic Programming
 ## Greedy Algorithm
