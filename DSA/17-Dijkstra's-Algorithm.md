@@ -17,10 +17,10 @@
 - Biology - model the spread of viruses among humans.
 
 ## Dijkstra's Algorithm Flow
-1. Look to visit a new node. Pick the node with the shortest known distance to visit first.
+1. Look to visit a new node. Pick the node with the shortest known distance to visit first (this is what the priority queue is used for).
 2. Once we've moved to that node, look at each of its neighbors.
-3. For each neighboring node, calculate the distance from the starting node by summing the total edges that lead to the node we're checking.
-4. If the new total distance to a node is less than the previous total, store the new shorter distance for that node.
+3. For each neighboring node, calculate the distance from the starting node by summing the total edges that lead to that neighboring node.
+4. If the new total distance to that neighboring node is less than the previous total, store the new shorter distance for that neighboring node.
 
 ## Example
 <p align="center">
@@ -29,7 +29,7 @@
 </p>
 
 - `Previous` represents the current shortest path to any given node from `A`.
-- Every time through, pick the current shortest distance from `A` that hasn't been visited. Explore each of its neighbors and calculate the new shortest distance to each neighbor. If it is shorter than what was stored, update what was stored and reflect the change on the previous node tracker.
+- Every time through, pick the current shortest distance from `A` that hasn't been visited. Explore each of its neighbors and calculate the new shortest distance to each neighbor. If, for each neighbor, the newly calculated distance is shorter than what was stored, update what was stored and reflect the change on the previous node tracker.
 - To get to `E` from `A`, we will go through the paths `A -> B -> E` (7), `A -> C -> D -> E` (7), `A -> C -> D -> F -> E` (6) and `A -> C -> F -> E` (7) and ultimately record the shortest one.
 
 ## Essential Data Structures for Dijkstra's Algorithm
