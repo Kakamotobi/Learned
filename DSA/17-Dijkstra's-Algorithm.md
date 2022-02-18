@@ -109,60 +109,58 @@ class WeightedGraph {
   }
   
   Dijkstra(start, finish) {
-    const vertices = new PriorityQueue();
+    const verticesPQ = new PriorityQueue();
     const distancesFromStart = {};
     const previousVertices = {};
     let path = [];
-    let smallest;
     
-    // Build up initial state for distancesFromStart, vertices and previousNodes.
+    // Build up initial state for distancesFromStart, verticesPQ and previousVertices.
     for (let vertex in this.adjacencyList) {
       if (vertex === start) {
         distancesFromStart[vertex] = 0;
-        vertices.enqueue(vertex, 0);
+        verticesPQ.enqueue(vertex, 0);
       } else {
         distancesFromStart[vertex] = Infinity;
-        vertices.enqueue(vertex, Infinity);
+        verticesPQ.enqueue(vertex, Infinity);
       }
       previousVertices[vertex] = null;
     }
     
-    // While the priority queue is not empty.
-    while (vertices.values.length) {
-      smallest = vertices.dequeue().val;
-      if (smallest === finish) {
-        // Build up path to return.
-        while (previousVertices[smallest]) {
-          path.push(smallest);
-          smallest = previousVertices[smallest];
+    let shortestVertexVal;
+    // While there is something in verticesPQ.
+    while (verticesPQ.values.length) {
+      shortestVertexVal = verticesPQ.dequeue().val;
+      
+      // If reached the destination.
+      if (shortestVertexVal === finish) {
+        // Build up the path.
+        while (previousVertices[shortestVertexVal]) {
+          path.push(shortestVertexVal);
+          shortestVertexVal = previousVertices[shortestVertexVal];
         }
         break;
       }
       
-      if (smallest || distancesFromStart[smallest] !== Infinity) {
-        for (let neighbor in this.adjacencyList[smallest]) {
+      if (shortestVertexVal || distancesFromStart[shortestVertexVal] !== Infinity) {
+        for (let neighbor in this.adjacencyList[shortestVertexVal]) {
           // Find neighboring vertex.
-          let nextVertex = this.adjacencyList[smallest][neighbor];
-          // Calculate new distance to neighboring vertex (current distance for our vertex + distance to the neighbor).
-          let candidate = distancesFromStart[smallest] + nextVertex.weight;
-          let nextNeighbor = nextVertex.vertex;
-          if (candidate < distancesFromStart[nextNeighbor]) {
-            // Update new smallest distance to neighbor.
-            distancesFromStart[nextNeighbor] = candidate;
+          const neighborVertex = this.adjacencyList[shortestVertexVal][neighbor];
+          // Calculate new distance to neighbor vertex (current distance for our vertex + distance to the neighbor).
+          const distanceToNeighborVertex = distancesFromStart[shortestVertexVal] + neighborVertex.weight;
+          // If the newly calculated distance is shorter than what is currently stored.
+          if (distanceToNeighborVertex < distancesFromStart[neighborVertex.vertex]) {
+            // Update distance to neighbor.
+            distancesFromStart[neighborVertex.vertex] = distanceToNeighborVertex;
+            // Enqueue the neighbor in priority queue with new priority.
+            verticesPQ.enqueue(neighborVertex.vertex, distanceToNeighborVertex);
             // Update how we got to neighbor.
-            previousVertices[nextNeighbor] = smallest;
-            // Enqueue in priority queue with new priority.
-            vertices.enqueue(nextNeighbor, candidate);
+            previousVertices[neighborVertex.vertex] = shortestVertexVal;
           }
         }
       }
     }
     
-    return path.concat(smallest).reverse();
+    return path.concat(shortestVertexVal).reverse();
   }
 }
 ```
-
-
-
-
