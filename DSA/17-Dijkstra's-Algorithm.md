@@ -56,32 +56,7 @@ class WeightedGraph {
     - `dequeue` the vertex with the shortest distance from `A` currently.
   - In effect, acts as a tracker for vertices that have already been visited.
     - If a vertex hasn't been visited (i.e. its distance from `A` hasn't been calculated yet), there is no point in checking its neighbors.
-#### Simple Priority Queue using an Array
-```js
-class PriorityQueue {
-  constructor() {
-    this.values = [];
-  }
-  
-  enqueue(val, priority) {
-    // Assign a priority for each val.
-    this.values.push({val, priority});
-    // Sort the values based on priority.
-    this.sort();
-  }
-  
-  dequeue() {
-    return this.values.shift();
-  }
-  
-  // O(n * log n)
-  sort() {
-    this.values.sort((a, b) => a.priority - b.priority);
-  }
-}
-```
-#### Priority Queue using Binary Heap
-- [Implementation here](https://github.com/Kakamotobi/Learned/blob/main/DSA/13-Binary-Heaps.md#priority-queue-implementation-using-min-binary-heap)
+- [Implementation here](https://github.com/Kakamotobi/Learned/blob/main/DSA/14-Priority-Queue.md#priority-queue-implementation-using-min-binary-heap)
 
 ## Dijkstra's Algorithm Implementation
 - Define it as a function in the weighted graph class.
@@ -134,7 +109,7 @@ class WeightedGraph {
     
     let shortestVertexVal;
     // While there is something in verticesPQ.
-    while (verticesPQ.values.length) {
+    while (verticesPQ.nodes.length) {
       shortestVertexVal = verticesPQ.dequeue().val;
       
       // If reached the destination.
