@@ -5,7 +5,7 @@
 - [Dijkstra's Algorithm Flow](#dijkstras-algorithm-flow)
 - [Essential Data Structures for Dijkstra's Algorithm](#essential-data-structures-for-dijkstras-algorithm)
   - [Weighted Graph](#weighted-graph)
-  - [Simple Priority Queue using an Array](#simple-priority-queue-using-an-array)
+  - [Priority Queue](#priority-queue)
 - [Dijkstra's Algorithm Implementation](#dijkstras-algorithm-implementation)
 
 ## What is Dijkstra's Algorithm
@@ -50,9 +50,13 @@ class WeightedGraph {
   }
 }
 ```
-### Simple Priority Queue using an Array
-- Used to give us the next node to visit.
-- For example, we want to `dequeue` the vertex with the shortest distance from `A` currently.
+### Priority Queue
+- Purpose:
+  - To give us the next node in line to visit.
+    - `dequeue` the vertex with the shortest distance from `A` currently.
+  - In effect, acts as a tracker for vertices that have already been visited.
+    - If a vertex hasn't been visited (i.e. its distance from `A` hasn't been calculated yet), there is no point in checking its neighbors.
+#### Simple Priority Queue using an Array
 ```js
 class PriorityQueue {
   constructor() {
@@ -76,6 +80,8 @@ class PriorityQueue {
   }
 }
 ```
+#### Priority Queue using Binary Heap
+- [Implementation here](https://github.com/Kakamotobi/Learned/blob/main/DSA/13-Binary-Heaps.md#priority-queue-implementation-using-min-binary-heap)
 
 ## Dijkstra's Algorithm Implementation
 - Define it as a function in the weighted graph class.
@@ -89,7 +95,7 @@ class PriorityQueue {
   - If that vertex is the same as the ending vertex, end algorithm.
   - Else, loop through each of the vertex's neighbors.
     - Calculate the distance to the neighbor from the starting vertex.
-    - If the distance is less than what is currently stored in `distances`.
+    - If the distance is less than what is currently stored in `distancesFromStart`.
       - Update `distancesFromStart` with the new lower distance.
       - Update `previousVertices` to reflect where we came from.
       - Enqueue the neighbor with the new total distance from the starting vertex.
