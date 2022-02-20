@@ -2,23 +2,42 @@
 
 ## Table of Contents
 - [What is Computer Networking?](#what-is-computer-networking)
+- [Types of Computer Network Architecture](#types-of-computer-network-architecture)
 - [Types of Networks](#types-of-networks)
 - [Networking Devices](#networking-devices)
 - [Related Concepts](#related-concepts)
 
 ## What is Computer Networking?
 > An interconnection of multiple devices, also known as hosts, that are connected using multiple paths for the purpose of sending/receiving data or media. Computer networks can also include multiple devices/mediums which help in the communication between two different devices; these are known as **Network devices** and include things such as routers, switches, hubs, and bridges. | GeeksforGeeks
+
+> Computer networking refers to interconnected computing devices that can exchange data and share resources with each other. These networked devices use a system of rules, called communications protocols, to transmit information over physical or wireless technologies. | AWS
+
+- Computer networks are essentially made up of nodes and links. 
+  - A network node may be some sort of data communication equipment (ex: modem, hub, switch, or data terminal equipment such as two or more computers and printers).
+  - A network link is the transmission media between two nodes (ex: physical hardware such as cable wires, optical fibers, or wireless).
+
 - Open System: a system that is connected to the network and is ready for communication.
 - Closed System: a system that is not connected to the network and hence, cannot be communicated with.
 
+## Types of Computer Network Architecture
+### Client-Server Architecture
+- Network nodes may be either clients or servers.
+- Servers provide resources like memory, processing power, or data to clients.
+- Clients may communicate with each other but do not share resources.
+### Peer-to-Peer (P2P) Architecture
+- Computers have equal powers and priviledges.
+- Each device in the network can act as either a client or server.
+- Each peer may share some of its resources (ex: memory, processing power) with the entire network.
+  - Ex: some companies use P2P architecture to host memory-consuming applications.
+
 ## Types of Networks
-- Local Area Network (LAN)
-  - Interconnect computers within a limited area (ex: home, school, office).
-- Metropolitan Area Network (MAN)
-  - Interconnect computers within a geographic region the size of a metropolitan area (ex: city).
-- Wide Area Network (WAN)
-  - Interconnect computers across the world (ex: the Internet).
-  - A network of networks.
+### Local Area Network (LAN)
+- Interconnect computers within a limited area (ex: home, school, office).
+### Metropolitan Area Network (MAN)
+- Interconnect computers within a geographic region the size of a metropolitan area (ex: city).
+### Wide Area Network (WAN)
+- Interconnect computers across the world (ex: the Internet).
+- A network of networks.
 
 ## Networking Devices
 - **Switch**
@@ -61,5 +80,6 @@
 
 ## Reference
 [Basics of Computer Networking | GeeksforGeeks](https://www.geeksforgeeks.org/basics-computer-networking/)  
+[What is Computer Networking? - AWS](https://aws.amazon.com/what-is/computer-networking/)  
 [What is a WAN? Wide-Area Network - Cisco](https://www.cisco.com/c/en/us/products/switches/what-is-a-wan-wide-area-network.html#~types)  
 [How sockets work - IBM](https://www.ibm.com/docs/en/i/7.3?topic=programming-how-sockets-work)  
