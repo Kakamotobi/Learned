@@ -19,16 +19,16 @@
 const cloneGraph = (node) => {
   if (!node) return;
   
-  const visited = new Map();
+  const nodesToClones = new Map();
   
   function dfs(node) {
     // Base Case: if the node has already been visited, return its clone.
-    if (visited.has(node)) return visited.get(node);
+    if (nodesToClones.has(node)) return nodesToClones.get(node);
     
     // Else, cloning process.
     else {
       const clone = new Node(node.val);
-      visited.set(node, clone);
+      nodesToClones.set(node, clone);
       for (let neighbor of node.neighbors) {
         clone.neighbors.push(dfs(neighbor));
       }
