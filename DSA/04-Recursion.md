@@ -3,6 +3,7 @@
 ## Table of Contents
 - [What is Recursion?](#what-is-recursion)
   - [Recursion and the Call Stack](#recursion-and-the-call-stack)
+- [Recursion Big O](#recursion-big-o)
 - [Pure Recursion Examples](#pure-recursion-examples)
   - [Pure Recursion Tips](#pure-recursion-tips)
 - [Helper Method Recursion](#helper-method-recursion)
@@ -28,6 +29,56 @@
   - Any time a function is invoked, it is placed on top of the call stack (FILO/LIFO).
   - When JS encounters the `return` keyword, or when the function ends, the compiler will remove that function from the call stack.
 - ***When we write recursive functions, we keep pushing the same new functions onto the call stack.***
+
+## Recursion Big O
+- When a recursive function makes multiple calls, the runtime is typically O(branches<sup>depth</sup>).
+	- Branches is the number of times each recursive call branches out.
+	- For example, this function that returns the `N`th Fibonacci number has a runtime of O(2<sup>N</sup>).
+		- Each node has two branches.
+		- The tree will have a depth of `N`.
+		- Therefore, each level will have twice as many calls as the one above it.
+		```js
+		const fib = (n) => {
+			if (n <= 0) return 0;
+			if (n === 1) return 1;
+			return fib(n-1) + fib(n-2);
+		}
+		```
+- A recursive algorithm may "visit" each node in the tree once and does a constant time amount of work with each "visit" (Ex: dfs traversal). Therefore, if there are N nodes, the runtime is O(N).
+	- For example, this function that returns the sum of all the values of nodes in a balanced binary search tree has a runtime of O(N).
+		- Since there are 2 branches, we are looking at O(2<sup>depth</sup>).
+		- A balanced binary search tree with N nodes has a depth of approximately log N. So we have O(2<sup>log N</sup>).
+			- Let P = 2<sup>log N</sup>
+				- log<sub>2</sub>P = log<sub>2</sub>N
+				- P = N
+				- 2<sup>log N</sup> = N
+			- Therefore, we have O(N).
+		```js
+		const sumOfBalancedBinarySearchTree = (node) => {
+			if (node === null) return 0;
+			return sum(node.left) + node.val + sum(node.right);
+		}
+		```
+- Runtime of exponential time recursive algorithms can be optimized using **memoization**.
+	- Cache previously computed values in an auxiliary data structure. If the value has already been cached, return the cache.
+	- For example, this function that prints the `N`th Fibonacci number has a runtime of O(N).
+		- Since at each call to `fib(i)`, the values for `fib(i-1)` and `fib(i-2)` are already cached, it takes a constant amount of time.
+		- This lookup is done `N` times. So we have O(N).
+		```js
+		const allFib = (n) => {
+			const memo = new Array(n+1);
+			return fib(n, memo);
+		}
+		
+		const fib = (n, memo) => {
+			if (n <= 0) return 0;
+			if (n === 1) return 1;
+			if (memo[n] > 0) return memo[n];
+			
+			memo[n] = fib(n-1, memo) + fib(n-2, memo);
+			return memo[n];
+		}
+		```
 
 ## Pure Recursion Examples
 ```js
