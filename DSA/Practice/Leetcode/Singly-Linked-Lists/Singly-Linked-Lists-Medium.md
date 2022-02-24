@@ -276,3 +276,52 @@ const reorderList = (head) => {
   return head;
 }
 ```
+
+## 19. Remove Nth Node From End of List
+- Input
+  - The `head` of a singly linked list.
+  - Integer `n` representing the `n`th node from the back.
+- Output: return the `head` of the singly linked list with the `n`th node from the back removed.
+- Constraints
+  - The number of nodes in the list is `sz`.
+  - `1 <= sz <= 30`.
+  - `0 <= Node.val <= 100`.
+  - `1 <= n <= sz`.
+### Example
+```js
+removeNthFromEnd([1,2,3,4,5], 2) // [1,2,3,5]
+removeNthFromEnd([1], 1) // []
+removeNthFromEnd([1,2], 1) // [1]
+```
+### Solution
+- TC: O(n)
+- SC: O(1)
+- Find out the length of the list.
+- Use the length to identify the `n`th node from the back.
+```js
+const removeNthFromEnd = (head, n) => {
+  let listLength = 0;
+  let scout = head;
+  while (scout !== null) {
+    scout = scout.next;
+    listLength++;
+  }
+  
+  if (n === listLength) {
+    let newHead = head.next;
+    head.next = null;
+    head = newHead;
+  } else {
+    let prevNode = head;
+    let counter = 1;
+    while (counter !== listLength - n) {
+      prevNode = prevNode.next;
+      counter++;
+    }
+    const targetNode = prevNode.next;
+    prevNode.next = targetNode.next;
+    targetNode.next = null;
+  }
+  return head;
+}
+```
