@@ -26,6 +26,8 @@
 ### Document-Oriented Database / Document Data Store
 - A type/category of NoSQL database.
 - Store information in some format (ex: JSON) to a document.
+  - Instead of rows and columns of data, data is stored in JSON format.
+  - MongoDB allows us to create, edit, delete, search these documents.
 - Take data as it is and store all of its relevant information in a single instance in the database, without having to store them in a table that follows a pre-defined schema.
 
 ## Types of Databases
@@ -45,16 +47,16 @@
 2. Tap the MongoDB Homebrew Tap
   - `brew tap mongodb/brew`
 3. Install MongoDB
-  - `brew install mongodb-community@4.4`
+  - `brew install mongodb-community`
 4. Run MongoDB as a macOS service
-  - `brew services start mongodb-community@4.4`
+  - `brew services start mongodb-community`
   - Stopping running a mongod running as a macOS service
-    - `brew services stop mongodb-community@4.4`
+    - `brew services stop mongodb-community`
 5. Verify that MongoDB is running as a macOS service.
   - `brew services list`
 6. Begin using MongoDB
   - `mongo`
-  - "zsh: command not found: mongo"
+  - If error: "zsh: command not found: mongo"
     1. `cd ~`.
     2. `ls -a` to check if `.zshrc` file exists.
     3. If it doesn't, `touch .zshrc`.
@@ -62,7 +64,9 @@
     5. Verify that it has been properly added by doing: `cat .zshrc`.
     6. `mongo` works now.
 ### Reference
-[Install MongoDB Community Edition on macOS - MongoDB](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-os-x/)
+[Install MongoDB Community Edition on macOS - MongoDB](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-os-x/)  
+[remove mongodb that was installed via brew](https://gist.github.com/katychuang/10439243)  
+[mongodb/homebrew-brew: The Official MongoDB Software Homebrew Tap](https://github.com/mongodb/homebrew-brew)  
 
 ## The Mongo Shell
 - **`mongo`**
