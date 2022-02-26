@@ -180,7 +180,6 @@
   - Ex: `db.dogs.find({$or: [{"personality.catFriendly": true}, {age: {$lte: 20}}]})`
 
 ### Reference
-[MongoDB CRUD Operations - MongoDB Manual](https://docs.mongodb.com/manual/crud/)
-[mongo Shell Methods - MongoDB manual](#https://docs.mongodb.com/manual/reference/method/)
-[Operators - MongoDB Manual](https://docs.mongodb.com/manual/reference/operator/)
-
+[MongoDB CRUD Operations - MongoDB Manual](https://docs.mongodb.com/manual/crud/)  
+[mongo Shell Methods - MongoDB manual](https://docs.mongodb.com/manual/reference/method/)  
+[Operators - MongoDB Manual](https://docs.mongodb.com/manual/reference/operator/)  
