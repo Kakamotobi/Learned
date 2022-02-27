@@ -7,9 +7,14 @@
   - [Weighted Graph](#weighted-graph)
   - [Priority Queue](#priority-queue)
 - [Dijkstra's Algorithm Implementation](#dijkstras-algorithm-implementation)
+- [Reference](#reference)
 
 ## What is Dijkstra's Algorithm
-- **An algorithm that finds the shortest path between two vertices on a (weighted) graph.**
+- **An algorithm that finds the shortest path between two vertices in a (weighted) graph.**
+- Dijkstra's algorithm is an application of greedy algorithm.
+> The algorithm maintains a set of unvisited nodes and calculates a tentative distance from a given node to another. If the algorithm finds a shorter way to get to a given node, the path is updated to reflect the shorter distance. This problem has satisfactory optimization substructure since if A is connected to B, B is connected to C, and the path must go through A and B to get to the destination C, then the shortest path from A to B and the shortest path from B to C must be a part of the shortest path from A to C. | Brilliant
+
+> Dijkstra's algorithm to find the shortest path between A and B picks the unvisited vertex with the lowest distance, calculates the distance through it to each unvisited neighbor, and updates the neighbor's distance if smaller. Mark visited (set to red) when done with neighbors. | Brilliant
 ### Use Cases
 - GPS - find the fastest route.
 - Network Routing - find open shortest path for data.
@@ -145,3 +150,6 @@ class WeightedGraph {
   }
 }
 ```
+
+## Reference
+[Greedy Algorithms | Brilliant Math & Science Wiki](https://brilliant.org/wiki/greedy-algorithm/)  
