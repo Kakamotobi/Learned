@@ -6,8 +6,8 @@
 - [Sliding Window](#sliding-window)
 - [Divide and Conquer](#divide-and-conquer)
 - [Backtracking](#backtracking)
-- [Dynamic Programming](#dynamic-programming)
 - [Greedy Algorithm](#greedy-algorithm)
+- [Dynamic Programming](#dynamic-programming)
 - [Many more](#many-more)
 
 ## Frequency Counter
@@ -669,6 +669,32 @@ function search(arr, num) {
 [Backtracking | Introduction - GeeksforGeeks](https://www.geeksforgeeks.org/backtracking-introduction/)  
 [Backtracking - UPENN](https://www.cis.upenn.edu/~matuszek/cit594-2012/Pages/backtracking.html)  
 
-## Dynamic Programming
 ## Greedy Algorithm
+- **An algorithm paradigm that follows the problem-solving method of selecting the locally optimal choice at each step in the hopes of achieving a global optimum.**
+  - "Greedy" refers to the algorithm picking the locally optimal choice at each step to reach the global optimum solution.
+- This algorithm is an optimization algorithm which can only find minimum or maximum possible result.
+- Greedy algorithms are simple to develop and have a short execution time.
+- However, they do not always produce a globally optimal result.
+- Some applications of greedy algorithms include:
+  - [Dijkstra's Algorithm](https://github.com/Kakamotobi/Learned/blob/main/DSA/18-Dijkstra's-Algorithm.md) - a graph search algorithm.
+  - Huffman Coding
+### Conditions to Use a Greedy Approach
+1. Greedy Choice Property
+    - Choosing the best option at each phase can lead to a global (overall) optimal solution.
+2. Optimal Substructure
+    - If an optimal solution to the total problem contains the optimal solutions to the sub-problems, the problem has an optimal substructure.
+      - i.e., the problem can be split down into multiple subproblems and the solution to these subproblems can collectively lead to the solution for the entire problem.
+### Limitations of Greedy Algorithms
+- Greedy algorithms often fail because they do not consider all available data.
+- A greedy algorithm may make its choices based on the choices it has made so far. But it is not aware of future choices that it could make.
+- Dynamic Programming may be an appropriate solution for problems that greedy algorithms fail to solve successfully.
+### Steps for Creating a Greedy Algorithm
+- Find the best substructore/subproblem to the given problem.
+- Determine what the solution will include (ex: largest sum, shortest path).
+- Create an iterative process for traversing through local stages (subproblems) and making decisions to reach a global optimum solution.
+### Reference
+[Greedy Algorithms | Brilliant Math & Science Wiki](https://brilliant.org/wiki/greedy-algorithm/)  
+[Greedy Algorithm | What is Greedy Algorithm? | Introduction To Greedy Algorithms | Simplilearn](https://www.youtube.com/watch?v=ilYwrsP7zzk)  
+
+## Dynamic Programming
 ## Many more
