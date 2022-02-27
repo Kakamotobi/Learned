@@ -12,9 +12,19 @@
 ## What is Dijkstra's Algorithm
 - **An algorithm that finds the shortest path between two vertices in a (weighted) graph.**
 - Dijkstra's algorithm is an application of greedy algorithm.
+- Dijkstra's algorithm always successfully identifies the shortest path when the edges are all positive. However, the algorithm can fail when there are negative edges.
+  - As a greedy approach, once a node has been visited (meaning that the algorithm found the shortest path to that node), it cannot be reconsidered even if there is another path with shorter distance.
+  - This only becomes an issue if there are negative weights in the graph.
 > The algorithm maintains a set of unvisited nodes and calculates a tentative distance from a given node to another. If the algorithm finds a shorter way to get to a given node, the path is updated to reflect the shorter distance. This problem has satisfactory optimization substructure since if A is connected to B, B is connected to C, and the path must go through A and B to get to the destination C, then the shortest path from A to B and the shortest path from B to C must be a part of the shortest path from A to C. | Brilliant
 
 > Dijkstra's algorithm to find the shortest path between A and B picks the unvisited vertex with the lowest distance, calculates the distance through it to each unvisited neighbor, and updates the neighbor's distance if smaller. Mark visited (set to red) when done with neighbors. | Brilliant
+### Pros and Cons
+#### Pros
+- It has a linear time complexity, making it easy to be used for large problems.
+- It is useful in finding the shortest distance, hence can be used in maps and calculating traffic.
+#### Cons
+- It is unable to handle negative weights.
+- There is some wastage of time since it follows a blind approach.
 ### Use Cases
 - GPS - find the fastest route.
 - Network Routing - find open shortest path for data.
@@ -153,3 +163,4 @@ class WeightedGraph {
 
 ## Reference
 [Greedy Algorithms | Brilliant Math & Science Wiki](https://brilliant.org/wiki/greedy-algorithm/)  
+[shortest path - Why doesn't Dijkstra's algorithm work for negative weight edges? - Stack Overflow](https://stackoverflow.com/questions/13159337/why-doesnt-dijkstras-algorithm-work-for-negative-weight-edges#:~:text=Since%20Dijkstra's%20goal%20is%20to,nodes%20that%20it%20has%20visited.)
