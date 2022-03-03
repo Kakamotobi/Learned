@@ -4,7 +4,7 @@
 ## HTTP Request
 - An HTTP Request consists of three elements: a request line, headers, and a body (if needed).
 ### Request Line
-- The Request Line consists of three key elements: an HTTP method, request target, http version.
+- The Request Line consists of three key elements: an HTTP method, request target, HTTP version.
 - Ex: `GET /dog.png HTTP/1.0`.
 #### HTTP Method
 - `GET`, `POST`, `PATCH`, `DELETE`, etc.
@@ -31,15 +31,40 @@
 ### Request Body
 - The payload of the request.
 - Requests such as `POST` that need to send data to the server require a body.
-#### 2 Categories of Body
-- **Single-Resource Bodies**
-  - Consists of a single file, defined by two headers: `Content-Type` and `Content-Length`.
-- **Multiple-Resource Bodies**
-  - Consists of a multipart body, in which each body contains a different bit of information.
+#### 2 Categories of Response Body
+- **Single-Resource Body**
+  - Consist of a single file, defined by two headers: `Content-Type` and `Content-Length`.
+- **Multiple-Resource Body**
+  - Consist of a multipart body, in which each body contains a different bit of information.
   - Typical with HTML forms.
   - `Content-Type: multipart/form-data`.
 
+## HTTP Response
+- An HTTP Request consists of three elements: a status line, headers, and a body (usually needed).
+### Status Line
+- The Status Line consists of three key elements: HTTP version, status code, status text.
+- Ex: `HTTP/1.1 200 OK`.
+### Response Headers
+#### Headers Grouped by Context
+- **General Headers**
+- **Response Headers**
+  - Provide information about the response, not the content of the message.
+  - Provide additional information about the server which doesn’t fit in the status line.
+  - Ex: `Access-Control-Allow-Origin: *`, `Server: Apache`.
+- **Representation Headers**
+### Response Body
+- The payload of the response.
+- Some responses do not have a corresponding payload to a request.
+#### 3 Categories of Response Body
+- **Single Resources Body**
+  - That consists of a single file, defined by two headers: `Content-Type` and `Content-Length`.
+  - That consists of a single file, encoded by chunks with `Transfer-Encoding` set to `chunked`.
+- **Multiple-Resource Body**
+  - Consist of a multipart body, in which each body contains a different bit of information.
+  - These are rare to find.
+
 ## Reference
 [HTTP requests - IBM Documentation](https://www.ibm.com/docs/en/cics-ts/5.3?topic=protocol-http-requests)  
+[HTTP responses - IBM Documentation](https://www.ibm.com/docs/en/cics-ts/5.3?topic=protocol-http-responses)  
 [HTTP Messages - HTTP | MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Messages)  
 [HTTP headers - HTTP | MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers)  
