@@ -125,8 +125,26 @@ console.log(doubleMap([2, 3, 4])); // [4, 6, 8]
 - Can hide data through encapsulation.
 - Fundamental elements: objects and methods.
 - It is an *imperative* type of programming style.
+#### The 4 Pillars of OOP
+- **Encapsulation**
+  > ... the packing of data and functions into one component (ex: a class) and then controlling access to that component to make a “blackbox” out of the object. | MDN
+  - i.e., bundling related variables and methods that operate on them into an object.
+  - Reduce complexity and increase reusability.
+- **Abstraction**
+  > ... a way to reduce complexity and allow efficient design and implementation in complex software systems. It hides the technical complexity of systems behind simpler APIs. | MDN
+  - Simpler interface since the complexity is less exposed.
+  - Reduce the impact of change.
+    - Any change within will not leak to the outside.
+- **Inheritance**
+  > Data abstraction can be carried up several levels, that is, classes can have superclasses and subclasses. | MDN
+  - Helps eliminate redundant code.
+- **Polymorphism**
+  > the presentation of one interface for multiple data types. In the case of OOP, by making the class responsible for its code as well as its own data, polymorphism can be achieved in that each class has its own function that (once called) berhaves properly for any object. | MDN
+  - Polymorphism = many forms.
+  - Allows us to get rid of long if and elses or switch and case statements.
+
 ### Reference
 [Difference between Functional Programming and Object-oriented Programming - GeeksforGeeks](https://www.geeksforgeeks.org/difference-between-functional-programming-and-object-oriented-programming/)  
 [Functional Programming VS Object Oriented Programming - Medium](https://medium.com/@shaistha24/functional-programming-vs-object-oriented-programming-oop-which-is-better-82172e53a526)  
-[Master the JavaScript Interview: What is Functional Programming? - Medium](https://medium.com/javascript-scene/master-the-javascript-interview-what-is-functional-programming-7f218c68b3a0) 
-
+[Master the JavaScript Interview: What is Functional Programming? - Medium](https://medium.com/javascript-scene/master-the-javascript-interview-what-is-functional-programming-7f218c68b3a0)  
+[MDN Web Docs Glossary: Definitions of Web-related terms | MDN](https://developer.mozilla.org/en-US/docs/Glossary)  
