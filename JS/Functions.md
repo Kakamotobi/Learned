@@ -10,21 +10,21 @@ Create a `Function` object that have access to methods, properties etc.
 ## Function Declaration vs. Function Expression
 ### Function Declaration
 - Syntax:
-```
-function name([param[, param,[..., param]]]) {
-  statements
-}
-```
+  ```js
+  function name([param[, param,[..., param]]]) {
+    // statements
+  }
+  ```
 - Example: `function doStuff() {};`
 - **Function declarations are hoisted to the top of the enclosing block or global scope, hence can be used before it has been declared.**
 
 ### Function Expression
 - Syntax:
-```
-const variable = function [name]([param1[, param2[, ..., paramN]]]) {
-   statements
-}
-```
+  ```js
+  const variable = function [name]([param1[, param2[, ..., paramN]]]) {
+     // statements
+  }
+  ```
 - Example: `const doStuff = function() {};`
 - **The reference to a function expression is stored in a variable, which can now be used to call the function.**
   - Meaning that `doStuff` is not the name of the function, and is merely a reference to the function.
@@ -35,8 +35,8 @@ const variable = function [name]([param1[, param2[, ..., paramN]]]) {
 #### Named Function Expressions
 - When a function expression is assigned to a variable, it has a name property.
 - Use named function expressions if you want to refer to the current function inside the function body.
-- This name is the local only to the function scope.
-```
+- This name is local only to the function scope.
+```js
 // If function name is omitted, the variable name is the name.
 let foo() = function() {};
 foo.name // "foo"
@@ -72,7 +72,7 @@ bar.name // "baz"
 - Functions that operate on/with other functions. They can:
   - accept other functions as arguments.
     - Example
-      ```
+      ```js
       function callTwice(func) {
         func();
         func();
@@ -88,7 +88,7 @@ bar.name // "baz"
     - "Function factories"
       - The higher order function is making a new function.
     - Example
-      ```
+      ```js
       function makeBetweenFunc(min, max) {
         return function (val) {
           return val >= min && val <= max;
@@ -110,4 +110,4 @@ bar.name // "baz"
 
 ## Reference
 [Function - MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions)  
-[JavaScript - 함수 선언문, 함수 표현식 그리고 화살표 함수 비교](https://velog.io/@bigbrothershin/%EC%98%A4%EB%8A%98-%EA%B3%B5%EB%B6%80%ED%95%A0-%EA%B2%832020.1.30)
+[JavaScript - 함수 선언문, 함수 표현식 그리고 화살표 함수 비교](https://velog.io/@bigbrothershin/%EC%98%A4%EB%8A%98-%EA%B3%B5%EB%B6%80%ED%95%A0-%EA%B2%832020.1.30)  
