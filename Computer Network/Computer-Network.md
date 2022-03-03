@@ -6,6 +6,7 @@
 - [Types of Networks](#types-of-networks)
 - [Networking Devices](#networking-devices)
 - [Related Concepts](#related-concepts)
+- [The Internet vs The Web](#the-internet-vs-the-web)
 
 ## What is Computer Networking?
 > An interconnection of multiple devices, also known as hosts, that are connected using multiple paths for the purpose of sending/receiving data or media. Computer networks can also include multiple devices/mediums which help in the communication between two different devices; these are known as **Network devices** and include things such as routers, switches, hubs, and bridges. | GeeksforGeeks
@@ -62,8 +63,12 @@
 ## Related Concepts
 - **TCP/IP Protocol Suite**
   - The set of rules or algorithms which define the ways of how two entities can communicate across the network.
+  - i.e., defines how data should travel across the Internet.
 - **Domain Name System(DNS) Server**
   - Special servers that match up the web address(URL) that we type in our browsers to their actual IP addresses.
+  - The browser looks up the domain name in the DNS to find the website's real IP address in order to retrieve the website.
+- **Packet**
+  - Format in which data is sent from the server ot the client.
 - **Port**
   - A logical channel through which data can be sent/received to an application.
   - Any host may have multiple applications running, and each of these applications is identified using the port number on which they are running.
@@ -77,6 +82,19 @@
     - The socket on the server process waits for requests from a client.
       - The client-to-server data exchange takes place when a client connects to the server through a socket.
     - The server performs the client's request and sends the reply back to the client.
+
+## The Internet vs The Web
+### What is the Internet?
+- **The technical infrastructure that connects computers and networks of computers; that use TCP/IP to communicate.**
+  - A network of actual hardware/wires (in the sea, server, ISP, client).
+- Data is sent in small chunks of packets for quick transmission.
+- Routers exist to to make sure each data packets are sent to the correct address.
+- Analogy: the roads, motorways, etc.
+### What is the World Wide Web (Web)?
+- **The Web is an application that runs on the Internet.**
+- The pages that we see when using a device and we are online.
+- Clients and Servers are computers that are connected to the Web.
+- Analogy: the houses, shops, cafés on the roads are like the web servers hosting websites.
 
 ## Reference
 [Basics of Computer Networking | GeeksforGeeks](https://www.geeksforgeeks.org/basics-computer-networking/)  
