@@ -79,6 +79,7 @@
 			return memo[n];
 		}
 		```
+- A recursive algorithm takes at least O(n) space where n is the depth of the recursive call. Hence, an iterative approach may be a better option if space is an important factor. However, the algorithm may be more complex.
 
 ## Pure Recursion Examples
 ```js
