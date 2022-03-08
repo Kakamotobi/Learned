@@ -145,3 +145,39 @@ const partition = (head, x) => {
   return newHead;
 }
 ```
+
+## 2.5 Sum Lists
+- Inputs
+  - The head of a singly linked list `l1` that represents a number stored in reverse order (one's digit is the head of the linked list).
+  - The head of a singly linked list `l2` that represents a number stored in reverse order.
+- Output
+  - A linked list representing the sum of the two numbers represented by `l1` and `l2`.
+### Example
+```js
+// Inputs
+  // l1 = 7 -> 1 -> 6
+  // l2 = 5 -> 9 -> 2
+// Output: 2 -> 1 -> 9
+```
+### Solution
+- Replicate normal addition process in a recursive way.
+- Add the two values and carry over the "extra" digit to the next nodes.
+```js
+const sumLists = (l1, l2, carry = 0) => {
+  if (l1 === null && l2 === null && carry === 0) return null;
+  
+  const summedList = new Node();
+  let value = carry;
+  if (l1 !== null) value += l1.val;
+  if (l2 !== null) value += l2.val;
+  
+  summedList.val = value % 10;
+  
+  if (l1 !== null || l2 !== null) {
+    const nextDigit = sumLists(l1.next, l2.next, value = 10 ? 1 : 0);
+    summedList.next = nextDigit;
+  }
+  
+  return summedList;
+}
+```
