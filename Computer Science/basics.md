@@ -2,6 +2,8 @@
 
 ## Table of Contents
 - [Typing](#typing)
+- [Compiler vs Interpreter](#compiler-vs-interpreter)
+- [Transpiler (Source-to-Source Compiler) and Polyfill](#transpiler-source-to-source-compiler-and-polyfill)
 - [ASCII and Unicode](#ascii-and-unicode)
 
 ## Typing
@@ -34,6 +36,52 @@
   ```
 ### Reference
 [Understanding Types: Static vs. Dynamic, & Strong vs. Weak](https://medium.com/@cpave3/understanding-types-static-vs-dynamic-strong-vs-weak-88a4e1f0ed5f)
+
+---
+
+## Compiler vs Interpreter
+> ...two different ways to translate a program form programming or scripting language to machine language.
+### Compiler
+- Source Code (high level lang.) --> Compiler --> Object Code (machine language a.k.a. binary code)
+- Generates a stand alone machine code program.
+### Interpreter
+- Source Code (high level lang.) --> Interpreter --> Executable Code (machine language) --> Get Next Instruction --> Source Code
+- Performs the actions described by the high level program.
+### Comparison
+| Compiler  | Interpreter |
+| ------------- | ------------- |
+| **Converts the entire source code (written in high level lang.) into executable machine code and then executes.**  | **Immediately executes and then translates a single statement of the source code into machine code before the next line is translated.**  |
+| Any errors are informed at the end of the compilation.  | Any error in the particular statement will terminate its translating process and display the error(s).  |
+| The source code is translated to object code successfully if it is free of errors.  | The interpreter moves on only after the error has been removed.  |
+### Note
+- Most modern dynamic languages have implementations that use both interpreters and compilers.
+- ***JavaScript used to be purely interpreted years ago. Now, it is JIT-compiled to native machine code in all major JavaScript implementations.***
+### Just-In-Time(JIT) Compiler
+- With JavaScript, compilation is done during execution.
+- Every browser, and runtime in general, implements its own version of a JIT compiler.
+- Source Code --> Machine Code --> Execute --> Source Code
+### Reference
+[Language Processors: Assembler, Compiler and Interpreter](https://www.geeksforgeeks.org/language-processors-assembler-compiler-and-interpreter/)  
+[The JIT in JavaScript: Just In Time Compiler](https://blog.bitsrc.io/the-jit-in-javascript-just-in-time-compiler-798b66e44143)
+
+---
+
+## Transpiler (Source-to-Source Compiler) and Polyfill
+### Transpiler
+- A tool that converts a source code written in one programming language to source code in another language.
+- Ex: Babel is a JavaScript transpiler which is usually used to convert ES6 code to previous version of JavaScript that is able to run on older JavaScript engines.
+  - It parses ("read and understand") modern code and rewrite it using older syntax for it to work in older engines as well.
+### Polyfill
+- A polyfill is a script that updates and adds new functions.
+> New language features may include not only syntax constructs and operators, but also built-in functions.  
+> As we're talking about new functions, not syntax changes, there's no need to transpile anything here. We just need to declare the missing function. A polyfill "fills in" the gap and adds missing implementations.
+- A polyfill emulates certain APIs, so that we can use them as though they were already implemented.
+- Polyfill libraries: core-js, polyfill.io
+### Reference
+[Transpiler - devopedia](https://devopedia.org/transpiler)  
+[Polyfills and transpilers - javascript.info](https://javascript.info/polyfills)  
+
+---
 
 ## ASCII and Unicode
 ### What is ASCII?
