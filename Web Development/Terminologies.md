@@ -146,50 +146,6 @@
 
 ---
 
-## Compiler vs. Interpreter
-> ...two different ways to translate a program form programming or scripting language to machine language.
-### Compiler
-- Source Code (high level lang.) --> Compiler --> Object Code (machine language a.k.a. binary code)
-- Generates a stand alone machine code program.
-### Interpreter
-- Source Code (high level lang.) --> Interpreter --> Executable Code (machine language) --> Get Next Instruction --> Source Code
-- Performs the actions described by the high level program.
-### Comparison
-| Compiler  | Interpreter |
-| ------------- | ------------- |
-| **Converts the entire source code (written in high level lang.) into executable machine code and then executes.**  | **Immediately executes and then translates a single statement of the source code into machine code before the next line is translated.**  |
-| Any errors are informed at the end of the compilation.  | Any error in the particular statement will terminate its translating process and display the error(s).  |
-| The source code is translated to object code successfully if it is free of errors.  | The interpreter moves on only after the error has been removed.  |
-### Note
-- Most modern dynamic languages have implementations that use both interpreters and compilers.
-- ***JavaScript used to be purely interpreted years ago. Now, it is JIT-compiled to native machine code in all major JavaScript implementations.***
-### Just-In-Time(JIT) Compiler
-- With JavaScript, compilation is done during execution.
-- Every browser, and runtime in general, implements its own version of a JIT compiler.
-- Source Code --> Machine Code --> Execute --> Source Code
-### Reference
-[Language Processors: Assembler, Compiler and Interpreter](https://www.geeksforgeeks.org/language-processors-assembler-compiler-and-interpreter/)  
-[The JIT in JavaScript: Just In Time Compiler](https://blog.bitsrc.io/the-jit-in-javascript-just-in-time-compiler-798b66e44143)
-
----
-
-## Transpiler (Source-to-Source Compiler) and Polyfill
-### Transpiler
-- A tool that converts a source code written in one programming language to soruce code in another language.
-- Ex: Babel is a JavaScript transpiler which is usually used to convert ES6 code to previous version of JavaScript that is able to run on older JavaScript engines.
-  - It parses ("read and understand") modern code and rewrite it using older syntax for it to work in older engines as well.
-### Polyfill
-- A polyfill is a script that updates and adds new functions.
-> New language features may include not only syntax constructs and operators, but also built-in functions.  
-> As we're talking about new functions, not syntax changes, there's no need to transpile anything here. We just need to declare the missing function. A polyfill "fills in" the gap and adds missing implementations.
-- A polyfill emulates certain APIs, so that we can use them as though they were already implemented.
-- Polyfill libraries: core-js, polyfill.io
-### Reference
-[Transpiler - devopedia](https://devopedia.org/transpiler)  
-[Polyfills and transpilers - javascript.info](https://javascript.info/polyfills)
-
----
-
 ## JavaScript Engine vs. JavaScript Runtime Environment
 ### JavaScript Engine
 - **A program that reads, interprets, compiles the source code and executes the corresponding machine code.**
@@ -214,7 +170,7 @@
   - Ex: Babel (modern JS to browser compatible JS), Typescript (transcompiles to JS).
 ### JavaScript Runtime Environment
 - **The location/environment where your program will be executed in.**
-  - Ex: web browsers'(ex: chrome, firefox, safari) runtime environment, Node.js
+  - Ex: web browsers'(ex: chrome, firefox, safari) runtime environment, Node.js.
 - It uses a JavaScript engine and provide APIs for some functionalities.
   - Browser APIs Ex: DOM manipulation APIs, window and document APIs.
   - Node.js APIs Ex: APIs for server application (require, process, buffer APIs).
@@ -231,26 +187,3 @@
 [Runtime Definition](https://techterms.com/definition/runtime)
 
 ---
-
-## Cookies
-- Short for magic cookie.
-  > A packet of data that a computer receives and then sends back without changing or altering it.
-  - a.k.a. HTTP cookie, web cookie, internet/browser cookie.
-- Upon visiting a website, the website sends the cookie to the computer. Then the cookie is stored in a file located inside the web browser.
-- Purpose
-  - To help the website keep track of your visits and activity.
-  - Ex: online retailers use cookies to keep track of the items in a user's shopping cart as they explore the site. Without cookies, the cart would reset to zero every time a new link is clicked on the site.
-  - Ex: imdb recently viewed.
-  - Ex: record login information.
-- Types of Cookies
-  - Session Cookies: used only when a user is actively navigating a website. Once the user leaves the site, the session cookie disappears.
-  - Tracking Cookies: can be used to create long-term records of multiple visits to the same site.
-  - Authentication Cookies: track whether a user is logged in, and if so, under what name.
-- Note
-  - The data in a cookie doesn't change when it travels back and forth, hence safe from virus/malware.
-
-### Reference
-[What are computer cookies?](https://us.norton.com/internetsecurity-privacy-what-are-cookies.html)
-
----
-
