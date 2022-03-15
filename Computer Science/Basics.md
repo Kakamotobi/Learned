@@ -1,34 +1,59 @@
 # Basics
 
 ## Table of Contents
+- [Programming vs Scripting vs Markup Language](#programming-vs-scripting-vs-markup-language)
 - [Compiler vs Interpreter](#compiler-vs-interpreter)
 - [Transpiler (Source-to-Source Compiler) and Polyfill](#transpiler-source-to-source-compiler-and-polyfill)
 - [Typing](#typing)
 - [ASCII and Unicode](#ascii-and-unicode)
 
+## Programming vs Scripting vs Markup Language
+### Programming vs Scripting Language
+|                | Programming Language | Scripting Language |
+| -------------- | -------------------- | ------------------ |
+| Definition     | Programming language is a set of instructions that can be fed into a computer to achieve a specific output. | Scripting language is a programming language supporting scripts written exclusively for a special runtime environment to automate a specific action/function execution. |
+| Interpretation | Programming languages are compressed into smaller packages that do not need to be interpreted by another language or application. | ***Scripting languages are written in one language and interpreted within another program.*** For instance, JavaScript has to be incorporated within HTML, which the Internet browser will then interpret. |
+| Execution      | Run independently of a parent program. | Run inside another program. |
+| Memory         | When compiled, creates binary code executable files (.exe files) that take up memory. | Do not create executable files (i.e. don't take up memory). |
+| Examples       | C, C++, C#, Java | JavaScript, Python, PHP, Ruby |
+
+- *All scripting languages are programming languages.*
+- ***A major difference between programming and scripting languages is that scripting languages are not required to be compiled, and are rather interpreted.***
+  - For example, a C program needs to be compiled before running. Howevever, a Python program does not need to be compiled before running.
+### Markup Language
+- A type of computer language that uses tags to present the elements in a document and how they are structured.
+- Ex: HTML, XML.
+### Reference
+[Computer Programming for Beginners | Programming, Scripting & Markup Languages | Ep19](https://www.youtube.com/watch?v=aExZPN6O_54&ab_channel=ProgrammingWithAvelx)  
+[What's the difference between Scripting and Programming Languages? - GeeksforGeeks](https://www.geeksforgeeks.org/whats-the-difference-between-scripting-and-programming-languages/)  
+[Difference Between Programming & Scripting Language - CN BLOG](https://www.codingninjas.com/blog/2018/12/08/difference-between-a-programming-language-and-a-scripting-language/)  
+
+---
+
 ## Compiler vs Interpreter
 > ...two different ways to translate a program from programming or scripting language to machine language.
+- Most modern dynamic languages have implementations that use both interpreters and compilers.
+- ***JavaScript used to be purely interpreted years ago. Now, it is JIT-compiled to native machine code in all major JavaScript implementations.***
 ### Compiler
 - Source Code (high level lang.) &rarr; Compiler &rarr; Object Code (machine language a.k.a. binary code)
 - Takes a bit of time to translate the whole source code all in one go. Once the translation is done, things will go fast.
 - However, a mistake in the code will not be able to be corrected while translating.
+- Issue with Precompiling
+  - Compiling the source code and sending that compiled machine code to another computer can lead to errors. The computers may use different machine instructions because they have different operating systems or processor models.
 ### Interpreter
 - Source Code (high level lang.) &rarr; Interpreter &rarr; Executable Code (machine language) &rarr; Get Next Instruction &rarr; Source Code
 - It is a rather slow process as it translates the source code "line by line" communicating feedback.
 - However, it gives you the chance to correct your mistakes as you go along.
 ### Compiler vs Interpreter
 | Compiler  | Interpreter |
-| ------------- | ------------- |
+| --------- | ----------- |
 | **Converts the entire source code (written in high level lang.) into executable machine code and then executes.**  | **Immediately executes and then translates a single statement of the source code into machine code before the next line is translated.**  |
 | Generates a stand alone machine code program. | Performs the actions described by the high level program. |
 | Takes extra preparation time, runs program very quickly. | Runs slowly, starts right away, let's you see how things are going. |
 | Any errors are informed at the end of the compilation.  | Any error in the particular statement will terminate its translating process and display the error(s).  |
 | The source code is translated to object code successfully if it is free of errors.  | The interpreter moves on only after the error has been removed.  |
-### Note
-- Most modern dynamic languages have implementations that use both interpreters and compilers.
-- ***JavaScript used to be purely interpreted years ago. Now, it is JIT-compiled to native machine code in all major JavaScript implementations.***
 ### Just-In-Time(JIT) Compiler
-- With JavaScript, compilation is done during execution.
+- Unlike the Compiler where the translation is done ahead of time (i.e. before the code is executed), the JIT Compiler translates during execution.
 - Every browser, and runtime in general, implements its own version of a JIT compiler.
 - Source Code &rarr; Machine Code &rarr; Execute &rarr; Source Code
 ### Reference
