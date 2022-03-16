@@ -181,3 +181,50 @@ const sumLists = (l1, l2, carry = 0) => {
   return summedList;
 }
 ```
+
+## 2.8 Loop Detection
+- Input: the `head` of a circular singly linked list.
+- Output: return the node at the beginning of the loop.
+- Description
+  - Circular linked list: a (corrupt) linked list in which a node's next pointer points to an earlier node, so as to make a loop in the linked list.
+### Example
+```js
+a -> b -> c -> d -> e
+          ↑_________↓
+```
+### Solution - Floyd's Cycle Detection Algorithm
+- If `slow` moved `k` steps, `fast` moved `2k` steps.
+- When `slow` reaches the beginning of the loop:
+  - `slow` is 0 steps into the loop.
+  - `fast` is `k` steps into the loop.
+  - `slow`is `k` steps behind `fast`.
+  - Since `fast` is `loopSize - k` steps behind `slow`, and `fast` catches up to `slow` at a rate of 1 step at a time, `fast` and `slow` will collide after `loopSize - k` steps.
+    - This also means that both the collision spot and head of the linked list are `k` nodes from the start of the loop.
+    - Therefore, `k` steps from the head and the collision spot is the start of the loop.
+- In short:
+  - Make `slow` and `fast` collide.
+  - Move `slow` to the `head`.
+  - Move both `slow` and `fast` one step at a time.
+  - Return the node at which both pointers are referring to the same node.
+```js
+const nodeAtStartOfLoop = (head) => {
+  let slow = head;
+  let fast = head;
+  while (fast !== null && fast.next !== null) {
+    slow = slow.next;
+    fast = fast.next.next;
+    if (slow === fast) break;
+  }
+  
+  // If there is no loop, return null.
+  if (fast === null || fast.next === null) return null;
+  
+  slow = head;
+  while (slow !== fast) {
+    slow = slow.next;
+    fast = fast.next;
+  }
+  
+  return fast;
+}
+```
