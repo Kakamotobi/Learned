@@ -1,7 +1,7 @@
 # Dijkstra's Algorithm
 
-## Table of Content
-- [What is Dijkstra's Algorithm](#what-is-dijkstras-algorithm)
+## Table of Contents
+- [What is Dijkstra's Algorithm?](#what-is-dijkstras-algorithm)
 - [Dijkstra's Algorithm Flow](#dijkstras-algorithm-flow)
 - [Essential Data Structures for Dijkstra's Algorithm](#essential-data-structures-for-dijkstras-algorithm)
   - [Weighted Graph](#weighted-graph)
@@ -9,7 +9,7 @@
 - [Dijkstra's Algorithm Implementation](#dijkstras-algorithm-implementation)
 - [Reference](#reference)
 
-## What is Dijkstra's Algorithm
+## What is Dijkstra's Algorithm?
 - **An algorithm that finds the shortest path between two vertices in a (weighted) graph.**
 - Dijkstra's algorithm is an application of greedy algorithm.
 - Dijkstra's algorithm always successfully identifies the shortest path when the edges are all positive. However, the algorithm can fail when there are negative edges.
