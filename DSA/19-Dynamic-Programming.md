@@ -4,7 +4,7 @@
 - [What is Dynamic Progamming?](#what-is-dynamic-programming)
 - [Conditions for Dynamic Programming](#conditions-for-dynamic-programming)
   - [1. Overlapping Subproblems](#1-overlapping-subproblems)
-  - [2. Optimal Substructure](#optimal-substructure)
+  - [2. Optimal Substructure](#2-optimal-substructure)
 
 ## What is Dynamic Programming?
 - **A method for solving a complex problem by breaking it down into a collection of simpler subproblems, solving each of those subproblems just once, and storing their solutions.**
@@ -18,7 +18,7 @@
   - i.e., subproblems that are repeated.
 #### Example
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/DSA/refImg/fibonacci-sequence-example.png" alt="Fibonacci Sequence Example" width="60%" />
+  <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/DSA/refImg/overlapping-subproblems-example.png" alt="Overlapping Subproblems Example" width="60%" />
 </p>
 
   - In the Fibonacci sequence, to find the fifth Fibonnaci number, `fib(3)` has to be calculated twice, `fib(2)` three times, `fib(1)` twice.
@@ -28,6 +28,22 @@
     - Special Case Ex: `mergeSort([10,24,10,24])`. In this case, dynamic programming can be used.
 - Dynamic programming solutions require subproblems to overlap. Need to look for repetition.
 ### 2. Optimal Substructure
+- A problem is said to have optimal substructure if an optimal solution for the problem can be constructed from optional solutions for its subproblems.
+- Ex: the optimal solution of `fib(5)` depends on the optimal solutions of `fib(4)` and `fib(3)`, etc.
+#### Example
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/DSA/refImg/optimal-substructure-example.png" alt="Optimal Substructure Example" width="60%" />
+</p>
 
+  - The optimal solution for the shortest path from `A` to `D` is `A -> B -> C -> D`.
+    - Then optimal solution from `A` to `C` has to be `A -> B -> C`.
+    - Then optimal solution from `A` to `B` has to be `A -> B`.
+#### Example of Non-Optimal Substructure
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/DSA/refImg/non-optimal-substructure-example.png" alt="Non-Optimal Substructure Example" width="60%" />
+</p>
 
+  - The longest simple path from `A` to `C` is `A -> B -> C`.
+  - The longest simple path from `C` to `D` is `C -> B -> D`.
+  - However, the longest simple path from `A` to `D` is not `A -> B -> C -> B -> D`. The longest simple path is `A -> B -> D`.
 
