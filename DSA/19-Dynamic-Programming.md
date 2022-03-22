@@ -5,7 +5,10 @@
 - [Conditions for Dynamic Programming](#conditions-for-dynamic-programming)
   - [1. Overlapping Subproblems](#1-overlapping-subproblems)
   - [2. Optimal Substructure](#2-optimal-substructure)
-- [Example](#example)
+- [Example - Fibonacci Sequence](#example---fibonacci-sequence)
+  - [Recursion Solution](#recursion-solution)
+  - [Memoization Solution](#memoization-solution)
+  - [Tabulation Solution](#tabulation-solution)
 
 ## What is Dynamic Programming?
 > Dynamic Programming is mainly an optimization over plain recursion. Wherever we see a recursive solution that has repeated calls for same inputs, we can optimize it using Dynamic Programming. | GeeksforGeeks
@@ -50,9 +53,14 @@
   - The longest simple path from `C` to `D` is `C -> B -> D`.
   - However, the longest simple path from `A` to `D` is not `A -> B -> C -> B -> D`. The longest simple path is `A -> B -> D`.
 
-## Example
-### Fibonacci Sequence
-#### Recursion Solution
+## Example - Fibonacci Sequence
+### Recursion Solution
+- Top-Bottom Approach.
+  - Ex: for `fib(7)`, start from `fib(7)` and down to `fib(1)` and `fib(2)`.
+- The time complexity of this recursive solution is exponential - O(2<sup>n</sup>) (O(branches<sup>depth</sup>)).
+- The problem is that we are repeatedly solving the same subproblems several times (overlapping subproblems).
+  - What if we could "remember" all these already calculated values?
+
 <p align="center">
   <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/DSA/refImg/fibonacci-recursion.png" alt="Fibonacci Recursion" width="60%" />
 </p>
@@ -63,14 +71,11 @@ const fib = (n) => {
   return fib(n-1) + fib(n-2);
 }
 ```
-- The time complexity of this recursive solution is exponential - O(2<sup>n</sup>) (O(branches<sup>depth</sup>)).
-- The problem is that we are repeatedly solving the same subproblems several times (overlapping subproblems).
-  - What if we could "remember" all these already calculated values?
-#### Memoization Solution
-- **Memoization**
-  - Storing the results of expensive function calls and returning the cached result when the same inputs occur again.
-  - Ex: once `fib(3)` is calculated once, there is no need to calculate it again, hence, reducing the time complexity.
-  - The time complexity of this memoized solution is linear - O(n).
+### Memoization Solution
+- Top-Bottom Approach.
+- **Storing the results of expensive function calls and returning the cached result when the same inputs occur again.**
+- Ex: once `fib(3)` is calculated once, there is no need to calculate it again, hence, reducing the time complexity.
+- The time complexity of this memoized solution is linear - O(n).
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/DSA/refImg/fibonacci-memoization.png" alt="Fibonacci Memoization" width="60%" />
@@ -83,6 +88,29 @@ const fib = (n, memo=[]) => {
   const result = fib(n-1, memo) + fib(n-2, memo); // Pass through memo to accumulate.
   memo[n] = result; // Store fib(n) at the nth index in the memo.
   return result;
+}
+```
+### Tabulation Solution
+- Bottom-Up Approach.
+  - Ex: for `fib(6)` start with `fib(1)` and `fib(2)` and add them together and then do `fib(3)`, until we reach `fib(6)`.
+- **Storing the results of a previous result in a "table" (usually an array) starting from the bottom.**
+- Usually implemented using iteration.
+- The time complexity of this tabulation solution is linear - O(n).
+- Better space complexity can be achieved using tabulation.
+  - *Unlike the solutions using pure recursion or memoization, tabulation will not reach the maximum call stack because it does not have recursive calls, hence takes less space.*
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/DSA/refImg/fibonacci-tabulation.png" alt="Fibonacci Tabulation" width="60%" />
+</p>
+
+```js
+const fib = (n) => {
+  if (n <= 2) return 1;
+  const fibNums = [undefined,1,1]; // "table" to store the data.
+  for (let i = 3; i <= n; i++) {
+    fibNums[i] = fibNums[i-1] + fibNums[i-2];
+  }
+  return fibNums[n];
 }
 ```
 
