@@ -59,7 +59,7 @@
 			return sum(node.left) + node.val + sum(node.right);
 		}
 		```
-- Runtime of exponential time recursive algorithms can be optimized using **memoization**.
+- Runtime of exponential time recursive algorithms can be optimized using [**memoization**](https://github.com/Kakamotobi/Learned/blob/main/DSA/19-Dynamic-Programming.md#memoization-solution).
 	- Cache previously computed values in an auxiliary data structure. If the value has already been cached, return the cache.
 	- For example, this function that prints the `N`th Fibonacci number has a runtime of O(N).
 		- Since at each call to `fib(i)`, the values for `fib(i-1)` and `fib(i-2)` are already cached, it takes a constant amount of time.
