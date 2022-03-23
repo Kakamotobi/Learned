@@ -1,5 +1,13 @@
 # Terminologies
 
+## Table of Contents
+- [Static Web Page vs. Dynamic Web Page](#static-web-page-vs-dynamic-web-page)
+- [Single Page Application (SPA) vs. Multi Page Application (MPA)](#single-page-application-spa-vs-multi-page-application-mpa)
+- [Client-Side Rendering (CSR) vs. Server-Side Rendering (SSR) vs. Static-Site Generator (SSG)](#client-side-rendering-csr-vs-server-side-rendering-ssr-vs-static-site-generator-ssg)
+- [Time to View (TTV) and Time to Interact (TTI)](#time-to-view-ttv-and-time-to-interact-tti)
+- [Library vs. Framework](#library-vs-framework)
+- [JavaScript Engine vs. JavaScript Runtime Environment](#javascript-engine-vs-javascript-runtime-environment)
+
 ## Static Web Page vs. Dynamic Web Page
 ### Static Web Page
 - Web pages that are fixed and display the same content for every user (ex: HTML and CSS).
@@ -56,7 +64,7 @@
 
 ---
 
-## Client-Side Rendering (CSR) vs. Server-Side Rending (SSR) vs. Static-Site Generator (SSG)
+## Client-Side Rendering (CSR) vs. Server-Side Rendering (SSR) vs. Static-Site Generator (SSG)
 ### CSR
 > Allows the website to be updated in the browser almost instantly when navigating to different pages, but requires more of an initial download hit and extra rendering on the client at the beginning. The website is slower on an initial visit, but can be faster to navigate.
 - Website is rendered on the client-side.
