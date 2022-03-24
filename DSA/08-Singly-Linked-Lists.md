@@ -242,6 +242,52 @@ class SinglyLinkedList {
     return this;
   }
 }
+
+// Rotate all the nodes in the linked list by num.
+rotate(num) {
+  // Process the integer num.
+  num = num % this.length;
+  if (num < 0) num = this.length + num;
+  // Edge Case
+  if (num === 0) return this;
+  else {
+    const newTail = this.get(num - 1);
+    const newHead = newTail.next;
+    newTail.next = null;
+    this.tail.next = this.head;
+    this.head = newHead;
+    this.tail = newTail;
+    return this;
+  }
+}
+
+// Return the kth to last node.
+kthToLast(k) {
+  let targetNode = this.head;
+  for (let i = 0; i < this.length - k; i++) {
+    targetNode = targetNode.next;
+  }
+  return targetNode;
+}
+
+// Check if linked list is a palindrome.
+isPalindrome() {
+  // Compute linked list values into a string.
+  let str = "";
+  let currNode = this.head;
+  while (currNode !== null) {
+    str += currNode.val;
+    curNode = currNode.next;
+  }
+  
+  // Reverse str.
+  let reversed = "";
+  for (let i = str.length - 1; i >= 0; i--) {
+    reversed += str[i];
+  }
+  
+  return str === reversed;
+}
 ```
 
 
