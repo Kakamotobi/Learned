@@ -150,19 +150,20 @@ const canPartition = (nums) => {
   - n: the number of items in `nums`.
   - t: the sum of all elements in `nums` / 2. Ex: if `nums = [1,2,3]`, `t = 6`.
 - Bottom-Up Approach.
-- Store the possible sums that any given subset from the remainder of the array.
+- Store all the possible sums of any given subset from the remainder of the array.
   - For each possible sum in that subset:
     - If the sum is equal to the target, return true.
     - If the current number + the sum is equal to the target, return true.
+- How many possible sums could we create from each subset?
 - **Flow**
   ```js
   nums = [1,5,11,5];
   target = 11;
 
-  // Possible sums using [5]: [0,5].
-  // Possible sums using [11] after using or not using 5: [0,5,11,16].
-  // Possible sums using [5] after using or not using 5 and 11: [0,5,11,16,5,10,16,21]. But we don't need duplicates so, [0,5,11,16,10,21].
-  // Possible sums using [1] after using or not using 5, 11, and 5: [0,5,11,16,10,21,1,6,12,17,22].
+  // Possible sums using or not using [5]: [0,5].
+  // Possible sums using or not using [11] after using or not using 5: [0,5,11,16,0]. But we don't need duplicates so, [0,5,11,16].
+  // Possible sums using or not using [5] after using or not using 5 and 11: [0,5,11,16,5,10,16,21,0]. But we don't need duplicates so, [0,5,11,16,10,21].
+  // Possible sums using or not using [1] after using or not using 5, 11, and 5: [0,5,11,16,10,21,1,6,12,17,11,22,0]. But we don't need duplicates so, [0,5,11,16,10,21,1,6,12,17,22].
 
   // [0,5,11,16,10,21,1,6,12,17,22] is the entire list of all the possible sums that can be computed from the given input nums.
   // If this list contains the target, return true. Otherwise, return false.
