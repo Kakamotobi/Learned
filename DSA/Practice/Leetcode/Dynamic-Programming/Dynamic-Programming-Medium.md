@@ -180,10 +180,12 @@ const canPartition = (nums) => {
   
   const allPossibleSums = new Set([0]);
   for (let num of nums) {
+    // Create a temporary Set since we cannot modify an iterative while iterating over it.
     const temp = new Set();
     for (let s of allPossibleSums) {
       temp.add(s + num);
     }
+    // Join temp to allPossibleSums.
     for (let s of temp) {
       allPossibleSums.add(s);
     }
