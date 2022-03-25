@@ -43,7 +43,7 @@ const findTargetSumWays = (nums, target) => {
 }
 ```
 
-### Solution 2 - Dynamic Programming (Memoization)
+### Solution 2 - 0/1 Knapsack (Memoization)
 - **TC: O(n\*t)**
   - n: the number of items in `nums`.
   - t: the total possible values of `target`. i.e., the sum of the entire array `nums` (Ex: if `nums = [1,2,3]`, `-6 <= t <= 6`).
