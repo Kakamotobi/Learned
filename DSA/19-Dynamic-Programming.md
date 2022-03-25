@@ -9,6 +9,8 @@
   - [Recursion Solution](#recursion-solution)
   - [Memoization Solution](#memoization-solution)
   - [Tabulation Solution](#tabulation-solution)
+- [Other Dynamic Programming Patterns](#other-dynamic-programming-patterns)
+  - [0/1 Knapsack](#01-knapsack)
 
 ## What is Dynamic Programming?
 > Dynamic Programming is mainly an optimization over plain recursion. Wherever we see a recursive solution that has repeated calls for same inputs, we can optimize it using Dynamic Programming. | GeeksforGeeks
@@ -114,5 +116,49 @@ const fib = (n) => {
 }
 ```
 
+## Other Dynamic Programming Patterns
+### 0/1 Knapsack
+- Given some quantity of things available to us, use them to sum to a particular target.
+#### Example
+- Inputs
+  - `coins = [1,2,3]`.
+  - `target = 5`.
+- Some Possible Outputs
+  1. Return true if `target` can be summed up to using any of the coins available (each coin can be used 0 or 1 time). Otherwise, return false.
+  2. Return the minimum number of coins required to reach the `target`.
+##### Solution
+###### Brute Force - O(2<sup>n</sup>)
+- Each coin can be used or not (two branches in the decision tree).
+- ***Therefore, the time complexity is O(2<sup>n</sup>) where n is the number of items.***
+###### Dynamic Programming - O(n\*t)
+- There are two dimensions:
+  - The size of the `target`.
+  - Whether each coin was used or not.
+- ***Therefore, the time complexity is O(n\*t) where n is the number of items and t is the target size.***
+- Start at subproblem of `target = 5`. Ex: `solution([1,2,3], 5)`
+  - If coin `1` is used, the subproblem becomes `target = 4`.
+    - Ex: `solution([2,3], 4)`.
+  - If coin `2` is used, the subproblem becomes `target = 3`.
+    - Ex: `solution([1,3], 3)`.
+  - If coin `3` is used, the subproblem becomes `target = 2`.
+    - Ex: `solution([1,2], 2)`.
+- Base Cases
+  - If `target < 0` or invalid, return false.
+  - If `target === 0`, return true.
+- Flow Example
+  ```js
+  // solution([1,2,3], 5) // true
+    // solution([2,3], 4) // false (3)
+      // solution([3], 2) // false (1)
+      // solution([2], 1) // false (2)
+    // solution([1,3], 3) // true (6) // Code will stop here and solution will return true.
+      // solution([3], 2) // false (4)
+      // solution([1], 0) // true (5)
+    // solution([1,2], 2) // true (9)
+      // solution([2], 1) // false (7)
+      // solution([1], 0) // true (8)
+  ```
+
 ## Reference
 [Dynamic Programming - GeeksforGeeks](https://www.geeksforgeeks.org/dynamic-programming/)  
+[Top 5 Dynamic Programming Patterns for Coding Interviews - For Beginners](https://www.youtube.com/watch?v=mBNrRy2_hVs&ab_channel=AbdulBari)  
