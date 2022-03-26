@@ -11,6 +11,7 @@
   - [Tabulation Solution](#tabulation-solution)
 - [Other Dynamic Programming Patterns](#other-dynamic-programming-patterns)
   - [0/1 Knapsack](#01-knapsack)
+  - [Unbounded Knapsack](#unbounded-knapsack)
 
 ## What is Dynamic Programming?
 > Dynamic Programming is mainly an optimization over plain recursion. Wherever we see a recursive solution that has repeated calls for same inputs, we can optimize it using Dynamic Programming. | GeeksforGeeks
@@ -76,8 +77,9 @@ const fib = (n) => {
 ### Memoization Solution
 - Top-Bottom Approach.
 - **Storing the results of expensive function calls and returning the cached result when the same inputs occur again.**
-- Ex: once `fib(3)` is calculated once, there is no need to calculate it again, hence, reducing the time complexity.
-- The time complexity of this memoized solution is linear - O(n).
+  - Ex: once `fib(3)` is calculated once, there is no need to calculate it again, hence, reducing the time complexity.
+- ***The time complexity of this memoized solution is linear - O(n).***
+  - The fibonacci sequence problem is a 1-dimensional dynamic programming problem.
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/DSA/refImg/fibonacci-memoization.png" alt="Fibonacci Memoization" width="60%" />
@@ -97,7 +99,7 @@ const fib = (n, memo=[]) => {
   - Ex: for `fib(6)` start with `fib(1)` and `fib(2)` and add them together and then do `fib(3)`, until we reach `fib(6)`.
 - **Storing the results of a previous result in a "table" (usually an array) starting from the bottom.**
 - Usually implemented using iteration.
-- The time complexity of this tabulation solution is linear - O(n).
+- ***The time complexity of this tabulation solution is linear - O(n).***
 - Better space complexity can be achieved using tabulation.
   - *Unlike the solutions using pure recursion or memoization, tabulation will not reach the maximum call stack because it does not have recursive calls, hence takes less space.*
 
@@ -118,7 +120,8 @@ const fib = (n) => {
 
 ## Other Dynamic Programming Patterns
 ### 0/1 Knapsack
-- Given some quantity of things available to us, use them to sum to a particular target.
+- Given some quantity of things available to us, use them once or zero times to sum to a particular target.
+- Knapsack problems are 2-dimensional dynamic programming problems.
 #### Example
 - Inputs
   - `coins = [1,2,3]`.
@@ -126,8 +129,8 @@ const fib = (n) => {
 - Some Possible Outputs
   1. Return true if `target` can be summed up to using any of the coins available (each coin can be used 0 or 1 time). Otherwise, return false.
   2. Return the minimum number of coins required to reach the `target`.
-##### Solution
-###### Brute Force - O(2<sup>n</sup>)
+##### Solutions
+###### Recursion - O(2<sup>n</sup>)
 - Each coin can be used or not (two branches in the decision tree).
 - ***Therefore, the time complexity is O(2<sup>n</sup>) where n is the number of items.***
 ###### Dynamic Programming - O(n\*t)
@@ -158,6 +161,16 @@ const fib = (n) => {
       // solution([2], 1) // false (7)
       // solution([1], 0) // true (8)
   ```
+### Unbounded Knapsack
+- "Unbounded" refers to the fact that we are allowed to use each item an infinite number of times (not 0 or 1).
+#### Example
+- Inputs
+  - `coins = [1,2,3]`.
+  - `target = 5`.
+- Output: return true if `target` can be summed up to using any of the coins available (each coin can be used an infinite number of times). Otherwise, return false.
+##### Solutions
+###### Recursion - O(2<sup>n</sup>)
+###### Dynamic Programming - O(n\*t)
 
 ## Reference
 [Dynamic Programming - GeeksforGeeks](https://www.geeksforgeeks.org/dynamic-programming/)  
