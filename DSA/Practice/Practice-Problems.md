@@ -27,26 +27,91 @@ function sortedFrequency(arr, num) {
 }
 
 function findIdxOf(arr, num, isFirstOccurrence) {
-  let low = 0;
-  let high = arr.length - 1;
+  let start = 0;
+  let end = arr.length - 1;
   let mid = 0;
   let idx = -1; // Initialize idx to -1 in case num does not exist in arr.
   
-  while (low <= high) {
-    mid = Math.floor((low + high) / 2);
+  while (start <= end) {
+    mid = Math.floor((start + end) / 2);
     
     if (arr[mid] === num) {
       idx = mid; // Sync idx to an index containing num.
-      if (isFirstOccurrence) high = mid - 1;
-      else if (!isFirstOccurrence) low = mid + 1;
+      if (isFirstOccurrence) end = mid - 1;
+      else if (!isFirstOccurrence) start = mid + 1;
     } else if (arr[mid] < num) {
-      low = mid + 1;
+      start = mid + 1;
     } else {
-      high = mid - 1;
+      end = mid - 1;
     }
   }
   
   return idx;
+}
+```
+### 2. Find Index in Rotated Sorted Array
+- Given a sorted integer array `arr` that has been rotated and an integer `num`, write a function that returns the index of `num` in `arr`. If not found, return `-1`.
+- Constraints
+  - Time Complexity: O(log n)
+  - Space Complexity: O(1)
+#### Example
+```js
+findIndexInRotatedSortedArray([3,4,1,2], 4) // 1
+findIndexInRotatedSortedArray([6,7,8,9,1,2,3,4], 8) // 2
+findIndexInRotatedSortedArray([37,44,66,102,10,22], 14) // -1
+findIndexInRotatedSortedArray([11,12,13,14,15,16,3,5,7,9], 16) // 5
+```
+#### Solution
+- Key Information
+  - A "rotated" sorted array means that the array can be divided into two sorted arrays.
+  - The first number is always greater than the last number.
+- Find the point of rotation.
+- Perform binary search on each sorted subset with the point of rotation.
+```js
+function findIndexInRotatedSortedArray(arr, num) {
+  const rotatedIndex = findRotatedIndex(arr);
+  
+  // Check the left sorted subset.
+  const leftSortedSubset = binarySearchWithinIndices(arr, num, 0, rotatedIndex - 1);
+  if (leftSortedSubset !== -1) return leftSortedSubset;
+  
+  // Check the right sorted subset.
+  const rightSortedSubset = binarySearchWithinIndices(arr, num, rotatedIndex, arr.length - 1);
+  if (rightSortedSubset !== -1) return rightSortedSubset;
+  
+  return -1;
+}
+
+function findRotatedIndex(arr) {
+  let start = 0;
+  let end = arr.length - 1;
+  let mid = 0;
+
+  // Objective: move `start` to the end of the left sorted subset and `end` to the start of the right sorted subset.
+  while (start < end) {
+    mid = Math.floor((start + end) / 2);
+    
+    // If end and start are 1 index apart, return end (the index of the start of the right sorted subset).
+    if (end - start === 1) return end;
+    
+    // If arr[mid] is in the left sorted subset.
+    if (arr[mid] >= arr[start]) start = mid;
+    // Else if arr[mid] is in the right sorted subset.
+    else if (arr[mid] <= arr[end]) end = mid;
+  }
+}
+
+function binarySearchWithinIndices(arr, num, start, end) {
+  let mid = 0;
+  while (start <= end) {
+    mid = Math.floor((start + end) / 2);
+    
+    if (arr[mid] === num) return mid;
+    else if (num < arr[mid]) end = mid - 1;
+    else if (num > arr[mid]) start = mid + 1;
+  }
+  
+  return -1;
 }
 ```
 
