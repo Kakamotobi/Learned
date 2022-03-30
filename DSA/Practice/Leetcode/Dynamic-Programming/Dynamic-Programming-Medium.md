@@ -86,8 +86,9 @@ canPartition([1,2,3,5]); // false.
   - The index (representing the current number in `nums` that is in consideration).
   - The total sum so far.
 - Base Cases
-  - If index is out of bounds (we have reached the end of `nums`).
-  - If the current total is equal to the target.
+  - If index is out of bounds, return false (we have reached the end of `nums` but was not able to sum to target).
+  - If the current total is greater than the target, return false (we don't need to continue down the path).
+  - If the current total is equal to the target, return true.
 - At each call/step we can make one of two choices (use the number at the current index or not).
 ```js
 const canPartition = (nums) => {
@@ -102,7 +103,8 @@ const canPartition = (nums) => {
   const helper = (idx, total) => {
     // Base Cases
     if (idx >= nums.length) return false;
-    if (total === target) return false;
+    if (total > target) return false;
+    if (total === target) return true;
     
     return helper(idx + 1, total + nums[idx]) || helper(idx + 1, total);
   }
@@ -134,6 +136,7 @@ const canPartition = (nums) => {
   const helper = (idx, total) => {
     // Base Cases
     if (idx >= nums.length) return false;
+    if (total > target) return false;
     if (total === target) return true;
     if (memo[[idx, total]] !== undefined) return memo[[idx, total]];
     
