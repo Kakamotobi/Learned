@@ -25,6 +25,7 @@
 
 ## What is Git?
 - Git is a distributed version control system.
+- Git helps determine *what* change has been made, *who* made that change, and *why*.
 - Data is treated like a series of snapshots of a miniature filesystem.
   - *Stream of snapshots.*
 - For every commit, Git takes a snapshot of what all the files look like at that moment and stores a reference to that snapshot.  
@@ -37,6 +38,9 @@
 - Everything in Git is checksummed before it is stored and is then referred to by that checksum.
   - The mechanism that Git uses for this checksumming is called a SHA-1 hash (a 40-character string composed of hexadecimal characters).
 - .gitignore includes files that we don't want Git to track and don't want to upload to GitHub.
+### How/Where to Get Git
+- Many systems have Git installed by default.
+- However, it can be downloaded [here](https://git-scm.com/downloads).
 ### Git Workflow
 1) You modify files in your working tree.
 
@@ -85,33 +89,42 @@
 - **`code .`**
   - Opens the current directory in my designated text editor.
 - **`git init`**
-  - Initialize Git.
+  - Initialize Git, effectively creating a hidden .git folder (this is where all of Git's internal tracking data is stored in) inside your repository.
   - `ls -al` and `open .git` to see information on the Git.
   - `rm -rf` will remove Git from your project.
 - **`git clone <url>`**
   - Clone an existing Git repository.
+  - Downloads a Git repository from the Internet with the latest snapshot of the repository to your working directory on your computer.
+  - By default, the contents will be stored in a folder with the same name as the repository from the URL.
+    - *The URL is called the **remote origin**.*
 - **`git status`**
   - Check the Git status of files.
+    - Ex: what files have been modified.
 - **`git diff`**
-  - Check the changes made between commits, commit and working tree, etc.
-- **`git branch`**
-  - Check existing branches.
-  - Check what branch you're in.
-- **`git show-ref`**
-  - List the references in the local repository
+  - Prints a list of the changes that have been made.
+  - It is a good way to double-check before committing.
+  - `git diff <branch-name> <other-branch-name>`
+    - Prints the difference between two branches.
 - **`git add <file(s)>`**
   - Move file(s) to the Staging Area from the Working Directory (after modification).
-  - `--all` moves all files including untracked ones.
+  - `git add --all` moves all files including untracked ones.
 - **`git commit`**
   - Record changes to the repository.
-  - Ex: `git commit -m "[HTML] Edit class names"`
-- **`git push origin <branch>`**
+  - A commit is a type of checkpoint called a "revision", and is a hash of numbers and letters.
+  - Ex: `git commit -m "Fix bug."`
+- **`git push origin <branch-name>`**
   - Updates remote refs using local refs, while sending objects necessary to complete the given refs.
   - i.e., update remote repo with changes made in local repo.
-- **`git fetch`**
-  - Download objects and refs from another repository.
-- **`git checkout <branch>`**
+  - Alternatively, **`git push origin HEAD`** can be used.
+    - `HEAD` refers to the latest commit on your current branch.
+- **`git branch`**
+  - Check existing branches and check what branch you're in.
+- **`git branch <new-branch-name>`**
+  - Create a new branch by the name provided.
+- **`git checkout <existing-branch-name>`**
   - Switch branches or restore working tree files.
+  - `git checkout -b <new-branch-name>`
+    - Creates a new branch and checks it out in one go.
 - **`git checkout <commitId>`**
   - Overwrites your current working directory with the specified snapshot (commit) of your repo from history and make that your new working-set which you can stage and commit as you wish.
   - Example
@@ -120,6 +133,19 @@
     git checkout <commitId> . // the "." refers to the current directory.
     git commit -m "Restoring old source code" // make a new commit with the restored one.
     ```
+- **`git show-ref`**
+  - List the references in the local repository.
+- **`git fetch`**
+  - Download the latest information about the repository from `origin` (Ex: all the different branches stored on GitHub).
+  - Does not change any of your local files; only updates the tracking data stored in the .git folder.
+- **`git merge <other-branch-name>`**
+  - Takes all the commits existing on the `other-branch-name` branch and integrate them ***into*** your current branch.
+  - Since this uses whatever branch data that is stored locally at the moment, run `git fetch` first to download the latest information before merging.
+  - Ex: if another developer added some commits to the `master` branch of `origin`, checkout the `master` branch in local, download their changes using `git fetch` and effectively update the `master` branch in local. Then, `git merge origin/master` to merge the origin/master branch into your current branch.
+    - `origin/master` means the `origin/master` checkpoint in local. This notation is used to differentiate branches of the same name (Ex: `master`) located in different places (Ex: your own branches vs. origin's branches).
+- **`git pull origin master`**
+  - Shortcut to both `fetch` and `merge` all in one go.
+  - `origin master` means the `master` branch of the remote endpoint called `origin`.
 
 ## What is GitHub?
 - Online service that provides Internet hosting for software development and version control using Git.
@@ -223,4 +249,5 @@
 [Git - Book](https://git-scm.com/book/en/v2)  
 [깃, 깃허브 제대로 배우기 - YouTube](https://www.youtube.com/watch?v=Z9dvM7qgN9s&ab_channel=%EB%93%9C%EB%A6%BC%EC%BD%94%EB%94%A9by%EC%97%98%EB%A6%AC)  
 [Git Branches Tutorial](https://www.youtube.com/watch?v=e2IbNHi4uCI&ab_channel=freeCodeCamp.org)  
-[The Ultimate GitHub Collaboration Guide | by Jonathan Mines](https://medium.com/@jonathanmines/the-ultimate-github-collaboration-guide-df816e98fb67)
+[The Ultimate GitHub Collaboration Guide | by Jonathan Mines](https://medium.com/@jonathanmines/the-ultimate-github-collaboration-guide-df816e98fb67)  
+[Understanding Git (part 1) — Explain it Like I’m Five | HackerNoon](https://hackernoon.com/understanding-git-fcffd87c15a3)  
