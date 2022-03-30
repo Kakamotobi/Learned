@@ -131,7 +131,7 @@ const fib = (n) => {
   2. Return the minimum number of coins required to reach the `target`.
 ##### Solutions
 ###### Recursion - O(2<sup>n</sup>)
-- Each coin can be used or not (two branches in the decision tree).
+- Each coin can be used once or not (two branches in the decision tree).
 - ***Therefore, the time complexity is O(2<sup>n</sup>) where n is the number of items.***
 ###### Dynamic Programming - O(n\*t)
 - There are two dimensions:
@@ -169,8 +169,15 @@ const fib = (n) => {
   - `target = 5`.
 - Output: return true if `target` can be summed up to using any of the coins available (each coin can be used an infinite number of times). Otherwise, return false.
 ##### Solutions
-###### Recursion - O(2<sup>n</sup>)
+###### Recursion - O(n<sup>t</sup>)
+- Each coin can be used or not at every step (two branches in the decision tree).
+  - i.e., each coin can be used however many times needed.
+- ***Therefore, the time complexity is O(n<sup>t</sup>) where n is the number of items in `coins` and t is the total number of combinations from `coins` that can be summed up to `amount`.***
 ###### Dynamic Programming - O(n\*t)
+- There are two dimensions:
+  - The size of the `target`.
+  - Whether each coin was used or not.
+- ***Therefore, the time complexity is O(n\*t) where n is the number of items and t is the target size.***
 
 ## Reference
 [Dynamic Programming - GeeksforGeeks](https://www.geeksforgeeks.org/dynamic-programming/)  
