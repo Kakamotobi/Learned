@@ -4,11 +4,15 @@
 - [What is a Version Control System (VCS)?](#what-is-a-version-control-system-vcs)
   - [What is a Distributed Version Control System (DVCS)?](#what-is-a-distributed-version-control-system-dvcs)
 - [What is Git?](#what-is-git)
+  - [How/Where to Get Git](#howwhere-to-get-git)
   - [Git Workflow](#git-workflow)
+  - [Git Configs](#git-configs)
   - [Frequently Used Git Commands](#frequently-used-git-commands)
 - [What is GitHub?](#what-is-github)
   - [Setting Up Git and GitHub](#setting-up-git-and-github)
 - [Git Branches](#git-branches)
+- [Git Clone vs Git Fork and Pull Requests](#git-clone-vs-git-fork-and-pull-requests)
+- [Merge Conflicts](#merge-conflicts)
 - [Reference](#reference)
 
 ## What is a Version Control System (VCS)?
@@ -145,7 +149,9 @@
     - `origin/master` means the `origin/master` checkpoint in local. This notation is used to differentiate branches of the same name (Ex: `master`) located in different places (Ex: your own branches vs. origin's branches).
 - **`git pull origin master`**
   - Shortcut to both `fetch` and `merge` all in one go.
+    - `git pull` does a `git fetch` followed by a `git merge` to update the local repository with the remote repository.
   - `origin master` means the `master` branch of the remote endpoint called `origin`.
+  - *Make sure to do this (update your repo with the latest version) before creating a new branch to work on.*
 
 ## What is GitHub?
 - Online service that provides Internet hosting for software development and version control using Git.
@@ -168,7 +174,6 @@
 > A pointer to a snapshot of your changes. When you want to add a new feature or fix a bug-no matter how big or how small-you spawn a new branch to encapsulate your changes. This makes it harder for unstable code to getm erged into the main code base, and it gives you the change to clean up your future's history before merging it into the main branch.
 
 - *Leave the main branch to always be in deployable state.*
-
 ### Core Concepts
 - **The "HEAD" Branch**
   - The single currently "active" or "checked out" branch.
@@ -245,9 +250,70 @@
   - Ex: `git log main..feature/uploader`
   - Ex: `git log origin/main..main`
 
+## Git Clone vs Git Fork and Pull Requests
+- The difference comes down to how much control a developer has over a given repository.
+### Git Clone
+- Anyone can Git clone any repository via the GitHub URL.
+  - Ex: `git clone <URL>`
+- Changes can be made to this cloned version in local.
+- However, only designated contributors are allowed to push back to repository on origin.
+  - Undesignated contributors' attempt to push will lead to a 403 error.
+  - If you're a collaborator, make sure to clone the repository and not fork it, as you would want to collaborate on the same GitHub repository with your teammates.
+#### Flow
+- After pushing back to repository on origin, check the branch on GitHub to compare and pull request on that branch.
+- Write a brief description of the changes and select the reviewer (the "merge master"), then click "Create pull request".
+- Then, proceed to merge the branch to the master branch.
+- Once the merge is done, delete the branch.
+### Git Fork
+- Anyone can fork any repository on GitHub.
+  - There is no Git command for forking (use GitHub).
+- The repository is completely copied to your own GitHub as a separate entity to the original.
+#### Flow
+- Clone the fork that has been made to local, and make changes.
+- Push back to the repository on origin (the newly forked repository; not the original repository that was forked from).
+- It is possible to take the changes made in your forked repository and send them to the original repository. This is called a **Pull Request**.
+  - On GitHub, go to your forked repository and click "New pull request" and then "Create pull request".
+  - This sends a message to the original repository asking them to "pull" the changes that has been made.
+  - The receiver (original repository) will see the pull request and can decide whether or not to accept the changes made and "Merge pull request".
+  - Once the merge is done, delete the branch.
+### Pull Request
+- **The request that your changes be pulled in and merged.**
+#### Flow
+- Commit your changes to your new branch and then push it to origin.
+- Then go to the repository's GitHub page and click on "Pull Request".
+  - Pick the branch that you wish to have merged, enter a title and brief description for the Pull Request, and click "Send pull request".
+- Once your Pull Request is submitted, a reviewer reviews it and leaves feedback.
+- If more changes need to be made, simply add more commits to your existing branch and push it to origin again. The Pull Request will update automatically to reflect your changes.
+- By the time your Pull Requested is accepted, there may be a newer version of the trunk (you've been working on an older version of the trunk). Therefore, your changes may not work on the newer version of the trunk.
+  - There are two options to get up to date:
+    - `git merge master`: applies any new changes from the trunk on top of your work.
+    - `git rebase master`: re-applies your work on top of any new changes on the trunk.
+    - In both options, your own changes will remain the same as you are essentially just moving your branch up to the top of the trunk to stay up to date with the newest version.
+    - It is usually safer to `merge`.
+
+## Merge Conflicts
+- **When you made changes to a line of code that someone else has also made changes to, Git is in a conflict as to which version to keep.**
+  - The notorious merge conflict output: `>>>>>>> ======= <<<<<<<`
+- Essentially, just remove those weird symbols and manually combine the code in between them.
+  - Example
+    - Merge Conflict Occurred
+      ```js
+      >>>>>>>
+      console.log("Hello, world"); // Branch A
+      =======
+      console.log("Hello!"); // Branch B
+      <<<<<<<
+      ```
+    - Solved
+      ```js
+      console.log("Hello, world!");
+      ```
+
 ## Reference
 [Git - Book](https://git-scm.com/book/en/v2)  
 [깃, 깃허브 제대로 배우기 - YouTube](https://www.youtube.com/watch?v=Z9dvM7qgN9s&ab_channel=%EB%93%9C%EB%A6%BC%EC%BD%94%EB%94%A9by%EC%97%98%EB%A6%AC)  
 [Git Branches Tutorial](https://www.youtube.com/watch?v=e2IbNHi4uCI&ab_channel=freeCodeCamp.org)  
 [The Ultimate GitHub Collaboration Guide | by Jonathan Mines](https://medium.com/@jonathanmines/the-ultimate-github-collaboration-guide-df816e98fb67)  
-[Understanding Git (part 1) — Explain it Like I’m Five | HackerNoon](https://hackernoon.com/understanding-git-fcffd87c15a3)  
+[Understanding Git (part 1) - Explain it Like I’m Five | HackerNoon](https://hackernoon.com/understanding-git-2-81feb12b8b26)  
+[Understanding Git (part 2) - Contributing to a Team | HackerNoon](https://hackernoon.com/understanding-git-2-81feb12b8b26)  
+[Git Fork vs. Git Clone: What's the Difference? - YouTube](https://www.youtube.com/watch?v=6YQxkxw8nhE&ab_channel=EyeonTech)  
