@@ -1,6 +1,6 @@
 # Dynamic Programming - Medium
 
-## 494. Target Sum
+## 494. Target Sum (0/1 Knapsack Problem)
 - Inputs
   - An array of integers `nums`.
   - An integer `target`.
@@ -42,7 +42,7 @@ const findTargetSumWays = (nums, target) => {
 }
 ```
 
-### Solution 2 - 0/1 Knapsack (Memoization)
+### Solution 2 - Dynamic Programming (Memoization)
 - **TC: O(n\*t)**
   - n: the number of items in `nums`.
   - t: the total possible values of `target`. i.e., the sum of the entire array `nums` (Ex: if `nums = [1,2,3]`, `-6 <= t <= 6`).
@@ -69,7 +69,7 @@ const findTargetSumWays = (nums, target) => {
 }
 ```
 
-## 416. Partition Equal Subset Sum
+## 416. Partition Equal Subset Sum (0/1 Knapsack Problem)
 - Input: a non-empty array of only positive integers `nums`.
 - Output: return true if `nums` can be partitioned into two subsets such that the sum of elements in both subsets is equal.
 ### Example
@@ -112,7 +112,7 @@ const canPartition = (nums) => {
   return helper(0,0);
 }
 ```
-### Solution 2 - 0/1 Knapsack (Memoization)
+### Solution 2 - Dynamic Programming (Memoization)
 - **TC: O(n\*t)**
   - n: the number of items in `nums`.
   - t: the sum of all elements in `nums` / 2. Ex: if `nums = [1,2,3]`, `t = 6`.
@@ -148,7 +148,7 @@ const canPartition = (nums) => {
   return helper(0,0);
 }
 ```
-### Solution 3 - 0/1 Knapsack (Tabulation)
+### Solution 3 - Dynamic Programming (Tabulation)
 - **TC: O(n\*t)**
   - n: the number of items in `nums`.
   - t: the sum of all elements in `nums` / 2. Ex: if `nums = [1,2,3]`, `t = 6`.
@@ -197,3 +197,81 @@ const canPartition = (nums) => {
   return allPossibleSums.has(target);
 }
 ```
+
+## 322. Coin Change (Unbounded Knapsack Problem)
+- Inputs:
+  - An array of coins `coins` of different denominations.
+  - An integer `amount`.
+- Output: return the fewest number of coins that you need to make up `amount`. If that amount of money cannot be made up by any combination of coins, return `-1`.
+- Description
+  - Assume that you have an infinite number of each kind of coin.
+- Constraints
+- `1 <= coins.length <= 12`.
+  - `1 <= coins[i] <= 231 - 1`.
+  - `0 <= amount <= 104`.
+### Example
+```js
+coinChange([1,2,5], 11); // 3
+coinChange([2], 3); // -1
+coinChange([1], 0); // 0
+```
+### Solutions
+#### Solution 1 - Pure Recursion (brute force)
+- **TC: O(n^t)**
+  - n: the number of items in `coins`.
+  - t: the number of ways to sum to `amount` using items in `coins`.
+- Key Information
+  - Each coin can be used as many times as needed.
+- Keep track of:
+  - The remaining sum.
+- Base Cases
+  - If the remaining sum is 0 (the path sums up to `amount`).
+  - If the remaining sum is less than 0 (the path's sum exceeds `amount`).
+```js
+const coinChange = (coins, amount) => {
+  const helper = (remainingSum) => {
+    // Base Cases
+    if (remainingSum === 0) return 0;
+    if (remainingSum < 0) return Infinity;
+    
+    let minNumCoins = Infinity;
+    
+    for (let coin of coins) {
+      minNumCoins = Math.min(minNumCoins, helper(remainingSum - coin));
+    }
+    
+    return minNumCoins + 1;
+  }
+  
+  const res = helper(amount);
+  return res === Infinity ? -1 : res;
+}
+```
+#### Solution 2 - Dynamic Programming (Memoization)
+- Cache subproblems.
+```js
+const coinChange = (coins, amount) => {
+  const memo = {};
+
+  const helper = (remainingSum) => {
+    // Base Cases
+    if (memo[remainingSum] !== undefined) return memo[remainingSum];
+    if (remainingSum === 0) return 0;
+    if (remainingSum < 0) return Infinity;
+    
+    let minNumCoins = Infinity;
+    
+    for (let coin of coins) {
+      minNumCoins = Math.min(minNumCoins, helper(remainingSum - coin));
+    }
+    
+    memo[remainingSum] = minNumCoins + 1;
+    
+    return memo[remainingSum];
+  }
+  
+  const res = helper(amount);
+  return res === Infinity ? -1 : res;
+}
+```
+
