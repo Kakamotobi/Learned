@@ -42,7 +42,7 @@ const findTargetSumWays = (nums, target) => {
 }
 ```
 
-### Solution 2 - Dynamic Programming (Memoization)
+### Solution 2 - Memoization
 - **TC: O(n\*t)**
   - n: the number of items in `nums`.
   - t: the total possible values of `target`. i.e., the sum of the entire array `nums` (Ex: if `nums = [1,2,3]`, `-6 <= t <= 6`).
@@ -112,7 +112,7 @@ const canPartition = (nums) => {
   return helper(0,0);
 }
 ```
-### Solution 2 - Dynamic Programming (Memoization)
+### Solution 2 - Memoization
 - **TC: O(n\*t)**
   - n: the number of items in `nums`.
   - t: the sum of all elements in `nums` / 2. Ex: if `nums = [1,2,3]`, `t = 6`.
@@ -148,7 +148,7 @@ const canPartition = (nums) => {
   return helper(0,0);
 }
 ```
-### Solution 3 - Dynamic Programming (Tabulation)
+### Solution 3 - Tabulation
 - **TC: O(n\*t)**
   - n: the number of items in `nums`.
   - t: the sum of all elements in `nums` / 2. Ex: if `nums = [1,2,3]`, `t = 6`.
@@ -247,7 +247,7 @@ const coinChange = (coins, amount) => {
   return res === Infinity ? -1 : res;
 }
 ```
-#### Solution 2 - Dynamic Programming (Memoization)
+#### Solution 2 - Memoization
 - Cache subproblems.
 ```js
 const coinChange = (coins, amount) => {
@@ -275,3 +275,77 @@ const coinChange = (coins, amount) => {
 }
 ```
 
+## 518. Coin Change 2 (Unbounded Knapsack Problem)
+- Inputs:
+  - An array of coins `coins` of different denominations.
+  - An integer `amount`.
+- Output: return the number of combinations using the coins in `coins` to sum up to `amount`. Return 0 if there are none.
+- Constraints
+  - Each coin can be used infinitely.
+  - `1 <= coins.length <= 300`.
+  - `1 <= coins[i] <= 5000`.
+  - All the values of coins are unique.
+  - `0 <= amount <= 5000`.
+### Examples
+```js
+change(5, [1,2,5]); // 4
+change(3, [2]); // 0
+change(10, [10]); // 1
+```
+### Solutions
+#### Solution 1 - Pure Recursion (brute force)
+- **TC: O(n^t)**
+  - n: the number of items in `coins`.
+  - t: the `amount` as it will decide the height of the decision tree.
+- Since no duplicate combinations are allowed (Ex: `1+2+2` and `2+1+1` should be considered as one combination):
+  - For the first coin, allow the use of all coins.
+  - For the second coin, exclude the first coin that was used (thereby, no duplicate combinations will exist between the first and second coin).
+  - For the third coin, exclude the first and second coin that was used (thereby, no duplicate combinations will exist between the first, second, and third coin).
+- Keep track of:
+  - The remaining sum.
+  - The index of the current coin to exclude duplicate combinations.
+- Base Cases
+  - If `amount` is reached, return `1`.
+  - If `amount` is exceeded, return `0`.
+```js
+const change = (amount, coins) => {
+  const helper = (idx, remainingSum) => {
+    // Base Cases
+    if (remainingSum === 0) return 1;
+    if (remainingSum < 1) return 0;
+    
+    let count = 0;
+    for (let i = idx; i < coins.length; i++) {
+      count += helper(i, remainingSum - coins[i]);
+    }
+    
+    return count;
+  }
+  
+  return helper(0, amount);
+}
+```
+#### Solution 2 - Memoization
+```js
+const change = (amount, coins) => {
+  const memo = {};
+
+  const helper = (idx, remainingSum) => {
+    // Base Cases
+    if (remainingSum === 0) return 1;
+    if (remainingSum < 1) return 0;
+    if (memo[[idx, remainingSum]] !== undefined) return memo[[idx, remainingSum]];
+    
+    let count = 0;
+    for (let i = idx; i < coins.length; i++) {
+      count += helper(i, remainingSum - coins[i]);
+    }
+    
+    memo[[idx, remainingSum]] = count;
+    
+    return memo[[idx, remainingSum]];
+  }
+  
+  return helper(0, amount);
+}
+```
