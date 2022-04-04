@@ -7,8 +7,11 @@
   - [2. Optimal Substructure](#2-optimal-substructure)
 - [Example - Fibonacci Sequence](#example---fibonacci-sequence)
   - [Recursion Solution](#recursion-solution)
-  - [Memoization Solution](#memoization-solution)
-  - [Tabulation Solution](#tabulation-solution)
+  - [Top-Down Dynamic Programming (Memoization) Solution](#top-down-dynamic-programming-memoization-solution)
+  - [Bottom-Up Dynamic Programming (Tabulation) Solution](#bottom-up-dynamic-programming-tabulation-solution)
+    - [2 Ways to Calculate Subproblems for Bottom-Up Approach](#2-ways-to-calculate-subproblems-for-bottom-up-approach)
+      - [Bottom-Up Forward Dynamic Programming](#bottom-up-forward-dynamic-programming)
+      - [Bottom-Up Backward Dynamic Programming](#bottom-up-backward-dynamic-programming)
 - [Other Dynamic Programming Patterns](#other-dynamic-programming-patterns)
   - [0/1 Knapsack](#01-knapsack)
   - [Unbounded Knapsack](#unbounded-knapsack)
@@ -74,12 +77,14 @@ const fib = (n) => {
   return fib(n-1) + fib(n-2);
 }
 ```
-### Memoization Solution
-- Top-Bottom Approach.
+### Top-Down Dynamic Programming (Memoization) Solution
 - **Storing the results of expensive function calls and returning the cached result when the same inputs occur again.**
   - Ex: once `fib(3)` is calculated once, there is no need to calculate it again, hence, reducing the time complexity.
+    - Solve in order: `fib(6)` &rarr; `fib(5)` &rarr; `fib(4)` &rarr; `fib(3)` &rarr; `fib(2)` &rarr; `fib(1)`.
+- ***Solve the subproblems that we need only.***
 - ***The time complexity of this memoized solution is linear - O(n).***
   - The fibonacci sequence problem is a 1-dimensional dynamic programming problem.
+- *Can have bad space complexity, since a recursion tree that is too deep can lead to stack overflow.*
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/DSA/refImg/fibonacci-memoization.png" alt="Fibonacci Memoization" width="60%" />
@@ -89,16 +94,21 @@ const fib = (n) => {
 const fib = (n, memo=[]) => {
   if (memo[n] !== undefined) return memo[n];
   if (n <= 2) return 1;
+  
   const result = fib(n-1, memo) + fib(n-2, memo); // Pass through memo to accumulate.
   memo[n] = result; // Store fib(n) at the nth index in the memo.
+  
   return result;
 }
 ```
-### Tabulation Solution
-- Bottom-Up Approach.
-  - Ex: for `fib(6)` start with `fib(1)` and `fib(2)` and add them together and then do `fib(3)`, until we reach `fib(6)`.
+### Bottom-Up Dynamic Programming (Tabulation) Solution
 - **Storing the results of a previous result in a "table" (usually an array) starting from the bottom.**
+  - Ex: for `fib(6)` start with `fib(1)` and `fib(2)` and add them together and then do `fib(3)`, until we reach `fib(6)`.
+    - Solve in order: `fib(1)` &rarr; `fib(2)` &rarr; `fib(3)` &rarr; `fib(4)` &rarr; `fib(5)` &rarr; `fib(6)`.
+- ***Solve all subproblems that are encountered.***
 - Usually implemented using iteration.
+- It is called "tabulation" because the results of the subproblems are store in a table of sorts (Ex: an array).
+  - Tabulation is about adding to and iterating through the table.
 - ***The time complexity of this tabulation solution is linear - O(n).***
 - Better space complexity can be achieved using tabulation.
   - *Unlike the solutions using pure recursion or memoization, tabulation will not reach the maximum call stack because it does not have recursive calls, hence takes less space.*
@@ -110,9 +120,54 @@ const fib = (n, memo=[]) => {
 ```js
 const fib = (n) => {
   if (n <= 2) return 1;
+  
   const fibNums = [undefined,1,1]; // "table" to store the data.
+  
   for (let i = 3; i <= n; i++) {
     fibNums[i] = fibNums[i-1] + fibNums[i-2];
+  }
+  
+  return fibNums[n];
+}
+```
+#### 2 Ways to Calculate Subproblems for Bottom-Up Approach
+##### Bottom-Up Forward Dynamic Programming
+- Using the results of several subproblems to calculate the result of the next subproblem.
+```js
+// subproblem1
+//            \
+//             >-----> subproblem3
+//            /
+// subproblem2
+```
+###### Example
+```js
+const fib = (n) => {
+  if (n <= 2) return 1;
+  const fibNums = [undefined,1,1];
+  for (let i = 3; i <= n; i++) {
+    fibNums[i] = fibNums[i-1] + fibNums[i-2];
+  }
+  return fibNums[n];
+}
+```
+##### Bottom-Up Backward Dynamic Programming
+- Using the reuslt of one subproblem to calculate other subproblems.
+```js
+//            >-----> subproblem2
+//           /
+// subproblem1
+//           \
+//            >-----> subproblem3
+```
+###### Example
+```js
+const fib = (n) => {
+  if (n <= 2) return 1;
+  const fibNums = [undefined,1,1];
+  for (let i = 2; i <= n; i++) { // Since we know the result for the subproblem fibNums[i], we can use it to calculate fibNums[i+1] and fibNums[i+2].
+    fibNums[i+1] += fibNums[i];
+    fibNums[i+2] += fibNums[i];
   }
   return fibNums[n];
 }
