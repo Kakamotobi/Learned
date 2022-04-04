@@ -9,6 +9,7 @@
 - [Helper Method Recursion](#helper-method-recursion)
 - [5 Simple Steps to Solve Recursive Problems](#5-simple-steps-to-solve-recursive-problems)
 - [Practice Problems](#practice-problems)
+- [Converting a Recursive Algorithm to an Iterative Algorithm](#converting-a-recursive-algorithm-to-an-iterative-algorithm)
 
 ## What is Recursion?
 - **A process (a function in this case) that calls itself.**
@@ -729,4 +730,49 @@ function collectStrings(obj) {
                         // ["bar"].concat(collectStrings(obj[moreInfo]))
                                           // collectStrings(obj[evenMoreInfo])
                                              // ["baz"]
+```
+
+## Converting a Recursive Algorithm to an Iterative Algorithm
+- In most cases, simply push the parameters that would have been passed to a recursive function onto a stack.
+	- In essence, replace the program stack with your own.
+- Note
+	- *If there is more than one recursive call, preserve the order of the calls by adding them in the reverse order onto the stack.*
+### Flow
+```js
+const someFunction = (item) => {
+	const stack = [];
+	stack.push(firstItem);
+
+	// While the stack is not empty.
+	while (stack.length) {
+		// Pop off the item on top of the stack.
+		const currentItem = stack.pop();
+
+		// Do stuff.
+		// Push other item(s) onto the stack as needed.
+	}
+}
+```
+### Example
+#### Recursive Algorithm
+```js
+const sumRange = (num) => {
+	if (num === 1) return 1;
+	return num + sumRange(num - 1);
+}
+```
+#### Iterative Algorithm using Stack
+```js
+const sumRange = (num) => {
+	const stack = [];
+	let res = 0;
+	while (stack.length) {
+		const currentNum = stack.pop();
+		res += currentNum;
+		if (currentNum - 1 > 0) {
+			stack.push(currentNum - 1);
+		}
+	}
+	return res;
+}
 ```
