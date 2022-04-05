@@ -1,5 +1,9 @@
 # Useful Tips
 
+## Table of Contents
+- [Remainder/Modulo (%) Operator](#remaindermodulo--operator)
+- [Sorting Object Keys by their Values](#sorting-object-keys-by-their-values)
+
 ## Remainder/Modulo (%) Operator
 > Returns the remainder left over when one operand is divided by a second operand. It always takes the sign of the dividend.
 - Essentially, reduce the first operand to a maximum size of the second operand - 1.
@@ -9,7 +13,7 @@
   - If the first operand is equal to the second operand, the remainder will be 0.
 ### Useful Scenarios
 #### Even/Odd Number
-```
+```js
 if (x % 2 === 0) {} // if x is an even number.
 if (x % 2 !== 0) {} // if x is an odd number.
 ```
@@ -21,7 +25,7 @@ if (x % 2 !== 0) {} // if x is an odd number.
 ##### Example
 - `i % studentN.length` loops the array back to the beginning infinitely.
 - *i.e., if there is an array of 8 items, and we are currently on item 2 and we skip along 10 items, we want to end up back at slot 4, and not a non-existent slot 12.*
-```
+```js
 function solution(answers) {
     const student1 = [1, 2, 3, 4, 5];
     const student2 = [2, 1, 2, 3, 2, 4, 2, 5];
@@ -54,7 +58,29 @@ function solution(answers) {
     return answer;
 }
 ```
-
 ### Reference
 [Remainder (%) - JavaScript | MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Remainder)  
 [Looping infinitely around an array in JavaScript - Ben Frain](https://benfrain.com/looping-infinitely-around-an-array-in-javascript/)
+
+---
+
+## Sorting Object Keys by their Values
+```js
+const obj = {
+    1: 0.13,
+    2: 0.43,
+    3: 0.50,
+    4: 0.50,
+    5: 0
+}
+
+const keys = Object.keys(obj); // ["1", "2", "3", "4", "5"]
+
+keys.sort((a,b) => obj[a] - obj[b]); // Sort in ascending order of values.
+
+console.log(keys); // ["5", "1", "2", "3", "4"]
+```
+### Reference
+[sorting - Sort hash ascending by value using sortBy in javascript - Stack Overflow](https://stackoverflow.com/questions/33572347/sort-hash-ascending-by-value-using-sortby-in-javascript)  
+
+---
