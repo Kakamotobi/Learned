@@ -171,6 +171,8 @@ solution(5, [2,1,2,6,2,4,3,3]); // [3,4,2,1,5]
 solution(4, [4,4,4,4,4]); // [4,1,2,3]
 ```
 ### Solution
+- **TC: O(n)**
+  - n: the number of elements in `stages`.
 - Use a hash table to record the number of users at each stage.
 - Calculate the failure rate for each stage.
   - Failure Rate = # of users at the stage / # of users at stages that are greater than or equal to the stage.
@@ -210,3 +212,14 @@ const solution = (N, stages) => {
   return keys;
 }
 ```
+#### Same Solution Using `Map`
+- The above solution can be implemented using JavaScript's `Map`. However, `Map` stores data in insertion order of the keys.
+- So, if `stages = [2,1,2,6,2,4,3,3]`, the hash table will be `{2 => 3, 1 => 1, 4 => 1, 3 => 2}` for the number of users at each stage.
+  - `2` is the first in the hash table because it is the first number that was inserted.
+  - *cf. Using JavaScript Object: `{1: 1, 2: 3, 3: 2, 4: 1}`.*
+- If we continue through the algorithm, the hash table becomes `{2 => 0.42857142857142855, 1 => 0.125, 4 => 0.5, 3 => 0.5, 5 => 0}` for the failure rates of each stage.
+  - *cf. Using JavaScript Object: `{1: 0.125, 2: 0.42857142857142855, 3: 0.5, 4: 0.5, 5: 0}`.*
+- Therefore, the final `keys` sorted in decreasing order of failure rates will be `[4,3,2,1,5]` since Stage 4 was inserted earlier than Stage 3.
+  - *cf. Using JavaScript Object: `[3,4,2,1,5]`.*
+- However, one of the constraints mentioned that if two stages have the same failure rates, the earlier stage (Stage 3 in this case) should come before. Using `Map`, as it inserts in insertion order, does not guarantee this.
+- To solve this, we could sort `stages` in increasing order at the beginning of the algorithm. However, this results to a slower time complexity (O(n log n)).
