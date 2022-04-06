@@ -3,6 +3,7 @@
 ## Table of Contents
 - [Remainder/Modulo (%) Operator](#remaindermodulo--operator)
 - [Sorting Object Keys by their Values](#sorting-object-keys-by-their-values)
+- [Replacing All Occurrences of a Substring in a String](#replacing-all-occurrences-of-a-substring-in-a-string)
 
 ## Remainder/Modulo (%) Operator
 > Returns the remainder left over when one operand is divided by a second operand. It always takes the sign of the dividend.
@@ -82,5 +83,31 @@ console.log(keys); // ["5", "1", "2", "3", "4"]
 ```
 ### Reference
 [sorting - Sort hash ascending by value using sortBy in javascript - Stack Overflow](https://stackoverflow.com/questions/33572347/sort-hash-ascending-by-value-using-sortby-in-javascript)  
+
+---
+
+## Replacing All Occurrences of a Substring in a String
+### 1. Regex
+- Use regex for `replace` because we want *all* occurrences of a substring.
+```js
+const str = "Hello, kakamoto's account is @kakamoto."
+const newStr = str.replace(/kakamoto/g, "kakamotobi");
+console.log(newStr); // "Hello, kakamotobi's account is @kakamotobi"
+```
+### 2. `String.prototype.split()` and `Array.prototype.join()`
+```js
+const str = "Hello, kakamoto's account is @kakamoto."
+const newStr = str.split("kakamoto").join("kakamotobi);
+console.log(newStr); // "Hello, kakamotobi's account is @kakamotobi"
+```
+### 3. `String.prototype.replaceAll()`
+```js
+const str = "Hello, kakamoto's account is @kakamoto."
+const newStr = str.replaceAll("kakamoto", "kakamotobi");
+// or str.replaceAll(/kakamoto/g, "kakamotobi");
+console.log(newStr); // "Hello, kakamotobi's account is @kakamotobi"
+```
+### Reference
+[replaceAll in JavaScript | Medium](https://medium.com/geekculture/replaceall-in-javascript-b61f4e94f028)  
 
 ---
