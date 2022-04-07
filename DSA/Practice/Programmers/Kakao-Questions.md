@@ -223,3 +223,62 @@ const solution = (N, stages) => {
   - *cf. Using JavaScript Object: `[3,4,2,1,5]`.*
 - However, one of the constraints mentioned that if two stages have the same failure rates, the earlier stage (Stage 3 in this case) should come before. Using `Map`, as it inserts in insertion order, does not guarantee this.
 - To solve this, we could sort `stages` in increasing order at the beginning of the algorithm. However, this results to a slower time complexity (O(n log n)).
+
+## [[2021 카카오 채용연계형 인턴십] 숫자 문자열과 영단어](https://programmers.co.kr/learn/courses/30/lessons/81301)
+- Input: a string of numbers `s` where some numbers are written in plain English.
+- Output: return the number that the string is supposed to represent.
+- Constraints
+  - `1 <= s.length <= 50`.
+  - `s` never starts with a `"0"` or `"zero"`.
+  - `s` is given so that `1 <= return value <= 2,000,000`.
+### Example
+```js
+solution("one4seveneight"); // 1478
+solution("23four5six7"); // 234567
+```
+### Solutions
+#### Solution 1 - O(n)
+- Use built-in String and Array methods to pick out and replace numbers in alphabet form to digits.
+```js
+const solution = (s) => {
+  let nums = ["zero","one","two","three","four","five","six","seven","eight","nine"];
+  
+  for (let i = 0; i < nums.length; i++) {
+    s = s.split(nums[i]).join(i); // Locate each number from 0 - 9 in their English forms, replace them with the number in digits.
+  }
+  
+  return parseInt(s);
+}
+```
+Or
+```js
+// ES2021+
+
+const solution = (s) => {
+  let nums = ["zero","one","two","three","four","five","six","seven","eight","nine"];
+  
+  for (let i = 0; i < nums.length; i++) {
+    s = s.replaceAll(nums[i], i); // Replace English forms intwo digits.
+  }
+  
+  return parseInt(s);
+}
+```
+#### Solution 2
+- Use Regex.
+```js
+function solution(s) {
+  s = s.replace(/zero/g, 0)
+    .replace(/one/g, 1)
+    .replace(/two/g, 2)
+    .replace(/three/g, 3)
+    .replace(/four/g, 4)
+    .replace(/five/g, 5)
+    .replace(/six/g, 6)
+    .replace(/seven/g, 7)
+    .replace(/eight/g, 8)
+    .replace(/nine/g, 9);
+    
+  return parseInt(s);
+}
+```
