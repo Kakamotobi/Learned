@@ -1,9 +1,9 @@
 # Kakao Questions
 
 ## [[2020 카카오 인턴십] 키패드 누르기](https://programmers.co.kr/learn/courses/30/lessons/67256)
-- Input: an array of numbers between 0 to 9. A preferred hand ("left" or "right").
-- Output: a string of sequences of which hand/thumb was used for pressing each number.
-- Rules
+- **Input:** an array of numbers between 0 to 9. A preferred hand ("left" or "right").
+- **Output:** a string of sequences of which hand/thumb was used for pressing each number.
+- **Rules**
   - Use the left thumb for numbers 1, 4, 7.
   - Use the right thumb for numbers 3, 6, 9.
   - Use the nearest thumb for numbers 2, 5, 8, 0.
@@ -110,9 +110,9 @@ function getCoordinates(numpad, target) {
 ```
 
 ## [[2021 KAKAO BLIND RECRUITMENT] 신규 아이디 추천](https://programmers.co.kr/learn/courses/30/lessons/72410)
-- Input: a string `new_id`.
-- Output: return a new string that represents an id suggestion based on `new_id`.
-- Description
+- **Input:** a string `new_id`.
+- **Output:** return a new string that represents an id suggestion based on `new_id`.
+- **Description**
   - Step 1: Convert all alphabets to lowercase.
   - Step 2: Exclude all characters except for lowercase alphabets, digits, `-`, `_`, `.`.
   - Step 3: Replace consecutive `.`s with a single `.`.
@@ -153,12 +153,12 @@ const solution = (new_id) => {
 ```
 
 ## [[2019 KAKAO BLIND RECRUITMENT] 실패율](https://programmers.co.kr/learn/courses/30/lessons/42889)
-- Inputs
+- **Inputs**
   - A natural number `N` representing the total number of stages.
   - An array of natural numbers `stages` where `stages[i]` represents the current stage that a user is currently at.
-- Output: return an array consisting of the stage numbers in decreasing order of failure rate (stage with highest failure rate to stage with lowest failure rate).
+- **Output:** return an array consisting of the stage numbers in decreasing order of failure rate (stage with highest failure rate to stage with lowest failure rate).
   - Failure Rate = Number of users that have arrived at the stage but haven't cleared the stage yet / Number of users that have arrived (those that have passed or are at) at the stage.
-- Constraints
+- **Constraints**
   - `1 <= N <= 500`.
   - `1 <= stages.length <= 200,000`.
   - `1 <= stages[i] <= N + 1`.
@@ -225,9 +225,9 @@ const solution = (N, stages) => {
 - To solve this, we could sort `stages` in increasing order at the beginning of the algorithm. However, this results to a slower time complexity (O(n log n)).
 
 ## [[2021 카카오 채용연계형 인턴십] 숫자 문자열과 영단어](https://programmers.co.kr/learn/courses/30/lessons/81301)
-- Input: a string of numbers `s` where some numbers are written in plain English.
-- Output: return the number that the string is supposed to represent.
-- Constraints
+- **Input:** a string of numbers `s` where some numbers are written in plain English.
+- **Output:** return the number that the string is supposed to represent.
+- **Constraints**
   - `1 <= s.length <= 50`.
   - `s` never starts with a `"0"` or `"zero"`.
   - `s` is given so that `1 <= return value <= 2,000,000`.
@@ -280,5 +280,61 @@ function solution(s) {
     .replace(/nine/g, 9);
     
   return parseInt(s);
+}
+```
+
+## [[2019 카카오 개발자 겨울 인턴십]크레인 인형뽑기 게임](https://programmers.co.kr/learn/courses/30/lessons/64061)
+- **Inputs**
+  - A 2D array `board` representing a square board.
+    - `board[i]` represents a row of the game board (starting from the most top row).
+    - `board[i][j]` represents a doll in that slot.
+  - An array of positive integers `moves` representing the "column" of the board in which the crane picked a doll.
+- **Description**
+  - Every time the crane picks a doll, the doll is removed from the board and stacked in a separate pile.
+  - If the same two dolls are stacked consecutively, they both "pop" from the pile.
+- **Output:** return the number of dolls that have been "popped" from the pile.
+- **Constraints**
+  - `0 <= board[i][j] <= 100`.
+    - A doll is represented as a a number from 1 to 100.
+    - 0 means that there is no doll in that slot.
+  - `1 <= moves.length <= 1000`.
+  - `1 <= moves[i] <= board.length`.
+    - `moves[i]` is guaranteed to be a valid column in the board.
+### Example
+```js
+solution([[0,0,0,0,0],[0,0,1,0,3],[0,2,5,0,1],[4,2,4,4,2],[3,5,1,3,1]], [1,5,3,5,1,2,1,4]); // 4
+
+  // Board Before              Board After
+  // [[0,0,0,0,0],             [[0,0,0,0,0],
+  //  [0,0,1,0,3],              [0,0,0,0,0],
+  //  [0,2,5,0,1],      =>      [0,0,5,0,0],
+  //  [4,2,4,4,2],              [0,2,4,0,2],
+  //  [3,5,1,3,1]]              [0,5,1,3,1]]
+```
+### Solution
+- **TC: O(m\*b)**
+  - m: the number of moves made by the crane (`moves.length`).
+  - b: the number of rows in board (i.e. `board.length` since it is a square board).
+```js
+const solution = (board, moves) => {
+  const basket = [];
+  let count = 0;
+  
+  for (let move of moves) {
+    for (let row of board) {
+      if (row[move-1] > 0) {
+        if (row[move-1] === basket[basket.length-1]) {
+          basket.pop();
+          count += 2;
+        } else {
+          basket.push(row[move-1]);
+        }
+        row[move-1] = 0;
+        break;
+      }
+    }
+  }
+  
+  return count;
 }
 ```
