@@ -6,6 +6,7 @@
 - [Transpiler (Source-to-Source Compiler) and Polyfill](#transpiler-source-to-source-compiler-and-polyfill)
 - [Typing](#typing)
 - [ASCII and Unicode](#ascii-and-unicode)
+- [Shallow vs. Deep Copy](#shallow-vs-deep-copy)
 
 ## Programming vs Scripting vs Markup Language
 ### Programming vs Scripting Language
@@ -143,4 +144,42 @@
 [ASCII Code - The extended ASCII table](https://www.ascii-code.com/)  
 [What's the difference between ASCII and Unicode? - Stackoverflow](https://stackoverflow.com/questions/19212306/whats-the-difference-between-ascii-and-unicode)  
 
+---
+
+## Shallow vs. Deep Copy
+### Shallow Copy
+> Shallow Copy stores the references of objects to the original memory address. | GeeksforGeeks
+- i.e., both the original and copy point to the same address in memory.
+  - Therefore, any changes made to either the original or the copy will modify the other as well.
+- The process of shallow copying is fast.
+#### Example
+```js
+const original = [1,2,3,4];
+const shallowCopy = original;
+
+original.push(5);
+shallowCopy.push(6);
+
+console.log(original); // [1,2,3,4,5,6]
+console.log(shallowCopy); // [1,2,3,4,5,6]
+```
+### Deepy Copy
+> Deep copy stores copies of the object’s value. | GeeksforGeeks
+- i.e., a different memory location is allocated for the copy (each has their own space in memory).
+  - Therefore, any changes made to either the original or the copy will not reflect on the other.
+- The process of deep copying is relatively slower and exhaustive.
+#### Example
+```js
+const original = [1,2,3,4];
+const deepCopy = [...original];
+
+original.push(5);
+deepCopy.push(6);
+
+console.log(original); // [1,2,3,4,5]
+console.log(deepCopy); // [1,2,3,4,6]
+```
+### Reference
+[Difference between Shallow and Deep copy of a class - GeeksforGeeks](https://www.geeksforgeeks.org/difference-between-shallow-and-deep-copy-of-a-class/)  
+[Understanding Deep and Shallow Copy in Javascript](https://medium.com/@manjuladube/understanding-deep-and-shallow-copy-in-javascript-13438bad941c)  
 
