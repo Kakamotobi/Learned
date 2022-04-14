@@ -26,7 +26,8 @@
 ### Hash Table Big O
 - Insertion - O(1)
 - Removal - O(1)
-- Access - O(1)
+- Search - O(1)
+   - Technically, in case of a word lookup, O(K), where K is the number of characters in the string.
 - *Comes down to how good the hash function is.*
 
 ## Hash Tables in JavaScript
