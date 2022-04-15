@@ -146,7 +146,7 @@
 ### Atomic Operators
 #### Query and Projection Operators
 - **`$gt`**
-  - Mathces values that are greater than a specified value.
+  - Matches values that are greater than a specified value.
   - Ex: `db.dogs.find({age: {$gt: 8}})`
 - **`$gte`**
   - Matches values that are greater than or equal to a specified value.
@@ -162,6 +162,9 @@
   - Ex: `db.dogs.find({breed: {$nin: ["Mutt", "Corgi"]}})`
 - **`$ne`**
   - Selects the documents where the value of the field is not equal to the specified value.
+- **`$regex`**
+  - Matches values using regex that was provided.
+  - Ex: `db.dogs.find({breed: {$regex: new RegExp("terrier$", "i")}})`. Finds all breeds ending with "terrier".
 ##### Tip
 - *Accessing sub documents.*
   - Ex: `db.dogs.find({"personality.childFriendly": true, size: "M"})`
