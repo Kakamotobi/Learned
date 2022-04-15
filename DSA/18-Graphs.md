@@ -12,7 +12,7 @@
   - [Graph Traversal Uses](#graph-traversal-uses)
   - [Depth-First Traversal](#depth-first-traversal)
   - [Breadth-First Traversal](#breadth-first-traversal)
-- [Undirected Graph Implementation - using adjacency list](#undirected-graph-implementation---using-adjacency-list)
+- [Undirected Graph Im  plementation - using adjacency list](#undirected-graph-implementation---using-adjacency-list)
 
 ## What are Graphs?
 - A data structure that consists of nodes and connections between those nodes, where there is no specific pattern or root.
@@ -141,7 +141,8 @@
 ### Depth-First Traversal
 - Explore as far as possible down one branch before "backtracking".
 - For graphs, depth-first traversal means following the neighbors before visiting siblings.
-- Keep track of vertices that have already been "visited" in order to "cross it off" from other vertices' list of connections.
+- DFS is often preferred to visit every node as it is a bit simpler.
+- Keep track of vertices that have already been "visited", effectively "crossing it off" from other vertices' list of connections in order to prevent possible infinite loops.
   - Ex: once vertex `A` has been visited, cross it off from `B` and `C`'s list of connections by using a hash table as an auxiliary structure.
 #### Example
 <p align="center">
@@ -149,15 +150,19 @@
 </p>
 
 - Depth-first traversal starting from `A` will result to a traversal of `["A","B","D","E","C","F"]` when using the recursive approach and `["A","C","E","F","D","B"]` when using the iterative approach.
-
 ### Breadth-First Traversal
 - Explore all neighbors at current depth first before moving on down the branch.
+- BFS is generally better in finding the shortest path (or just any path) between two nodes, since it doesn't have to go all the way down a path before moving on to the next path.
 #### Example
 <p align="center">
   <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/DSA/refImg/breadth-first-graph-traversal.png" alt="Breadth-First Graph Traversal" width="60%" />
 </p>
 
 - Breadth-first traversal starting from `A` will result to a traversal of `["A","B","C","D","E","F"]`.
+### Bidirectional Search
+- Used to find the shortest path between two nodes.
+- Two BFS is simultaneously executed (one from each node). If the two searches collide, there is a path.
+- This is faster than a single BFS to find the shortest path between two nodes.
 
 ## Undirected Graph Implementation - using adjacency list
 ```js
