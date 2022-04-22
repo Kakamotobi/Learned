@@ -87,3 +87,26 @@ const checkBTBalanced = (root) => {
   return isBalanced(root);
 }
 ```
+
+# 4.5 Validate BST
+- Given a binary tree, check if it is a binary search tree.
+### Solution - O(n)
+- Inorder traverse the binary tree and collect values (O(n)).
+- If the collected values are sorted, return true (O(n)).
+- Assumption: there are no duplicates.
+```js
+const validateBST = (root) => {
+  const visited = [];
+  const inorder = (node) => {
+    if (node === null) return;
+    inorder(node.left);
+    visited.push(node.val);
+    inorder(node.right);
+  }
+  
+  for (let i = 0; i < visited.length - 1; i++) {
+    if (visited[i] > visited[i+1]) return false;
+  }
+  return true;
+}
+```
