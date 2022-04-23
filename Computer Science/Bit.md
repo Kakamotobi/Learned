@@ -8,6 +8,8 @@
 - [Types of Character Encoding Standards](#types-of-character-encoding-standards)
 - [Bitwise Operation](#bitwise-operation)
   - [Bitwise Operators](#bitwise-operators)
+- [Negative Binary](#negative-binary)
+- [Signedness](#signedness)
 
 ## What is it?
 - **A bit (a.k.a. binary digit) is the most basic unit of information that holds one of two values: 0 or 1.**
@@ -95,8 +97,10 @@
 > A bit-shift moves each digit in a number's binary representation left or right.
 ##### Left Shift (`<<`)
 - Shifts the first operand the second operand number of bits to the left.
-- The excess bits shifted off to the left are discarded.
-- Zero bits are shifted in from the right.
+  - The excess bits shifted off to the left are discarded.
+  - Zero bits are shifted in from the right.
+- *Shifting the original number left by one bit results to the original number * 2.*
+  - Ex: `23 << 1` is `46`.
 - Example
   ```js
   const a = 5; // 0b101
@@ -104,27 +108,31 @@
   
   console.log(a << b); // 0b10100 // 20 // Shift to the left `b` number of bits in the binary form of 5.
   ```
-##### (Arithmetic) Right Shift (`>>`)
+##### Arithmetic Right Shift (`>>`)
 - Shifts the first operand the second operand number of bits to the right.
-- The excess bits shifted off to the right are discarded.
-- Copies of the leftmost bit is shifted in from the left.
+  - The excess bits shifted off to the right are discarded.
+  - Copies of the leftmost bit is shifted in from the left.
+- *Shifting the original number right by one bit results to the original number / 2.*
+  - Ex: `23 >> 1` is `11` (truncated).
+  - Ex: `-23 >> 1` is `12` (rounded up).
 - Example
   ```js
   const a = 5; // 0b101
   const b = 2;
   const c = -5; // -0b101
   
-  console.log(a << b); // 0b001 // 1 // Shift to the right `b` number of bits in the binary form of 5.
-  console.log(c << b); // -0b010 // -2 // Shift to the right `b` number of bits in the binary form of -5.
+  console.log(a >> b); // 0b001 // 1 // Shift to the right `b` number of bits in the binary form of 5.
+  console.log(c >> b); // -0b010 // -2 // Shift to the right `b` number of bits in the binary form of -5.
   ```
-##### Zero-fill (Logical) Right Shift (`>>>`)
+##### Logical (Zero-fill) Right Shift (`>>>`)
 - Shifts the first operand the second operand number of bits to the right.
-- The excess bits shifted off to the right are discarded.
-- Zero bits are shifted in from the left.
-  - The sign bit becomes `0`, therefore, the result will always be positive.
-  - Unlike the other bitwise operators, it returns an unsigned 32-bit integer.
-- *For positive numbers, a single logical right shift is equivalent to a division by 2.*
+  - The excess bits shifted off to the right are discarded.
+  - Zero bits are shifted in from the left.
+    - The sign bit becomes `0`, therefore, the result will always be positive.
+    - Unlike the other bitwise operators, it returns an unsigned 32-bit integer.
+- *For positive numbers only, shifting the original number right by one bit results to the original number / 2.*
   - Ex: `10 >>> 1` will result to `5`.
+  - Ex: `-10 >>> 1` will result to `2147483643`.
 - Example
   ```js
   const a = 5; // 0b101
@@ -135,7 +143,32 @@
   console.log(c >>> b); // 111111111111111111111111111110 // 1073741822
   ```
 
+## Negative Binary
+- Negative numbers are typically stored in *Two's Complement* form.
+  - "Two's Complement" is the number that you have to add to the positive version of the number in binary to get 2<sup>x bit system</sup>
+  - The left-most bit is used to represent the sign (`0` means a positive number, `1` means a negative number).
+  - The remaining bits are filled in with the two's complement.
+- `-X = inverse of X in binary + 1`.
+### Example
+| Base 10       | Base 2 (using two's complement) | Notes                                                              |
+| ------------- | ------------------------------- | ------------------------------------------------------------------ |
+| 18            | 00010010                        | The left-most bit is `0`, indicating that it is a positive number. |
+| 2<sup>8</sup> | 10000000                        | Add the inverse of `0010010` (`1101101`) to `00100100`. This results to `01111111`. This means, adding `1` to `01111111`, hence, adding `1` to the inverse of `0010010` (`1101101`) and adding that to `00100100` will result to `10000000`. | 
+| -18           | 11101110                        | The left-most bit is `1`, indicating that it is a positive number. |
+
+
+## Signedness
+> In computing, signedness is a property of data types representing numbers in computer programs. | Wikipedia
+### Signed Integer vs Unsigned Integer
+|            | Signed Integer | Unsigned Integer |
+| ---------- | -------------- | ---------------- |
+| Definition | Can represent both positive and negative numbers. | Can represent only non-negative numbers. |
+| Example    | A signed 32-bit integer can hold the values from -2,147,483,648 to 2,147,483,647 (inclusive). | An unsigned 32-bit integer can hold the values from 0 to 4,294,967,295 (inclusive). |
+
 ## Reference
+[Algorithms: Bit Manipulation - YouTube](https://www.youtube.com/watch?v=NLKQEOgBAnw)  
+[Algorithms 101: the basics of Bit Manipulation explained](https://www.educative.io/blog/bit-manipulation-algorithm)  
 [JavaScript Bitwise Operators (with Examples)](https://www.programiz.com/javascript/bitwise-operators)  
 [What are bit-shift operations?](https://www.educative.io/edpresso/what-are-bit-shift-operations)  
 [Bit Shifting (left shift, right shift) | Interview Cake](https://www.interviewcake.com/concept/java/bit-shift)  
+[Signedness - Wikipedia](https://en.wikipedia.org/wiki/Signedness)  
