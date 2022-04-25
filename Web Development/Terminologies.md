@@ -77,11 +77,13 @@
 1. Client requests page.
 2. Server sends an almost empty `index.html` file. // Users see a blank screen.
 3. Client requests the JS files linked in the `index.html` file.
-4. JS file containing web application logic (libraries, frameworks) that creates dynamic HTML is received from the server. // TTV, TTI.
+4. JS file containing web application logic (libraries, frameworks) that creates dynamic HTML is received from the server. // TTV, TTI
     - **Users can now see and interact with the site.**
 #### Use If:
 - Website has many user interactions.
 - Building a web application.
+- SEO is not a priority.
+- Ex: login pages, dashboards.
 #### Cons
 - Low SEO.
   - Web crawlers check the index.html file for titles, etc. but HTML files for CSR are mostly empty, making it difficult for SEO.
@@ -99,15 +101,16 @@
 </p>
 
 1. Client requests page.
-2. Server sends an already made `index.html` file. // TTV.
+2. Server sends an already made `index.html` file. // TTV
     - **Users can see the site.**
 3. Client requests the JS file linked in the html file.
-4. JS file is received from the server. // TTI.
+4. JS file is received from the server. // TTI
     - **Users can now interact with the site.**
 #### Use If:
 - SEO is priority.
 - Need faster initial loading.
 - Website doesn't have many user interactions.
+- Ex: reddit.
 #### Cons
 - Blinking issue
   - Every click results to bringing the website from the server.
@@ -118,10 +121,28 @@
 - How to reduce the time between TTV and TTI.
 ### SSG
 > A static site generator is a tool that generates a full static HTML website based on raw data and a set of templates. Essentially, a static site generator automates the task of coding individual HTML pages and gets those pages ready to serve to users ahead of time. Because these HTML pages are pre-built, they can load very quickly in users' browsers.
+#### Illustration
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/Web%20Development/refImg/SSR.png" alt="Server-Side Rendering" width="80%" />
+</p>
+
+1. Client requests page.
+2. The server sends all the HTML files that the website uses with the data (text, images, etc.) prebuilt. // TTV
+    - For example, there will not be more fetching data from the API after the client request because that was already done when uploading the website onto vercel.
+    - Therefore, when a user visits a website, the page loads almost instantly.
+3. Client requests the JS file.
+4. JS file is received form the server. // TTI
+    - **Users can now interact with the site.**
+#### Use If: 
+- Need quick loading.
+- If content is not updated frequently and there is not too much interactivity (Ex: blog, landing page)
+#### Cons
+- If the data is changed, users will be viewing data that is stale until the website is redeployed and the files are regenerated.
 ### Reference
 [Progressive web app structure | MDN](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/App_structure)  
 [서버사이드 렌더링](https://www.youtube.com/watch?v=iZ9csAfU5Os&ab_channel=%EB%93%9C%EB%A6%BC%EC%BD%94%EB%94%A9by%EC%97%98%EB%A6%AC)  
-[What is a static site generator?](https://www.cloudflare.com/learning/performance/static-site-generator/)
+[What is a static site generator?](https://www.cloudflare.com/learning/performance/static-site-generator/)  
+[Why I don't use Create React App - YouTube](https://www.youtube.com/watch?v=ToEp--KcXcA&ab_channel=DevEd)  
 
 ---
 
