@@ -6,9 +6,10 @@
 - [Units of Memory Measurement](#units-of-memory-measurement)
 - [Character Encoding](#character-encoding)
 - [Types of Character Encoding Standards](#types-of-character-encoding-standards)
-- [Binary Math](#binary-math)
 - [Bitwise Operation](#bitwise-operation)
+  - [Binary Math](#binary-math)
   - [Bitwise Operators](#bitwise-operators)
+  - [Bit Facts and Tricks](#bit-facts-and-tricks)
 - [Negative Binary](#negative-binary)
 - [Signedness](#signedness)
 
@@ -52,23 +53,24 @@
   - Encoding formats of Unicode: UTF-8, UTF-16, UTF-32.
 - [More on ASCII and Unicode here](https://github.com/Kakamotobi/Learned/blob/main/Computer%20Science/Basics.md#ascii-and-unicode)
 
-## Binary Math
-| ... | 64s | 32s | 16s | 8s | 4s | 2s | 1s |
-| --- | --- | --- | --- | -- | -- | -- | -- |
-| ... | 1   | 0   | 0   | 0  | 0  | 0  | 0  |
-### Binary Addition
-- `0 + 0 = 0`.
-- `0 + 1 = 1`.
-- `1 + 1 = 10`.
-- `1 + 1 + 1 = 11`.
-### Binary Subtraction
-- `1 - 0 = 1`.
-- `1 - 1 = 0`.
-- `10 - 1 = 1`. *Carrying over 1 to 0 will make it 2.*
+
 
 ## Bitwise Operation
 - Bitwise operations refer to working with individual bits.
 - A bitwise operation operates on two-bit patterns of equal lengths by positionally matching their invidual bits.
+### Binary Math
+| ... | 64s | 32s | 16s | 8s | 4s | 2s | 1s |
+| --- | --- | --- | --- | -- | -- | -- | -- |
+| ... | 1   | 0   | 0   | 0  | 0  | 0  | 0  |
+#### Binary Addition
+- `0 + 0 = 0`.
+- `0 + 1 = 1`.
+- `1 + 1 = 10`.
+- `1 + 1 + 1 = 11`.
+#### Binary Subtraction
+- `1 - 0 = 1`.
+- `1 - 1 = 0`.
+- `10 - 1 = 1`. *Carrying over 1 to 0 will make it 2.*
 ### Bitwise Operators
 #### Bitwise AND (`&`)
 - Returns a `1` in each bit position for which the corresponding bits of both operands are `1`s.
@@ -157,6 +159,24 @@
   console.log(a >>> b); // 0b001 // 1
   console.log(c >>> b); // 111111111111111111111111111110 // 1073741822
   ```
+### Bit Facts and Tricks
+#### AND (`&`)
+- `X & 0s = 0`.
+- `X & 1s = X`.
+- `X & X = X`.
+#### OR (`|`).
+- `X | 0s = X`.
+- `X | 1s = 1s`.
+- `X | X = X`.
+#### XOR (`^`)
+- `X ^ 0s = X`.
+- `X ^ 1s = ~X`.
+- `X ^ X = 0`.
+#### Other
+- `X + X = X * 2 = X << 1`.
+- `X * 4 = X << 2`.
+- `X ^ (~X) = 1s`.
+- `~0 = 1s`.
 
 ## Negative Binary
 - Negative numbers are typically stored in *Two's Complement* form.
