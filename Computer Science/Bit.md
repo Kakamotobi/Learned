@@ -6,6 +6,7 @@
 - [Units of Memory Measurement](#units-of-memory-measurement)
 - [Character Encoding](#character-encoding)
 - [Types of Character Encoding Standards](#types-of-character-encoding-standards)
+- [Binary Math](#binary-math)
 - [Bitwise Operation](#bitwise-operation)
   - [Bitwise Operators](#bitwise-operators)
 - [Negative Binary](#negative-binary)
@@ -32,7 +33,7 @@
 | Binary Digit     | 1 Bit      |               -             | 1 bit                      | 2<sup>1</sup> = 2                           |
 | 1 Byte           | 8 Bits     | 1 byte                      | 8 bits                     | 2<sup>8</sup> = 256                         |
 | 4 Byte           | 32 Bits    | 4 bytes                     | 32 bits                    | 2<sup>32</sup> = 4,294,967,296              |
-| 8 Byte           | 64 Bits    | 8 byte                      | 64 bits                    | 2<sup>64</sup> = 18,446,744,073,709,551,616 |
+| 8 Byte           | 64 Bits    | 8 bytes                     | 64 bits                    | 2<sup>64</sup> = 18,446,744,073,709,551,616 |
 | 1 Kilobyte (KB)  | 1024 bytes | 1,024 bytes                 | 8,192 bits                 | 2<sup>8,192</sup>                           |
 | 1 Megabyte (MB)  | 1024 KB    | 1,048,576 bytes             | 8,388,608 bits             | 2<sup>8,388,608</sup>                       |
 | 1 Gigabyte (GB)  | 1024 MB    | 1,073,741,824 bytes         | 8,589,934,592 bits         | 2<sup>8,589,934,592</sup>                   |
@@ -50,6 +51,20 @@
 - To accommodate other languages that are not latin-based, Unicode was introduced.
   - Encoding formats of Unicode: UTF-8, UTF-16, UTF-32.
 - [More on ASCII and Unicode here](https://github.com/Kakamotobi/Learned/blob/main/Computer%20Science/Basics.md#ascii-and-unicode)
+
+## Binary Math
+| ... | 64s | 32s | 16s | 8s | 4s | 2s | 1s |
+| --- | --- | --- | --- | -- | -- | -- | -- |
+| ... | 1   | 0   | 0   | 0  | 0  | 0  | 0  |
+### Binary Addition
+- `0 + 0 = 0`.
+- `0 + 1 = 1`.
+- `1 + 1 = 10`.
+- `1 + 1 + 1 = 11`.
+### Binary Subtraction
+- `1 - 0 = 1`.
+- `1 - 1 = 0`.
+- `10 - 1 = 1`. *Carrying over 1 to 0 will make it 2.*
 
 ## Bitwise Operation
 - Bitwise operations refer to working with individual bits.
