@@ -220,8 +220,9 @@
 - **`git pull`**
   - Download new commits from the remote.
   - Ex: `git pull origin main`
-- **`git push`**
-  - Upload my local commits to the remote.
+- **`git push --set-upstream origin <branch-name>`**
+  - If the branch is only on local yet, use this command to upload the branch to GitHub.
+  - In GitHub, create the pull request.
 - **`git branch -v`**
   - Shows any discrepancies in commits between local and remote.
   - Ex: ahead 1, behind 2
