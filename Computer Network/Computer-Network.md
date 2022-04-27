@@ -86,6 +86,9 @@
     - The server performs the client's request and sends the reply back to the client.
 - **Database**
   - A collection of information that is organized so that it can be easily accessed, managed, and updated.
+- **Content Delivery Network (CDN)**
+  - A geographically distributed group of servers that work together to provide fast delivery of Internet content.
+  - Requests are serviced from the infrastructure closest to the client making the request.
 
 ## The Internet vs The Web
 ### What is the Internet?
