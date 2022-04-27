@@ -23,8 +23,10 @@
 ## Types of Computer Network Architecture
 ### Client-Server Architecture
 - Network nodes may be either clients or servers.
-- Servers provide resources like memory, processing power, or data to clients.
-- Clients may communicate with each other but do not share resources.
+- A **server** is a computer designed to process requests and deliver data to another computer over the internet or a local network.
+  - Servers provide resources like memory, processing power, or data to clients.
+- A **client** is a computer that sends requests to servers and receives the responses.
+  - Clients may communicate with each other but do not share resources.
 ### Peer-to-Peer (P2P) Architecture
 - Computers have equal powers and priviledges.
 - Each device in the network can act as either a client or server.
@@ -82,6 +84,8 @@
     - The socket on the server process waits for requests from a client.
       - The client-to-server data exchange takes place when a client connects to the server through a socket.
     - The server performs the client's request and sends the reply back to the client.
+- **Database**
+  - A collection of information that is organized so that it can be easily accessed, managed, and updated.
 
 ## The Internet vs The Web
 ### What is the Internet?
