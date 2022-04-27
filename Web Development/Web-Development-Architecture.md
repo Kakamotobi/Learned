@@ -2,10 +2,10 @@
 - Architectures and design patterns for developing web applications.
 
 ## Table of Contents
-- [Single Page Application (SPA) vs. Multi Page Application (MPA)](#single-page-application-spa-vs-multi-page-application-mpa)
+- [Single-Page Application (SPA) vs. Multi-Page Application (MPA)](#single-page-application-spa-vs-multi-page-application-mpa)
 - [JAMStack](#jamstack)
 
-## Single Page Application (SPA) vs. Multi Page Application (MPA)
+## Single-Page Application (SPA) vs. Multi-Page Application (MPA)
 ### SPA
 > A web app implementation that loads only a single web document, and then updates the body content of that single document via JS APIs such as `XMLHttpRequest` and `Fetch` when different content is to be shown.
 > Allows users to use websites without loading whole new pages from the server, which can result in performance gains and a more dynamix experience, with some tradeoff disadvantages such as SEO, more effort required to maintain state, implement navigation, and do meaningful performance monitoring.
@@ -51,6 +51,11 @@
 - JAMStack is not a technology. It is a design pattern that is implemented in technology.
 - The markup and UI assets are served directly from a CDN, which makes the delivery very quick and secure.
 - JAMStack projects can be distributed (for example, through hosting platforms like Vercel) instead of relying on a server.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/Web%20Development/refImg/JAMStack.png" alt="Client-Side Rendering" width="80%" />
+</p>
+
 ### JAM
 - Client-side **JavaScript**, reusable **APIs**, prebuilt **Markup**.
 - Pre-rendered content is served to a CDN and made dynamic through APIs and serverless functions.
@@ -68,7 +73,7 @@
 - HTML is already generated during deploy time (it is ready to go before the client even requests it) and immediately served via CDN without any interference or backend delays.
 #### Secure
 - Since everything works over APIs, there are no database or security breaches.
-#### Cheaper and Easire to Scale
+#### Cheaper and Easier to Scale
 - JAMStack sites contain just a few files of minimal size that can be served anywhere. To scale, simply serve the files else where or via CDNs.
 ### JAMStack vs SPA
 - SPA builds the application within the client's browser.
