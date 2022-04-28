@@ -65,7 +65,7 @@
 - All server-side processes or database actions are abstracted into reusable APIs, accessed over HTTPS with JavaScript.
 - These APIs can be custom-built or third-party services.
 #### Markup
-- Templated markup should be prebuilt at deploy time, usually using a site generator for content sites, or a build tool for web apps.
+- Templated markup should be prebuilt at deploy time, usually using a site generator (Ex: Next.js & Gatsby for React) for content sites, or a build tool (Ex: Webpack) for web apps.
 ### Why JAMStack?
 - Traditional websites or CMSs (Ex: WordPress) rely heavily on servers, plugins, and databases.
 #### Fast
