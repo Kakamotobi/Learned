@@ -53,7 +53,7 @@
 - JAMStack projects can be distributed (for example, through hosting platforms like Vercel) instead of relying on a server.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/Web%20Development/refImg/JAMStack.png" alt="Client-Side Rendering" width="80%" />
+  <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/Web%20Development/refImg/Jamstack.png" alt="Jamstack Structure" width="80%" />
 </p>
 
 ### JAM
