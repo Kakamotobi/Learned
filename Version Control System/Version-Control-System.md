@@ -150,8 +150,11 @@
 - **`git pull origin master`**
   - Shortcut to both `fetch` and `merge` all in one go.
     - `git pull` does a `git fetch` followed by a `git merge` to update the local repository with the remote repository.
-  - `origin master` means the `master` branch of the remote endpoint called `origin`.
+  - Downloads new changes from the branch named `master` on the remote endpoint called `origin` and integrate them into your local HEAD branch.
   - *Make sure to do this (update your repo with the latest version) before creating a new branch to work on.*
+  - cf. `git pull origin/master`
+    - Pulls changes from the `origin/master` branch on local and merge that to the local HEAD branch.
+    - `origin/master` branch is essentially a "cached copy" of the last pull from `origin`.
 
 ## What is GitHub?
 - Online service that provides Internet hosting for software development and version control using Git.
