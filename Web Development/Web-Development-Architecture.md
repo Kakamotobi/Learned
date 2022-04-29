@@ -1,16 +1,25 @@
 # Web Development Architecture
-- Architectures and design patterns for developing web applications.
+Architectures and design patterns for developing web applications.
 
 ## Table of Contents
 - [Single-Page Application (SPA) vs. Multi-Page Application (MPA)](#single-page-application-spa-vs-multi-page-application-mpa)
 - [JAMStack](#jamstack)
 
 ## Single-Page Application (SPA) vs. Multi-Page Application (MPA)
+- Concerned with how many pages are used.
 ### SPA
 > A web app implementation that loads only a single web document, and then updates the body content of that single document via JS APIs such as `XMLHttpRequest` and `Fetch` when different content is to be shown.
-> Allows users to use websites without loading whole new pages from the server, which can result in performance gains and a more dynamix experience, with some tradeoff disadvantages such as SEO, more effort required to maintain state, implement navigation, and do meaningful performance monitoring.
+> Allows users to use websites without loading whole new pages from the server, which can result in performance gains and a more dynamix experience, with some tradeoff disadvantages such as SEO, more effort required to maintain state, implement navigation, and do meaningful performance monitoring. | MDN
 - SPA frameworks: React, Angular, Vue.JS.
 - Ex: Google Maps
+#### SPA with SSR (and CSR)
+- SPAs that are rendered on the server-side are the isomorphic JavaScript (implying the use of Node.js).
+- The first rendering of the SPA is done from the server instead of the browser. Following renders are done in the browser.
+- Node.js is used to generate the initial HTML. In the browser, the same JS code is executed (hydration process: event listeners are attached to the HTML).
+- React, Vue, Angular are capable of executing in both Node.js and the browser. But frameworks such as Next.js and Nuxt.js exist for better developing experience.
+#### SPA with CSR
+- SPAs that are rendered on the client-side are applications built with frontend libraries/frameworks with a client-side router, which allows navigating the website without having to load a new page.
+- Basically "original" React.
 #### Pros
 - SPA is fast because most resources (HTML, CSS, Scripts) are only loaded once, and only data is transitted back and forth.
 - No need to write code to render pages on the server. Easier to get started on a project without having to use any server.
@@ -23,9 +32,18 @@
 - Less secure due to Cross-Site Scripting (XSS), which enables attackers to inject client-side scripts into the web app by other users.
 - Memory leak in JS can cause system to slow down.
 ### MPA
-- "Traditional" way.
+- An application with two or more pages.
 - Every change requests rendering a new page from the server in the browser.
+- "Traditional" way.
 - Larger than SPAs.
+#### MPA with SSR
+- MPAs that are rendered on the server-side are full-stack applications built with server-side frameworks and template engines.
+- The pages of the website are rendered on the fly by the server.
+#### MPA with CSR
+- MPAs that are rendered on the client-side are regular static sites.
+- The pages are built with just HTML, CSS, and JS.
+- Can be deployed without a server and dynamic content is provided by JS and APIs (JAMStack).
+- Does not utilize a client-side router.
 #### Pros
 - Good for users who need a visual map to navigate the application.
 - Good and easier SEO management. It gives better chances to rank for different keywords since an application can be optimized for one keyword per page.
@@ -36,6 +54,7 @@
 - SPA that uses URL anchors as synthetic pages enabling more in browser navigation and preference functionality.
 ### Reference
 [SPA (Single-page application) | MDN](https://developer.mozilla.org/en-US/docs/Glossary/SPA)  
+[Understanding Rendering in the Web Apps: SPA vs MPA - DEV Community](https://dev.to/snickdx/understanding-rendering-in-web-apps-spa-vs-mpa-49ef#:~:text=Server%2DSide%20Rendered%20Multi%2DPage,also%20fall%20into%20this%20category.)  
 
 ## JAMStack
 > A way of thinking about how to build for the web. The UI is compiled, the frontend is decoupled, and data is pulled in as needed. | Jamstack
