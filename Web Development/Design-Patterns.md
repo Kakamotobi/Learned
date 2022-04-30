@@ -6,7 +6,8 @@
 ## Model-View-Controller (MVC)
 > MVC is an architectural design pattern that encourages improved application organization through a separation of concerns. It enforces the isolation of business data (Models) from user interfaces (Views), with a third component (Controllers) traditionally managing logic and user-input. | patterns.dev
 - MVC is a design pattern that we as developers can adopt/apply.
-  - Ex: React is not an "MVC framework. We can use the MVC pattern for a React component.
+  - Angular.js is an MVC framework.
+  - React is not an MVC framework. It is a View library. But we can use the MVC pattern for a React component.
 ### Brief History
 - Smalltalk-80 MVC was designed in 1979.
 - It aimed to separate out the application logic from the UI.
