@@ -4,6 +4,7 @@
 - [What is Data Binding?](#what-is-data-binding)
 - [One-Way Data Binding](#one-way-data-binding)
 - [Two-Way Data Binding](#two-way-data-binding)
+- [Data Binding in Libraries/Frameworks](#data-binding-in-librariesframeworks)
 
 ## What is Data Binding?
 > ... a general technique that binds data sources from the provider and consumer together and synchronizes them. | Wikipedia
@@ -28,6 +29,12 @@
   <img src="https://github.com/Kakamotobi/Learned/blob/main/Web%20Development/refImg/one-way-data-binding.png" alt="One-Way Data Binding Illustration" width="80%"/>
 </p>
 
+### Pros
+- Renders the DOM without hindrance to performance.
+- Since data flows one-way, it is easy to understand the code and debug.
+### Cons
+- You have to write code that detects change and update the View.
+  - React performs one-way data binding where the changes are passed on from parent View to child View.
 
 ## Two-Way Data Binding
 - Changes made on both the ends will be applied to the other end.
@@ -35,7 +42,12 @@
   <img src="https://github.com/Kakamotobi/Learned/blob/main/Web%20Development/refImg/two-way-data-binding.png" alt="Two-Way Data Binding Illustration" width="80%" />
 </p>
 
+### Pros
+- Reduces the amount of code needed.
+### Cons
+- The whole DOM has to be rerendered whenever a change occurs to the Model. Therefore, it can lead to performance hindrance.
 ### Example
+#### Vanilla JS Example
 - In the View, there is a form that edits a user's profile.
 - Typing in the inputs (changes made in View) will result to updating the State, which updates the View.
 ```html
@@ -97,6 +109,69 @@ const render = () => {
 render();
 ```
 
+## Data Binding in Libraries/Frameworks
+### Angular and Vue
+- Angular by default implements two-way data binding.
+- Vue provides easy to implement two-way data binding through the V-model directive.
+<p align="center">
+  <img src="https://github.com/Kakamotobi/Learned/blob/main/Web%20Development/refImg/angular-data-binding.png" alt="Angular Data Binding" width="40%" />
+  <img src="https://github.com/Kakamotobi/Learned/blob/main/Web%20Development/refImg/vue-data-binding.png" alt="Vue Data Binding" width="40%" />
+</p>
+
+### React
+<p align="center">
+  <img src="https://github.com/Kakamotobi/Learned/blob/main/Web%20Development/refImg/react-data-binding.png" alt="React Data Binding" width="40%" />
+</p>
+
+- **React by default implements only Component to View data binding (i.e., one-way data binding).**
+  - If the state changes, the UI will change. But not the other way around.
+  - Therefore, one-way data binding is implemented.
+- **However, View to Component data binding can also be achieved (effectively, two-way data binding).**
+  - Use a controlled input where the element's value is bound to a state variable and an event listener is added to listen to changes in the input and apply those changes to the state.
+#### One-Way Data Binding in React
+```js
+import React, { Component } from 'react';
+  
+class App extends Component {
+  constructor() {
+    super();
+    this.state = {
+      greeting: "Hello"
+    };
+  }
+  
+  render() {
+    return (
+      <div>
+        <p>{this.state.greeting}</p>
+      </div>
+    )
+  }
+}
+  
+export default App;
+```
+#### Two-Way Data Binding in React
+```js
+const { useState } = React;
+
+const App = () => {
+  const [greeting, setGreeting] = useState("Hello");
+  const handleChange = (evt) => setGreeting(evt.target.value);
+  
+  return (
+    <div>
+      <input type="text" value={greeting} onChange={handleChange} />
+      <p>{greeting}</p>
+    </div>
+  );
+};
+
+ReactDOM.render(<App />, document.getElementById('app'));
+```
+
+
 ## Reference
 [Data binding - Wikipedia](https://en.wikipedia.org/wiki/Data_binding)  
 [What is data binding? - YouTube](https://www.youtube.com/watch?v=9G9eYCSdJvU&ab_channel=vaadinofficial)  
+[ReactJS Data Binding - GeeksforGeeks](https://www.geeksforgeeks.org/reactjs-data-binding/)  
