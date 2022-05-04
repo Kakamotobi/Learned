@@ -26,11 +26,25 @@
 ### Terminology
 - **Vertex:** a node.
 - **Edge:** connection between nodes.
+- **Neighbors:** the nodes that are connected to the given node.
+- **Degree:** the number of edges (i.e. neighbors) connected to the given node.
+- **Path:** a sequence of nodes connected by edges.
+- **Path Length:** the number of edges in a path.
+- **Cycle:** a path that starts and ends at the same node.
+- **Connectivity**
+  - Two nodes are **connected** if a path exists between them.
+  - A graph is **connected** when all nodes are connected.
+- **Connected Component:** a subset of nodes of a graph that is connected.
 - **Weighted/Unweighted:** whether values are assigned to distances between vertices.
 - **Directed/Undirected:** whether directions are assigned to distances between vertices.
+  - Directed (Cyclic) Graph vs. Directed Acyclic Graph (DAG)
 ### Types of Graphs
 - **Tree**
   - A tree is an undirected graph in which any two vertices are connected by exactly one path.
+  - Conditions
+    - Trees are connected and acyclic.
+    - Removing an edge disconnects the tree.
+    - Adding an edge creates a cycle.
 - **Undirected Graph**
   - There is no direction to the edges (i.e. they are two-way connections).
   - Ex: Facebook user account (friends).
@@ -144,12 +158,26 @@
 - DFS is often preferred to visit every node as it is a bit simpler.
 - Keep track of vertices that have already been "visited", effectively "crossing it off" from other vertices' list of connections in order to prevent possible infinite loops.
   - Ex: once vertex `A` has been visited, cross it off from `B` and `C`'s list of connections by using a hash table as an auxiliary structure.
+- *Preorder DFS records a node as it is encountered.*
+- *Postorder DFS records a node only after it has no more neighbors to explore (dead-end).*
 #### Example
 <p align="center">
   <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/DSA/refImg/depth-first-graph-traversal.png" alt="Depth-First Graph Traversal" width="60%" />
 </p>
 
 - Depth-first traversal starting from `A` will result to a traversal of `["A","B","D","E","C","F"]` when using the recursive approach and `["A","C","E","F","D","B"]` when using the iterative approach.
+#### DFS Applications
+- Cycle Detection
+  - If you visit a node that has already been visited, there is a cycle.
+- Finding Connected Components of a Graph
+  - Run DFS on a random node to find a connected component in the graph.
+  - Then, run DFS on an unvisited node to find another connected component.
+- Topological Sort
+  - Finding a valid order to execute tasks in a Directed Acyclic Graph.
+  - If node `A` points to node `B`, node `A` must be done before node `B`.
+  - Reversing a DFS Postorder traversal of a DAG will always return a valid Topological Sort of it.
+- Maze Generation
+  - Instead of inserting neighbor nodes in order, randomly insert them into the stack.
 ### Breadth-First Traversal
 - Explore all neighbors at current depth first before moving on down the branch.
 - BFS is generally better in finding the shortest path (or just any path) between two nodes, since it doesn't have to go all the way down a path before moving on to the next path.
