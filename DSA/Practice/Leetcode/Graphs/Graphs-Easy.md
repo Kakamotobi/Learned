@@ -129,4 +129,57 @@ const findJudge = (n, trust) => {
 }
 ```
 
-
+## 463. Island Perimeter
+- **Input:** an array of arrays `grid` representing a map where `grid[i][j] = 1` represents land and `grid[i][j] = 0` represents water.
+- **Description**
+  - Grid cells are connected horizontally/vertically (not diagonally). The `grid` is completely surrounded by water, and there is exactly one island (i.e., one or more connected land cells).
+  - The island doesn't have "lakes", meaning the water inside isn't connected to the water around the island. One cell is a square with side length 1.
+- **Output:** return the perimeter of the island.
+### Example
+```js
+islandPerimeter([[0,1,0,0],[1,1,1,0],[0,1,0,0],[1,1,0,0]]); // 16
+```
+```js
+[[0,1,0,0],
+ [1,1,1,0],
+ [0,1,0,0],
+ [1,1,0,0]]
+```
+### Solution
+```js
+const islandPerimeter = (grid) => {
+  let perimeter = 0;
+  
+  const moves = [[-1,0],[0,1],[1,0],[0,-1]];
+  const visited = {};
+  const dfs = (x, y) => {
+    // If coord is out of bounds OR coord is water.
+    if (x <= 0 || x >= grid.length || y <= 0 || y >= grid[0].length || grid[x][y] === 0) {
+      perimeter++;
+      return;
+    }
+    // If coord has already been visited, return.
+    if (visited[x]?.includes(y)) return;
+    
+    // Record coord as visited.
+    if (visited[x]) visited[x].push(y);
+    else visited[x] = [y];
+    
+    for (let move of moves) {
+      const newX = x + move[0];
+      const newY = y + move[1];
+      dfs(newX, newY);
+    }
+  }
+  
+  // Find a block of the island and dfs that block.
+  for (let i = 0; i < grid.length; i++) {
+    for (let (j = 0; j < grid[i].length; j++) {
+      if (grid[i][j] === 1) {
+        dfs(i, j);
+        return perimeter;
+      }
+    }
+  }
+}
+```
