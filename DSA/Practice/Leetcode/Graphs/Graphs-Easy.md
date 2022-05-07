@@ -146,6 +146,7 @@ islandPerimeter([[0,1,0,0],[1,1,1,0],[0,1,0,0],[1,1,0,0]]); // 16
  [1,1,0,0]]
 ```
 ### Solution
+- Find a block of the island and traverse through the lands to accumulate the perimeter.
 ```js
 const islandPerimeter = (grid) => {
   let perimeter = 0;
