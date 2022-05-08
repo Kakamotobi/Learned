@@ -1,8 +1,9 @@
-# Useful Tips
+# Useful "Tricks"
 
 ## Table of Contents
 - [Remainder/Modulo (%) Operator](#remaindermodulo--operator)
 - [Sorting Object Keys by their Values](#sorting-object-keys-by-their-values)
+- [Accessing a Value (two levels deep) of a Potentially Non-existent Property](#accessing-a-value-two-levels-deep-of-a-potentially-non-existent-property)
 - [Replacing All Occurrences of a Substring in a String](#replacing-all-occurrences-of-a-substring-in-a-string)
 
 ## Remainder/Modulo (%) Operator
@@ -86,21 +87,77 @@ console.log(keys); // ["5", "1", "2", "3", "4"]
 
 ---
 
+## Accessing a Value (two levels deep) of a Potentially Non-existent Property
+### Optional Chaining (`?.`)
+> The optional chaining operator (?.) enables you to read the value of a property located deep within a chain of connected objects without having to check that each reference in the chain is valid. | MDN
+### Alternatives
+- To avoid throwing an Error, you need to add checks for each level/nest.
+- Ex: `obj && obj.level1 && obj.level1.level2 && obj.level1.level2.level3`.
+### Examples
+#### Example 1 - array
+```js
+const arr = ["one", "two", "three", "four", "five"];
+
+arr[9]; // undefined
+arr[9][0]; // Uncaught TypeError: Cannot read properties of undefined (reading '0')
+```
+```js
+// Optional Chaining (ES2020)
+arr[9]?.[0]; // undefined
+
+// Alternative 1
+let temp;
+if (arr[9] && arr[9][0]) temp = arr[9][0]; // undefined
+
+// Alternative 2
+let temp = arr[9] ? arr[9][0] : "something else"; // undefined
+```
+#### Example 2 - object
+```js
+const obj = {
+  "1": [0,1,2,3],
+  "2": [2,4],
+  "3": [5]
+}
+
+obj[9]; // undefined
+obj[9][2]; // Uncaught TypeError: Cannot read properties of undefined (reading '2')
+obj[9].includes(0); // Uncaught TypeError: Cannot read properties of undefined (reading 'includes')
+```
+```js
+// Optional Chaining (ES2020)
+obj[9]?.[2]; // undefined
+obj[9]?.includes(0); // undefined
+
+// Alternative 1
+let temp;
+if (obj[9] && obj[9][2]) temp = arr[9][2]; // undefined
+if (obj[9] && obj[9].includes(0)) temp = obj[9].includes(0); // undefined
+
+// Alternative 2
+let temp = obj[9] ? obj[9][2] : "something else"; // undefined
+let temp = obj[9] ? obj[9].includes(0) : "something else"; // undefined
+```
+### Reference
+[Optional chaining (?.) - JavaScript | MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining)  
+
+---
+
 ## Replacing All Occurrences of a Substring in a String
-### 1. Regex
+### Option 1: Regex
 - Use regex for `replace` because we want *all* occurrences of a substring.
 ```js
 const str = "Hello, kakamoto's account is @kakamoto."
 const newStr = str.replace(/kakamoto/g, "kakamotobi");
 console.log(newStr); // "Hello, kakamotobi's account is @kakamotobi"
 ```
-### 2. `String.prototype.split()` and `Array.prototype.join()`
+### Option 2: `String.prototype.split()` and `Array.prototype.join()`
 ```js
 const str = "Hello, kakamoto's account is @kakamoto."
 const newStr = str.split("kakamoto").join("kakamotobi);
 console.log(newStr); // "Hello, kakamotobi's account is @kakamotobi"
 ```
-### 3. `String.prototype.replaceAll()`
+### Option 3: `String.prototype.replaceAll()`
 ```js
 const str = "Hello, kakamoto's account is @kakamoto."
 const newStr = str.replaceAll("kakamoto", "kakamotobi");
