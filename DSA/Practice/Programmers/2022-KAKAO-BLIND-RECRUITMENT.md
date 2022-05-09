@@ -19,14 +19,10 @@ solution(["con", "ryan"], ["ryan con", "ryan con", "ryan con", "ryan con"], 3); 
 ```
 ### Solution
 - Construct a hashtable where the key is those that have been reported and the value is a Set of the reporters.
-- Use the above hashtable to construct another hashtable representing the number of emails that a reporter should receive.
-- Use the above hashtable and `id_list` to return the number of emails each user should receive.
+- Loop through the hashtable and find the index of the reporters that should receive emails and accumulate the number of emails each user should receive.
 ```js
 const solution = (id_list, report, k) => {
   const whoReportedMe = {};
-  const numEmails = {};
-  
-  // Construct whoReportedMe.
   for (let r of report) {
     const users = r.split(" ");
     
@@ -35,19 +31,15 @@ const solution = (id_list, report, k) => {
     // whoReportedMe[users[1]] = whoReportedMe[users[1]]?.add(users[0]) || new Set([users[0]]);
   }
   
-  // Construct numEmails.
-  for (let key in whoReportedMe) {
-    if (whoReportedMe[key].size >= k) {
-      for (let reporter of whoReportedMe[key].values()) {
-        numEmails[reporter] = ++numEmails[reporter] || 1;
+  const numEmails = new Array(id_list.length).fill(0);
+  for (let [reported, reporters] of Object.entries(whoReportedMe)) {
+    if (reporters.size >= k) {
+      for (let reporter of reporters) {
+        const idx = id_list.indexOf(reporter);
+        numEmails[idx]++;
       }
     }
   }
-  
-  // Compute results.
-  for (let i = 0; i < id_list.length; i++) {
-    id_list[i] = id_list[i] in numEmails ? numEmails[id_list[i]] : 0;
-  }
-  
-  return id_list;
+  return numEmails;
 }
+```
