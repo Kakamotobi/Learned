@@ -1,10 +1,74 @@
 # Design Patterns
+> In software engineering, a software design pattern is a general, reusable solution to a commonly occurring problem within a given context in software design. It is not a finished design that can be transformed directly into source or machine code. Rather, it is a description or template for how to solve a problem that can be used in many different situations. Design patterns are formalized best practices that the programmer can use to solve common problems when designing an application or system. | Wikipedia
+
+- Design patterns are solutions to commonly occuring problems in software design (object-oriented systems).
+- There are three main classifications: **Creational**, **Structural**, and **Behavioral**, *defined by the Gang of Four*.
 
 ## Table of Contents
-- [Model-View-Controller (MVC)](#mode-view-controller-mvc)
+- [Creational Design Patterns](#creational-design-patterns)
+  - [Singleton](#singleton)
+- [Structural Design Patterns](#structural-design-patterns)
+- [Behavioral Design Patterns](#behavioral-design-patterns)
+- [Architectural Design Patterns](#architectural-design-patterns)
+  - [Model-View-Controller (MVC)](#model-view-controller-mvc)
+- [Reference](#reference)
 
-## Model-View-Controller (MVC)
+## Creational Design Patterns
+> Creational Patterns provide object creation mechanisms that increase flexibility and reuse of existing code.
+
+- i.e., how objects are created.
+### Singleton
+- **Singleton is an object creational pattern that allows a class to be instantiated only once.**
+- Therefore, the `new` keyword on a Singleton should only instantiate that class only once in the whole system.
+- Singletons can be useful when just one object is needed to coordinate a particular action across the system.
+  - i.e., when you need to create global objects across the application.
+  - Ex: a database connection object
+#### Singleton in JavaScript
+- In JavaScript (ES6+), the concept of global data and object literals exist, where objects are passed around by reference.
+- *The basic characteristics of Singletons can be achieved by simply creating a global object.*
+  - Ex: `const globalObj = { name: "globalObj", description: "I am a singleton" }`
+#### Example
+```js
+class MyClass {
+  constructor() {
+    // If the class has been instantiated already.
+    if (MyClass.instance) {
+      console.log("Singleton classes cannot be instantiated more than once.");
+      console.log("This is the previously instantiated Singleton.");
+      return MyClass.instance;
+    }
+    MyClass.instance = this;
+
+    // Other constructor code.
+  }
+
+  // Properties and methods.
+}
+
+const MyClass1 = new MyClass();
+const MyClass2 = new MyClass();
+
+console.log(MyClass1 === MyClass2); // true
+```
+
+## Structural Design Patterns
+> Structural Patterns explain how to assemble objects and classes into larger structures, while keeping these structures flexible and efficient.
+
+- i.e., how objects relate to each other.
+
+## Behavioral Design Patterns
+> Behavioral Patterns take care of effective communication and the assignment of responsibilities between objects.
+
+- i.e., how objects communicate with each other.
+
+## Architectural Design Patterns
+- These are fundamental structural organizations for software systems.
+- More higher-level properties and mechanisms of a system, and separation of concerns.
+### Model-View-Controller (MVC)
 > MVC is an architectural design pattern that encourages improved application organization through a separation of concerns. It enforces the isolation of business data (Models) from user interfaces (Views), with a third component (Controllers) traditionally managing logic and user-input. | patterns.dev
+- MVC is an architectural pattern that encompasses several design patterns defined by the Gang of Four.
+  - Ex: Observer pattern, etc.
+  - The design patterns used may depend on the particular implementation.
 - MVC is a design pattern that we as developers can adopt/apply.
   - Angular.js is an MVC framework.
   - React is not an MVC framework. It is a View library. But we can use the MVC pattern for a React component.
@@ -42,8 +106,13 @@
 #### Controllers
 - **The intermediary between Models and Views that are responsible for updating the Model upon user interaction/manipulation of the View.**
 - Handles business logic and events (usually triggered by the user).
-### Reference
+
+
+## Reference
+[Software design pattern - Wikipedia](https://en.wikipedia.org/wiki/Software_design_pattern)  
+[Design Patterns - Refactoring Guru](https://refactoring.guru/design-patterns/classification)  
+[10 Design Patterns Explained in 10 Minutes - YouTube](https://www.youtube.com/watch?v=tv-_1er1mWI&ab_channel=Fireship)  
+
 [Learn JavaScript Design Patterns - patterns.dev](https://www.patterns.dev/posts/classic-design-patterns/)  
 [Elements of MVC in React. Let’s discover the original MVC pattern… | by Daniel Dughila | The Startup | Medium](https://medium.com/swlh/elements-of-mvc-in-react-9382de427c09#:~:text=React%20isn't%20an%20MVC,nothing%20to%20do%20with%20frameworks.)  
 [How JavaScript works: modularity and reusability with MVC | by Ukpaiugochi | SessionStack Blog](https://blog.sessionstack.com/how-javascript-works-writing-modular-and-reusable-code-with-mvc-16c65cbd9f64)  
-
