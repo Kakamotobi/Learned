@@ -2,11 +2,13 @@
 > In software engineering, a software design pattern is a general, reusable solution to a commonly occurring problem within a given context in software design. It is not a finished design that can be transformed directly into source or machine code. Rather, it is a description or template for how to solve a problem that can be used in many different situations. Design patterns are formalized best practices that the programmer can use to solve common problems when designing an application or system. | Wikipedia
 
 - Design patterns are solutions to commonly occuring problems in software design (object-oriented systems).
-- There are three main classifications: **Creational**, **Structural**, and **Behavioral**, *defined by the Gang of Four*.
+- There are three main classifications: **Creational**, **Structural**, and **Behavioral**, *defined by the "Gang of Four"*.
 
 ## Table of Contents
 - [Creational Design Patterns](#creational-design-patterns)
   - [Singleton](#singleton)
+  - [Prototype](#prototype)
+  - [Builder](#builder)
 - [Structural Design Patterns](#structural-design-patterns)
 - [Behavioral Design Patterns](#behavioral-design-patterns)
 - [Architectural Design Patterns](#architectural-design-patterns)
@@ -18,7 +20,7 @@
 
 - i.e., how objects are created.
 ### Singleton
-- **Singleton is an object creational pattern that allows a class to be instantiated only once.**
+- **Singleton is a creational pattern that allows a class to be instantiated only once.**
 - Therefore, the `new` keyword on a Singleton should only instantiate that class only once in the whole system.
 - Singletons can be useful when just one object is needed to coordinate a particular action across the system.
   - i.e., when you need to create global objects across the application.
@@ -45,10 +47,69 @@ class MyClass {
   // Properties and methods.
 }
 
-const MyClass1 = new MyClass();
-const MyClass2 = new MyClass();
+const myClass1 = new MyClass();
+const myClass2 = new MyClass();
 
-console.log(MyClass1 === MyClass2); // true
+console.log(myClass1 === myClass2); // true
+
+export default myClass1;
+```
+### Prototype
+- **Prototype is a creational pattern that lets you clone existing objects.**
+- An alternative way to implement inheritance. Instead of inheriting from a class (subclassing), it comes from an object that has already been created.
+  - Class inheritance leads to complicated hierarchy.
+  - Inheriting via prototype creates a flat prototype chain, making it easier to share functionality between objects.
+#### Prototype in JavaScript
+- JavaScript supports prototypal inheritance.
+#### Example
+```js
+const human = {
+  greetings() {
+    return "Hi. I am a human.";
+  }
+}
+
+const tom = Object.create(human, { name: { value: "tom" }});
+
+tom; // { name: "tom" }
+Object.getPrototypeOf(tom); // { greetings: f }
+tom.greetings(); // Hi. I am a human."
+```
+### Builder
+- **Create objects step by step using methods rather than using the constructor.**
+- Using the same construction code, different types and representations of an object can be made.
+- Using the builder design pattern, there is no need for subclasses. 
+#### Builder in JavaScript
+- This pattern is encountered frequently in libraries like jQuery.
+- However, it is going out of style in recent years.
+#### Example
+```js
+class Omelette {
+  constructor() {}
+  
+  addTomato() {
+    this.tomato = true;
+    return this;
+  }
+  addOnion() {
+    this.onion = true;
+    return this;
+  }
+  addHam() {
+    this.ham = true;
+    return this;
+  }
+}
+
+const myOmelette = new Omelette();
+const yourOmelette = new Omelette();
+
+myOmelette
+  .addTomato()
+  .addOnion();
+
+yourOmelette
+  .addHam();
 ```
 
 ## Structural Design Patterns
@@ -66,7 +127,7 @@ console.log(MyClass1 === MyClass2); // true
 - More higher-level properties and mechanisms of a system, and separation of concerns.
 ### Model-View-Controller (MVC)
 > MVC is an architectural design pattern that encourages improved application organization through a separation of concerns. It enforces the isolation of business data (Models) from user interfaces (Views), with a third component (Controllers) traditionally managing logic and user-input. | patterns.dev
-- MVC is an architectural pattern that encompasses several design patterns defined by the Gang of Four.
+- MVC is an architectural pattern that encompasses several design patterns defined by the "Gang of Four".
   - Ex: Observer pattern, etc.
   - The design patterns used may depend on the particular implementation.
 - MVC is a design pattern that we as developers can adopt/apply.
