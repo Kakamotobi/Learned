@@ -9,6 +9,7 @@
   - [Singleton](#singleton)
   - [Prototype](#prototype)
   - [Builder](#builder)
+  - [Factory](#factory)
 - [Structural Design Patterns](#structural-design-patterns)
 - [Behavioral Design Patterns](#behavioral-design-patterns)
 - [Architectural Design Patterns](#architectural-design-patterns)
@@ -111,11 +112,79 @@ myOmelette
 yourOmelette
   .addHam();
 ```
+### Factory
+- **Create objects using an interface (function or method) without exposing the creation logic.**
+  - Instead of using the `new` keyword to instantiate an object, use a function or method to instantiate it.
+- Instead of conditionally creating objects on the get go, create a subclass or function (factory) that will determine which object to instantiate.
+- Use a static factory method that creates and returns instances while hiding the details from the client.
+- *Focused on hiding the details of constructing instances.*
+#### Example
+```js
+class MacButton {}
+class WindowsButton {}
+
+// Without Factory (not very maintainable)
+const button1 = os === "mac" ? new MacButton() : new WindowsButton();
+const button2 = os === "mac" ? new MacButton() : new WindowsButton();
+
+// With Factory
+class ButtonFactory {
+  static createButton(os) {
+    return os === "mac" ? new MacButton() : new WindowsButton();
+  }
+}
+
+const buttonFactory = new ButtonFactory();
+const button1 = buttonFactory.createButton("mac");
+const button2 = buttonFactory.createButton("windows");
+```
 
 ## Structural Design Patterns
 > Structural Patterns explain how to assemble objects and classes into larger structures, while keeping these structures flexible and efficient.
 
 - i.e., how objects relate to each other.
+### Facade
+- **Provide a simplified interface to a library, framework, or any other complex set of classes, effectively hiding other low-level details in the codebase that the user does not need to know about.**
+- *Focused on hiding implementations.*
+#### Facade in JavaScript
+- Almost every package installed with JavaScript can be considered a facade in some way.
+  - Ex: jQuery acts as a facade for more low-level JS features.
+#### Example
+```js
+// Low-level complexities.
+class PlumbingSystem {
+  setPressure(num) {}
+  turnOn() { console.log("plumbing turned on!") }
+  turnOff() { console.log("plumbing turned off!") }
+}
+class ElectricalSystem {
+  setVoltage(num) {}
+  turnOn() { console.log("electricity turned on!") }
+  turnOff() { console.log("electricity turned off!") }
+}
+
+// Facade class containing the low-level systems as dependencies.
+class House {
+  #plumbing = new PlumbingSystem();
+  #electricity = new ElectricalSystem();
+  
+  turnOnSystems() {
+    this.#plumbing.setPressure(500);
+    this.#plumbing.turnOn();
+    this.#electricity.setVoltage(120);
+    this.#electricity.turnOn();
+  }
+  
+  turnOffSystems() {
+    this.#plumbing.turnOff();
+    this.#electricity.turnOff();
+  }
+}
+
+const myHouse = new House();
+myHouse.turnOnSystems();
+myHouse.turnOffSystems();
+```
 
 ## Behavioral Design Patterns
 > Behavioral Patterns take care of effective communication and the assignment of responsibilities between objects.
