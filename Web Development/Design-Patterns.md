@@ -11,6 +11,8 @@
   - [Builder](#builder)
   - [Factory](#factory)
 - [Structural Design Patterns](#structural-design-patterns)
+  - [Facade](#facade)
+  - [Proxy](#proxy)
 - [Behavioral Design Patterns](#behavioral-design-patterns)
 - [Architectural Design Patterns](#architectural-design-patterns)
   - [Model-View-Controller (MVC)](#model-view-controller-mvc)
@@ -184,6 +186,55 @@ class House {
 const myHouse = new House();
 myHouse.turnOnSystems();
 myHouse.turnOffSystems();
+```
+### Proxy
+- **Provide a substitute (proxy) for another object.**
+- It controls and manages access to the target object.
+  - Therefore, you can execute something before or after the request gets through to the target object.
+- Analogy: credit cards are a proxy for money in the bank account. Credit cards can be used in place of cash and provides access to that cash.
+#### Types of Proxies
+- **Virtual Proxy**
+  - Used to perserve memory from being allotted to an object that may not be used in the future.
+  - For example, lazy initialization can be implemented using virtual proxy.
+    - Lazy initialization: instead of always executing exhaustive processes (creating the object on app launch), execute the process (initialize the object) only when it is needed.
+- **Protection Proxy**
+  - Used to control client's access to the object.
+  - For example, the proxy can check if the client is authorized to access the object before passing the request to the object.
+- **Remote Proxy**
+  - Used to represent the object that is located on a remote server.
+  - Communicating with a remotely located object may require complexities of working with the network. This is taken care of by a remote proxy as it passes the client request over the network.
+- **Logging Proxy**
+  - Used to keep the list of requests sent before passing it on to the object.
+- **Caching Proxy**
+  - Used to cache the results of recurring requests that always has the same results, and manage the life cycle of the cache.
+- **Smart Reference**
+  - Used to dismiss exhaustive objects once no clients need it any more.
+  - For example, keep track of clients that are actively using the object. If there are no clients using it, dismiss the object.
+#### Example - caching proxy
+- There is a music downloading class where multiple requests from the client for the same music results to repetitive downloads.
+- Instead of doing that, use a proxy class with the same interface as the original music downloading class, and cache files and return the cache for henceforth requests for the same music.
+#### Example - Vue Reactivity System
+- The UI needs to be updated whenever the data changes.
+- Vue does this by replacing the original object with a proxy.
+```js
+const originalObject = { name: "kakamotobi" };
+
+const reactive = new Proxy(originalObject, {
+  get(target, key) {
+    console.log(`Tracking: ${key}`);
+    return target[key];
+  },
+  set(target, key, value) {
+    console.log("Updating UI"); // Tell the framework to rerender.
+    return Reflect.set(target, key, value); // Use Reflect to update the data on the original object.
+  }
+});
+
+reactive.name; // "Tracking: name" // "kakamotobi"
+
+reactive.name = "bomboclat"; // "Updating UI" // "bomboclat"
+
+reactive.name; // "Tracking: name" // "bomboclat"
 ```
 
 ## Behavioral Design Patterns
