@@ -14,6 +14,10 @@
   - [Facade](#facade)
   - [Proxy](#proxy)
 - [Behavioral Design Patterns](#behavioral-design-patterns)
+  - [Iterator](#iterator)
+  - [Observer](#observer)
+  - [Mediator](#mediator)
+  - [State](#state)
 - [Architectural Design Patterns](#architectural-design-patterns)
   - [Model-View-Controller (MVC)](#model-view-controller-mvc)
 - [Reference](#reference)
@@ -24,7 +28,7 @@
 - i.e., how objects are created.
 ### Singleton
 - **Singleton is a creational pattern that allows a class to be instantiated only once.**
-- Therefore, the `new` keyword on a Singleton should only instantiate that class only once in the whole system.
+- Therefore, the `new` keyword on a Singleton should instantiate that class only once in the whole system.
 - Singletons can be useful when just one object is needed to coordinate a particular action across the system.
   - i.e., when you need to create global objects across the application.
   - Ex: a database connection object
@@ -64,6 +68,9 @@ export default myClass1;
   - Inheriting via prototype creates a flat prototype chain, making it easier to share functionality between objects.
 #### Prototype in JavaScript
 - JavaScript supports prototypal inheritance.
+- JavaScript objects have an internal property: prototype.
+  - It is a reference to another object that contains properties and methods shared by all instances of the object.
+  - When a constructor function is invoked, the new instance inherits the properties and methods of the constructor function.
 #### Example
 ```js
 const human = {
@@ -194,6 +201,7 @@ myHouse.turnOffSystems();
 - Analogy: credit cards are a proxy for money in the bank account. Credit cards can be used in place of cash and provides access to that cash.
 #### Types of Proxies
 - **Virtual Proxy**
+  - A placeholder for objects that are expensive to create. The real object is created when it is first needed.
   - Used to perserve memory from being allotted to an object that may not be used in the future.
   - For example, lazy initialization can be implemented using virtual proxy.
     - Lazy initialization: instead of always executing exhaustive processes (creating the object on app launch), execute the process (initialize the object) only when it is needed.
@@ -213,7 +221,7 @@ myHouse.turnOffSystems();
 #### Example - caching proxy
 - There is a music downloading class where multiple requests from the client for the same music results to repetitive downloads.
 - Instead of doing that, use a proxy class with the same interface as the original music downloading class, and cache files and return the cache for henceforth requests for the same music.
-#### Example - Vue Reactivity System
+#### Example - [Vue Reactivity System](https://vuejs.org/guide/extras/reactivity-in-depth.html)
 - The UI needs to be updated whenever the data changes.
 - Vue does this by replacing the original object with a proxy.
 ```js
@@ -241,6 +249,81 @@ reactive.name; // "Tracking: name" // "bomboclat"
 > Behavioral Patterns take care of effective communication and the assignment of responsibilities between objects.
 
 - i.e., how objects communicate with each other.
+### Iterator
+- **Traverse elements of a collection without exposing its underlying representation (list, stack, tree, etc).**
+- Extract the traversal behavior of a collection into a separate object called an *iterator*.
+  - Ex: `depthIterator`, `breadthIterator` objects to traverse a `treeCollection`.
+  - Since each iterator object is separate, multiple iterators can traverse the same collection at the same time.
+- All iterators should share the same interface, allowing compatibility with any type of collection or algorithm. If a special approach is needed, simply create a new iterator class instead of changing the collection.
+- Analogy: free roaming, virtual guide app, local tour guide, are all different ways (iterators) to tour an area (collection).
+### Observer
+- **Define a subscription mechanism where observers are notified and updates in accordance when the object that they are observing changes.**
+- One to many dependency between objects.
+  - Observers depend on an object to provide them data.
+- The main object should:
+  - manage its main state.
+  - implement a subscription mechanism that allows other objects to subscribe or unsubscribe to it.
+  - keep track of its observers.
+  - implement a notifying method that calls for updates in its observers.
+    - Pass down the context of the changed data to its observers.
+    - Ex: `for (let s of subscribers) s.update(this);`
+  - other business logic.
+- Observers perform certain actions upon receiving a notification from the main object.
+  - All observers should implement the same interface to communicate with the main object.
+- Ex: the MVC architecture (when the model changes, the view updates).
+- Ex: rxjs library.
+  ```js
+  import { Subject } from "rxjs";
+  
+  const magazine = new Subject(); // Data to listen to.
+  
+  // The subject keeps track of these subscriptions and call their respective callback functions whenever the data changes.
+  const subscriber1 = magazine.subscribe(v => console.log(`subscriber1: ${v}`));
+  const subscriber2 = magazine.subscribe(v => console.log(`subscriber2: ${v}));
+  
+  // Push new values to the subject.
+  // For each change in data, all subscribers will be notified.
+  magzine.next("Can too much vegetables be bad for you?");
+  magazine.next("Plant-based meat are not really plant-based.");
+  magazine.next("The dangers of misinformation");
+  ```
+### Mediator
+- **Define a mediator object that is interposed between objects that depend on each other, effectively organizing chaotic dependency relationships.**
+- The objects cannot directly communicate with each other and the mediator is the only way for the objects to communicate.
+- Instead of many-to-many, implement full object status.
+- Analogy: traffic light, air traffic control tower.
+- The use of mediators provides a separation of concerns and eliminates code duplication.
+  - For example in a form, instead of having the logic of form elements depending on each other directly in the form elements, a mediator can be used.
+    - A checkbox element, when triggered, does not communicate with the element that is is intended to open. It simply informs the mediator about the event along with any necessary context, which then the mediator will delegate to the target element.
+  - This effectively allows easier code reuse in other parts of the application.
+#### Example
+- Middlewares in Express.js interpose between incoming requests and outgoing responses.
+```js
+import express from "express";
+const app = express();
+
+const logger = (req, res, next) => {
+  console.log(`Request Type: ${req.method}`);
+  next();
+}
+
+app.use(logger);
+
+app.get("/", (req, res) => {
+  res.send("Here is your response");
+});
+```
+### State
+- **Define an object that behaves differently when its internal state changes.**
+- The idea is related to finite-state machine.
+  - Finite-state machine: at any given time, the machine can be in exactly one of a finite number of states. The state can change in response to inputs.
+- "State" is simply a set of values of the object's fields.
+- Create new classes for every possible states of the object and move all behaviors related to state into those classes.
+  - Change the active state object to another object representing the new state.
+  - This requires all state classes to have the same interface.
+    - Same method but different outcomes.
+- The states may be aware of each other, and can initiate transitions.
+- Analogy: buttons on a phone execute different functions depending on whether the phone is locked or not.
 
 ## Architectural Design Patterns
 - These are fundamental structural organizations for software systems.
