@@ -10,6 +10,7 @@
   - [Binary Math](#binary-math)
   - [Bitwise Operators](#bitwise-operators)
   - [Bit Facts and Tricks](#bit-facts-and-tricks)
+  - [JavaScript Bit Tips](#javascript-bit-tips)
 - [Negative Binary](#negative-binary)
 - [Signedness](#signedness)
 
@@ -177,6 +178,9 @@
 - `X * 4 = X << 2`.
 - `X ^ (~X) = 1s`.
 - `~0 = 1s`.
+### JavaScript Bit Tips
+- `Number.prototype.toString(2)` converts a number to its binary form.
+  - The method accepts a radix/base representing the number of unique digits.
 
 ## Negative Binary
 - Negative numbers are typically stored in *Two's Complement* form.
