@@ -139,12 +139,17 @@
 ## Typing
 ### Static Typing vs. Dynamic Typing
 #### Static Typing
-- Variable types are checked at "compile-time" or before runtime.
-- So, compilation error will be thrown before the code runs.
+- Variable types are checked at compile-time or before runtime.
+  - Therefore, the script will not be compiled until there are no errors.
+- Statically typed languages require the declaration of data types for all variables before using them.
 - Ex: if a function receives a string as an argument, when in fact it's expecting a number, a compilation error is thrown.
+- Ex: Java, Typescript (optional), C family.
 #### Dynamic Typing
-- Variable types are checked on the go as the code is executed.
+- Variable types are checked on the go as the code is executed (i.e. at runtime).
+  - Therefore, the scripts can compile despite possibly having errors that will prevent successful execution.
+- Dynamically typed languages are more flexible and efficient in writing scripts. But may lead to issues at runtime.
 - Ex: a function accepts any type of argument, and only knows which type it is when the code is executed.
+- Ex: JavaScript, Python.
 ### Strong Typing vs. Weak Typing
 ### Strong Typing
 - Converts a variable or value's type to suit the current situation automatically.
@@ -165,7 +170,8 @@
   const z = x + y; // "12" because JS treated both values as strings and concatenated them together.
   ```
 ### Reference
-[Understanding Types: Static vs. Dynamic, & Strong vs. Weak](https://medium.com/@cpave3/understanding-types-static-vs-dynamic-strong-vs-weak-88a4e1f0ed5f)
+[Understanding Types: Static vs. Dynamic, & Strong vs. Weak](https://medium.com/@cpave3/understanding-types-static-vs-dynamic-strong-vs-weak-88a4e1f0ed5f)  
+[Dynamic typing vs. static typing - Oracle](https://docs.oracle.com/cd/E57471_01/bigData.100/extensions_bdd/src/cext_transform_typing.html#:~:text=There%20are%20two%20main%20differences,type%20checking%20at%20compile%20time.)  
 
 ---
 
