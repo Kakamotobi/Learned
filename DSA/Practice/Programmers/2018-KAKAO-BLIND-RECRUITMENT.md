@@ -1,5 +1,46 @@
 # 2018 KAKAO BLIND RECRUITMENT
 
+## [[1차] 비밀지도](https://programmers.co.kr/learn/courses/30/lessons/17681)
+- **Inputs**
+  - A positive integer `n` representing the length of the side of a square map.
+  - An array of positive integers `arr1` representing a map.
+    - The binary code of `arr1[i]` represents a row in the map.
+    - `arr1[i][j]` represents a coordinate on the map (either 0 or 1).
+  - An array of positive integers `arr2` representing a map.
+    - The binary code of `arr1[i]` represents a row in the map.
+    - `arr1[i][j]` represents a coordinate on the map (either 0 or 1).
+- **Description**
+  - Overlap the two maps to decipher the secret map.
+  - To decipher the map, when the two maps are overlapped, if either coordinate represents a wall, there should be a wall.
+- **Output:** return an array of the secret map where `1` is represented by `"#"` and `0` is represented by `" "`.
+- **Constraints**
+  - `1 <= n <= 16`.
+  - `arr1.length = arr2.length = n`.
+  - The length of `arr1[i]`'s binary code is equal to or less than `n`.
+    - Therefore, `0 <= x <= 2^n - 1`.
+### Example
+```js
+solution(5, [9, 20, 28, 18, 11], [30, 1, 21, 17, 28]); // ["#####","# # #", "### #", "# ##", "#####"]
+solution(6, [46, 33, 33 ,22, 31, 50], [27 ,56, 19, 14, 14, 10]); // ["######", "### #", "## ##", " #### ", " #####", "### # "]
+```
+### Solution
+- Use the bit operator OR (`|`).
+```js
+const solution = (n, arr1, arr2) => {
+  const answer = [];
+  for (let i = 0; i < n; i++) {
+    let binary = (arr1[i] | arr2[i]).toString(2).replace(/1|0/g, (d) => d === "1" ? "#" : " ").padStart(n, " ");
+    answer.push(binary);
+  }
+  return answer;
+}
+```
+```js
+const solution = (n, arr1, arr2) => {
+  return arr1.map((x,i) => (x | arr2[i]).toString(2).replace(/1|0/g, (d) => d === "1" ? "#" : " ").padStart(n, " "));
+}
+```
+
 ## [[1차] 다트게임](https://programmers.co.kr/learn/courses/30/lessons/17682)
 - **Input:** a string `dartResult` representing the point, bonus, [option] of three attempts.
 - **Description**
