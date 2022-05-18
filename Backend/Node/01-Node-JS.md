@@ -1,5 +1,6 @@
-# Node JS
+# Node.js
 - **A JavaScript runtime environment that executes outside of the browser (runs directly on a computer or server OS), and allows us to create web servers, command line tools, native apps (ex: VSCode), etc.**
+- Node.js, like other scripting languages like Python, can run on your machine as a standalone application.
 - Thanks to Node JS, we have things like React Native (build mobile apps), Electron (build desktop apps), etc.
 - Notes
   - No window, document, DOM API.
@@ -8,7 +9,7 @@
 ## Table of Contents
 - [Brief History](#brief-history)
 - [Node REPL in Terminal](#node-repl-in-terminal)
-- [Debugging Node JS](#debugging-node-js)
+- [Debugging Node.js](#debugging-nodejs)
 - [CLI Debugger Commands](#cli-debugger-commands)
 - [`process` and `process.argv`](#process-and-processargv)
 - [File System Module](#file-system-module)
@@ -16,7 +17,7 @@
 ## Brief History
 - JavaScript used to only be in the browser. However, Ryan Dahl took JavaScript outside of the browser and made it possible for it to be an ordinary general-purpose programming language such as Python, Java, C.
 - Hence, it became possible to use JavaScript to make anything you want including backend, write scripts to rename files, upload files, process images, etc.
-- With the birth of Node JS, JavaScript was no longer limited to the browser.
+- With the birth of Node.js, JavaScript was no longer limited to the browser.
 
 ## Node REPL in Terminal
 - `node`
@@ -29,7 +30,7 @@
   - Top level scope containing the built-in functions, etc.
   - Equivalent of `window` in browser.
 
-## Debugging Node JS
+## Debugging Node.js
 - `node inspect filename.js`
   - Start up a debugger CLI and pause execution whenever a 'debugger' statement is hit.
 - `node --inspect filename.js`
@@ -104,4 +105,5 @@ try {
 
 ## Reference
 [Index | Node.js v14.16.1 Documentation](https://nodejs.org/dist/latest-v14.x/docs/api/)  
-[Express/Node introduction - Learn web development | MDN](https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/Introduction)
+[Express/Node introduction - Learn web development | MDN](https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/Introduction)  
+[What exactly is Node.js? - freeCodeCamp](https://www.freecodecamp.org/news/what-exactly-is-node-js-ae36e97449f5)  
