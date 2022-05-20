@@ -1,5 +1,122 @@
 # 2022 KAKAO SUMMER TECH INTERNSHIP
 
+## 성격 유형 검사지
+- **Inputs:**
+  - An array of strings `survey` where `survey[i]` represents the category that each question indicates.
+    - The first character in `survey[i]` represents the type for the disagree option for the `i+1`<sup>th</sup> question.
+    - The second character in `survey[i]` represents the type for the agree option for the `i+1`<sup>th</sup> question.
+  - An array of positive integers `choices` where `choices[i]`represents the option that the testtaker chose.
+    - `choices[i]` represents the option number of the `i+1`<sup>th</sup> question.
+- **Description**
+  - Create a personality type test.
+  - There are four categories with two types each (therefore, 16 permutations).
+    | Category | Types |
+    | -------- | ----- |
+    | 1        | R, T  |
+    | 2        | C, F  |
+    | 3        | J, M  |
+    | 4        | A, N  |
+  - There are `n` number of questions each with 7 options.
+    - Each question is dedicated to and give points for a single category (either of the two types for that category).
+    - Example
+      | Option Number | Option            | Points | Type |
+      | ------------- | ----------------- | ------ | ---- |
+      | 1             | Strongly Disagree | 3      | R    |
+      | 2             | Disagree          | 2      | R    |
+      | 3             | Slightly Disagree | 1      | R    |
+      | 4             | Not Sure          | -      | -    |
+      | 5             | Slightly Agree    | 1      | T    |
+      | 6             | Agree             | 2      | T    |
+      | 7             | Strongly Agree    | 3      | T    |
+      - *The options and the corresponding types depend on the question.*                     
+        - i.e. in another question, type `T` can be the disagree option and type `R` can be the agree option.
+  - The types with the more points is considered to be the type of the testtaker.
+    - *If the two types of a single category share the same number of points, the type is decided based on the alphabet order.*
+- **Output:** return a string representing the personality type of the testtaker.
+- **Constraints**
+  - `1 <= survey.length ( = n) <= 1,000`.
+  - `survey[i]` is either one of these: "RT", "TR", "FC", "CF", "MJ", "JM", "AN", "NA".
+  - `choices.length === survey.length`.
+  - `1 <= choices[i] <= 7`.
+### Example
+```js
+solution(["AN", "CF", "MJ", "RT", "NA"], [5, 3, 2, 7, 5]); // "TCMA"
+solution(["TR", "RT", "TR"], [7, 1, 3]); // "RCJA"
+```
+### Solutions
+#### Solution 1
+```js
+const solution = (survey, choices) => {
+  const points = [3, 2, 1, 0, 1, 2, 3];
+
+  let R = 0,
+    T = 0,
+    C = 0,
+    F = 0,
+    J = 0,
+    M = 0,
+    A = 0,
+    N = 0;
+
+  for (let i = 0; i < survey.length; i++) {
+    // Find the type to earn points.
+    let type;
+    if (choices[i] < 4) type = survey[i][0];
+    else if (choices[i] > 4) type = survey[i][1];
+
+    if (type === "R") R += points[choices[i] - 1];
+    else if (type === "T") T += points[choices[i] - 1];
+    else if (type === "C") C += points[choices[i] - 1];
+    else if (type === "F") F += points[choices[i] - 1];
+    else if (type === "J") J += points[choices[i] - 1];
+    else if (type === "M") M += points[choices[i] - 1];
+    else if (type === "A") A += points[choices[i] - 1];
+    else if (type === "N") N += points[choices[i] - 1];
+  }
+
+  let ans = "";
+  ans += R >= T ? "R" : "T";
+  ans += C >= F ? "C" : "F";
+  ans += J >= M ? "J" : "M";
+  ans += A >= N ? "A" : "N";
+  return ans;
+}
+```
+#### Solution 2
+```js
+const solution = (survey, choices) => {
+  const points = [3,2,1,0,1,2,3];
+
+  const pointsPerCategoryType = {
+    category1: { R: 0, T: 0 },
+    category2: { C: 0, F: 0 },
+    category3: { J: 0, M: 0 },
+    category4: { A: 0, N: 0 },
+  };
+  
+  const addPoints = (category, type1, type2, choice) => {
+    if (choice < 4) pointsPerCategoryType[category][type1] += points[choice - 1];
+    else if (choice > 4) pointsPerCategoryType[category][type2] += points[choice - 1];
+  }
+  
+  for (let i = 0; i < survey.length; i++) {    
+    const [type1, type2] = survey[i];
+  
+    if (type1 === "R" || type1 === "T") addPoints("category1", type1, type2, choices[i]);
+    else if (type1 === "C" || type1 === "F") addPoints("category2", type1, type2, choices[i]);
+    else if (type1 === "J" || type1 === "M") addPoints("category3", type1, type2, choices[i]);
+    else if (type1 === "A" || type1 === "N") addPoints("category4", type1, type2, choices[i]);
+  }
+  
+  let ans = "";
+  for (let category of Object.values(pointsPerCategoryType)) {
+    const type = Object.keys(category).reduce((a,b) => result[a] >= result[b] ? a : b, "");
+    ans += type;
+  }
+  return ans;
+}
+```
+
 ## Make Two Queues Sum Equal
 - **Inputs**
   - A queue `queue1` represented in an array.
