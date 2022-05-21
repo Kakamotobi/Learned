@@ -6,16 +6,22 @@
 ### Numbers
 #### Example 
 - 7's value cannot be changed to 8 but the value 7 stored in a variable can be changed to 8.
-```
+```js
 let x = 7;
 x += 1;
+console.log(x); // 8
 ```
 ### Strings
 #### Example
-```
-let myString = "I am immutable!";
-myString[2] = "S";
-console.log(myString) // returns "I am immutable!";
+- The value `"I am immutable!"` cannot be mutated. But the value that `str` is referencing can be reassigned to another value.
+```js
+let str = "I am immutable!";
+
+str[15] = "!!!!!!!!!";
+console.log(str) // "I am immutable!" // The original value in memory that str was pointing to.
+
+str += "!!!!!!!!"; // 
+console.log(str); // "I am immutable!!!!!!!!!" // This is not the same value in memory that str was pointing to. It is a whole new value created, and the variable str has changed its pointer from the original value ("I am immutable!") to this value ("I am immutable!!!!!!!!!").
   ```
 
 ## Mutable Data Types
@@ -24,7 +30,7 @@ console.log(myString) // returns "I am immutable!";
 #### Example
 - Any change in the property of x is reflected in the value of y because they share the same reference.
 - So, when updating the value of a property of x, the value for all the references to that object is modified.
-```
+```js
 let x = { foo: "bar" };
 let y = x;
 x.foo = "Something Else";
@@ -34,7 +40,7 @@ console.log(x === y); // true
 ### Arrays
 #### Example
 - Both x and y references to the same item, and the method push mutates the original array.
-```
+```js
 let x = ["foo"];
 let y = x.push("bar");
 
