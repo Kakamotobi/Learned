@@ -3,7 +3,7 @@
 
 ## Table of Contents
 - [State](#state)
-- [React State](#react-state)
+- [State in React](#state-in-react)
   - [Initializing State](#initializing-state)
   - [Setting State](#setting-state)
 - [React Events](#react-events)
@@ -30,7 +30,7 @@
 - **Business Logic** - the changing state of data itself.
   - Ex: new notification, read or unread messages, etc.
 
-## React State
+## State in React
 - **In React, state is an instance attribute on a component.**
 - *It's always a JS object (POJO), since you'll want to keep track of several **key/value pairs**.*
   - Ex: `console.log(this.state);` inside of a component will return the key/value pairs. 
@@ -188,6 +188,15 @@ export default Rando;
 ```
 #### Reference
 [setState() - React](https://reactjs.org/docs/react-component.html#setstate)
+### State and Rendering
+- When updating state, the new state must be a different value/reference.
+- **For state of value types, React performs a shallow comparison between the previous value and the new value.**
+  - If the new value is the same as the previous value, React will not re-render the component.
+- **For state of reference types, React checks the reference of the previous state and the new state.**
+  - If they share the same reference, React will not re-render the component.
+  - If the state has been modified but the reference stays the same, the state will be updated but the component will not be re-rendered.
+    - The change will be applied to the view if the component eventually re-renders.
+    - Hence, this can cause inconsistencies in view updates.
 
 ## React Events
 - State most commonly changes in direct response to user-invoked event.
