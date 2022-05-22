@@ -59,7 +59,9 @@ node app.js
 - NPX
   - An npm package runner that was introduced from npm@5.2.0.
   - The same way npm makes it easy to install and manage dependencies hosted on the registry, npx makes it easy to use CLI tools and other executables hosted on the registry.
-  - Unlike NPM, which installs packages either globally or locally, NPX installs the package on your local machine while executing the package but then proceeds to delete it.
+  - *Unlike NPM, which installs packages either globally or locally, NPX installs the package on your local machine while executing the package but then proceeds to delete it.*
+    - Therefore, it is useful for when using packages without having to have the packages remain on your local machine.
+    - For example, instead of installing `create-react-app` globally (which you will have to update versions manually), running `npx create-react-app app-name` when starting a project will ensure that you are using the latest version.
 ### Installing Packages (in the current directory)
 ```zsh
 npm install packageName
