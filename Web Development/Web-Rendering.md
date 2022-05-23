@@ -10,6 +10,7 @@
 > Allows the website to be updated in the browser almost instantly when navigating to different pages, but requires more of an initial download hit and extra rendering on the client at the beginning. The website is slower on an initial visit, but can be faster to navigate.
 - Website is rendered on the client-side.
 - *When the client sends a request to the server, the server will send a single HTML index page, which will be the skeleton of the page to the client, followed by the JS file. The JS file, which is large as it contains the logic and the source codes of the framework/library, will turn the page into a fully rendered page. If additional content/data is needed, the client makes a request to the API, which then renders the data (JSON) onto the page. If the client navigates to a different route, instead of the server sending the page again, the client will re-render the page according to the route that the client requested. Hence, the page that is used is always the same page as the first request.*
+- The user does not see anything on the page until JavaScript (React, etc.) loads in the browser.
 ### Illustration
 <p align="center">
   <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/Web%20Development/refImg/CSR.png" alt="Client-Side Rendering" width="80%" />
@@ -18,7 +19,9 @@
 1. Client requests page.
 2. Server sends an almost empty `index.html` file. // Users see a blank screen.
 3. Client requests the JS files linked in the `index.html` file.
-4. JS file containing web application logic (libraries, frameworks) that creates dynamic HTML is received from the server. // TTV, TTI
+4. Server sends the JS files (containing dynamic logic (libraries, frameworks)) to the client, which the browser proceeds to execute. // TTV, TTI
+    - Hydration process.
+      - Static page is converted into a dynamic page by attaching event listeners to HTML elements.
     - **Users can now see and interact with the site.**
 ### Use If:
 - Website has many user interactions.
@@ -38,6 +41,11 @@
 - *When the client sends a request to the server, the server compiles everything and renders it (including the requested data) into a fully rendered HTML page, and then send it to the client as a response along with JS source code.*
 - For every different route that the client navigates to, the server will repeat the steps again.
 - On every request (incl. refresh), the data has to be fetched again as well.
+- The user at least sees some UI that will become interactive once JavaScript (React, etc.) loads in the browser.
+  - However, all components have to finish loading for any already completed components to be seen.
+    - Therefore, in the case of React, `Suspense` can be used to provide a fallback component until the target component loads.
+    - Effectively, if component A is done loading and component B is still loading, component A will be immediately rendered and a loader component will be placed in component B's position until it loads.
+  - When component B is finished loading on the server-side, using HTTP Streams, React will replace the loader component with component B's HTML even before React loads on the browser.
 #### Illustration
 <p align="center">
   <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/Web%20Development/refImg/SSR.png" alt="Server-Side Rendering" width="80%" />
@@ -46,8 +54,9 @@
 1. Client requests page.
 2. Server sends an already made `index.html` file. // TTV
     - **Users can see the site.**
-3. Client requests the JS file linked in the html file.
-4. JS file is received from the server. // TTI
+3. Client requests the JS files linked in the html file.
+4. Server sends the JS files (containing dynamic logic (libraries, frameworks)) to the client, which the browser proceeds to execute. // TTI
+    - Hydration process.
     - **Users can now interact with the site.**
 #### Use If:
 - SEO is priority.
