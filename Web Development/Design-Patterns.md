@@ -19,6 +19,7 @@
   - [Mediator](#mediator)
   - [State](#state)
 - [Architectural Design Patterns](#architectural-design-patterns)
+  - [What is meant by Architecture?](#what-is-meant-by-architecture)
   - [Model-View-Controller (MVC)](#model-view-controller-mvc)
 - [Reference](#reference)
 
@@ -328,6 +329,22 @@ app.get("/", (req, res) => {
 ## Architectural Design Patterns
 - These are fundamental structural organizations for software systems.
 - More higher-level properties and mechanisms of a system, and separation of concerns.
+### What is meant by Architecture?
+- Architecture is a generic term that applies to a broad range of levels.
+- Architecture is the ***shared understanding*** of the system design of a project between the developers familiar with the codebase.
+  - It is important to have a good shared understanding between the developers of the project, especially as the project grows.
+- Architecture is ***decisions that are hard to change***.
+- Architecture provides the means for us to structure our application in a consistent and sustainable manner.
+#### How to Design an Architecture
+- When deciding how to design the architecture of a project, the first thing to do is to figure out what is important.
+- Ask theses questions:
+  - What are the key things about this project/system?
+  - What is the most important thing in the codebase that we have to keep at the top of our heads when working on it?
+#### Why is it Important?
+- In the short-term, any code that works will suffice, which means quick launching and profits.
+  - However, as the project/service grows, it will become more difficult and take longer to add new features and maintain the service.
+- With good architecture and effort in internal quality, it will be much easier to add new features, migrate, and maintain the service.
+  - In the long-term, good architecture is crucial and provides economic value.
 ### Model-View-Controller (MVC)
 > MVC is an architectural design pattern that encourages improved application organization through a separation of concerns. It enforces the isolation of business data (Models) from user interfaces (Views), with a third component (Controllers) traditionally managing logic and user-input. | patterns.dev
 - MVC is an architectural pattern that encompasses several design patterns defined by the "Gang of Four".
@@ -377,6 +394,7 @@ app.get("/", (req, res) => {
 [Design Patterns - Refactoring Guru](https://refactoring.guru/design-patterns/classification)  
 [10 Design Patterns Explained in 10 Minutes - YouTube](https://www.youtube.com/watch?v=tv-_1er1mWI&ab_channel=Fireship)  
 
+[Making Architecture Matter - Martin Fowler Keynote - YouTube](https://www.youtube.com/watch?v=DngAZyWMGR0&ab_channel=O%27Reilly)  
 [Learn JavaScript Design Patterns - patterns.dev](https://www.patterns.dev/posts/classic-design-patterns/)  
 [Elements of MVC in React. Let’s discover the original MVC pattern… | by Daniel Dughila | The Startup | Medium](https://medium.com/swlh/elements-of-mvc-in-react-9382de427c09#:~:text=React%20isn't%20an%20MVC,nothing%20to%20do%20with%20frameworks.)  
 [How JavaScript works: modularity and reusability with MVC | by Ukpaiugochi | SessionStack Blog](https://blog.sessionstack.com/how-javascript-works-writing-modular-and-reusable-code-with-mvc-16c65cbd9f64)  
