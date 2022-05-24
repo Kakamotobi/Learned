@@ -20,7 +20,9 @@
   - [State](#state)
 - [Architectural Design Patterns](#architectural-design-patterns)
   - [What is meant by Architecture?](#what-is-meant-by-architecture)
-  - [Model-View-Controller (MVC)](#model-view-controller-mvc)
+  - [MV<sup>*</sup> Architectures](#mv-architectures)
+    - [Evolution of MV<sup>*</sup> Architectures](#evolution-of-mv-architectures)
+    - [Model-View-View-Model (MVVM)](#model-view-view-model)
 - [Reference](#reference)
 
 ## Creational Design Patterns
@@ -345,56 +347,159 @@ app.get("/", (req, res) => {
   - However, as the project/service grows, it will become more difficult and take longer to add new features and maintain the service.
 - With good architecture and effort in internal quality, it will be much easier to add new features, migrate, and maintain the service.
   - In the long-term, good architecture is crucial and provides economic value.
-### Model-View-Controller (MVC)
-> MVC is an architectural design pattern that encourages improved application organization through a separation of concerns. It enforces the isolation of business data (Models) from user interfaces (Views), with a third component (Controllers) traditionally managing logic and user-input. | patterns.dev
-- MVC is an architectural pattern that encompasses several design patterns defined by the "Gang of Four".
-  - Ex: Observer pattern, etc.
+### MV<sup>*</sup> Architectures
+- MV<sup>*</sup> architectures are common architectural design patterns that have become popular with the rise of single-page applications.
+- They are focused on separation of concerns to decouple components from each other, allowing for more independent, reusable, scaled components.
+- Three popular MV* variants are MVC, MVP, and MVVM.
+  - They differ from each other in terms of type and level of coupling between the components.
+- They can encompass several design patterns defined by the "Gang of Four".
+  - Ex: observer pattern, etc.
   - The design patterns used may depend on the particular implementation.
-- MVC is a design pattern that we as developers can adopt/apply.
-  - Angular.js is an MVC framework.
-  - React is not an MVC framework. It is a View library. But we can use the MVC pattern for a React component.
-### Brief History
+- They are patterns that we as developers can adopt/apply.
+  - *React is not an MVC framework. It is a View library.*
+- ***Don't get too hung up on the names. Different frameworks have different naming conventions.***
+#### Evolution of MV<sup>*</sup> Architectures
+##### Introduction of Model-View-Controller (MVC)
 - Smalltalk-80 MVC was designed in 1979.
 - It aimed to separate out the application logic from the UI.
-  - Idea: decoupling the application logic and the UI would allow the reuse of models for other interfaces in the application.
-- MVC
-  - A Model represented domain-specific data that was separate from the UI (Views and Controllers).
-  - A View represented the current state of a Model. Whenever changes were made to the Model, the Observer pattern was used to inform the View.
-    - A View-Controller pair was required for each element displayed on the screen.
-      - The View took care of presentation.
-      - The Controller handled user interactions (Ex: clicks, key-presses).
-- Key point: the View observes the Model. So when the Model changes, the View react.
-### JavaScript MVC
+  - Idea: *decoupling the application/business logic and UI would allow the reuse of models for other interfaces in the application.*
+- **MVC**
+  - **Model** represented domain-specific data that was separate from the UI (Views and Controllers).
+  - **View** represented the current state of a Model. Whenever changes were made to the Model, the observer pattern was used to inform the View.
+    - The View consisted of a pair: **View-Controller**, which was required for each element displayed on the screen.
+      - The **View** took care of presentation.
+      - The **Controller** handled logic and user inputs (Ex: clicks, key-presses).
+- Key point: the View observes the Model. So when the Model changes, the View reacts.
+##### Original MVC
+- Back when every page had to be built and sent from the server (MPA), MVC was mostly implemented on the server-side.
+- The client would request updates via forms or links that the server would respond to with the updated page.
+- **Model**
+  - The database.
+- **View**
+  - The client-side (HTML, CSS, JS).
+- **Controller**
+  - The back-end (handle data through server routers).
+  - Requests usually meant a whole new page built from the server.
+##### jQuery Era MVC
+- With the introduction of AJAX and increased role of the frontend, there became no need to build the page in the server.
+- At this point, the focus was on minimizing dependency between the Model and the View, hence, HTML and jQuery were managed separately.
+###### MVC Illustration
 <p align="center">
   <img src="https://github.com/Kakamotobi/Learned/blob/main/Web%20Development/refImg/MVC.png" alt="MVC Illustration" width="80%" /><br>
-  <em>The definition and role of each can differ based on the project/implementation.</em>
+  <b><em>User Input (View) &rarr; Controller &rarr; Model &rarr; View</em></b>
 </p>
 
-#### Models
-- **Manage the data/state for an application.**
-- They are not concerned with the UI or presentation layers.
-- They simply represent data and logic related to data that an application may require.
-- When the Model changes (Ex: updated data), its observers (views) are notified of it.
-- Model persistence is achieved by saving its most recent state in memory, localStorage, or synchronized with a database.
-- A Model may have multiple views observing it.
-#### Views
-- **Visual representations of models that present a filtered view of their current state.**
-- Concerned with building and maintaining a DOM element.
-- A View observes its Model and updates itself accordingly whenever the Model changes.
-- Views are simply "dumb" user interface that provides user interaction (Ex: get, set values in Models).
-  - They are not responsible for any actions.
-  - *Controllers are the ones responsible for actually updating Models.*
-#### Controllers
-- **The intermediary between Models and Views that are responsible for updating the Model upon user interaction/manipulation of the View.**
-- Handles business logic and events (usually triggered by the user).
+- **Model**
+  - **Represents the data (received through AJAX).**
+  - Updates the View.
+- **View**
+  - **Defines what is displayed to the user (Presentation).**
+  - Forwards user input to the Controller.
+- **Controller**
+  - **JS (handles data fetching and sending to the server through event listeners)**.
+    - What was previously done by server routers is now done by JS.
+  - jQuery's main functions were DOM traversal/manipulation, event handling, and AJAX.
+  - Manipulates the Model.
+##### The Rise of Model-View-ViewModel (MVVM) and SPA
+- Back when pages were built on the server, pages could be developed declaratively by embedding expressions (Ex: `{{}}`, `<%= %>`.
+- However, for jQuery, data had to be handled manually (find, change, update, attach events, etc.).
+- Therefore, like how pages were built declaratively from the server, developers searched for a way to build from the client declaratively, such as using templates.
+- This led to the introduction of template binding based libraries that make use of declarative data bindings, such as knockout.js, and AngularJS.
+  - In 2013, AngularJS revolutionized the paradigm of web development as it introduced templates and binding.
+  - AngularJS took an MVVM approach where the changes to the Model update the View, and events in the View update the Model.
+    - *The Controller's role remains the same but instead of manually manipulating the DOM using jQuery, things were done declaratively through templates and binding.*
+    - There was no longer the need to manipulate the DOM, as it was taken care of by the framework.
+      - The "C" in MVC was replaced by "VM" simply to indicate that you only need to handle the Model to update the View.
+- Instead of having multiple pages, it became possible to simply update parts of the page.
+- Other frameworks and libraries of similar MVVM architecture began to release: React, Vue, Angular2, Svelte, etc.
+###### MVVM Illustration
+<p align="center">
+  <img src="https://github.com/Kakamotobi/Learned/blob/main/Web%20Development/refImg/MVVM.png" alt="MVVM Illustration" width="80%" /><br>
+  <b><em>User Input &rarr; View &rarr; ViewModel &rarr; Model &rarr; ViewModel &rarr; View</em></b>
+</p>
 
+- **Model**
+  - **Represents the data and business logic.**
+- **View** 
+  - **Defines what is displayed to the user (Presentation).**
+  - Forwards user input to the ViewModel via the data binding linking the two.
+    - The View directly binds to properties on the ViewModel to send and receive updates.
+  - Represents how the ViewModel's functionality is displayed.
+- **ViewModel** 
+  - **Defines logic for the View to data bind to, and informs the View of changes to state (Presentation Logic).**
+  - Represents the functionality offered by the UI.
+###### Transition from MVC to MVVM
+- Controller was improved to be declarative (data binding).
+- Model and View were not separated, and rather managed using a template.
+  - Previously, HTML was accessed through the DOM (using selectors like classes and ids).
+  - Now, HTML can be directly accessed (Ex: JSX).
+##### Container and Presentational Components
+- a.k.a. Smart and Dumb, Stateful and Pure, etc.
+- Container components handle the business logic.
+  - i.e. concerned with how things work.
+  - Act as data sources to other components, hence are often stateful.
+- Presentational components simply distribute data.
+  - i.e. concerned with how things look.
+  - They are rarely stateful.
+    - Any state that exists is usually for UI purposes rather than data.
+  - Have no dependencies on the rest of the application.
+###### The Problem
+- By emphasizing and enforcing component reusability and independence, sharing of data between components led to **props drilling**.
+  - Props drilling is when a component passes on state as props deep into its descendants.
+
+<p align="center">
+  <img src="https://github.com/Kakamotobi/Learned/blob/main/Web%20Development/refImg/props-drilling.gif" alt="Props Drilling" width="80%" /><br>
+</p>
+
+- It's difficult to track, and components in the middle that do not need to know about the state has to hold on to it.
+- To tackle this, a new architectural pattern for state management emerged.
+##### The Flux Pattern and Redux
+- Flux is a pattern that adopts a uni-directional data flow in order to solve scaling issues, such as props drilling, while using the MVC approach on the client-side.
+- Instead of perceiving the View as each MVC component, the components are perceived as a whole View.
+
+<p align="center">
+  <img src="https://github.com/Kakamotobi/Learned/blob/main/Web%20Development/refImg/state-management.gif" alt="State Management" width="80%" />
+</p>
+
+<p align="center">
+  <img src="https://github.com/Kakamotobi/Learned/blob/main/Web%20Development/refImg/flux.png" alt="Flux Pattern" width="80%" /><br>
+  <b><em>User Input &rarr; Action &rarr; Dispatcher &rarr; Store &rarr; View </em></b>
+</p>
+
+- The View, using the Dispatcher, makes a call to the Action. The Action, using a Reducer, stores the data in Store. The data in Store then updates the View.
+- **Actions**
+  - **The methods provided by the Dispatcher to trigger a dispatch to the Stores and most times comes with a payload of data.**
+  - Actions can also come from the server (Ex: during data initialization, when the server returns an error, etc.).
+- **Dispatcher**
+  - **An object that broadcasts Actions to the Store, to update the state.**
+  - All data flows through the dispatcher as a central hub.
+  - It is basically a registry of callbacks into the stores.
+- **Store**
+  - **Manages the application state (both domain state and UI state) and logic.**
+  - Has a similar role to a Model in MVC.
+    - The difference is that Store manages the state of multiple objects.
+- **Views and Controller-Views**
+  - **Controller-Views listen for events that are broadcast by the Stores that they depend on.**
+    - They provide the code to get the data from the Stores and pass the data down the chain of its descendants.
+    - Upon receiving the event from the Store, it requests the new data it needs via the Stores' public getter methods. It then calls its own `setState()` method causing its `render()` method and the `render()` method of all its descendants to run.
+###### Transition from MVC to Flux
+- As State Management was introduced, the commonly shared business logic layer and the View layer were completely separated.
+- A single component is not considered the View anymore. All components combined as a whole is considered the View.
+- The View and business logic are intermediated with the Action and Reduce interfaces. And the Controller is now one-way instead of two-way.
+###### Problems with the Flux Pattern
+- High learning curve.
+- Complicated syntax.
 
 ## Reference
+### Creational, Structural, Behavioral Design Patterns
 [Software design pattern - Wikipedia](https://en.wikipedia.org/wiki/Software_design_pattern)  
 [Design Patterns - Refactoring Guru](https://refactoring.guru/design-patterns/classification)  
 [10 Design Patterns Explained in 10 Minutes - YouTube](https://www.youtube.com/watch?v=tv-_1er1mWI&ab_channel=Fireship)  
-
+### Architectural Design Patterns
 [Making Architecture Matter - Martin Fowler Keynote - YouTube](https://www.youtube.com/watch?v=DngAZyWMGR0&ab_channel=O%27Reilly)  
 [Learn JavaScript Design Patterns - patterns.dev](https://www.patterns.dev/posts/classic-design-patterns/)  
+[프론트엔드에서 MV* 아케틱쳐란 무엇인가요?](https://velog.io/@teo/%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C%EC%97%90%EC%84%9C-MV-%EC%95%84%ED%82%A4%ED%85%8D%EC%B3%90%EB%9E%80-%EB%AC%B4%EC%97%87%EC%9D%B8%EA%B0%80%EC%9A%94)  
 [Elements of MVC in React. Let’s discover the original MVC pattern… | by Daniel Dughila | The Startup | Medium](https://medium.com/swlh/elements-of-mvc-in-react-9382de427c09#:~:text=React%20isn't%20an%20MVC,nothing%20to%20do%20with%20frameworks.)  
-[How JavaScript works: modularity and reusability with MVC | by Ukpaiugochi | SessionStack Blog](https://blog.sessionstack.com/how-javascript-works-writing-modular-and-reusable-code-with-mvc-16c65cbd9f64)  
+[Presentational and Container Components | by Dan Abramov | Medium](https://medium.com/@dan_abramov/smart-and-dumb-components-7ca2f9a7c7d0)  
+[In-Depth Overview | Flux](https://facebook.github.io/flux/docs/in-depth-overview/)  
+[react-redux.md](https://gist.github.com/rogerwschmidt/8739668f73edc79e1581b63266719257)  
