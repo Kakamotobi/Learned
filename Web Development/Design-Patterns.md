@@ -22,7 +22,6 @@
   - [What is meant by Architecture?](#what-is-meant-by-architecture)
   - [MV<sup>*</sup> Architectures](#mv-architectures)
     - [Evolution of MV<sup>*</sup> Architectures](#evolution-of-mv-architectures)
-    - [Model-View-View-Model (MVVM)](#model-view-view-model)
 - [Reference](#reference)
 
 ## Creational Design Patterns
@@ -334,10 +333,12 @@ app.get("/", (req, res) => {
 ### What is meant by Architecture?
 - Architecture is a generic term that applies to a broad range of levels.
 - Architecture is the ***shared understanding*** of the system design of a project between the developers familiar with the codebase.
+  > This understanding includes how the system is divided into components and how the components interact through interfaces. These components are usually composed of smaller components, but the architecture only includes the components and interfaces that are understood by all the developers. | Martin Fowler
   - It is important to have a good shared understanding between the developers of the project, especially as the project grows.
 - Architecture is ***decisions that are hard to change***.
 - Architecture provides the means for us to structure our application in a consistent and sustainable manner.
 #### How to Design an Architecture
+> Whether something is part of the architecture is entirely based on whether the developers think is important. | Martin Fowler
 - When deciding how to design the architecture of a project, the first thing to do is to figure out what is important.
 - Ask theses questions:
   - What are the key things about this project/system?
@@ -497,6 +498,7 @@ app.get("/", (req, res) => {
 [10 Design Patterns Explained in 10 Minutes - YouTube](https://www.youtube.com/watch?v=tv-_1er1mWI&ab_channel=Fireship)  
 ### Architectural Design Patterns
 [Making Architecture Matter - Martin Fowler Keynote - YouTube](https://www.youtube.com/watch?v=DngAZyWMGR0&ab_channel=O%27Reilly)  
+[Who Needs an Architect? | Martin Fowler](https://martinfowler.com/ieeeSoftware/whoNeedsArchitect.pdf)  
 [Learn JavaScript Design Patterns - patterns.dev](https://www.patterns.dev/posts/classic-design-patterns/)  
 [프론트엔드에서 MV* 아케틱쳐란 무엇인가요?](https://velog.io/@teo/%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C%EC%97%90%EC%84%9C-MV-%EC%95%84%ED%82%A4%ED%85%8D%EC%B3%90%EB%9E%80-%EB%AC%B4%EC%97%87%EC%9D%B8%EA%B0%80%EC%9A%94)  
 [Elements of MVC in React. Let’s discover the original MVC pattern… | by Daniel Dughila | The Startup | Medium](https://medium.com/swlh/elements-of-mvc-in-react-9382de427c09#:~:text=React%20isn't%20an%20MVC,nothing%20to%20do%20with%20frameworks.)  
