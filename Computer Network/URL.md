@@ -3,7 +3,7 @@ A URL is essentially an address for a particular resource on a particular server
 
 ### URL Anatomy
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/Web%20Development/refImg/URL-anatomy.png" alt="URL Anatomy" width="80%" />
+  <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/Computer%20Network/refImg/URL-anatomy.png" alt="URL Anatomy" width="80%" />
 </p>
 
 - **Protocol/Scheme**
