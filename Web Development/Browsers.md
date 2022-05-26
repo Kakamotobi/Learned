@@ -26,7 +26,7 @@
   - Efficiently render updates whenever needed (Ex: user inputs, animation, load data).
 - Not all browsers use the same rendering engine, which is why we sometimes see inconsistencies on how a web page looks between browsers.
   - These engines have their own implementation of how to render the page.
-- [**Critical Rendering Path**](https://github.com/Kakamotobi/Learned/edit/main/Web%20Development/Browsers.md#critical-rendering-path)
+- [**Critical Rendering Path**](https://github.com/Kakamotobi/Learned/blob/main/Web%20Development/Browsers.md#critical-rendering-path)
 ### Networking
 - Handling network calls such as HTTP requests for fetching resources, etc.
 #### Browser Fetching Actions
