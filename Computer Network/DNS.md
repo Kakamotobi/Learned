@@ -22,7 +22,7 @@
 - Therefore, "google.com" means that the subdomain "google" is under the ".com" top-level domain.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/Web%20Development/refImg/DNS-hierarchy.png" alt="DNS Hierarchy" width="80%" />
+  <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/Computer%20Network/refImg/DNS-hierarchy.png" alt="DNS Hierarchy" width="80%" />
 </p>
 
 - **Root Domain**
@@ -52,14 +52,14 @@
 - The DNS client contacts the name servers one by one until the IP address is found.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/Web%20Development/refImg/DNS-query-iterative.png" alt="Iterative DNS Query" width="80%" />
+  <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/Computer%20Network/refImg/DNS-query-iterative.png" alt="Iterative DNS Query" width="80%" />
 </p>
 
 #### Recursive
 - The DNS client receives the IP address from the first DNS server, which will go on querying other DNS servers if needed.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/Web%20Development/refImg/DNS-query-recursive.png" alt="Recursive DNS Query" width="80%" />
+  <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/Computer%20Network/refImg/DNS-query-recursive.png" alt="Recursive DNS Query" width="80%" />
 </p>
 
 ### Mitigating Bottleneck
