@@ -63,6 +63,15 @@
 - It provides a reliable virtual-circuit connection between applications before data transmission begins.
 - Data is received in the order that it was sent in.
 - Data is treated as a stream of bytes.
+#### TCP 3-Way Handshake
+- The communication between the client and the server concerning the parameters of the connection before transmitting data such as HTTP requests.
+- The three messages are: SYN, SYN + ACK, ACK.
+  - SYN: Synchronize sequence numbers.
+  - ACK: Acknowledgement
+##### The Process
+1) The client sends a SYN packet to the server.
+2) The server receives the SYN packet from the client. Then, responds by sending a SYN + ACK to the client.
+3) The client receives the SYN + ACK. Then, sends an ACK to the server. Now, the TCP socket connection between the client and server is established.
 ### User Datagram Protocol (UDP)
 - UDP is an alternative transport layer protocol.
 - It provides an unreliable datagram connection between applications before data transmission begins.
@@ -127,4 +136,5 @@
 [An overview of the SSL or TLS handshake - IBM Documentation](https://www.ibm.com/docs/en/ibm-mq/7.5?topic=ssl-overview-tls-handshake)  
 [What happens in a TLS handshake? | SSL Handshake](https://www.cloudflare.com/learning/ssl/what-happens-in-a-tls-handshake/#:~:text=A%20TLS%20handshake%20is%20the,and%20agree%20on%20session%20keys.)  
 [TCP/IP TCP, UDP, and IP protocols - IBM Documentation](https://www.ibm.com/docs/en/zos/2.2.0?topic=internets-tcpip-tcp-udp-ip-protocols)  
+[TCP 3-Way Handshake Process - GeeksforGeeks](https://www.geeksforgeeks.org/tcp-3-way-handshake-process/)  
 [Mixed content - Web security | MDN](https://developer.mozilla.org/en-US/docs/Web/Security/Mixed_content)  
