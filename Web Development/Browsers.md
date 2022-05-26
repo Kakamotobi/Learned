@@ -128,7 +128,7 @@
 - Reducing the time of the critical rendering path can help reduce the overall time it takes for the browser to display a web page.
 - Use CSS properties that are more easy on the rendering engine.
   - Ex: use `transform` instead of `right`, etc.
-### 5) JavaScript Engine/Interpreter
+### 5) [JavaScript Engine/Interpreter](https://github.com/Kakamotobi/Learned/blob/main/JS/JavaScript.md#javascript-engine)
 - Scripts are read and executed.
 
 ## Popular Web Browsers
