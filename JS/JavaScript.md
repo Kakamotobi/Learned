@@ -64,10 +64,6 @@
   - Distingiushed from *syntax* errors and *compilation* errors, which occur before a program is run.
 - When a program is in runtime, the application is loaded into memory (RAM). When the program is done, the runtime period ends and the memory that was being used by the program is made available again.
 ### The Process
-<p align="center">
-  <img src="https://github.com/Kakamotobi/Learned/blob/main/JS/refImg/js-runtime-environment.png" alt="JS Runtime Environment" width="80%" />
-</p>
-
 1) The JS engine begins executing the script line by line.
 2) Declared variables and objects are stored in the **Memory Heap**.
 3) Function calls are added to the **Call Stack**.
@@ -75,8 +71,13 @@
       - If the stack size exceeds what it had available, this leads to a "stack overflow" error.
     - If the function is an asynchronous task, it is passed on over to the **Web APIs** to deal with.
     - When the current function is done executing, it is removed from the **Call Stack**. The JS engine resumes executing the script from where it left off. 
-4) Once the asynchronous task is done, it is pushed onto the **Callback Queue**.
-5) When the **Call Stack** is empty, the **Event Loop** takes the finished task waiting in the **Callback Queue** back onto the **Call Stack** to be executed.
+4) Once the asynchronous task is done, it is pushed onto either the **Microtask Queue** or the **Callback Queue**.
+5) When the **Call Stack** is empty, the **Event Loop** takes the finished task waiting in the **Microtask Queue** or **Callback Queue** back onto the **Call Stack** to be executed.
+
+<p align="center">
+  <img src="https://github.com/Kakamotobi/Learned/blob/main/JS/refImg/js-runtime-environment.png" alt="JS Runtime Environment" width="80%" />
+</p>
+
 #### JS Engine
 ##### Memory Heap
 - **The place where variables, objects, etc. used by the JavaScript program are stored in.**
@@ -98,26 +99,54 @@
       - Even if the DOM element is removed, the memory is not reclaimed because it is still being referenced to in the event listener.
 ##### Call Stack
 - **The stack data structure where function execution contexts are placed when the function is called.**
-- It is the mechanism that the JS engine uses to keep track of its place in a script and what's being executed.
-- Functions are popped off from the call stack when it returns or if they are ooo, they are tossed over to t.
+  - It is the mechanism that the JS engine uses to keep track of its place in a script and what's being executed.
+- Functions are popped off from the call stack when they return or if they are API calls, which are delegated to the **Web API container** (browser).
 - Each thread has its own call stack.
   - Therefore, single-threaded languages have one call stack.
   - Whereas, multi-threaded languages have multiple call stacks.
 #### Event Loop
 - **Responsible for executing the code, collecting and processing events, and executing queued sub-tasks.**
+- A mechanism on the browser, not the JavaScript engine.
 - It's job is to manage the call stack and callback queue.
   - If the call stack is empty, the event loop takes the first thing in the callback queue and pushes it onto the stack.
 - This is what essentially allows a single-threaded language like JavaScript to be able to execute tasks asynchronously.
 #### Web APIs
-- These things are not in the JS engine (i.e. they are not in the V8 source code).
-- These are extra things that the browser provides.
-- Ex: Events, AJAX requests, `setTimeout()`.
-#### Callback Queue
-- **The queue data structure where asynchronous code, when done, are pushed to, waiting to be pushed back to the call stack.**
+- **These are part of the JS engine (i.e. V8 does not take care of these).**
+- These are extra things that the browser takes care of.
+- Ex: DOM, AJAX requests, Events, `setTimeout()`.
+#### Queues
+- The Event Loop uses two queues to handle different tasks: **Callbacks** and **Microtasks**.
+  - **These queues are where asynchronous code, when done, are pushed to, waiting to be pushed back to the call stack.**
+  - The **Microtask Queue** has a higher priority than the **Callback Queue**.
+    - Therefore, all tasks on the **Microtask Queue** is first taken care of before tasks on the **Callback Queue**.
+    - Example
+      ```js
+      console.log("I was executed in the Call Stack");
+      
+      setTimeout(() => console.log("Callback Queue 1"), 0);
+      setTimeout(() => console.log("Callback Queue 2"), 0);
+      
+      Promise.resolve().then(() => console.log("Microtask Queue 1"));
+      Promise.resolve().then(() => console.log("Microtask Queue 2"));
+      ```
+      ```js
+      // I was executed in the Call Stack
+      // Microtask Queue 1
+      // Microtask Queue 2
+      // Callback Queue 1
+      // Callback Queue 2
+      ```
+- Both queues contain callbacks.
+##### Callback Queue/Task Queue
+- **Tasks that are placed in the Callback Queue include callbacks from timers (`setTimeout()`, `setInterval()`), `requestAnimationFrame()`, UI rendering, etc.**
+- Ex: the callback function in `setTimeout()` is placed in the Callback Queue.
+##### Microtask Queue
+- **Tasks that are placed in the Microtask Queue include callbacks from Promises, MutationObserver.**
+- Ex: the callback function in `fetch()` is placed in the Microtask Queue.
 ### How JavaScript is single-threaded, yet, is non-blocking, asynchronous, and concurrent
 - The reason JavaScript is able to do things concurrently is because the browser is more than just the runtime.
 - The Web APIs take care of asynchronous tasks (Ex: API call). While the asynchronous task is running, code can run on the **Call Stack** (synchronously). Hence, JS can be *non-blocking*.
-- If the **Call Stack** is empty, the **Event Loop** takes the first task waiting in the **Callback Queue** and pushes it to the **Call Stack**.
+- If the **Call Stack** is empty, the **Event Loop** takes the first task waiting in the **Microtask Queue** or, if none, the first task in the **Callback Queue** and pushes it to the **Call Stack**.
 ### Optimization Insights
 - The browser would like to repaint the screen asap. But it is constrained by the script.
   - It cannot render if there is code on the **Call Stack**. It has to wait until the stack is clear.
@@ -138,6 +167,8 @@
 [Why JavaScript is a single-thread language that can be non-blocking ? - GeeksforGeeks](https://www.geeksforgeeks.org/why-javascript-is-a-single-thread-language-that-can-be-non-blocking/)  
 [A brief explanation of the Javascript Engine and Runtime | Medium](https://medium.com/@sanderdebr/a-brief-explanation-of-the-javascript-engine-and-runtime-a0c27cb1a397)  
 [Uncover the JavaScript: Engine vs Runtime](https://medium.com/@misbahulalam/uncover-the-javascript-engine-vs-runtime-6556ef449634)  
+[How Does JavaScript Really Work? (Part 2) | by Priyesh Patel | Bits and Pieces](https://blog.bitsrc.io/how-does-javascript-work-part-2-40cc15360bc)  
 [Memory Management - JavaScript | MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Memory_Management)  
 [Call stack - MDN Web Docs Glossary](https://developer.mozilla.org/en-US/docs/Glossary/Call_stack)  
 [The event loop - JavaScript | MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop)  
+[What is the difference between Microtask Queue and Callback Queue in asynchronous JavaScript ? - GeeksforGeeks](https://www.geeksforgeeks.org/what-is-the-difference-between-microtask-queue-and-callback-queue-in-asynchronous-javascript/)  
