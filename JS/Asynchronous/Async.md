@@ -2,8 +2,6 @@
 
 ## Table of Contents
 - [Prerequisites](#prerequisites)
-  - [Singled Threaded and Synchronous](#single-threaded-and-synchronous)
-  - [Call Stack](#call-stack)
 - [Working Around Synchronous JS](#working-around-synchronous-js)
   - [Browser APIs](#browser-apis)
 - [Dealing with Asynchronous Data](#dealing-with-asynchronous-data)
@@ -19,31 +17,14 @@
 - [Reference](#reference)
 
 ## Prerequisites
-### Single Threaded and Synchronous
-- JS is **always** single threaded and synchronous.
-#### Single Threaded
-- At any given point in time, JS runs one line of code at a time.
-- i.e., only one thing happens at a time in the JS script.
-#### Synchronous
-- Everything is executed one by one.
-- i.e., if one task takes 5s, the following code will have to wait their turn for 5s.
-- Ex: HTTP request.
-  - Nothing happens until the response gets back (blocking, a.k.a. beach ball).
-### Call Stack
-- The JS Engine creates a **stack** data structure where function execution contexts are placed when the function is called or invoked.
-- Mechanism that the JS interpreter uses to keep track of its place in a script and what's being executed.
-- **Stack**
-  - LIFO/FILO data structure.
-- Basic Flow
-  - Script calls a function, which is added to the call stack.
-  - Any other functions that are then called by that function are added to the call stack further up, and run where their calls are reached.
-  - When the current function is finished, it is taken off the stack and resumes execution wher it left off in the last code listing.
+- [Single-threaded and Synchronous](https://github.com/Kakamotobi/Learned/blob/main/JS/JavaScript.md#about-javascript)
+- [Call Stack](https://github.com/Kakamotobi/Learned/blob/main/JS/JavaScript.md#call-stack)
 
-## Working Around Synchronous JS
+## [Working Around Synchronous JS](https://github.com/Kakamotobi/Learned/edit/main/JS/JavaScript.md#javascript-runtime-environment)
 - *JS is only asynchronous in that it can hand off certain tasks to the browser, AJAX, etc. to handle while it synchronously runs through the script.*
 
 - What happens if something takes a long time?
-  - For example, when making requests to servers, it can take some time to get the data but we don't want our program/website to stall and wait for the response. We want to keep executing our script.  
+  - For example, when making requests to servers, it can take some time to get the data but we don't want our program/website to stall and wait for the response. We want to keep executing our script.
   - Example
     ```js
     const newTodo = input.value; // get user input
