@@ -364,74 +364,101 @@ app.get("/", (req, res) => {
 - Smalltalk-80 MVC was designed in 1979.
 - It aimed to separate out the application logic from the UI.
   - Idea: *decoupling the application/business logic and UI would allow the reuse of models for other interfaces in the application.*
-- **MVC**
-  - **Model** represented domain-specific data that was separate from the UI (Views and Controllers).
-  - **View** represented the current state of a Model. Whenever changes were made to the Model, the observer pattern was used to inform the View.
-    - The View consisted of a pair: **View-Controller**, which was required for each element displayed on the screen.
-      - The **View** took care of presentation.
-      - The **Controller** handled logic and user inputs (Ex: clicks, key-presses).
-- Key point: the View observes the Model. So when the Model changes, the View reacts.
-##### Original MVC
+
+<p align="center">
+  <img src="https://github.com/Kakamotobi/Learned/blob/main/Web%20Development/refImg/original-MVC.png" alt="Original MVC Illustration" width="80%" />
+</p>
+
+- **Model**
+  - Represents domain-specific data that was separate from the UI (Views and Controllers).
+  - It could be a single object or some structure of objects.
+- **View**
+  - A visual representation of the Model.
+  - It took care of presentation.
+  - It observes the Model. Therefore, whenever changes are made to the Model, the View changes accordingly.
+  - It may also update the Model by sending appropriate messages.
+- **Controller**
+  - The link between a user and the system.
+  - It handles logic and user inputs (Ex: clicks, keypresses).
+  - It provides the user with relevant views for user input.
+  - It receives the user's output and relays it to the View.
+###### Problems
+1) Both Views and Controllers shared responsibility for updating Models.
+    - This is hard to maintain. Therefore, a unidirectional data flow is preferrable.
+    - Ex: View &rarr; Action &rarr; State &rarr; View
+2) Loose coupling and high cohesion
+    - Views are aware of Models. Controllers are aware of both Views and Models.
+      - Models are dependencies for Views and Controllers.
+    - Hence, changing the Model interface means both the Views and Controllers have to be changed accordingly.
+    - This is not ideal. It is preferrable to minimize the number of dependencies, effectively separating concerns.
+      - Ex: only allow the controller to manipulate the Model.
+      - Therefore, the Controller's responsibility began evolving from handling user input to being a mediator between the Model and the View.
+##### Early Web MVC
 - Back when every page had to be built and sent from the server (MPA), MVC was mostly implemented on the server-side.
 - The client would request updates via forms or links that the server would respond to with the updated page.
+
+<p align="center">
+  <img src="https://github.com/Kakamotobi/Learned/blob/main/Web%20Development/refImg/early-web-MVC.png" alt="Early Web MVC Illustration" width="80%" />
+</p>
+
 - **Model**
   - The database.
 - **View**
   - The client-side (HTML, CSS, JS).
 - **Controller**
-  - The back-end (handle data through server routers).
-  - Requests usually meant a whole new page built from the server.
+  - The back-end (handle data through server routers and create HTML to present).
+  - Requests usually meant a whole new page had to be built from the server.
 ##### jQuery Era MVC
 - With the introduction of AJAX and increased role of the frontend, there became no need to build the page in the server.
 - At this point, the focus was on minimizing dependency between the Model and the View, hence, HTML and jQuery were managed separately.
-###### MVC Illustration
+
 <p align="center">
-  <img src="https://github.com/Kakamotobi/Learned/blob/main/Web%20Development/refImg/MVC.png" alt="MVC Illustration" width="80%" /><br>
-  <b><em>User Input (View) &rarr; Controller &rarr; Model &rarr; View</em></b>
+  <img src="https://github.com/Kakamotobi/Learned/blob/main/Web%20Development/refImg/jquery-era-MVC.png" alt="jQuery Era MVC Illustration" width="80%" />
 </p>
 
 - **Model**
   - **Represents the data (received through AJAX).**
-  - Updates the View.
 - **View**
-  - **Defines what is displayed to the user (Presentation).**
+  - **Defines what is displayed to the user (presentation).**
   - Forwards user input to the Controller.
 - **Controller**
   - **JS (handles data fetching and sending to the server through event listeners)**.
     - What was previously done by server routers is now done by JS.
   - jQuery's main functions were DOM traversal/manipulation, event handling, and AJAX.
-  - Manipulates the Model.
+  - Manipulates the Model by communicating with the server.
 ##### The Rise of Model-View-ViewModel (MVVM) and SPA
 - Back when pages were built on the server, pages could be developed declaratively by embedding expressions (Ex: `{{}}`, `<%= %>`.
 - However, for jQuery, data had to be handled manually (find, change, update, attach events, etc.).
 - Therefore, like how pages were built declaratively from the server, developers searched for a way to build from the client declaratively, such as using templates.
 - This led to the introduction of template binding based libraries that make use of declarative data bindings, such as knockout.js, and AngularJS.
   - In 2013, AngularJS revolutionized the paradigm of web development as it introduced templates and binding.
-  - AngularJS took an MVVM approach where the changes to the Model update the View, and events in the View update the Model.
-    - *The Controller's role remains the same but instead of manually manipulating the DOM using jQuery, things were done declaratively through templates and binding.*
+    - *The Controller's role remains the same but instead of manually manipulating the DOM using jQuery, things were done declaratively through these frameworks based on templates and binding.*
     - There was no longer the need to manipulate the DOM, as it was taken care of by the framework.
       - The "C" in MVC was replaced by "VM" simply to indicate that you only need to handle the Model to update the View.
 - Instead of having multiple pages, it became possible to simply update parts of the page.
 - Other frameworks and libraries of similar MVVM architecture began to release: React, Vue, Angular2, Svelte, etc.
-###### MVVM Illustration
+
 <p align="center">
-  <img src="https://github.com/Kakamotobi/Learned/blob/main/Web%20Development/refImg/MVVM.png" alt="MVVM Illustration" width="80%" /><br>
-  <b><em>User Input &rarr; View &rarr; ViewModel &rarr; Model &rarr; ViewModel &rarr; View</em></b>
+  <img src="https://github.com/Kakamotobi/Learned/blob/main/Web%20Development/refImg/MVVM.png" alt="MVVM Illustration" width="80%" />
 </p>
 
 - **Model**
-  - **Represents the data and business logic.**
-- **View** 
-  - **Defines what is displayed to the user (Presentation).**
+  - **Represents domain-specific data and business logic.**
+- **View**
+  - **Defines what is displayed to the user (presentation).**
   - Forwards user input to the ViewModel via the data binding linking the two.
     - The View directly binds to properties on the ViewModel to send and receive updates.
-  - Represents how the ViewModel's functionality is displayed.
-- **ViewModel** 
-  - **Defines logic for the View to data bind to, and informs the View of changes to state (Presentation Logic).**
-  - Represents the functionality offered by the UI.
+    - i.e. it observes the ViewModel.
+  - It represents how the ViewModel's functionality is displayed.
+- **ViewModel**
+  - **Defines properties and logic for the View to data bind to, and informs the View of changes to state (presentation logic).**
+    - Communication with the View is automated through binding.
+  - Model that draws the View.
+  - It defines the structure and behavior of the application.
+  - It represents the functionality offered by the UI.
 ###### Transition from MVC to MVVM
-- Controller was improved to be declarative (data binding).
-- Model and View were not separated, and rather managed using a template.
+- Controller is improved to be declarative (data binding).
+- Model and View are not separated, and rather managed using a template.
   - Previously, HTML was accessed through the DOM (using selectors like classes and ids).
   - Now, HTML can be directly accessed (Ex: JSX).
 ##### Container and Presentational Components
@@ -463,8 +490,7 @@ app.get("/", (req, res) => {
 </p>
 
 <p align="center">
-  <img src="https://github.com/Kakamotobi/Learned/blob/main/Web%20Development/refImg/flux.png" alt="Flux Pattern" width="80%" /><br>
-  <b><em>User Input &rarr; Action &rarr; Dispatcher &rarr; Store &rarr; View </em></b>
+  <img src="https://github.com/Kakamotobi/Learned/blob/main/Web%20Development/refImg/flux.png" alt="Flux Pattern" width="80%" />
 </p>
 
 - The View, using the Dispatcher, makes a call to the Action. The Action, using a Reducer, stores the data in Store. The data in Store then updates the View.
@@ -501,6 +527,7 @@ app.get("/", (req, res) => {
 [Who Needs an Architect? | Martin Fowler](https://martinfowler.com/ieeeSoftware/whoNeedsArchitect.pdf)  
 [Learn JavaScript Design Patterns - patterns.dev](https://www.patterns.dev/posts/classic-design-patterns/)  
 [프론트엔드에서 MV* 아케틱쳐란 무엇인가요?](https://velog.io/@teo/%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C%EC%97%90%EC%84%9C-MV-%EC%95%84%ED%82%A4%ED%85%8D%EC%B3%90%EB%9E%80-%EB%AC%B4%EC%97%87%EC%9D%B8%EA%B0%80%EC%9A%94)  
+[Do MVC like it’s 1979. How to build a good iOS architecture by… | by Bohdan Orlov | Bumble Tech | Medium](https://medium.com/bumble-tech/do-mvc-like-its-1979-da62304f6568)  
 [Elements of MVC in React. Let’s discover the original MVC pattern… | by Daniel Dughila | The Startup | Medium](https://medium.com/swlh/elements-of-mvc-in-react-9382de427c09#:~:text=React%20isn't%20an%20MVC,nothing%20to%20do%20with%20frameworks.)  
 [Presentational and Container Components | by Dan Abramov | Medium](https://medium.com/@dan_abramov/smart-and-dumb-components-7ca2f9a7c7d0)  
 [In-Depth Overview | Flux](https://facebook.github.io/flux/docs/in-depth-overview/)  
