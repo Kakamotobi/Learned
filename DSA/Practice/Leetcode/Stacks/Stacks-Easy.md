@@ -125,8 +125,7 @@ function handleSkip(str, idx) {
 // Output: "()(())"
 ```
 ### Solution
-- Idea:
-  - Determine outermost parentheses by counting the number of parentheses opened.
+- Determine the outermost parentheses by counting the number of parentheses opened.
 ```js
 const removeOuterParentheses = (s) => {
   let newS = "";
@@ -134,9 +133,9 @@ const removeOuterParentheses = (s) => {
   
   for (let char of s) {
     // If char is "(" and at least one parenthesis was opened already (the "first"/outermost parenthesis is skipped).
-    if (char === "(" && numOpen > 0) res += char;
+    if (char === "(" && numOpen > 0) newS += char;
     // Else if char is ")" and it is not the closing pair of the "first"/outermost parenthesis.
-    else if (char === ")" && numOpen > 1) res += char;
+    else if (char === ")" && numOpen > 1) newS += char;
     // Update numOpen.
     numOpen += char === "(" ? 1 : -1;
   }
@@ -144,4 +143,3 @@ const removeOuterParentheses = (s) => {
   return newS;
 }
 ```
-
