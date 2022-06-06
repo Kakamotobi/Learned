@@ -5,6 +5,7 @@
 - [Sorting Object Keys by their Values](#sorting-object-keys-by-their-values)
 - [Accessing a Value (two levels deep) of a Potentially Non-existent Property](#accessing-a-value-two-levels-deep-of-a-potentially-non-existent-property)
 - [Replacing All Occurrences of a Substring in a String](#replacing-all-occurrences-of-a-substring-in-a-string)
+- [Combinations and Permutations](#combinations-and-permutations)
 
 ## Remainder/Modulo (%) Operator
 > Returns the remainder left over when one operand is divided by a second operand. It always takes the sign of the dividend.
@@ -166,5 +167,53 @@ console.log(newStr); // "Hello, kakamotobi's account is @kakamotobi"
 ```
 ### Reference
 [replaceAll in JavaScript | Medium](https://medium.com/geekculture/replaceall-in-javascript-b61f4e94f028)  
+
+---
+
+## Combinations and Permutations
+### Combinations
+```js
+const getCombinations = (arr) => {
+  const result = [];
+
+  const helper = (prefix, arr) => {
+    for (let i = 0; i < arr.length; i++) {
+      result.push(prefix + arr[i]);
+      helper(prefix + arr[i], arr.slice(i + 1));
+    }
+  }
+
+  helper("", arr);
+  return result;
+}
+```
+```js
+getCombinations([1,2,3]); // ["1","12","123","13","2","23","3"]
+```
+### Permutations
+```js
+function getPermutations(arr) {
+  const result = [];
+
+  const permute = (arr, permutation = []) => {
+    if (arr.length === 0) result.push(permutation.join(""));
+    else {
+      // Take each element in arr and place them in all possible positions.
+      for (let i = 0; i < arr.length; i++) {
+        const availableElements = [...arr];
+        const nextElement = availableElements.splice(i, 1); // The next element to be included in the current permutation.
+        // availableElements now represents all elements excluding the next element.
+        permute(availableElements, [...permutation, nextElement.flat()]);
+      }
+    }
+  }
+
+  permute(arr);
+  return result;
+}
+```
+```js
+getPermutations([1,2,3]); // ["123","132","213","231","312","321"]
+```
 
 ---
