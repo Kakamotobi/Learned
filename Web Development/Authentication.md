@@ -35,7 +35,7 @@
 - ***Session IDs are sent via Cookies to the clients.***
 #### `express-session` Example
 - The Session object can be accessed through the request object (`req.session`).
-- If the user provides valid login credentials, add information to the Session object in order to let the server know that the user is logged in.
+- If the user provides valid login credentials, add information to the Session object (update the state of the Session) in order to let the server know that the user has been verified and is logged in (therefore, send user-tailored content).
   - `req.session.isLoggedIn = true`, `req.session.user = user`.
   - In a controller.
 - Through the use of `res.locals`, views can have access to the login information.
@@ -45,19 +45,18 @@
 ### Session Flow Illustration
 <p align="center">
   <img src="https://github.com/Kakamotobi/Learned/blob/main/Web%20Development/refImg/session-and-cookie.png" alt="Session and Cookie Flow Illustration" width="80%" />
-<p>
+</p>
 
-- When the client makes an initial request to the server (usually a page GET request), the server generates a Session ID for the client. 
-  - The Session ID is stored in the Session object.
-  - Then, the server puts it in a Cookie, and sends the response to the client.
+- When the client makes an initial request to the server (usually a page GET request), the server opens up a Session and generates a Session ID for the client.
+  - The Session Data (incl. Session ID) is stored in the server.
+  - Then, the server puts only the Session ID in a Cookie, and sends the response to the client.
 - The client receives the Cookie with the Session ID and saves it.
   - This Cookie is automatically sent along with subsequent requests to the server.
 - The client sends a request and Cookie to the server.
 - The server receives the client's request and Cookie.
-  - The server checks the client's Session ID against the Session object that it is keeping track of, and then sends an appropriate response.
+  - The server checks the client's Session ID against the Sessions that it is keeping track of, and then sends an appropriate response.
 - The client receives the response.
 
 ## Reference
 [Stateless protocol - Wikipedia](https://en.wikipedia.org/wiki/Stateless_protocol)  
 [Session cookies concepts - IBM](https://www.ibm.com/docs/en/sva/9.0?topic=cookies-session-concepts)  
-  
