@@ -154,13 +154,13 @@
 ### Issues
 - How should we tell whether the user is who they claim to be they are?
   - Scenario 1: User created an account using an email and password. User tries to login with GitHub OAuth.
-    - The email used in GitHub is also the same email that was used to create the account.
-    - But the password registered for that email was not provided (since GitHub was used).
-      - Allow login (has the user proven to be the user)?
+    - The email used in GitHub is also the same email that was used to create the account. But the password registered for that email was not provided (since GitHub was used to login).
+      - Allow login?
+        - This means any other OAuth provider available with the same email will log the user in.
       - Tell the user to login using email and password?
         - Ex: "There is already an account by that email".
-  - Scenario 2: User created an account using GitHub OAuth (no password in DB). User tries to login with email and password (which does not exist in DB).
-    - Tell the user to login using GitHub?
+  - Scenario 2: User created an account using GitHub OAuth (no password saved in DB). User tries to login with email and password (which does not exist in DB).
+    - Tell the user to login using GitHub (no password needs to be stored in the DB)?
       - Ex: "There is an account by that email but no password. Login with GitHub".
 
 ## Reference
@@ -170,4 +170,5 @@
 [RFC 6749 - The OAuth 2.0 Authorization Framework - IETF](https://datatracker.ietf.org/doc/html/rfc6749)  
 [OAuth - Wikipedia](https://en.wikipedia.org/wiki/OAuth#:~:text=OAuth%20(%22Open%20Authorization%22),without%20giving%20them%20the%20passwords.)  
 [Understanding OAuth: What Happens When You Log Into a Site with Google, Twitter, or Facebook](https://lifehacker.com/understanding-oauth-what-happens-when-you-log-into-a-s-5918086)  
+[The Modern Guide to OAuth - FusionAuth](https://fusionauth.io/learn/expert-advice/oauth/modern-guide-to-oauth)  
 [Authorizing OAuth Apps - GitHub Docs](https://docs.github.com/en/developers/apps/building-oauth-apps/authorizing-oauth-apps)  
