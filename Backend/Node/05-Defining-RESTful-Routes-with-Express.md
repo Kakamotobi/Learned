@@ -5,6 +5,7 @@
 - [Defining POST Routes in Express](#defining-post-routes-in-express)
 - [Parsing the POST "Request Body"](#parsing-the-post-request-body)
 - [Representational State Transfer (REST)](#representational-state-transfer-rest)
+- [Serving Static Files in Express](#serving-static-files-in-express)
 - [Express Redirects](#express-redirects)
 - [uuid Package](#uuid-package)
 - [method-override Package with Express](#method-override-package-with-express)
@@ -108,6 +109,15 @@ POST /{ig-comment-id}?hide={hide}
 
 // Deleting a Comment
 DELETE /{ig-comment-id}
+```
+
+## Serving Static Files in Express
+- **`express.static(root, [options])`**
+	- This middleware allows the serving of static files such as images, CSS files, and JS files.
+	- `root`: the directory/folder in which the static assets are located.
+```js
+app.use("/uploads", express.static("uploads")); // Static files in the "uploads" folder in the server can be accessed through /uploads/filename.
+app.use("/static", express.static("assets")); // Static files in the "assets" folder in the server can be accessed through /static/filename.
 ```
 
 ## Express Redirects
