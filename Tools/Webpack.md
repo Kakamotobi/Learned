@@ -8,8 +8,9 @@
   - [Entry File](#entry-file)
   - [Run Webpack](#run-webpack)
   - [Make Bundled Files Accessible by the Browser](#make-bundled-files-accessible-by-the-browser)
-  - [Connect Bundled File to HTML](#connect-bundled-file-to-html)
-- [Enhanced Development Experience](#enhanced-development-experience)
+  - [Connect Bundled Files to HTML](#connect-bundled-files-to-html)
+- [Enhance Development Experience](#enhance-development-experience)
+- [React, Webpack, Babel Setup](#react-webpack-babel-setup)
 
 ## What is Webpack?
 > At its core, **webpack** is a *static module bundler* for modern JavaScript applications. When webpack processes your application, it internally builds a dependency graph from one or more *entry points* and then combines every module your project needs into one or more *bundles*, which are static assets to serve your content from. | webpack
@@ -204,6 +205,75 @@ module.exports = {
 }
 ```
 
+## React, Webpack, Babel Setup
+### Webpack
+#### Entry/Ouput
+```js
+const path = require("path");
+
+module.exports = {
+  entry: path.join(__dirname, "src", "index.js"),
+  output: {
+    path: path.resolve(__dirname, "dist"),
+  }
+}
+```
+#### Add Bundled JS file to HTML
+- There are two ways to do this.
+##### Manual
+- Insert the script tag in the body of the html file.
+##### Plugin
+- The `html-webpack-plugin` takes the `/public/index.html` and inject the (bundled JS file's) script tag to it.
+- Then, it moves that HTML file to the output directory `dist`.
+```js
+// ...
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+module.exports = {
+  // ...
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: path.join(__dirname, "src", "index.html"),
+    }),
+  ],
+}
+```
+#### Incorporate Babel into Webpack
+```js
+module.exports= {
+  // ...
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: "babel-loader",
+          options: {
+            presets: ["@babel/preset-env", "@babel/preset-react"],
+          },
+        },
+      },
+    ]
+  },
+  // ...
+}
+```
+### Build and Run
+- **`webpack serve`**
+  - Uses the webpack dev server to run the application locally.
+- **`webpack`**
+  - Create a bundle of assets that is deployable to servers.
+```json
+{
+  "scripts": {
+    "dev": "webpack serve",
+    "build": "webpack",
+  }
+}
+```
+
 ## Reference
 [Concepts | webpack](https://webpack.js.org/concepts/)  
 [nodemon documentation](https://github.com/remy/nodemon#config-files)  
+[Setup react with webpack and babel | by Prateek Srivastava | Age of Awareness | Medium](https://medium.com/age-of-awareness/setup-react-with-webpack-and-babel-5114a14a47e9)  
