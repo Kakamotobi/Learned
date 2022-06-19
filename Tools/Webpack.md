@@ -5,10 +5,14 @@
 - [Getting Started](#getting-started)
   - [Installation](#installation)
   - [Webpack Configuration](#webpack-configuration)
+    - [Configurations](#configurations)
+    - [Example](#example)
+    - [Multiple Entry Points Example](#multiple-entry-points-example)
   - [Entry File](#entry-file)
   - [Run Webpack](#run-webpack)
   - [Make Bundled Files Accessible by the Browser](#make-bundled-files-accessible-by-the-browser)
   - [Connect Bundled Files to HTML](#connect-bundled-files-to-html)
+- 
 - [Enhance Development Experience](#enhance-development-experience)
 - [React, Webpack, Babel Setup](#react-webpack-babel-setup)
 
@@ -104,6 +108,21 @@ module.exports = {
   - Therefore, JS will have to load to get the CSS on the screen.
 - Instead, use `MiniCssExtractPlugin` to extract the CSS code into a separate file (`main.css`) that can be linked to in the markup.
   - Now, the `assets/js/main.js` file only handles JS.
+#### Multiple Entry Points Example
+```js
+module.exports = {
+  entry: {
+    main: "./src/client/js/main.js",
+    videoPlayer: "./src/client/js/main.js",
+  },
+  // ...
+  output: {
+    filename: "js/[name].js",
+    // ...
+  },
+  // ...
+}
+```
 ### Entry File
 ```js
 // src/client/js/main.js
