@@ -2,7 +2,7 @@
 
 ## Table of Contents
 - [What is WebAssembly?](#what-is-webassembly)
-  - [Use Cases](#use-cases)
+  - [Some Use Cases](#some-use-cases)
 
 ## What is WebAssembly?
 > WebAssembly (abbreviated Wasm) is a binary instruction format for a stack-based virtual machine. Wasm is designed as a portable compilation target for programming languages, enabling deployment on the web for client and server applications. | WebAssembly
@@ -15,7 +15,7 @@
   - Wasm JS APIs allow you to load wasm modules into JS.
   - Performance critical tasks can be implemented in wasm and imported like a standard JS module.
 
-### Use Cases
+### Some Use Cases
 - Run a whole video game on the browser without having to install anything.
 - Run PhotoShop seemlessly on the browser.
 - `@ffmpeg/ffmpeg`
@@ -25,6 +25,7 @@
 
 ## Reference
 [WebAssembly](https://webassembly.org/)  
-[What is WebAssembly?. Why the future of the web platform… | by Eric Elliott | JavaScript Scene | Medium](https://medium.com/javascript-scene/what-is-webassembly-the-dawn-of-a-new-era-61256ec5a8f6)  
 [WebAssembly | MDN](https://developer.mozilla.org/en-US/docs/WebAssembly)  
+[What is WebAssembly?. Why the future of the web platform… | by Eric Elliott | JavaScript Scene | Medium](https://medium.com/javascript-scene/what-is-webassembly-the-dawn-of-a-new-era-61256ec5a8f6)  
+[What is WebAssembly? The next-generation web platform explained](https://www.infoworld.com/article/3291780/what-is-webassembly-the-next-generation-web-platform-explained.html)  
 [@ffmpeg/ffmpeg - npm](https://www.npmjs.com/package/@ffmpeg/ffmpeg)  
