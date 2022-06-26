@@ -61,6 +61,7 @@
 ### Transmission Control Protocol (TCP)
 - TCP is a transport layer protocol.
 - It provides a reliable virtual-circuit connection between applications before data transmission begins.
+  - i.e. a session is established before data transmission.
 - Data is received in the order that it was sent in.
 - Data is treated as a stream of bytes.
 #### TCP 3-Way Handshake
@@ -76,7 +77,10 @@
 - UDP is an alternative transport layer protocol.
 - It provides an unreliable datagram connection between applications before data transmission begins.
 - Data is transmitted link by link and there is no end-to-end connection.
+  - i.e. does not establish a session.
+  - When a computer sends data, it does not care whether the data is received at the other end (hence called a "fire and forget" protocol).
 - There is no guarantee of successful data transmission.
+  - With less overhead of guaranteeing successful data transmission, UDP is faster than TCP.
 - Data can be lost, duplicated and can arrive out of order.
 ### Internet Protocol
 - IP is a network layer protocol.
