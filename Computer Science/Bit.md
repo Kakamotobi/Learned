@@ -4,6 +4,7 @@
 - [What is it?](#what-is-it)
   - [Number of Permutations](#number-of-permutations)
 - [Units of Memory Measurement](#units-of-memory-measurement)
+- [Data Speed Measurement](#data-speed-measurement)
 - [Character Encoding](#character-encoding)
 - [Types of Character Encoding Standards](#types-of-character-encoding-standards)
 - [Bitwise Operation](#bitwise-operation)
@@ -41,6 +42,13 @@
 | 1 Gigabyte (GB)  | 1024 MB    | 1,073,741,824 bytes         | 8,589,934,592 bits         | 2<sup>8,589,934,592</sup>                   |
 | 1 Terabyte (TB)  | 1024 GB    | 1,099,511,627,776 bytes     | 8,796,093,022,208 bits     | 2<sup>8,796,093,022,208</sup>               |
 | 1 Petabyte (PB)  | 1024 TB    | 1,125,899,906,842,624 bytes | 9,007,199,254,740,992 bits | 2<sup>9,007,199,254,740,992</sup>           |
+
+## Data Speed Measurement
+| Data Type | Speed (bits per second)    |
+| --------- | -------------------------- |
+| Audio     | Kilobits per second (Kbps) |
+| Internet  | Megabits per second (Mbps) |
+| Network   | Gigabits per second (Gbps) |
 
 ## Character Encoding
 - Character encoding is the process of mapping each character from a set of characters to a byte(s) in a computer, which allows them to be stored, transmitted and transformed.
