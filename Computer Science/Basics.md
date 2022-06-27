@@ -1,6 +1,7 @@
 # Basics
 
 ## Table of Contents
+- [Computer Basics](#computer-basics)
 - [Programming vs Scripting vs Markup Language](#programming-vs-scripting-vs-markup-language)
 - [Compiler vs Interpreter](#compiler-vs-interpreter)
   - [Just-In-Time(JIT) Compiler](#just-in-timejit-compiler)
@@ -9,6 +10,30 @@
 - [Typing](#typing)
 - [ASCII and Unicode](#ascii-and-unicode)
 - [Shallow vs. Deep Copy](#shallow-vs-deep-copy)
+
+## Computer Basics
+### Parts of Computer Hardware
+- Input, CPU, Memory, Output.
+#### Motherboard
+- Handles the connection between the CPU and the Memory.
+- Expansion slots
+  - Put things that can improve the computer without putting more load on the CPU.
+  - Ex: graphics card, sound card.
+- Ports
+  - A place on the motherboard to connect the CPU to some outside source (to get/give information).
+  - Ex: USB, SD card, ethernet, audio.
+### Types of Computers
+#### Super Computer
+- Parallel Processing
+  - Uses multiple CPUs to handle separate parts of an overall task.
+#### Server
+- Stores/accesses data/programs.
+#### Workstation
+- Computers intended for individual use that is faster and more capable than a PC.
+#### PC
+- Computers that individuals use.
+#### Microcontroller
+- Tiny computers that specialize a specific task.
 
 ## Programming vs Scripting vs Markup Language
 ### Programming vs Scripting Language
