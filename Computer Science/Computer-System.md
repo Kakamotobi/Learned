@@ -214,6 +214,19 @@
 ### OS Responsibilities
 #### User Interface
 - Command Line Interface(CLI)
+  - a.k.a. command interpreter.
+  - Location
+    - Some OS include the CLI in the kernel (heart of the OS).
+    - Some OS treat the CLI as a special program separate from the OS.
+  - Systems that can choose from multiple command interpreters refer to interpreters as **shells**.
+    - Ex: BASH, Z shell, Korn shell.
+    - The **Shell** is where you write code directly in the CLI.
+    - The **Interpreter** is the program that interprets the code and executes it.
+      - Built-in code.
+        - Ex: creating a file (`touch filename.extension`).
+      - Code written in certain programs.
+        - The command interpreter is not aware of the command so it simply calls the program based on the entered command.
+        - Ex: git, npm.
 - Graphical User Interface(GUI)
 #### Program Execution
 - Source Code &rarr; Compiler &rarr; Object Code &rarr; Executor &rarr; Output
