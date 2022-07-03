@@ -32,7 +32,8 @@ npm install --save-dev @babel/core
 npm install --save-dev  @babel/cli
 ```
 ##### Node.js Babel CLI
-- `babel-node` is not meant for production as it is exhaustive.
+- `babel-node` is only intended for development purposes (not production) because although it allows developers to run modern JS code without having to manually transform it, it comes with a performance cost.
+	- cf. use `@babel/cli` (`babel` command) for production to transform to compatible JS code when building.
 ```zsh
 npm install --save-dev @babel/node
 ```
@@ -110,6 +111,8 @@ npm install @babel/core @babel/cli @babel/preset-env
   }
 }
 ```
+- Takes the `src` directory and converts its contents into an output directory called `build`.
+- *cf. Nodemon simply runs one file (Ex: `src/init.js`) to start up everything. But Babel needs to be specified the whole directory (Ex: src).*
 ### Run
 ```zsh
 npm run build
