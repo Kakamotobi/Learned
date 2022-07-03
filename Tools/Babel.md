@@ -3,7 +3,8 @@
 ## Table of Contents
 - [What is Babel?](#what-is-babel)
 - [Getting Started](#getting-started)
-- [Node.js Setup Example](#nodejs-setup-example)
+- [Node.js Development Setup Example (ft. Nodemon)](#nodejs-development-setup-example-ft-nodemon)
+- [Node.js Production Setup Example](#nodejs-production-setup-example)
 
 ## What is Babel?
 > Babel is a toolchain that is mainly used to convert ECMAScript 2015+ code into a backwards compatible version of JavaScript in current and older browsers or environments. | Babel
@@ -59,7 +60,7 @@ npm install --save-dev @babel/preset-typescript
 npx babel src --out-dir lib --presets=@babel/env
 ```
 
-## Node.js Setup Example
+## Node.js Development Setup Example (ft. Nodemon)
 ### Installation
 ```zsh
 npm install @babel/core @babel/node @babel/preset-env
@@ -69,6 +70,12 @@ npm install nodemon
 ```json
 {
   "presets": ["@babel/preset-env"]
+}
+```
+### `nodemon.json`
+```json
+{
+	"exec": "babel-node src/init.js"
 }
 ```
 ### `package.json`
@@ -82,6 +89,30 @@ npm install nodemon
 ### Run
 ```zsh
 npm run dev
+```
+
+## Node.js Production Setup Example
+### Installation
+```zsh
+npm install @babel/core @babel/cli @babel/preset-env
+```
+### `babel.config.json`
+```js
+{
+  "presets": ["@babel/preset-env"]
+}
+```
+### `package.json`
+```json
+{
+  "scripts": {
+    "build": "babel src -d build"
+  }
+}
+```
+### Run
+```zsh
+npm run build
 ```
 
 ## Reference
