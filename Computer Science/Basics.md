@@ -9,6 +9,7 @@
 - [Transpiler (Source-to-Source Compiler) and Polyfill](#transpiler-source-to-source-compiler-and-polyfill)
 - [Typing](#typing)
 - [ASCII and Unicode](#ascii-and-unicode)
+- [Base64 Encoding/Decoding](#bas64-encodingdecoding)
 - [Shallow vs. Deep Copy](#shallow-vs-deep-copy)
 
 ## Computer Basics
@@ -228,6 +229,26 @@
 ### Reference
 [ASCII Code - The extended ASCII table](https://www.ascii-code.com/)  
 [What's the difference between ASCII and Unicode? - Stackoverflow](https://stackoverflow.com/questions/19212306/whats-the-difference-between-ascii-and-unicode)  
+
+---
+
+## Base64 Encoding/Decoding
+- Base64 encoding is a method that takes some binary data (Ex: colors and pixels of an image) and convert it to ASCII data (string of text).
+- Commonly used when binary data needs to be encoded, especially when it needs to be stored and transferred over media that deal with text.
+- Base64 encoding helps ensure that the data is not modified during transmission.
+### Use Cases
+- MIME.
+- Storing complex data in JSON.
+### Base64 Encoding/Decoding in JavaScript
+- Encoding (binary to ASCII)
+  - **`btoa()`**
+    - Accepts a binary string (where each character is treated as a byte of binary data).
+  - **`HTMLCanvasElement.toDataURL()`**
+    - Takes the content of a canvas element and converts it to the Base64 encoding of that content.
+- Decoding (ASCII to binary) - `atob()`
+  - Accepts Base64 encoded data.
+### Reference
+[Base64 - MDN Web Docs Glossary: Definitions of Web-related terms | MDN](https://developer.mozilla.org/en-US/docs/Glossary/Base64)  
 
 ---
 
