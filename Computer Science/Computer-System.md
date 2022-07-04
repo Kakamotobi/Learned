@@ -44,22 +44,6 @@
 > A **central processing unit (CPU)**, also called a **central processor**, **main processor** or just **processor**, is the electronic circuitry that executes instructions comprising a computer program. The CPU performs basic arithmetic, logic, controlling, and input/output (I/O) operations specified by the instructions in the program. | Wikipedia
 
 - A CPU is a chip embedded into the motherboard.
-#### Number of General Purpose Processors
-##### Single Processor System
-- Previously a CPU only had one core, which meant that only one task could be executed at a time.
-##### Multiprocessor System
-- a.k.a. parallel systems, tightly coupled systems.
-- Now, a CPU can have multiple cores, which means that the cores/processors can work on the same or different task concurrently, depending on the implementation.
-  - Ex: dual-core simply means that there are two CPUs in a single chip.
-- **Symmetric Multiprocessing**
-  - All core processors are involved in executing the same tasks.
-- **Asymmetric Multiprocessing**
-  - One processor acts as a "master" and the remaining processors serve as "slaves".
-  - The "master" supervises the "slaves", and the "slaves" take care of individual tasks.
-##### Clustered Systems
-- Use multiple CPUs to accomplish computational work.
-- Two or more individual systems are coupled together.
-- Can be structured symmetrically or asymmetrically.
 #### Parts of a CPU
 <p align="center">
   <img src="https://github.com/Kakamotobi/Learned/blob/main/Computer%20Science/refImg/CPU.png" alt="CPU" width="60%" />
@@ -71,6 +55,25 @@
 - Responsible for controlling the order of execution of commands.
 ##### Combinational Logic
 - Handles arithmetic and logical operations.
+#### Number of General Purpose Processors
+##### Single Processor System
+- Previously a CPU only had one core, which meant that only one task could be executed at a time.
+##### Multiprocessor System
+- a.k.a. parallel systems, tightly coupled systems.
+- A system that uses two or more CPUs that execute **concurrently** and share a common RAM.
+  - *Multithreading on a multiprocessor increases concurrency.*
+- cf. **Multicore System**
+  - Contains multiple cores/processors in a single CPU.
+  - Ex: dual-core simply means that there are two processors in a CPU.
+- **Symmetric Multiprocessing**
+  - All core processors are involved in executing the same tasks.
+- **Asymmetric Multiprocessing**
+  - One processor acts as a "master" and the remaining processors serve as "slaves".
+  - The "master" supervises the "slaves", and the "slaves" take care of individual tasks.
+##### Clustered Systems
+- Use multiple CPUs to accomplish computational work.
+- Two or more individual systems are coupled together.
+- Can be structured symmetrically or asymmetrically.
 ### Memory
 #### Memory Hierarchy
 <p align="center">
@@ -303,8 +306,7 @@
   - Each thread is assigned a different task in the process.
   - Ex: one thread could be responsible for rendering the page, and another thread could be responsible for downloading a file.
   - **Concurrently** means that a single thread will be executing at a time but the processor goes back and forth so quickly that it seems that threads can run simultaneously.
-- cf. **Multiprocessing** is using two or more CPUs in a single computer system.
-  - *Multithreading on a multiprocessor increases concurrency.*
+- cf. [**Multiprocessing**](https://github.com/Kakamotobi/Learned/main/Computer%20Science/Computer-System.md#multiprocessor-system).
 - **Benefits of Multi-threading**
   - Responsiveness
     - May allow a program to continue running even if a part of it is lagging or blocked.
@@ -316,8 +318,6 @@
 - A book is a process. A bookmark is a thread.
 - If there are multiple bookmarks in a book, it is a multi-threaded process.
 
-
-
 ## Reference
 [Operating system for beginners || Operating system basics - YouTube](https://www.youtube.com/watch?v=6-mdtMKfEYM&ab_channel=Geek%27sLesson)  
 [Introductino to Operating System - YouTube](https://www.youtube.com/watch?v=vBURTt97EkA&list=PLBlnK6fEyqRiVhbXDGLXDk_OQAeuVcp2O&ab_channel=NesoAcademy)  
@@ -328,3 +328,4 @@
 [Virtual Address Space (Memory Management) - Win32 apps | Microsoft Docs](https://docs.microsoft.com/en-us/windows/win32/memory/virtual-address-space)  
 [CS 225 | Stack and Heap Memory](https://courses.engr.illinois.edu/cs225/sp2022/resources/stack-heap/)  
 [Thread (computing) - Wikipedia](https://en.wikipedia.org/wiki/Thread_(computing))  
+[Multithreading and Multiprocessing in 10 Minutes | by Kay Jan Wong | Towards Data Science](https://towardsdatascience.com/multithreading-and-multiprocessing-in-10-minutes-20d9b3c6a867)  
