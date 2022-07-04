@@ -138,7 +138,7 @@
   - Therefore, it can be larger than the physical memory.
 ###### Code/Text
 - **The portion of memory for storing the code of the process to run.**
-  - i.e. the source code that we wrote.
+  - i.e. the source code that we wrote compiled to machine language.
 - The CPU executes these codes one by one.
 - It is placed in lower memory address so that it is not overwritten by heap or stack.
 ###### Data
@@ -152,6 +152,7 @@
   - **Uninitialized Data (Block Started by Symbol)**
     - Global and static variables that are not initialized with any value.
 ###### Heap
+- a.k.a. free storage.
 - **The portion of memory for storing everything else.**
 - Dynamic memory allocation that occurs during program execution by the programmer.
   - Ex: `malloc`, `realloc`, `calloc`, `free` are functions used to manage heap memory in C.
