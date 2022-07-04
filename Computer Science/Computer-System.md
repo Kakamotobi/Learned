@@ -15,6 +15,9 @@
   - [OS Responsibilities](#os-responsibilities)
   - [Types of OS](#types-of-os)
   - [Terminology](#terminology)
+  - [Process Management](#process-management)
+    - [Process](#process)
+    - [Thread](#thread)
 
 ## Big Picture
 <p align="center">
@@ -278,6 +281,42 @@
   - The **Interrupt Service Routine** contains information on the Interrupt's objective.
   - The CPU executes the task specified in the Service Routine.
   - When it is completed, it resumes the interrupted computation.
+### Process Management
+- For a program to execute, it needs some resources (memory, etc.) of the computer system. The OS handles this.
+#### Process 
+- Refers to a program that is being executed by one or many threads.
+  - i.e. the resources associated with a computation.
+- Consists of the code that runs the program and its activity.
+- A program can multiple many processes.
+#### Thread
+> ...a **thread** of execution is the smallest sequence of programmed instructions that can be managed independently by a scheduler, which is typically a part of the operating system. | Wikipedia
+
+- A thread is the unit of execution within a process.
+- It consists of the values of the CPU's registers.
+- A CPU makes you think that it is capable of doing multiple computation at the same time. However, that is not true. The CPU goes back and forth, spending a bit of time on each computation/process. It is able to go back and forth between processes because it has an execution context (threads) for each computation.
+##### Single-threaded
+- There is only one thread in a process.
+- Ex: if the thread is rendering the page, it will not be able to download a file.
+- A single-threaded process can only run on one CPU (even if running on a multiprocessor).
+##### Multi-threaded
+- Allows multiple tasks to be executed **concurrently** in a single process.
+  - Each thread is assigned a different task in the process.
+  - Ex: one thread could be responsible for rendering the page, and another thread could be responsible for downloading a file.
+  - **Concurrently** means that a single thread will be executing at a time but the processor goes back and forth so quickly that it seems that threads can run simultaneously.
+- cf. **Multiprocessing** is using two or more CPUs in a single computer system.
+  - *Multithreading on a multiprocessor increases concurrency.*
+- **Benefits of Multi-threading**
+  - Responsiveness
+    - May allow a program to continue running even if a part of it is lagging or blocked.
+  - Resource sharing
+    - Threads share the memory and the resources (code, data, files) of the process that they belong to.
+      - i.e. within the same address space.
+    - Therefore is efficient.
+#### Process and Thread Analogy
+- A book is a process. A bookmark is a thread.
+- If there are multiple bookmarks in a book, it is a multi-threaded process.
+
+
 
 ## Reference
 [Operating system for beginners || Operating system basics - YouTube](https://www.youtube.com/watch?v=6-mdtMKfEYM&ab_channel=Geek%27sLesson)  
@@ -288,3 +327,4 @@
 [Page (computer memory) - Wikipedia](https://en.wikipedia.org/wiki/Page_(computer_memory))  
 [Virtual Address Space (Memory Management) - Win32 apps | Microsoft Docs](https://docs.microsoft.com/en-us/windows/win32/memory/virtual-address-space)  
 [CS 225 | Stack and Heap Memory](https://courses.engr.illinois.edu/cs225/sp2022/resources/stack-heap/)  
+[Thread (computing) - Wikipedia](https://en.wikipedia.org/wiki/Thread_(computing))  
