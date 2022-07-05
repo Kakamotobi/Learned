@@ -11,6 +11,7 @@
 - [What is GitHub?](#what-is-github)
   - [Setting Up Git and GitHub](#setting-up-git-and-github)
 - [Git Branches](#git-branches)
+- [Git Remote](#git-remote)
 - [Git Clone vs Git Fork and Pull Requests](#git-clone-vs-git-fork-and-pull-requests)
 - [Merge Conflicts](#merge-conflicts)
 - [Reference](#reference)
@@ -116,10 +117,11 @@
   - Record changes to the repository.
   - A commit is a type of checkpoint called a "revision", and is a hash of numbers and letters.
   - Ex: `git commit -m "Fix bug."`
-- **`git push origin <branch-name>`**
+- **`git push <remote-name> <branch-name>`**
   - Updates remote refs using local refs, while sending objects necessary to complete the given refs.
   - i.e., update remote repo with changes made in local repo.
-  - Alternatively, **`git push origin HEAD`** can be used.
+  - Ex: `git push origin main` pushes changes to the main branch on the remote origin.
+  - Alternatively, **`git push <remote-name> HEAD`** can be used.
     - `HEAD` refers to the latest commit on your current branch.
 - **`git branch`**
   - Check existing branches and check what branch you're in.
@@ -253,6 +255,19 @@
 - **`git log <branch-A>..<branch-B>`**
   - Ex: `git log main..feature/uploader`
   - Ex: `git log origin/main..main`
+
+## Git Remote
+- A **remote** is a duplicate instance of the repository that lives on a remote server.
+- A single repository can have multiple remotes.
+  - Ex: GitHub, Heroku, AWS, etc.
+- `git remote`
+  - Lists all the remotes associated with the local repository.
+  - `git remote -v`
+    - Reveals the particular URLs of each remote.
+  - `git remote show <remote-name>`
+    - Reveals more information about the particular remote.
+- If initializing a new git repository on local, you need to register a remote to push commits to.
+  - `git remote add <remote-name> <remote-repository-url>`.
 
 ## Git Clone vs Git Fork and Pull Requests
 - The difference comes down to how much control a developer has over a given repository.
