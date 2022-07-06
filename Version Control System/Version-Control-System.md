@@ -3,17 +3,19 @@
 ## Table of Contents
 - [What is a Version Control System (VCS)?](#what-is-a-version-control-system-vcs)
   - [What is a Distributed Version Control System (DVCS)?](#what-is-a-distributed-version-control-system-dvcs)
+- [What is GitHub?](#what-is-github)
+  - [Setting Up Git and GitHub](#setting-up-git-and-github)
 - [What is Git?](#what-is-git)
   - [How/Where to Get Git](#howwhere-to-get-git)
   - [Git Workflow](#git-workflow)
   - [Git Configs](#git-configs)
   - [Frequently Used Git Commands](#frequently-used-git-commands)
-- [What is GitHub?](#what-is-github)
-  - [Setting Up Git and GitHub](#setting-up-git-and-github)
 - [Git Branches](#git-branches)
 - [Git Remote](#git-remote)
-- [Git Clone vs Git Fork and Pull Requests](#git-clone-vs-git-fork-and-pull-requests)
+- [Git Clone, Git Fork and Pull Requests](#git-clone-git-fork-and-pull-requests)
 - [Merge Conflicts](#merge-conflicts)
+- [Git Stash](#git-stash)
+- [Undoing Changes and Time Travelling](#undoing-changes-and-time-travelling)
 - [Reference](#reference)
 
 ## What is a Version Control System (VCS)?
@@ -27,6 +29,20 @@
   <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/Version%20Control%20System/refImg/dvcs.png" alt="DVCS" width="60%" height="650px" />
 </p>
 
+## What is GitHub?
+- Online service that provides Internet hosting for software development and version control using Git.
+### Setting Up Git and GitHub
+1. Create a new repository on GitHub
+2. Make sure Git is tracking your project.
+  - `cd` to your project directory.
+  - `git status` to check if git is already initialized.
+  - If not, `git init`.
+  - Then, go through the process of adding and committing your project to the .git Directory.
+3. Connect your local repository to your newly created repository on GitHub.
+  - `git remote add origin <copied github repository link>`
+    - Copy the repository link ending in ".git" (the web address that your local folder will use to push its contents to the remote folder on GitHub).
+  - `git push origin <branch>`
+    - Now, push your branch to GitHub.
 
 ## What is Git?
 - Git is a distributed version control system.
@@ -78,6 +94,11 @@
 - The directory/respository that contains the version history.
 - Use **`git checkout fileName`** to return to any previous version.
 - Use **`git push origin <branch>`** to push to GitHub.
+#### Git and Remote Flow
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/Version%20Control%20System/refImg/git-remote-flow.png" alt="Git Remote Flow" width="80%" />
+</p>
+
 ### Git Configs
 - **`git config --list`**
   - Check all configurations for Git.
@@ -89,7 +110,6 @@
 - **`git config --global alias.<abbrv> <commandName>`**
   - Change the specific command name to the designated abbreviation.
   - Ex: `git config --global alias.st status`
-
 ### Frequently Used Git Commands
 - **`code .`**
   - Opens the current directory in my designated text editor.
@@ -106,10 +126,30 @@
   - Check the Git status of files.
     - Ex: what files have been modified.
 - **`git diff`**
-  - Prints a list of the changes that have been made.
+  - Prints a list of the changes in the working directory that are ***not staged*** for the next commit.
   - It is a good way to double-check before committing.
+  - `git diff HEAD`
+    - List all changes in the working directory since the last commit.
+  - `git diff --staged` or `git diff --cached`
+    - List all the changes that will be included in the commit if you run `git commit` right now.
+  - `git diff HEAD <filename>`, `git diff --staged <filename>`
+    - List all changes in the specific file.
   - `git diff <branch-name> <other-branch-name>`
-    - Prints the difference between two branches.
+    - Prints the differences between two branches.
+  - Output Example
+    ```zsh
+    diff --git a/main.txt b/main.txt # Compared files (a being the file before changes, b being the file after changes)
+    index 72d1d6a..f2c8117 100644 # File meta data
+    --- a/main.txt # Indicate changes
+    +++ b/main.txt # Indicate changes
+    @@ -3,4 +3, 5 @@ orange # Chunks that were modified (incl. some unchanged lines before and after)
+    yellow
+    green
+    blue
+    -purple # From file a
+    +indigo # From file b
+    +violet # From file b
+    ```
 - **`git add <file(s)>`**
   - Move file(s) to the Staging Area from the Working Directory (after modification).
   - `git add --all` moves all files including untracked ones.
@@ -141,37 +181,38 @@
     ```
 - **`git show-ref`**
   - List the references in the local repository.
-- **`git fetch`**
-  - Download the latest information about the repository from `origin` (Ex: all the different branches stored on GitHub).
-  - Does not change any of your local files; only updates the tracking data stored in the .git folder.
+- **`git fetch <remote-name> <branch-name>`**
+  - Download changes from a remote repository. However, those changes will not be automatically integrated into the working directory.
+  - It is a way of fetching and accessing the latest changes to the repository on your machine BUT without having to actually merge them into our working files.
+  - "Go and get the latest information from GitHub. But don't mess up my working directory."
+  - Ex: `git fetch origin` will fetch all changes (incl. new branches that have been created) from the origin remote repository.
+  - Ex: `git fetch origin master` will fetch all changes from the master branch on the origin remote repository.
+  - Example
+    - You made changes to the master branch on local.
+    - But the remote repository has changed because other people have pushed up changes to the master branch.
+    - `git fetch origin master` will fetch those changes.
+      - ***This updates the `origin/master` remote tracking pointer but your master branch on local is untouched.***
+    - `git checkout origin/master` to see them.
 - **`git merge <other-branch-name>`**
+  - `git merge` updates your current branch with whatever changes are on the remote tracking branch.
   - Takes all the commits existing on the `other-branch-name` branch and integrate them ***into*** your current branch.
   - Since this uses whatever branch data that is stored locally at the moment, run `git fetch` first to download the latest information before merging.
   - Ex: if another developer added some commits to the `master` branch of `origin`, checkout the `master` branch in local, download their changes using `git fetch` and effectively update the `master` branch in local. Then, `git merge origin/master` to merge the origin/master branch into your current branch.
     - `origin/master` means the `origin/master` checkpoint in local. This notation is used to differentiate branches of the same name (Ex: `master`) located in different places (Ex: your own branches vs. origin's branches).
-- **`git pull origin master`**
-  - Shortcut to both `fetch` and `merge` all in one go.
-    - `git pull` does a `git fetch` followed by a `git merge` to update the local repository with the remote repository.
-  - Downloads new changes from the branch named `master` on the remote endpoint called `origin` and integrate them into your local HEAD branch.
-  - *Make sure to do this (update your repo with the latest version) before creating a new branch to work on.*
-  - cf. `git pull origin/master`
-    - Pulls changes from the `origin/master` branch on local and merge that to the local HEAD branch.
-    - `origin/master` branch is essentially a "cached copy" of the last pull from `origin`.
-
-## What is GitHub?
-- Online service that provides Internet hosting for software development and version control using Git.
-### Setting Up Git and GitHub
-1. Create a new repository on GitHub
-2. Make sure Git is tracking your project.
-  - `cd` to your project directory.
-  - `git status` to check if git is already initialized.
-  - If not, `git init`.
-  - Then, go through the process of adding and committing your project to the .git Directory.
-3. Connect your local repository to your newly created repository on GitHub.
-  - `git remote add origin <copied github repository link>`
-    - Copy the repository link ending in ".git" (the web address that your local folder will use to push its contents to the remote folder on GitHub).
-  - `git push origin <branch>`
-    - Now, push your branch to GitHub.
+- **`git pull <remote-name> <branch-name>`**
+  - Download changes from a remote repository. And update our HEAD branch with whatever changes are retrieved from the remote.
+  - "Go and get the latest information from GitHub. And immediately update my local repository with those changes.
+  - `git pull` = `git fetch` + `git merge`.
+  - ***The current HEAD branch is where the changes will be pulled down to.***
+    - Ex: if on the master branch, `git pull origin master` will fetch the latest information from the origin's master branch and merge those changes into the master branch on local.
+  - `git pull` defaults to remote being 'origin' and branch being the tracking connection that is configured for your current branch.
+    - Ex: `git pull` on master branch on local will pull from origin/master.
+    - Ex: `git pull` on 'chickens' branch on local will pull from origin/chickens.
+  - *Make sure to do this (update your repo with the latest version) before pushing to GitHub or creating a new branch to work on.*
+  - Pulls can result in merge conflicts.
+  - `git pull origin master` vs `git pull origin/master`
+    - `git pull origin master` will pull changes from the `master` branch on the `origin` remote and merge that to the local HEAD branch.
+    - `git pull origin/master` will pull changes from the `origin/master` tracking branch on **local** and merge that to the local HEAD branch.
 
 ## Git Branches
 > A branch represents an independent line of development. Branches serve as an abstraction for the edit/stage/commit process. You can think of them as a way to request a brand new working directory, staging area, and project history.
@@ -229,9 +270,11 @@
 - **`git pull`**
   - Download new commits from the remote.
   - Ex: `git pull origin main`
-- **`git push --set-upstream origin <branch-name>`**
-  - If the branch is only on local yet, use this command to upload the branch to GitHub.
-  - In GitHub, create the pull request.
+- **`git push --set-upstream <remote-name> <branch-name>`**
+  - Or `git push -u <remote-name> <branch-name>`.
+  - Ex: `git push -u origin master`.
+    - Push up the current branch to the master branch on origin.
+  - If the branch is only on local yet, use this command to upload the branch to GitHub and simultaneously set that remote branch as the up stream for this branch.
 - **`git branch -v`**
   - Shows any discrepancies in commits between local and remote.
   - Ex: ahead 1, behind 2
@@ -239,7 +282,7 @@
 - **`git branch -d <branch-name>`**
   - Delete a branch in your local repository. 
   - *Cannot delete the HEAD branch! So switch to another branch, then delete.*
-- **`git push origin --delete <branch-name>`**
+- **`git push <remote-name> --delete <branch-name>`**
   - Delete a branch in the remote repository.
   - *Might also make sense to delete other branches that are tracking that remote branch!*
 #### Merging Branches
@@ -253,10 +296,28 @@
       - *It does not mean that the branch and the HEAD are now in sync. They are still separate branches.*
 - Merging creates a merge commit (the "melting point").
 - Merging branches can often lead to [merge conflicts](https://github.com/Kakamotobi/Learned/main/Version%20Control%20System/Version-Control-System.md#merge-conflicts).
+- *Note*
+  - When using `git merge`, if you merge the master branch into your 'feature' branch in order to keep on track with other changes to the master branch, you will create a merge commit on your 'feature' branch.
+    - If the master branch is very active, your 'feature' branch will have to have lots of merge commits, resulting to a messy branch history.
+    - That goes the same for your colleagues. Therefore, when everyone merges back to the master branch, the master branch will have a bunch of non-informative merge commits.
 #### Rebasing Branches
-- An alternative way to integrate changes from another branch *into* your current local HEAD branch.
-- **`git rebase <`**
+- **`git rebase <branch-name>`**
+  - An alternative way to integrate changes (cf. `git merge`) from the specified branch *into* your current local HEAD branch.
   - There is no separate merge commit that will be created. So, development history appears to have happened in a straight line.
+  - Ex: `git rebase master` on the 'feature' branch.
+  - Example
+    - Rebase the 'feature' branch onto the master branch.
+      - This moves the entire 'feature' branch so that it *begins* at the tip of the master branch.
+      - All the work is still there, but the history has been re-written.
+      - Rebasing rewrites history by re-creating commits for each of the original 'feature' branch commits.
+      - Therefore, the 'feature' branch now contains all of the commits from master since it has a new base at the tip of the master branch.
+  - Rebasing can lead to merge conflicts.
+    - Resolve the conflict.
+    - Then stage file(s) with `git add` and continue rebasing with `git rebase --continue`.
+##### When Not to Rebase
+- Never rebase commits that have already been shared with others.
+  - If your collaborators have the changes you have made on their machine because if you rebase, the same changes will have different commits. This makes it difficult to reconcile the alternate histories.
+    - Since you rebased, they will have commits that do not exist in yours, and vice versa.
 #### Comparing Branches
 - Checking which commits are in branch-B, but not in branch-A.
 - **`git log <branch-A>..<branch-B>`**
@@ -276,13 +337,20 @@
 - If initializing a new git repository on local, you need to register a remote to push commits to.
   - `git remote add <remote-name> <remote-repository-url>`.
 
-## Git Clone vs Git Fork and Pull Requests
+## Git Clone, Git Fork and Pull Requests
 - The difference comes down to how much control a developer has over a given repository.
 ### Git Clone
-- Anyone can Git clone any repository via the GitHub URL.
-  - Ex: `git clone <URL>`
+- **`git clone <git-URL>`**
+  - Clone the repository at the specified URL.
+  - Only clones the default branch.
+    - Other existing branches will not be cloned.
+    - However, your local repository knows about them as information about them is downloaded.
+      - `git branch -r` reveals them.
+    - *Simply do `git switch <branch-name>` to create a new local branch from the remote branch of the same name.*
+      - Ex: if remote has a branch called 'chickens' (but it is not on local), `git switch chickens` will make a local 'chickens' branch and set it up to track the remote branch origin/chickens.
+      - You can also do `git checkout --track <remote-name>/<branch-name>`.
 - Changes can be made to this cloned version in local.
-- However, only designated contributors are allowed to push back to repository on origin.
+- Only designated contributors are allowed to push back to repository on origin.
   - Undesignated contributors' attempt to push will lead to a 403 error.
   - If you're a collaborator, make sure to clone the repository and not fork it, as you would want to collaborate on the same GitHub repository with your teammates.
 #### Flow
@@ -290,6 +358,14 @@
 - Write a brief description of the changes and select the reviewer (the "merge master"), then click "Create pull request".
 - Then, proceed to merge the branch to the master branch.
 - Once the merge is done, delete the branch.
+#### Remote Tracking Branch
+- A reference/pointer (`<remote-name>/<branch-name>`) to the state of the master branch on the remote on local.
+  - Ex: `origin/master`.
+- It cannot be moved by myself. It points to the last known commit on the master branch on origin at the time of cloning.
+- `git branch -r`
+  - View the remote branchs that your local repository knows about.
+- You can checkout remote branch pointers, which results a detatched HEAD.
+  - Ex: `git checkout origin/master`.
 ### Git Fork
 - Anyone can fork any repository on GitHub.
   - There is no Git command for forking (use GitHub).
@@ -303,7 +379,7 @@
   - The receiver (original repository) will see the pull request and can decide whether or not to accept the changes made and "Merge pull request".
   - Once the merge is done, delete the branch.
 ### Pull Request
-- **The request that your changes be pulled in and merged.**
+- **The request that your changes be pulled in and merged to a particular branch.**
 #### Flow
 - Commit your changes to your new branch and then push it to origin.
 - Then go to the repository's GitHub page and click on "Pull Request".
@@ -336,6 +412,67 @@
       ```js
       console.log("Hello, world!");
       ```
+
+## Git Stash
+- Stash uncommitted changes so that we can return to them later, without having to make unncesseary commits.
+- Stashes are kept in a stack of stashes.
+- **`git stash`**
+  - Takes all uncommitted changes (staged and unstaged) and stash them, reverting the changes in your working copy.
+  - We don't see the stashed changes but they are still available.
+- **`git stash pop`**
+  - Removes the most recently stashed changes in your stash and reapply them to your working copy.
+- Use Cases
+  - When you do not want to make a commit yet.
+  - When you do not want the changes from another branch to come with you to another branch.
+- Example
+  - Master is unchanged and you created and switched to a new branch.
+  - You made changes to the new branch (no commits yet).
+  - Then you try to switch to the master branch (to check something, need to quickly edit a minor typo, etc.).
+    - If there are no conflicts between the two branches,
+      - The changes that were made in the new branch will come along and show up in the master branch.
+      - If you had committed the changes in the new branch, and then switched back to the master branch, the changes will not come along.
+    - If there are conflicts between the two branches,
+      - You will get an error saying "Your local changes to the following files would be overwritten by checkout".
+      - Therefore, you need to commit your changes or stash them before you switch branches.
+
+## Undoing Changes and Time Travelling
+### Moving Back and Forth in Time
+- **`git checkout <id-of-previous-commit>`**
+  - HEAD moves to that particular commit (detatched HEAD).
+- **`git checkout HEAD~1`**
+  - HEAD moves back by 1 commit.
+- **`git switch <branch-name>`**
+  - Comes out of detatched HEAD state.
+- **`git switch -`**
+  - HEAD moves to whatever branch it was last.
+### Discard Current Changes / Unmodify Files
+- **`git checkout HEAD <file-name>`** or **`git checkout -- <file-name>`**
+  - Reverts the file back to it's last committed version.
+- **`git restore <file-name>`**
+  - Restore the file to the contents in the HEAD.
+  - This command is not "undoable". Uncommited changes will be lost.
+  - `git restore --source <source-name> <file-name>`
+    - Restore the file to that particular commit.
+    - The default source is HEAD.
+      - The source can be a commit hash or HEAD~.
+    - Ex: `git restore --source HEAD~1 app.js`.
+  - This does not time travel or detatch the HEAD. You are still on the last commit (tip of the master branch). But the file has been modified.
+    - `git restore <file-name>` to go back to the HEAD (the most recent commit).
+  - `git restore --staged <file-name>`
+    - Unstage files.
+### Undoing Commits
+- **`git reset <commit-hash>`**
+  - Reset the repository back to a specific commit, but with the the changes still in the working directory.
+  - All proceeding commits are removed.
+    - The branch pointer is moved backwards, eliminating the commits as if they never occured in the first place.
+  - `git reset --hard <commit-hash>`
+    - Resets the repository back to a specific commit and removes the actual changes in the files.
+  - ***If you want to reverse commits that you have not shared with others, use reset.***
+- **`git revert <commit-hash>`**
+  - Creates a brand new commit which reverses/undos the changes from the specified commit.
+  - The proceeding commits of the specified commit are not removed (keeps them in record) but the changes are gone.
+  - Reverting can cause conflicts.
+  - ***If you want to reverse some commits that other people already have on their machines, use revert.***
 
 ## Reference
 [Git - Book](https://git-scm.com/book/en/v2)  
