@@ -191,6 +191,10 @@
   -  Git will start the new branch based on the currently checked out revision (the situation that I was to this point).
   -  **`git branch <new-branch-name> <revision-hash-of-a-particular-commit>`**
     -  Starts the branch on the specified revision.
+- **`git switch -c <new-branch-name>`**
+  - Creates the new branch and switches to it.
+- **`git checkout -b <new-branch-name>`**
+  - Creates the new branch and switches to it.
 #### Switching Branches
 - **`git switch <other-branch-name>`**
   - Switch to another branch.
@@ -245,7 +249,10 @@
     - Switch to the branch that you want to receive the changes.
   - **`git merge <branch-name>`**
     - Execute the `merge` command with the name of the branch that contains the desired changes.
+    - This adds the commits made (up to that point) in the branch to the HEAD.
+      - *It does not mean that the branch and the HEAD are now in sync. They are still separate branches.*
 - Merging creates a merge commit (the "melting point").
+- Merging branches can often lead to [merge conflicts](https://github.com/Kakamotobi/Learned/main/Version%20Control%20System/Version-Control-System.md#merge-conflicts).
 #### Rebasing Branches
 - An alternative way to integrate changes from another branch *into* your current local HEAD branch.
 - **`git rebase <`**
@@ -313,6 +320,8 @@
 ## Merge Conflicts
 - **When you made changes to a line of code that someone else has also made changes to, Git is in a conflict as to which version to keep.**
   - The notorious merge conflict output: `>>>>>>> ======= <<<<<<<`
+  - ***Once the merge conflict is taken care of, git performs a "merge commit", which is a new commit on the HEAD branch.***
+    - *This merge commit has two parent commits (one from the other branch, one from Head).*
 - Essentially, just remove those weird symbols and manually combine the code in between them.
   - Example
     - Merge Conflict Occurred
