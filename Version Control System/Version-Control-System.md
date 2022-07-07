@@ -12,10 +12,12 @@
   - [Frequently Used Git Commands](#frequently-used-git-commands)
 - [Git Branches](#git-branches)
 - [Git Remote](#git-remote)
-- [Git Clone, Git Fork and Pull Requests](#git-clone-git-fork-and-pull-requests)
+- [Git Clone and Git Fork](#git-clone-and-git-fork)
+- [Pull Request](#pull-request)
 - [Merge Conflicts](#merge-conflicts)
 - [Git Stash](#git-stash)
 - [Undoing Changes and Time Travelling](#undoing-changes-and-time-travelling)
+- [Git Collaboration Workflows](#git-collaboration-workflows)
 - [Reference](#reference)
 
 ## What is a Version Control System (VCS)?
@@ -336,8 +338,16 @@
     - Reveals more information about the particular remote.
 - If initializing a new git repository on local, you need to register a remote to push commits to.
   - `git remote add <remote-name> <remote-repository-url>`.
+### Remote Tracking Branch
+- A reference/pointer (`<remote-name>/<branch-name>`) to the state of the master branch on the remote on local.
+  - Ex: `origin/master`.
+- It cannot be moved by myself. It points to the last known commit on the master branch on origin at the time of cloning.
+- `git branch -r`
+  - View the remote branchs that your local repository knows about.
+- You can checkout remote branch pointers, which results a detatched HEAD.
+  - Ex: `git checkout origin/master`.
 
-## Git Clone, Git Fork and Pull Requests
+## Git Clone and Git Fork
 - The difference comes down to how much control a developer has over a given repository.
 ### Git Clone
 - **`git clone <git-URL>`**
@@ -353,45 +363,41 @@
 - Only designated contributors are allowed to push back to repository on origin.
   - Undesignated contributors' attempt to push will lead to a 403 error.
   - If you're a collaborator, make sure to clone the repository and not fork it, as you would want to collaborate on the same GitHub repository with your teammates.
-#### Flow
-- After pushing back to repository on origin, check the branch on GitHub to compare and pull request on that branch.
-- Write a brief description of the changes and select the reviewer (the "merge master"), then click "Create pull request".
-- Then, proceed to merge the branch to the master branch.
-- Once the merge is done, delete the branch.
-#### Remote Tracking Branch
-- A reference/pointer (`<remote-name>/<branch-name>`) to the state of the master branch on the remote on local.
-  - Ex: `origin/master`.
-- It cannot be moved by myself. It points to the last known commit on the master branch on origin at the time of cloning.
-- `git branch -r`
-  - View the remote branchs that your local repository knows about.
-- You can checkout remote branch pointers, which results a detatched HEAD.
-  - Ex: `git checkout origin/master`.
 ### Git Fork
 - Anyone can fork any repository on GitHub.
   - There is no Git command for forking (use GitHub).
 - The repository is completely copied to your own GitHub as a separate entity to the original.
-#### Flow
-- Clone the fork that has been made to local, and make changes.
-- Push back to the repository on origin (the newly forked repository; not the original repository that was forked from).
-- It is possible to take the changes made in your forked repository and send them to the original repository. This is called a **Pull Request**.
-  - On GitHub, go to your forked repository and click "New pull request" and then "Create pull request".
-  - This sends a message to the original repository asking them to "pull" the changes that has been made.
-  - The receiver (original repository) will see the pull request and can decide whether or not to accept the changes made and "Merge pull request".
-  - Once the merge is done, delete the branch.
-### Pull Request
+- Check [collaboration workflow](https://github.com/Kakamotobi/Learned/main/Version%20Control%20System/Version-Control-System.md#fork--clone-workflow).
+
+## Pull Request
 - **The request that your changes be pulled in and merged to a particular branch.**
-#### Flow
-- Commit your changes to your new branch and then push it to origin.
-- Then go to the repository's GitHub page and click on "Pull Request".
-  - Pick the branch that you wish to have merged, enter a title and brief description for the Pull Request, and click "Send pull request".
-- Once your Pull Request is submitted, a reviewer reviews it and leaves feedback.
-- If more changes need to be made, simply add more commits to your existing branch and push it to origin again. The Pull Request will update automatically to reflect your changes.
-- By the time your Pull Requested is accepted, there may be a newer version of the trunk (you've been working on an older version of the trunk). Therefore, your changes may not work on the newer version of the trunk.
-  - There are two options to get up to date:
-    - `git merge master`: applies any new changes from the trunk on top of your work.
+- Instead of everyone merging to the master branch at free will, pull requests act as a mechanism to intermediate changes ready to be integrated to the master branch.
+  - They help facilitate discussion and feedback on the specified commits.
+- Pull requests on a given branch can be approved or rejected.
+- The master branch can be protected by making pull requests mandatory for it.
+#### Workflow
+- You have done some work locally on a feature branch.
+- You commit your changes and then push the feature branch to origin (GitHub).
+- Then, open a pull request using the feature branch that you just pushed up to origin.
+  - On the repository's feature branch's GitHub page, click on "Compare & pull request" or "Pull request".
+  - Describe the pull request and create pull request.
+    - Ex: what branch (usually master) to merge the feature branch to.
+- Wait for the PR to be approved and merged by the reviewer (in charge of merging).
+- If more changes need to be made, simply add more commits to your feature branch and push it to origin again.
+  - The PR will update automatically to reflect your changes.
+##### Important Notes
+- *By the time your PR is accepted, there may be a newer version of the master branch. Therefore, your changes may not work on the newer version of master.*
+  - Take one of two options to get your feature branch up to date:
+    - `git merge master`: applies any new changes from the master branch on top of your work.
     - `git rebase master`: re-applies your work on top of any new changes on the trunk.
     - In both options, your own changes will remain the same as you are essentially just moving your branch up to the top of the trunk to stay up to date with the newest version.
     - It is usually safer to `merge`.
+- *If merge conflicts occur after attempting a PR, simply resolve them and continue.*
+  - As a reviewer (or any contributor), download the latest changes, switch to that feature branch, merge the master branch into the feature branch.
+    - Ex: `git fetch origin` &rarr; `git switch feature-branch` &rarr; `git merge master`.
+  - Resolve the conflict.
+  - Then, switch to the master branch, merge the feature branch into the master branch, commit, and push to remote.
+    - `git switch master` &rarr; `git merge --no-ff feature-branch` &rarr; `git commit -am "commit message"` &rarr; `git push origin master`.
 
 ## Merge Conflicts
 - **When you made changes to a line of code that someone else has also made changes to, Git is in a conflict as to which version to keep.**
@@ -474,6 +480,41 @@
   - Reverting can cause conflicts.
   - ***If you want to reverse some commits that other people already have on their machines, use revert.***
 
+## Git Collaboration Workflows
+### Centralized Workflow
+- The most basic workflow where everyone works on the master branch.
+- It can work for very small teams but it has some shortcomings.
+  - If someone has updated master on remote, you will not be able to push because "the tip of your current branch is behind its remote counterpart". Therefore, you will have to merge the remote changes (Ex: `git pull`) before pushing.
+  - The only way to share code (for revision purposes, etc.) is to push a commit to master on remote.
+    - However, if that code is broken, the master on remote and everyone's code will be broken.
+### Feature Branch Workflow
+- No one works on the master branch.
+- All new development should be done on separate branches. Therefore, the master branch will not contain broken code.
+- The master branch is treated as the official project history.
+- Teammates can collaborate on a single feature and share code back and forth without polluting the master branch.
+### Fork & Clone Workflow
+- Instead of everyone working on one centralized GitHub repository, every developer has their own GitHub repository in addition to the "main" repository.
+- Developers make changes and push to their own forks efore making pull requests to the "main" repo.
+- This method allows for us to contribute to a project that we do not own.
+#### Flow
+- Fork a repository on GitHub.
+- Clone the forked repository to local.
+  - Ex: `git clone <forked-repo-git-url>`.
+- Add another remote pointing to the original project repository (not the fork in your repository).
+  - Often named "upstream" or "original".
+  - *This is so that you can pull new changes from it (since your fork repository does not have those new changes made in the original repository).*
+  - Ex: `git remote add upstream <original-repo-git-url>`.
+- Make changes and commit them.
+- Push to the repository on origin (your forked repository. Not the original repository that was forked from).
+  - Ex: `git push origin main`.
+- Make a pull request from your forked repository (on origin) to the original repository.
+  - On GitHub, go to your forked repository and click "New pull request" and then "Create pull request".
+  - This sends a message to the original repository asking them to "pull" the changes that has been made.
+  - The receiver (original repository) will see the pull request and can decide whether or not to accept the changes made and "Merge pull request".
+- If your pull request is accepted, pull down the (your) changes from the original repository (upstream remote) to your local machine.
+  - Ex: `git pull upstream main`.
+- Make more commits, and push to forked repository (origin remote), and repeat the PR process.
+
 ## Reference
 [Git - Book](https://git-scm.com/book/en/v2)  
 [깃, 깃허브 제대로 배우기 - YouTube](https://www.youtube.com/watch?v=Z9dvM7qgN9s&ab_channel=%EB%93%9C%EB%A6%BC%EC%BD%94%EB%94%A9by%EC%97%98%EB%A6%AC)  
@@ -482,3 +523,4 @@
 [Understanding Git (part 1) - Explain it Like I’m Five | HackerNoon](https://hackernoon.com/understanding-git-2-81feb12b8b26)  
 [Understanding Git (part 2) - Contributing to a Team | HackerNoon](https://hackernoon.com/understanding-git-2-81feb12b8b26)  
 [Git Fork vs. Git Clone: What's the Difference? - YouTube](https://www.youtube.com/watch?v=6YQxkxw8nhE&ab_channel=EyeonTech)  
+[Git Detached Head: What Is It & How to Recover](https://www.cloudbees.com/blog/git-detached-head)  
