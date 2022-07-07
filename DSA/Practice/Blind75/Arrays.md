@@ -22,6 +22,7 @@ const twoSum = (nums, target) => {
 ```
 
 ## 2. [Best Time to Buy and Sell Stock](https://leetcode.com/problems/best-time-to-buy-and-sell-stock/)
+### Solution 1
 - Keep track of maximum profit.
 - Keep track of minimum price.
 - Loop over prices.
@@ -29,7 +30,6 @@ const twoSum = (nums, target) => {
     - This guarantees lowest buy before selling.
   - Update the maximum profit with `current price - minimum price` if necessary.
     - `current price - minimum price` takes care of no profit since it will result to 0.
-### Solution 1
 ```js
 // TC: O(n), SC: O(1)
 
@@ -75,3 +75,51 @@ const maxProfit = (prices) => {
   return maximumProfit;
 }
 ```
+
+## 3. [Contains Duplicate](https://leetcode.com/problems/contains-duplicate/)
+### Solution 1 - Set
+- Convert the array into a set and compare the length.
+- If there are duplicates, the length will be different.
+```js
+// TC: O(n), SC: O(n)
+
+const containsDuplicate = (nums) => {
+  const set = new Set(nums);
+  
+  return set.size !== nums.length;
+}
+```
+### Solution 2 - Set
+- Loop over nums.
+  - If the set already has the current num, there are duplicates.
+  - Add the current num to the set.
+```js
+const containsDuplicate = (nums) => {
+  const set = new Set();
+  
+  for (let num of nums) {
+    if (set.has(n)) return true;
+    else set.add(n);
+  }
+  
+  return false;
+}
+```
+### Solution 3 - Sort
+- Sort the array in order.
+- If any number is the same as the number before it, there is are duplicates.
+```js
+// TC: O(n log n), SC: O(1)
+
+const containsDuplicate = (nums) => {
+  nums.sort((a,b) => a - b);
+  
+  for (let i = 0; i < nums.length; i++) {
+    if (nums[i] === nums[i-1]) return true;
+  }
+  
+  return false;
+}
+```
+
+
