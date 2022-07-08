@@ -122,4 +122,24 @@ const containsDuplicate = (nums) => {
 }
 ```
 
+## 4. [Maximum Subarray](https://leetcode.com/problems/maximum-subarray/)
+- Key Point: a subarray with potentially the largest sum does not start with a negative number (unless all numbers are negative).
+```js
+// TC: O(n), SC: O(1)
 
+const maxSubArray = (nums) => {
+  let largestSum = nums[0];
+  let subArraySum = 0;
+  
+  for (let num of nums) {
+    // If the subArraySum up to this point (before num) is negative, reset to 0 (start a new subarray).
+    if (subArraySum < 0) subArraySum = 0;
+    // Update subArraySum.
+    subArraySum += num;
+    // Update largest sum.
+    largestSum = Math.max(subArraySum, largestSum);
+  }
+  
+  return largestSum;
+}
+```
