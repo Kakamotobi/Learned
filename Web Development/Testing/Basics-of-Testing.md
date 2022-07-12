@@ -1,6 +1,7 @@
 # Basics of Testing
 
 ## Table of Contents
+- [What is (Unit) Testing?](#what-is-unit-testing)
 - [Goals of Testing](#goals-of-testing)
 - [How to Test](#how-to-test)
 - [Simple Example - Node.js](#simple-example---nodejs)
@@ -11,10 +12,19 @@
 	- [Mocha in the Browser](#mocha-in-the-browser)
 	- [Chai.js](#chaijs)
 
+## What is (Unit) Testing?
+> Unit testing is a software development process in which the smallest testable parts of an application, called units, are individually and independently scrutinized for proper operation. ... The main objective of unit testing is to isolate written code to test and determine if it works as intended. | TechTarget
+
+- It is a component of test-driven development (TDD).
+	- TDD: continual testing and revision in building a product.
+- It is the first level of testing.
+- *Unit tests only test data and functionality, and will not catch errors in integration.*
+
 ## Goals of Testing
 - Automate the process of ensuring that our app works as we expect.
 - Keep us from having to manually click around the app to find bugs.
 - Make sure the app still works as expected even after we change something.
+- Help detect flaws in code earlier on.
 ### Opinion
 - There are many testing frameworks/libraries out there that people spend more time setting it up than they do writing tests.
 - All testing frameworks/libraries are essentially the same.
@@ -23,6 +33,11 @@
 ## How to Test
 - We will run one testing command that will start up a sub program that is going to make sure that all of our code works as expected.
 - No need to know the internal implementation of the code to test. We can test it by knowing what goes into it and what should come out.
+### Notes
+- Test each test case independently.
+- Do not make a test for every line of code. Make tests for code that affects the behavior of the program.
+	- Only test things that are vital to the performance of the unit being tested.
+- Once all units in a program have been tested to success, larger components of the program can be tested through integration testing.
 
 ## Simple Example - Node.js
 ```js
@@ -224,5 +239,6 @@ mocha index.test.js
 		- `chai.assert()`
 
 ## Reference
+[What is Unit Testing? - TechTarget](https://www.techtarget.com/searchsoftwarequality/definition/unit-testing#:~:text=Unit%20testing%20is%20a%20software,developers%20and%20sometimes%20QA%20staff.)  
 [Mocha.js](https://mochajs.org/)  
 [Chai.js](https://www.chaijs.com/)
