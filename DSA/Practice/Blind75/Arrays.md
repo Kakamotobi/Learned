@@ -143,3 +143,55 @@ const maxSubArray = (nums) => {
   return largestSum;
 }
 ```
+
+## 5. [Container With Most Water](https://leetcode.com/problems/container-with-most-water/)
+### Solution 1 - Brute Force
+- For each element in `height`, calculate the area with each of the following elements.
+```js
+// TC: O(n^2), SC: O(1)
+
+const calcMaxRecArea = (coordA, coordB) => {
+  const [x1, y1] = coordA;
+  const [x2, y2] = coordB;
+  return Math.abs((x1 - x2) * Math.min(y1, y2));
+}
+
+const maxArea = (height) => {
+  let maximumArea = -Infinity;
+  
+  for (let i = 0; i < height.length; i++) {
+    for (let j = i; j < height.length; j++) {
+      maximumArea = Math.max(calcMaxRecArea([i,height[i]], [j,height[j]), maximumArea);
+    }
+  }
+  
+  return maximumArea;
+}
+```
+### Solution 2 - Two Pointers
+- Initialize two pointers - one at each end.
+- Calculate the area, then move the pointer with the less value inwards.
+```js
+// TC: O(n), SC: O(1)
+
+const calcMaxRecArea = (coordA, coordB) => {
+  const [x1, y1] = coordA;
+  const [x2, y2] = coordB;
+  return Math.abs((x1 - x2) * math.min(y1, y2));
+}
+
+const maxArea = (height) => {
+  let maximumArea = -Infinity;
+  
+  let left = 0;
+  let right = height.length - 1;
+  
+  while (left < right) {
+    maximumArea = Math.max(calcMaxRecArea([left,height[left]], [right,height[right]]), maximumArea);
+    if (height[left] <= height[right]) left++;
+    else right--;
+  }
+  
+  return maximumArea;
+}
+```
