@@ -195,3 +195,58 @@ const maxArea = (height) => {
   return maximumArea;
 }
 ```
+
+## 6. [Maximum Product Subarray](https://leetcode.com/problems/maximum-product-subarray/)
+### Solution 1 - Dynamic Programming
+- Keep track of the current maximum product and current minimum product.
+  - The current max and current min represents the max and min product of all the subarrays up to that number (excl. that number).
+  - Preserve the current min product to account for negative numbers.
+    - If there is an even number of negative numbers, it can end up resulting to the largest product.
+```js
+// TC: O(n), SC: O(1)
+
+const maxProduct = (nums) => {
+  let largestProduct = Math.max(...nums);
+  let currMax = 1;
+  let currMin = 1;
+  let temp;
+  
+  for (let num of nums) {
+    // Update the current max and min product (of all the possible subarrays) to this point, if necessary.
+    temp = currMax;
+    currMax = Math.max(num * currMax, num * currMin, num);
+    currMin = Math.min(num * temp, num * currMin, num);
+    // Update the largest product if necessary.
+    largestProduct = Math.max(currMax, currMin, largestProduct);
+  }
+  
+  return largestProduct;
+}
+```
+### Solution 2 - Two Pointer Approach (with a twist)
+- If all numbers are positive or there is an even number of negative numbers, the largest product will be the product of all the numbers.
+- If there is an odd number of negative numbers, **the subarray of the largest product must therefore be a prefix or suffix of the array, since it has to be *contiguous***.
+- Handle 0s by simply treating it as a delimiter for separate subarrays.
+```js
+// TC: O(n), SC: O(1)
+
+const maxProduct = (nums) => {
+  let largestProduct = nums[0];
+  let runningProductLeft = 1;
+  let runningProductRight = 1;
+  
+  for (let i = 0; i < nums.length; i++) {
+    // Handle 0s.
+    if (runningProductLeft === 0) runningProductLeft = 1;
+    if (runningProductRight === 0) runningProductRight = 1;
+    
+    // Update the running products of both ends.
+    runningProductLeft *= nums[i];
+    runningProductRight *= nums[nums.length - 1 - i];
+    // Update the alrgest product, if necessary.
+    largestProduct = Math.max(runningProductLeft, runningProductRight, largestProduct);
+  }
+  
+  return largestProduct;
+}
+```
