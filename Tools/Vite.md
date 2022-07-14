@@ -3,6 +3,8 @@
 ## Table of Contents
 - [What is Vite?](#what-is-vite)
 - [Getting Started](#getting-started)
+- [Notes](#notes)
+- [Reference](#reference)
 
 ## What is Vite?
 > ... a build tool that aims to provide a faster and leaner development experience for modern web projects.
@@ -34,7 +36,6 @@ npm run dev
 - Even with a lot of dependencies, the time to run the dev server does not change.
 - Instead of importing a single JS bundle file, it imports the actual source code.
   - Check the "Network" tab in dev tools.
-- It uses esbuild to transpile the code.
 ### Build for Production
 ```zsh
 npm run build
@@ -42,6 +43,11 @@ npm run build
 - Creates a `dist` folder containing the source code that has been bundled by Rollup.
 - Optimizations are automatically added.
   - Ex: automatic code-splitting for dynamic imports, CSS, etc.
+
+## Notes
+### TypeScript
+  - Vite does not perform type checking for TypeScript files. It only transpiles them because it assumes type checking is taken care of by the used IDE (in development) and build process (for production).
+  - It uses esbuild to transpile TypeScript code to JavaScript.
 
 ## Reference
 [Getting Started | Vite](https://vitejs.dev/guide/#overview)  
