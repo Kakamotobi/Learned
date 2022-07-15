@@ -150,6 +150,17 @@ let temp = obj[9] ? obj[9].includes(0) : "something else"; // undefined
 ```js
 const array = [[1,2,3], [7,7,7], [1,2,3]];
 array.filter((temp = {}, arr => !(temp[arr] = arr in temp)));
+// OR
+array.filter((temp = {}, arr => {
+  if (arr in t) {
+    t[arr] = arr;
+    return false; // It's a duplicate.
+  } else {
+    t[arr] = arr;
+    return true; // Keep this.
+  }
+}));
+
 ```
 ### Duplicate Objects in an Array
 ```js
