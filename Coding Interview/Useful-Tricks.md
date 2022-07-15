@@ -4,6 +4,7 @@
 - [Remainder/Modulo (%) Operator](#remaindermodulo--operator)
 - [Sorting Object Keys by their Values](#sorting-object-keys-by-their-values)
 - [Accessing a Value (two levels deep) of a Potentially Non-existent Property](#accessing-a-value-two-levels-deep-of-a-potentially-non-existent-property)
+- [Removing Duplicate Objects in an Array](#removing-duplicate-objects-in-an-array)
 - [Replacing All Occurrences of a Substring in a String](#replacing-all-occurrences-of-a-substring-in-a-string)
 - [Combinations and Permutations](#combinations-and-permutations)
 
@@ -141,6 +142,22 @@ let temp = obj[9] ? obj[9].includes(0) : "something else"; // undefined
 ```
 ### Reference
 [Optional chaining (?.) - JavaScript | MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining)  
+
+---
+
+## Removing Duplicate Objects in an Array
+### Duplicate Arrays in an Array
+```js
+const array = [[1,2,3], [7,7,7], [1,2,3]];
+array.filter((temp = {}, arr => !(temp[arr] = arr in temp)));
+```
+### Duplicate Objects in an Array
+```js
+const array = [{name: "tom", age: 2}, {name: "jerry", age: 2}, {name: "tom", age: 2}];
+array.filter((obj, idx, self) => {
+  return idx === self.findIndex(el => el.name === obj.name && el.age === obj.age);
+});
+```
 
 ---
 
