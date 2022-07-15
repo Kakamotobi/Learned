@@ -107,7 +107,7 @@ const containsDuplicate = (nums) => {
 ```
 ### Solution 3 - Sort
 - Sort the array in order.
-- If any number is the same as the number before it, there is are duplicates.
+- If any number is the same as the number before it, there are duplicates.
 ```js
 // TC: O(n log n), SC: O(1)
 
@@ -248,5 +248,73 @@ const maxProduct = (nums) => {
   }
   
   return largestProduct;
+}
+```
+
+## 7. [3Sum](https://leetcode.com/problems/3sum/)
+### Solution 1 - Brute Force
+- Find all possible triplets from the array.
+- Filter out the triplets that sum to 0.
+- Filter out duplicates.
+```js
+// TC: O(n^3), SC: O(n)
+
+const threeSum = (nums) => {
+  const triplets = [];
+  
+  for (i = 0; i < nums.length; i++) {
+    for (let j = i+1; j < nums.length; j++) {
+      for (let k = j+1; k < nums.length; k++) {
+        if (nums[i] + nums[j] + nums[k] === 0) {
+          triplets.push([nums[i], nums[j], nums[k]].sort((a,b) => a - b));
+        }
+      }
+    }
+  }
+  
+  return triplets.filter((temp = {}, (arr) => !(temp[arr] = arr in temp)));
+}
+```
+### Solution 2 - Sort
+- Sort the array.
+  - Now, duplicates are grouped together.
+  - This means that the duplicates as the first number of a triplet (in the sorted array) will always end up having the same triplet combination.
+    - Ex: `[-3,-3,-1,0,2,3]`.
+  - Since we do not want this, we need to skip them.
+    - Fortunately, sorting the array makes it easier to skip them.
+```js
+// TC: O(n^2), SC: O(n)
+
+const threeSum = (nums) => {
+  const triplets = [];
+  
+  nums.sort((a,b) => a - b);
+  
+  for (let i = 0; i < nums.length; i++) {
+    // If i is the same as before, skip it.
+    if (i > 0 && nums[i] === nums[i-1]) continue;
+    
+    let j = i + 1;
+    let k = nums.length - 1;
+    
+    // Find nums[j] and nums[k] so that they add up to sum with nums[i].
+    while (j < k) {
+      const sum = nums[i] + nums[j] + nums[k];
+      
+      if (sum < 0) j++;
+      else if (sum > 0) k--;
+      else if (sum === 0) {
+        // Found a valid triplet. 
+        triplets.push([nums[i], nums[j], nums[k]]);
+        // Check next j.
+        j++;
+        // If j is the same as before, skip it.
+        // This also automatically handles duplicate k.
+        while (j < k && nums[j] === nums[j-1]) j++;
+      }
+    }
+  }
+  
+  return triplets;
 }
 ```
