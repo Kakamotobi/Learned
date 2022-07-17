@@ -275,7 +275,7 @@ const threeSum = (nums) => {
   return triplets.filter((temp = {}, (arr) => !(temp[arr] = arr in temp)));
 }
 ```
-### Solution 2 - Sort
+### Solution 2 - Sort and Pointers
 - Sort the array.
   - Now, duplicates are grouped together.
   - This means that the duplicates as the first number of a triplet (in the sorted array) will always end up having the same triplet combination.
@@ -316,5 +316,48 @@ const threeSum = (nums) => {
   }
   
   return triplets;
+}
+```
+
+## 8. [Product of Array Except Self](https://leetcode.com/problems/product-of-array-except-self)
+### Solution 1 - Brute Force
+```js
+// TC: O(n^2), SC: O(n)
+
+const productExceptSelf = (nums) => {
+  const ans = [];
+  
+  for (let i = 0; i < nums.length; i++) {
+    const arrExclCurrNum = [...nums.slice(0,i), ...nums.slice(i+1)];
+    const product = arrExclCurrNum.reduce((prod, num) => prod * num, 1);
+    ans.push(product);
+  }
+  
+  return ans;
+}
+```
+### Solution 2 - Prefix and Suffix
+- Compute the product of the current number's prefix.
+- Compute the product of the current number's suffix.
+```js
+// TC: O(n), SC: O(n)
+
+const productExceptSelf = (nums) => {
+  const ans = [1]; // Initialize with 1 to account for the first number's prefix, which there isn't.
+  
+  // Prefix products.
+  for (let i = 1; i < nums.length; i++) {
+    ans.push(nums[i-1] * ans[i-1]);
+  }
+  
+  // Suffix products.
+  let suffixProd = 1;
+  for (let i = nums.length - 1; i >= 0; i--) {
+    ans[i] *= suffixProd;
+    // Update suffix product (for the next num).
+    suffixProd *= nums[i];
+  }
+  
+  return ans;
 }
 ```
