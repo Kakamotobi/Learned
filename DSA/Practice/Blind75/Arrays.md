@@ -361,3 +361,26 @@ const productExceptSelf = (nums) => {
   return ans;
 }
 ```
+
+## 9. [Find Minimum in Rotated Sorted Array](https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/)
+- Tweaked binary search.
+- For a rotated sorted array, the numbers of the left subarray are always greater than the numbers on the right subarray.
+- Aim is to place the left pointer on the minimum element.
+  - If the mid number belongs to the left subarray, update left to be the number after mid.
+  - Else if the mid number belongs to the right subarray, update right to be the mid number.
+```js
+// TC: O(log n), SC: O(1)
+
+const findMin = (nums) => {
+  let left = 0;
+  let right = nums.length - 1;
+  
+  while (left < right) {
+    const mid = Math.floor((left + right) / 2);
+    if (nums[mid] > nums[right]) left = mid + 1; // if nums[mid] belongs to the left subarray.
+    else right = mid; // if nums[mid] belongs to the right subarray.
+  }
+  
+  return nums[left];
+}
+```
