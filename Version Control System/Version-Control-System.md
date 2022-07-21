@@ -472,7 +472,12 @@
   - All proceeding commits are removed.
     - The branch pointer is moved backwards, eliminating the commits as if they never occured in the first place.
   - `git reset --hard <commit-hash>`
-    - Resets the repository back to a specific commit and removes the actual changes in the files.
+    - Resets the repository (HEAD) back to a specific commit and removes the actual changes in the files.
+    - Any changes (in tracked files) that were made after the specific commit is destroyed and removed from the local directory.
+    - Any untracked files are simply deleted.
+  - `git reset --soft <commit-hash>`
+    - Resets the repository (HEAD) back to a specific commit and keeps the changes in the files.
+    - Changes that were made after the specific commit are kept as "changes to be committed".
   - ***If you want to reverse commits that you have not shared with others, use reset.***
 - **`git revert <commit-hash>`**
   - Creates a brand new commit which reverses/undos the changes from the specified commit.
