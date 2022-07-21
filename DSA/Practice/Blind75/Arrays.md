@@ -384,3 +384,56 @@ const findMin = (nums) => {
   return nums[left];
 }
 ```
+
+## 10. [Search in Rotated Sorted Array](https://leetcode.com/problems/search-in-rotated-sorted-array/)
+- Determine if `mid` is in the "left" or "right" sorted subarray (`nums[left] <= nums[mid]` means mid is in "left" sorted subarray).
+  - Ex: `[4,5,6,7,0,1,2]`.
+- If `mid` is in the "left" sorted subarray, need to handle:
+  - `target > nums[mid]` &rarr; search "right" portion.
+    - Ex: if `nums[mid]` is `6` and `target` is `7`, search `[7,0,1,2]`.
+  - `target < nums[mid]` &rarr; two possibilities:
+    - `target >= nums[left]` &rarr; search "left" portion.
+      - Ex: if `nums[mid]` is `6` and `target` is `5`, search `[4,5]`.
+    - `target < nums[left]` &rarr; search "right" portion.
+      - Ex: if `nums[mid]` is `6` and `target` is `1`, search `[7,0,1,2]`.
+- Else if `mid` is in the "right" sorted subarray, need to handle:
+  - `target < nums[mid]` &rarr; search "left" portion.
+    - Ex: if `nums[mid]` is `1` and `target` is `0`, search `[4,5,6,7,0]`.
+  - `target > nums[mid]` &rarr; two possibilities:
+    - `target > nums[right]` &rarr; search "left" portion.
+      - Ex: if `nums[mid]` is `1` and `target` is `6`, search `[4,5,6,7,0]`.
+    - `target <= nums[right]` &rarr; search "right" portion.
+      - Ex: if `nums[mid]` is `1` and `target` is `2`, search `[2]`.
+```js
+// TC: O(log n), SC: O(1)
+
+const search = (nums, target) => {
+  let left = 0;
+  let right = nums.length - 1;
+  
+  while (left <= right) {
+    const mid = Math.floor((left + right) / 2);
+    
+    if (nums[mid] === target) return mid;
+    
+    // mid is in "left" sorted subarray.
+    if (nums[left] <= nums[mid]) {
+      if (target > nums[mid]) left = mid + 1;
+      else if (target < nums[mid]) {
+        if (target >= nums[left]) right = mid - 1;
+        else if (target < nums[left]) left = mid + 1;
+      }
+    }
+    // mid is in "right" sorted subarray.
+    else {
+      if (target < nums[mid]) right = mid - 1;
+      else if (target > nums[mid]) {
+        if (target > nums[right]) right = mid - 1;
+        else if (target <= nums[right]) left = mid + 1;
+      }
+    }
+  }
+  
+  return -1;
+}
+```
