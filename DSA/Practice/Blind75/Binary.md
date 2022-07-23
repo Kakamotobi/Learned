@@ -16,3 +16,20 @@ const getSum = (a, b) => {
   return a;
 }
 ```
+
+## 2. [Number of 1 Bits](https://leetcode.com/problems/number-of-1-bits/)
+- Objective: make `n` equal to `0`.
+  - If the rightmost bit is a "1", count.
+  - Update n by zerofill right shift (drop the least significant bit).
+```js
+const hammingWeight = (n) => {
+  let numOnes = 0;
+  
+  while (n !== 0) {
+    numOnes += n & 1;
+    n = n >>> 1;
+  }
+  
+  return numOnes;
+}
+```
