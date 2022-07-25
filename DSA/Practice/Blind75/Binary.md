@@ -33,3 +33,27 @@ const hammingWeight = (n) => {
   return numOnes;
 }
 ```
+
+## 3. [Reverse Bits](https://leetcode.com/problems/reverse-bits/)
+- Determine the rightmost bit of `n` and accumulate.
+  - Do this 32 times.
+- Note
+  - Given input is an unsigned integer.
+  - However, the left shift bitwise operator in JS returns a signed 32-bit integer.
+  - The signed integer can be converted back to unsigned by using the unsigned right shift (`>>>`).
+    - Ex: `num >>> 0` &rarr; sign bit becomes `0`.
+```js
+// TC: O(1), SC: O(1)
+
+const reverseBits = (n) => {
+  let reversed = 0;
+  
+  for (let i = 0; i < 32; i++) {
+    reversed = reversed << 1; // Left shift so that reversed's rightmost bit is 0.
+    if (n & 1 === 1) reversed++; // If n's rightmost bit is 1, "make" the reversed's rightmost bit 1 as well.
+    n = n >>> 1; // Drop n's rightmost bit.
+  }
+  
+  return reversed >>> 0; // Convert signed to unsigned.
+}
+```
