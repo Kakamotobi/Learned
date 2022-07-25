@@ -150,12 +150,16 @@
   console.log(a >> b); // 0b001 // 1 // Shift to the right `b` number of bits in the binary form of 5.
   console.log(c >> b); // -0b010 // -2 // Shift to the right `b` number of bits in the binary form of -5.
   ```
-##### Logical (Zero-fill) Right Shift (`>>>`)
+##### Unsigned (Zero-fill) Right Shift (`>>>`)
 - Shifts the first operand the second operand number of bits to the right.
   - The excess bits shifted off to the right are discarded.
   - Zero bits are shifted in from the left.
-    - The sign bit becomes `0`, therefore, the result will always be positive.
-    - Unlike the other bitwise operators, it returns an unsigned 32-bit integer.
+    - *The sign bit becomes `0`, therefore, the result will always be positive.*
+      - Tip: convert signed integer to unsigned.
+        ```js
+        signedInteger >>> 0; // all bits stay the same but the sign bit becomes `0`.
+        ```
+    - *Unlike the other bitwise operators, it returns an unsigned 32-bit integer.*
 - *For positive numbers only, shifting the original number right by one bit results to the original number / 2.*
   - Ex: `10 >>> 1` will result to `5`.
   - Ex: `-10 >>> 1` will result to `2147483643`.
