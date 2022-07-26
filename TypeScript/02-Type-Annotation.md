@@ -6,13 +6,20 @@
 
 ## Table of Contents
 - [Type Inference](#type-inference)
-- [Type Annotation for Variables](#type-annotation-for-variables)
-- [Type Annotation for Functions](#type-annotation-for-functions)
+- [Variable Type Annotation](#variable-type-annotation)
+- [Function Type Annotation](#function-type-annotation)
   - [Function Parameter Types](#function-parameter-types)
   - [Function Return Value Types](#function-return-value-types)
     - [`void` Return Type](#void-return-type)
     - [`never` Return Type](#never-return-type)
   - [Anonymous Functions](#anonymous-functions)
+- [Object Type Annotation](#object-type-annotation)
+  - [Excess Properties](#excess-properties)
+  - [Type Alias](#type-alias)
+  - [Nested Objects](#nested-objects)
+  - [Optional Properties](#optional-properties)
+  - [Readonly Modifier](readonly-modifier)
+  - [Intersection Types](#intersection-types)
 
 ## Type Inference
 - The TypeScript compiler can look at a variable declaration and determine what type should be inferred for the variable's value.
@@ -25,7 +32,7 @@ let num = 3;
 num = "three"; // ERROR - Type 'string' is not assignable to type 'number'.
 ```
 
-## Type Annotation for Variables
+## Variable Type Annotation
 - Syntax: `let myVar: type = value`
 ### Examples
 ```ts
@@ -42,7 +49,7 @@ mixed = {};
 mixed();
 ```
 
-## Type Annotation for Functions
+## Function Type Annotation
 ### Function Parameter Types
 - Specify the type of function parameters when defining a function.
 #### Examples
@@ -125,3 +132,145 @@ const colors = ["red", "orange", "yellow"];
 colors.map(color => color.toUpperCase());
 colors.map(color => color.push("?")); // Property 'push' does not exist on type 'string'.
 ```
+
+## Object Type Annotation
+- Accessing a property that is not defined, or performing operations without keeping types in mind will throw errors.
+### Examples
+- **Defining an object.**
+  ```ts
+  let coordinate: {x: number, y: number} = { x: 3, y: 2 };
+  ```
+- **Object as a parameter to a function.**
+  ```ts
+  const printName = (name: { first: string, last: string }) => {
+    return `Name: ${first} ${last}`;
+  }
+
+  printName({first: "Tom", last: "Jerry"}); // Name: Tom Jerry
+  ```
+- **Object as a return type for a function.**
+  ```ts
+  const randomCoordinate = (): { x: number, y: number } => {
+    return { x: 3, y: 2 };
+  }
+  ```
+### Excess Properties
+- **Passing in extra properties that were not declared will result to an error.**
+  - TypeScript simply checks to see if the mentioned properties are there.
+  - *For an inline object literal, TypeScript additionally checks if ONLY the mentioned properties are there.*
+  ```ts
+  const printName = (name: { first: string, last: string }) => {
+    return `Name: ${first} ${last}`;
+  }
+
+  printName({first: "Tom", last: "Jerry", age: 3}); // Error
+  ```
+- **However, passing in an object does not result to an error.**
+  ```ts
+  const person = { first: "Tom", last: "Jerry", age: 3, isAlive: true };
+  printName(person); // No Error
+  ```
+### Type Alias
+- It is possible to declare object type annotation separately in a type alias (the desired shape of the object).
+- This allows for more readable and reusable code.
+#### Example
+```ts
+type Point = {
+  x: number;
+  y: number;
+}
+
+let coordinate: Point = { x: 3, y: 2 };
+
+const randomCoorindate(): Point {
+  return { x: Math.random(), y: Math.random() };
+}
+
+const doubleCoord = (point: Point): Point => {
+  return { x: point.x * 2, y: point.y * 2};
+}
+```
+### Nested Objects
+- In complicated nested objects, type aliases could be useful.
+```ts
+const describePerson = (person: {
+  name: string,
+  age: number,
+  parentNames: {
+    mum: string,
+    dad: string,
+  }
+}) => {
+  return `Person: ${name}, Age: ${age}, Parents: ${parentNames.mum}, ${parentNames.dad}`;
+}
+
+describePerson({ name: "Tom", age: 3, parents: { mum: "Jerry", dad: "Spike" }});
+```
+### Optional Properties
+- Use the `?` syntax to indicate an optional property.
+```ts
+type Point = {
+  x: number;
+  y: number;
+  z?: number;
+}
+
+const myPoint: Point = { x: 3, y: 2, z: 1 };
+const myPoint: Point = { x: 3, y: 2 };
+```
+### Readonly Modifier
+- The `readonly` keyword marks properties on an object read-only.
+```ts
+type User = {
+  readonly id: number,
+  username: string
+}
+
+const user: User = {
+  id: 32323,
+  username: "Tom"
+}
+
+user.id = 11111; // Cannot assign to 'id' because it is a read-only property.
+```
+- **Readonly on Properties that are Objects**
+  - Readonly objects (object literal, arrays, etc.) are still mutable (because they are reference types). However, they cannot be reassigned entirely.
+### Intersection Types
+- A new type is created by intersecting (combining) existing types.
+  - This new type includes all features of the existing types.
+```ts
+type Circle = {
+  radius: number;
+}
+
+type Colorful = {
+  color: string;
+}
+
+type ColorfulCircle = Circle & Colorful;
+
+const smileyFace: ColorfulCircle = {
+  radius: 5,
+  color: "yellow"
+}
+```
+- It is also possible to add on to the intersecting types.
+  ```ts
+  type Cat = {
+    numLives: number
+  }
+
+  type Dog = {
+    breed: string
+  }
+
+  type CatDog = Cat & Dog & {
+    age: number
+  };
+
+  const tomSpike: CatDog = {
+    numLives: 7,
+    breed: "Bulldog",
+    age: 3
+  }
+  ```
