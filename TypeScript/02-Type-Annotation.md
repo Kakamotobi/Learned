@@ -194,17 +194,17 @@ const doubleCoord = (point: Point): Point => {
 - In complicated nested objects, type aliases could be useful.
 ```ts
 const describePerson = (person: {
-  name: string,
-  age: number,
+  name: string;
+  age: number;
   parentNames: {
-    mum: string,
-    dad: string,
+    mum: string;
+    dad: string;
   }
 }) => {
-  return `Person: ${name}, Age: ${age}, Parents: ${parentNames.mum}, ${parentNames.dad}`;
+  return `Person: ${person.name}, Age: ${person.age}, Parents: ${person.parentNames.mum}, ${person.parentNames.dad}`;
 }
 
-describePerson({ name: "Tom", age: 3, parents: { mum: "Jerry", dad: "Spike" }});
+describePerson({ name: "Tom", age: 3, parentNames: { mum: "Jerry", dad: "Spike" }});
 ```
 ### Optional Properties
 - Use the `?` syntax to indicate an optional property.
@@ -222,8 +222,8 @@ const myPoint: Point = { x: 3, y: 2 };
 - The `readonly` keyword marks properties on an object read-only.
 ```ts
 type User = {
-  readonly id: number,
-  username: string
+  readonly id: number;
+  username: string;
 }
 
 const user: User = {
@@ -257,15 +257,15 @@ const smileyFace: ColorfulCircle = {
 - It is also possible to add on to the intersecting types.
   ```ts
   type Cat = {
-    numLives: number
+    numLives: number;
   }
 
   type Dog = {
-    breed: string
+    breed: string;
   }
 
   type CatDog = Cat & Dog & {
-    age: number
+    age: number;
   };
 
   const tomSpike: CatDog = {
