@@ -20,6 +20,8 @@
   - [Optional Properties](#optional-properties)
   - [Readonly Modifier](readonly-modifier)
   - [Intersection Types](#intersection-types)
+- [Array Type Annotation](#array-type-annotation)
+  - [Multidimensional Arrays](#multidimensional-arrays)
 
 ## Type Inference
 - The TypeScript compiler can look at a variable declaration and determine what type should be inferred for the variable's value.
@@ -273,4 +275,49 @@ const smileyFace: ColorfulCircle = {
     breed: "Bulldog",
     age: 3
   }
+  ```
+
+## Array Type Annotation
+- Annotate array types using a type annotation followed by empty array brackets.
+- Types are not limited to primitives.
+  - Custom types (type aliases) can be used to annotate an array.
+### Examples
+- Arrays of one type.
+  ```ts
+  const strArr: string[] = ["hello", "tom"];
+  // OR
+  const strArr: Array<string> = ["hello", "tom"];
+  ```
+  ```ts
+  const numArr: number[] = [1, 2, 3, 4, 5];
+  // OR
+  const numArr: Array<number> = [1, 2, 3, 4, 5];
+  ```
+- Array of type "always empty array".
+  ```ts
+  const arr: [] = [];
+  
+  arr.push(1); // Argument of type 'number' is not assignable to parameter of type 'never'.
+  ```
+- Array of Type Alias
+  ```ts
+  type Point = {
+    x: number;
+    y: number
+  }
+  
+  const coords: Point[] = [];
+  coords.push({ x: 3, y: 2 }); 
+  coords.push({ x: 5 }); // Property 'y' is missing in type '{ x: number; }' but required in type 'Point'.
+  ```
+### Multidimensional Arrays
+- **2-Dimensional Array**
+  ```ts
+  // 2D array of strings
+  const board: string[][] = [["X", "O", "X"], ["X", "O", "X"], ["X", "O", "X"]];
+  ```
+- **3-Dimensional Array**
+  ```ts
+  // 3D array of numbers
+  const demo: number[][][] = [[[1]], [[2]], [[3]]];
   ```
