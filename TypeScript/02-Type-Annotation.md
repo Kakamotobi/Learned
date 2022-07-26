@@ -22,6 +22,12 @@
   - [Intersection Types](#intersection-types)
 - [Array Type Annotation](#array-type-annotation)
   - [Multidimensional Arrays](#multidimensional-arrays)
+- [Union Type](#union-type)
+  - [Union Type and Functions](#union-type-and-functions)
+    - [Type Conflicts](#type-conflicts)
+    - [Type Narrowing](#type-narrowing)
+  - [Union Type and Arrays](#union-type-and-arrays)
+  - [Union Type and Literal Type](#union-type-and-literal-type)
 
 ## Type Inference
 - The TypeScript compiler can look at a variable declaration and determine what type should be inferred for the variable's value.
@@ -320,4 +326,81 @@ const smileyFace: ColorfulCircle = {
   ```ts
   // 3D array of numbers
   const demo: number[][][] = [[[1]], [[2]], [[3]]];
+  ```
+
+## Union Type
+- Allows for multiple possible types for a value.
+- Not used when we know the type at runtime.
+### Example
+```ts
+type Point = {
+  x: number;
+  y: number;
+}
+
+type Location = {
+  lat: number;
+  long: number;
+}
+
+let coordinates: Point | Location = { x: 3, y: 2 };
+coordinates = { lat: 6, long: 5 };
+```
+### Union Type and Functions
+```ts
+const printAge = (age: number | string): string => {
+  return `You are ${age} years old.`;
+}
+
+printAge(3); // You are 3 years old.
+printAge("3"); // You are 3 years old.
+```
+#### Type Conflicts
+- Ex: If a number has been passed in, but the function calls a string method on that number, or vice versa.
+  ```ts
+  const calcTax = (price: number | string, tax: number) => {
+    return price * tax;
+  } // The left-hand side of an arithmetic operation must be of type 'any', 'number', 'bigint' or an enum type.
+  ```
+#### Type Narrowing
+- Handle the above problem by simply doing a type check.
+  ```ts
+  const calcTax = (price: number | string, tax: number): number => {
+    if (typeof price === "string") return parseFloat(price.replace("$", "")) * tax;
+    return price * tax;
+  }
+  ```
+### Union Type and Arrays
+```ts
+const arr: (number | string)[] = [1, "a", 2, 3, "b", "c"];
+```
+```ts
+const arr: (TypeA | TypeB)[] = [];
+```
+### Union Type and Literal Type
+- Literal types are not just types. They are also the values themselves.
+  ```ts
+  // The variable "zero"'s type is the number 0 (the literal value 0).
+  let zero: 0 = 0;
+
+  zero = 2; Type '2' is not assignable to type '0'.
+  ```
+- Combining literal types with union types can allow for fine-tuned type options by specifying the values that are allowed.
+  ```ts
+  let mood: "Happy" | "Sad" = "Happy";
+  mood = "Sad";
+  mood = "Hungry"; // Type '"Hungry"' is not assignable to type '"Happy" | "Sad"'.
+  ```
+  ```ts
+  type DayOfWeek = "Mon" | "Tue" | "Wed" | "Thu" | "Fri" | "Sat" | "Sun";
+  
+  let today: DayOfWeek = "Thur";
+  ```
+  ```ts
+  const giveAnswer = (answer: "yes" | "no" | "maybe") => {
+    return `The answer is ${answer}.`;
+  }
+  
+  giveAnswer("maybe"); // The answer is maybe.
+  giveAnswer("hello"); // Argument of type '"hello"' is not assignable to parameter of type '"yes" | "no" | "maybe"'.
   ```
