@@ -57,3 +57,63 @@ const reverseBits = (n) => {
   return reversed >>> 0; // Convert signed to unsigned.
 }
 ```
+
+## 4. [Mising Number](https://leetcode.com/problems/missing-number/)
+### Solution 1
+- Sort and look for any consecutive `0` or `1` as the LSB.
+```js
+// TC: O(n log n), SC: O(1)
+
+const missingNumber = (nums) => {
+  nums.sort((a,b) => a - b);
+  
+  // Edge case for if missing number is 0.
+  if (nums[0] !== 0) return 0;
+  
+  for (let i = 0; i < nums.length; i++) {
+    if ((nums[i] & 1) === (nums[i-1] & 1)) return i;
+  }
+  
+  // Edge case for if missing number is n.
+  return nums.length;
+}
+```
+### Solution 2
+- X ^ X is 0, and X ^ 0 is X.
+- Therefore, XOR-ing expected nums and given nums will result to the missing number.
+- Order does not matter.
+#### Implematation 1
+```js
+// TC: O(n), SC: O(1)
+
+const missingNumber = (nums) => {
+  let missingNum = 0;
+  
+  // XOR given nums.
+  for (let num of nums) {
+    missingNum = missingNum ^ num;
+  }
+  
+  // XOR expected nums.
+  for (let i = 0; i <= nums.length; i++) {
+    missingNum = missingNum ^ i;
+  }
+  
+  return missingNum;
+}
+```
+#### Implementation 2
+```js
+// TC: O(n), SC: O(1)
+
+const missingNumber = (nums) => {
+  let missingNum = nums.length;
+  
+  for (let i = 0; i <= nums.length; i++) {
+    missingNum = missingNum ^ nums[i]; // Given nums
+    missingNum = missingNum ^ i; // Expected nums
+  }
+  
+  return missingNum;
+}
+```
