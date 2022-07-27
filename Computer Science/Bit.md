@@ -101,6 +101,7 @@
   ```
 #### Bitwise XOR (`^`)
 - Returns a `1` in each bit position for which the corresponding bits of either but not both operands are `1`s.
+- i.e. if the bits are different, return `1`.
 - Example
   ```js
   const a = 5; // 0b101
