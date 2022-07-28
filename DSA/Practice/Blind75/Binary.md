@@ -22,6 +22,8 @@ const getSum = (a, b) => {
   - If the rightmost bit is a "1", count.
   - Update n by zerofill right shift (drop the least significant bit).
 ```js
+// TC: O(log n), SC: O(1)
+
 const hammingWeight = (n) => {
   let numOnes = 0;
   
@@ -58,7 +60,7 @@ const reverseBits = (n) => {
 }
 ```
 
-## 4. [Mising Number](https://leetcode.com/problems/missing-number/)
+## 4. [Missing Number](https://leetcode.com/problems/missing-number/)
 ### Solution 1
 - Sort and look for any consecutive `0` or `1` as the LSB.
 ```js
@@ -115,5 +117,29 @@ const missingNumber = (nums) => {
   }
   
   return missingNum;
+}
+```
+
+## 5. [Counting Bits](https://leetcode.com/problems/counting-bits/)
+### Solution 1
+- Same approach as [this](#2-number-of-1-bits).
+```js
+// TC: O(n log n), SC: O(1)
+
+const getNumOfOnes = (num) => {
+  let numOfOnes = 0;
+  while (num !== 0) {
+    if (num & 1 === 1) numOnes++;
+    num = num >>> 1;
+  }
+  return numOfOnes;
+}
+
+const countBits = (n) => {
+  const ans = [];
+  for (let i = 0; i <= n; i++) {
+    ans.push(getNumOfOnes(i));
+  }
+  return ans;
 }
 ```
