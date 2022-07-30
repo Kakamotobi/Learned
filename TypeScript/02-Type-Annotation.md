@@ -28,6 +28,8 @@
     - [Type Narrowing](#type-narrowing)
   - [Union Type and Arrays](#union-type-and-arrays)
   - [Union Type and Literal Type](#union-type-and-literal-type)
+  - [Tuple Type Annotation](#tuple-type-annotation)
+  - [Enum Type Annotation](#enum-type-annotation)
 
 ## Type Inference
 - The TypeScript compiler can look at a variable declaration and determine what type should be inferred for the variable's value.
@@ -404,3 +406,112 @@ const arr: (TypeA | TypeB)[] = [];
   giveAnswer("maybe"); // The answer is maybe.
   giveAnswer("hello"); // Argument of type '"hello"' is not assignable to parameter of type '"yes" | "no" | "maybe"'.
   ```
+
+## Tuple Type Annotation
+- Tuples are arrays of fixed lengths and ordered with a fixed set of types.
+- Tuples are a special type that is exclusive to TypeScript (not JavaScript).
+- *Important Note*
+  - After a tuple has been declared, TS does not prevent you from pushing on to the array despite not conforming to the annotation.
+### Examples
+```ts
+let myTuple: [number, string, boolean];
+
+myTuple = [3, "Tom", true];
+myTuple = ["Tom", true, 3]; // Type 'string' is not assignable to type 'number'.
+```
+```ts
+const rgbColor: [number, number, number] = [255, 255, 255];
+const rgbColor: [number, number, number] = [255, 255, "255"]; // Type 'string' is not assignable to type 'number'.
+const rgbColor: [number, number, number] = []; //Type '[]' is not assignable to type '[number, number, number]'. Source has 0 element(s) but target requires 3.
+```
+```ts
+type HTTPResponse = [number, string];
+
+const goodRes: HTTPResponse = [200, "OK"];
+
+// Array of Tuples
+const responses: HTTPResponse[] = [[202, "OK"], [404, "Not Found"]];
+```
+
+## Enum Type Annotation
+- Enums allow us to define a set of named constants.
+  - These constants can be given numeric or string values.
+- Enums are a special type that is exclusive to TypeScript (not JavaScript).
+- Use Case
+  - If a set of values is referenced frequently, it may be a good idea to use enums.
+  - Ex: up, down, left, right.
+- Enums actually make an impact on JS (they result in additional JS code).
+  - It is basically an object in JS.
+### Examples
+- **Numeric Enums**
+  - If numeric value is not specified.
+    ```ts
+    enum Responses {
+      yes, // 1
+      no, // 2
+      maybe, // 3
+    }
+    ```
+  - If numeric value is partially specified.
+    ```ts
+    enum Responses {
+      yes = 2, // 2
+      no, // 3
+      maybe, // 4
+    }
+    ```
+  - If numeric value is fully specified.
+    ```ts
+    enum Respones {
+      yes = 2, // 2
+      no = 10, // 10
+      maybe = 33, // 33
+    }
+    ```
+- **String Enums**
+  ```ts
+  enum Responses {
+    yes = "Yes",
+    no = "No",
+    maybe = "Maybe",
+  }
+  ```
+- **Heterogenous Enums**
+  ```ts
+  enum Responses {
+    yes = 0,
+    no = 1,
+    maybe = "Maybe",
+  }
+  ```
+- **Using Enums**
+  ```ts
+  enum OrderStatus {
+    PENDING,
+    SHIPPED,
+    DELIVERED,
+    RETURNED,
+  }
+  
+  // Example 1
+  const status = OrderStatus.DELIVERED;
+  
+  // Example 2
+  const isDelivered = (status: OrderStatus) => {
+    return status === OrderStatus.DELIVERED;
+  }
+  
+  isDelivered(OrderStatus.RETURNED);
+  ```
+### `const enum`
+- Unlike most other TS features, Enums actually make an impact on JS (they result in additional JS code).
+- Putting `const` in front of `enum` erases all existence of the `enum` that has been declared from the compiled JS and instead replaces every value that was referenced in that `enum` with the underlying value.
+#### Example
+```ts
+const enum OrderStatus {
+  PENDING,
+  SHIPPED,
+  DELIVERED,
+  RETURNED
+}
+```
