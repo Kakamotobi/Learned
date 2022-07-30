@@ -121,7 +121,7 @@ const missingNumber = (nums) => {
 ```
 
 ## 5. [Counting Bits](https://leetcode.com/problems/counting-bits/)
-### Solution 1
+### Solution 1 - Brute Force
 - Same approach as [this](#2-number-of-1-bits).
 ```js
 // TC: O(n log n), SC: O(1)
@@ -140,6 +140,29 @@ const countBits = (n) => {
   for (let i = 0; i <= n; i++) {
     ans.push(getNumOfOnes(i));
   }
+  return ans;
+}
+```
+### Solution 2 - Dynamic Programming
+- When the most significant bit changes, the proceeding bits repeat from the "top" (from `0`).
+  - Therefore, offset by MSB's bit place (Ex: 1, 2, 4, 8, 16, ...).
+  - This means there's no need to recalculate every bit.
+  - Simply, add `1` (MSB) and the value at the offset.
+- If number is a power of `2`, update the offset.
+```js
+const countBits = (n) => {
+  const ans = new Array(n+1).fill(0);
+  
+  let offset = 1;
+  
+  for (let i = 0; i <= n; i++) {
+    // Check if offset needs to be updated.
+    if (i === offset * 2) offset = i;
+    // Record the number of 1 bits in this number's binary representation.
+    // `1` represents the MSB.
+    ans[i] = 1 + ans[i - offset];
+  }
+  
   return ans;
 }
 ```
