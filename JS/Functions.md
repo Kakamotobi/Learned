@@ -63,6 +63,7 @@ bar.name // "baz"
   - *The `()` indicates that only one thing will be returned.*
 ### Arrow Functions and `this` Keyword
 - The keyword `this` when used inside of an arrow function will have the same value as the keyword `this` in the scope of where the function was created.
+  - i.e., arrow functions perform **lexical binding** and uses the surrounding scope as the scope of `this`.
 
 ## Immediately Invoked Function Expressions (IIFE)
 - A function is created at the same time it is called.
