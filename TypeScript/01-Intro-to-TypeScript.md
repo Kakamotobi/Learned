@@ -4,7 +4,7 @@
 - [What is it?](#what-is-it)
 - [Why use it?](#why-use-it)
 - [Installation](#installation)
-- [Compiling TS to JS](#compioling-ts-to-js)
+- [Compiling TS to JS](#compiling-ts-to-js)
 - [Other Notes](#other-notes)
 
 ## What is it?
@@ -43,7 +43,8 @@ npm i -g typescript
 ```
 
 ## Compiling TS to JS
-- This creates the same TS file but compiled to JS.
+- Use the `tsc` command to create the same TS file but compiled to JS.
+- It doesn't stop from compiling even if there are errors in the TS files.
 ```zsh
 tsc index.ts
 ```
