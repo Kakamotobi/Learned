@@ -152,6 +152,8 @@ const countBits = (n) => {
   - Simply, add `1` (MSB) and the value at the offset.
 - If number is a power of `2`, update the offset.
 ```js
+// TC: O(n), SC: O(1)
+
 const countBits = (n) => {
   const ans = new Array(n+1).fill(0);
   
@@ -169,6 +171,8 @@ const countBits = (n) => {
 }
 ```
 ```js
+// TC: O(n), SC: O(1)
+
 const countBits = (n) => {
   const ans = new Array(n+1).fill(0);
   
