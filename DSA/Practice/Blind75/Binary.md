@@ -38,7 +38,9 @@ const hammingWeight = (n) => {
 
 ## 3. [Reverse Bits](https://leetcode.com/problems/reverse-bits/)
 - Determine the rightmost bit of `n` and accumulate.
-  - Do this 32 times.
+  - Add one bit position (initialized to `0`) to the right.
+  - If `n`'s LSB is 1, change the `0` to `1`.
+  - Get rid of `n`s LSB.
 - Note
   - Given input is an unsigned integer.
   - However, the left shift bitwise operator in JS returns a signed 32-bit integer.
