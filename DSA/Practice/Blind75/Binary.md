@@ -166,3 +166,18 @@ const countBits = (n) => {
   return ans;
 }
 ```
+```js
+const countBits = (n) => {
+  const ans = new Array(n+1).fill(0);
+  
+  let pointer = 0;
+  
+  for (let i = 0; i <= n; i++) {
+    if (i === pointer * 2) pointer = 0;
+    ans[i] = 1 + ans[pointer];
+    pointer++;
+  }
+  
+  return ans;
+}
+```
