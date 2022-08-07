@@ -110,3 +110,69 @@ const mergeTwoLists = (list1, list2) => {
 }
 ```
 
+## 4. [Remove Nth Node From End of List](https://leetcode.com/problems/remove-nth-node-from-end-of-list/)
+### Solution 1
+- Find out the number of nodes in the linked list.
+- Place the pointer at the previous node of the target node and surgically remove the target node.
+```js
+// TC: O(n), SC: O(1)
+
+const removeNthFromEnd = (head, n) => {
+  let numNodes = 0;
+  let scout = head;
+  while (scout !== null) {
+    numNodes++;
+    scout = scout.next;
+  }
+  
+  // Edge Case: if target node is the first/head node (i.e. n === numNodes).
+  if (n === numNodes) {
+    let newHead = head.next;
+    head.next = null;
+    return newHead;
+  }
+  
+  // Get currNode to the node before the target node.
+  let currNode = head;
+  for (let i = 0; i < numNodes - n - 1; i++) {
+    currNode = currNode.next;
+  }
+  // Remove target node.
+  let targetNode = currNode.next;
+  currNode.next = targetNode.next;
+  targetNode.next = null;
+  
+  return head;
+}
+```
+### Solution 2 - Two Pointers (ft. Dummy Node)
+- Create a dummy node before `head`.
+- Use two pointers (offset by `n`) to place the "left" pointer to the node before the target node.
+```js
+// TC: O(n), SC: O(1)
+
+const removeNthFromEnd = (head, n) => {
+  const dummyNode = new ListNode(-1, head);
+  
+  // Initialize pointers.
+  let pointer1 = dummyNode;
+  let pointer2 = head;
+  // Offset pointer1 and pointer2 by n.
+  for (let i = 0; i < n; i++) {
+    pointer2 = pointer2.next;
+  }
+  
+  // Get pointer1 to the node before the target node.
+  while (pointer2 !== null) {
+    pointer1 = pointer1.next;
+    pointer2 = pointer2.next;
+  }
+  
+  // Remove target node.
+  const targetNode = pointer2.next;
+  pointer1.next = targetNode.next;
+  targetNode.next = null;
+  
+  return dummyNode.next;
+}
+```
