@@ -176,3 +176,91 @@ const removeNthFromEnd = (head, n) => {
   return dummyNode.next;
 }
 ```
+
+## 5. [Reorder List](https://leetcode.com/problems/reorder-list/)
+### Solution 1 - Use array
+- Accumulate all node values in an array.
+- Initialize pointers at each end (excl. index 0).
+- Alternate between each pointer by simply using the duality of odd/even numbers.
+  - The `right` pointer should go first.
+```js
+// TC: O(n), SC: O(n)
+
+const reorderList = (head) => {
+  const values = [];
+  let currNode = head;
+  while (currNode !== null) {
+    values.push(currNode.val);
+    currNode = currNode.next;
+  }
+  
+  currNode = head;
+  let left = 1;
+  let right = values.length - 1;
+  
+  for (let i = 0; i < values.length - 1; i++) {
+    if (i % 2 !== 0) {
+      currNode.next = new ListNode(values[left], null);
+      left++;
+    } else {
+      currNode.next = new ListNode(values[right], null);
+      right--;
+    }
+    currNode = currNode.next;
+  }
+  
+  return head;
+}
+```
+### Solution 2 - Reverse half and merge
+- Cut the linked list in half and reverse the back portion.
+- Merge the two halves together.
+```js
+// TC: O(n), SC: O(1)
+
+const reorderList = (head) => {
+  // Find the middle node.
+  let mid = head;
+  let fast = head;
+  while (fast && fast.next) {
+    mid = mid.next;
+    fast = fast.next.next;
+  }
+  
+  // Preserve the reference to the (mid+1)th node and sever the link between the front and back portions.
+    // Front Portion: 1 --> 2 --> 3 --> null
+    // Back Portion: 4 --> 5
+  let backPortion = mid.next;
+  mid.next = null;
+  
+  // Reverse the back portion.
+    // Back Portion: 5 --> 4 --> null
+  let prevNode = null;
+  let nextNode = null;
+  while (backPortion !== null) {
+    nextNode = backPortion.next;
+    backPortion.next = prevNode;
+    prevNode = backPortion;
+    backPortion = nextNode;
+  }
+  
+  // Merge the front and back portions together.
+  let left = head;
+  let right = prevNode;
+  let leftNext;
+  let rightNext;
+  while (left && right) {
+    // Preserve next nodes.
+    leftNext = left.next;
+    rightNext = right.next;
+    // Reorder.
+    left.next = right;
+    right.next = leftNext;
+    // Move to next nodes.
+    left = leftNext;
+    right = rightNext;
+  }
+  
+  return head;
+}
+```
