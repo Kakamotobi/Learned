@@ -300,7 +300,7 @@ const mergKLists = (lists) => {
   return head;
 }
 ```
-### Solution 2 - Merge Two at a Time
+### Solution 2 - Divide and Conquer (merge two at a time)
 - Merge the first two lists of `lists` and push the merged list back to `lists`.
 - Repeat this until there is less than one list remaining.
 ```js
