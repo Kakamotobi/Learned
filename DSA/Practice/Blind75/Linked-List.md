@@ -264,3 +264,80 @@ const reorderList = (head) => {
   return head;
 }
 ```
+
+## 6.[Merge k Sorted Lists](https://leetcode.com/problems/merge-k-sorted-lists/)
+### Solution 1 - Sort
+- Accumulate all the values into an array.
+- Sort the values.
+- Create a linked list using those values.
+```js
+// TC: O(km + n*logn), SC: O(n)
+  // k - the number of lists.
+  // m - the number of nodes in each list.
+  // n - the number of all nodes.
+
+const mergKLists = (lists) => {
+  const values = [];
+  for (let list of lists) {
+    while (list) {
+      values.push(list.val);
+      list = list.next;
+    }
+  }
+  
+  values.sort((a,b) => a - b);
+  
+  // Checking type handles:
+    // first number is 0.
+    // empty list and/or lists.
+  const head = typeof values[0] === "number" ? new ListNode(values[0]) : null;
+  let currNode = head;
+  for (let k = 1; k < values.length; k++) {
+    currNode.next = new ListNode(values[k]);
+    currNode = currNode.next;
+  }
+  
+  return head;
+}
+```
+### Solution 2 - Merge Two at a Time
+- Merge the first two lists of `lists` and push the merged list back to `lists`.
+- Repeat this until there is less than one list remaining.
+```js
+// TC: O(kn * logk), SC: O(1)
+  // k - the number of lists.
+  // n - the number of nodes in each list.
+
+const mergeTwoLists = (list1, list2) => {
+  // Initialize mergedHead to a dummy node.
+  let mergedHead = new ListNode(-1, null);
+  let currNode = mergedHead;
+
+  while (list1 && list2) {
+    if (list1.val <= list2.val) {
+      currNode.next = list1;
+      list1 = list1.next;
+    } else {
+      currNode.next = list2;
+      list2 = list2.next;
+    }
+    currNode = currNode.next;
+  }
+
+  currNode.next = list1 || list2;
+
+  return mergedHead.next;
+}
+
+const mergeKLists = function(lists) {
+  if (lists.length === 0) return null;
+
+  while (lists.length > 1) {
+    lists.push(mergeTwoLists(lists[0], lists[1]));
+    lists.shift();
+    lists.shift();
+  }
+
+  return lists[0];
+}
+```
