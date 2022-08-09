@@ -329,7 +329,7 @@ const mergeTwoLists = (list1, list2) => {
   return mergedHead.next;
 }
 
-const mergeKLists = function(lists) {
+const mergeKLists = (lists) => {
   if (lists.length === 0) return null;
 
   while (lists.length > 1) {
@@ -338,6 +338,31 @@ const mergeKLists = function(lists) {
     lists.shift();
   }
 
+  return lists[0];
+}
+```
+#### Alternative
+```js
+// TC: O(n * logk), SC: O(1)
+  // k - the number of lists.
+  // n - the number of nodes in each list.
+  // Execute O(n) step (merging two arrays), logk times.
+
+const mergeKLists = (lists) => {
+  if (lists.length === 0) return null;
+  
+  while (lists.length > 1) {
+    const mergedList = [];
+    
+    for (let i = 0; i < lists.length; i += 2) {
+      const list1 = lists[i];
+      const list2 = i + 1 < lists.length ? lists[i+1] : null;
+      mergedList.push(mergeTwoLists(list1, list2));
+    }
+    
+    lists = mergedList;
+  }
+  
   return lists[0];
 }
 ```
