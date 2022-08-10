@@ -9,6 +9,7 @@
     - [Option 2 - `include` and `exclude`](#option-2---include-and-exclude)
   - [`outDir` Option](#outdir-option)
   - [`target` Option](#target-option)
+  - [`lib` Option](#lib-option)
   - [`strict` Option](#strict-option)
 
 ## Compilation
@@ -64,17 +65,35 @@ tsc --init
 - Defaults to the location of the corresponding TS files.
 - Example
   - Compile all TS files in the `src` folder into the `dist` folder.
-```json
-{
-  "compilerOptions": {
-    "outDir": "./dist"
-  },
-  "include": ["src"]
-}
-```
+  ```json
+  {
+    "compilerOptions": {
+      "outDir": "./dist"
+    },
+    "include": ["src"]
+  }
+  ```
 ### `target` Option
 - Set the JS version to compile to.
 - Defaults to ES3.
+- *By default, the `target` that TS is set to will be the `lib` that TS uses.*
+### `lib` Option
+- Set a list of type definitions that TypeScript should know about.
+- By default, it knows about the type definitions for built-in JS APIs (Ex: `Math`), and browser environments (DOM).
+- This list is customizable to your needs.
+  - Ex: if you don't need to work with the DOM, you can choose to not include it.
+  - Ex: you can include more modern ES syntaxes as well.
+    - ES2021 includes the `replaceAll()` string method that TS may not currently know about.
+- Examples
+  - Compile to ES2016, exclude the DOM type definitions and include ES2021 type definitions.
+  ```json
+  {
+    "compilerOptions": {
+      "target": "es2016",
+      "lib": ["es2021"]
+    }
+  }
+  ```
 ### `strict` Option
 - Enables all strict type-checking options.
 - Defaults to `true`.
