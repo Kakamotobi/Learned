@@ -17,6 +17,8 @@ const isSameTree = (p, q) => {
 ## 2. [Maximum Depth of Binary Tree](https://leetcode.com/problems/maximum-depth-of-binary-tree/)
 ### Solution 1 - DFS
 ```js
+// TC: O(n), SC: O(n)
+
 const maxDepth = (root) => {
   if (root === null) return 0;
   
@@ -27,6 +29,8 @@ const maxDepth = (root) => {
 ```
 ### Solution 2 - BFS
 ```js
+// TC: O(n), SC: O(n)
+
 const maxDepth = (root) => {
   let depth = 0;
   
