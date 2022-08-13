@@ -52,3 +52,45 @@ const maxDepth = (root) => {
   return depth;
 }
 ```
+
+## 3. [Invert Binary Tree](https://leetcode.com/problems/invert-binary-tree/)
+### Solution 1 - DFS Postorder
+- Use DFS Postorder to traverse the leftmost node, then the rightmost node, then the node.
+```js
+// TC: O(n), SC: O(n)
+
+const invertTree = (root) => {
+  const dfs = (node) => {
+    if (node === null) return;
+    
+    if (node.left) dfs(node.left);
+    if (node.right) dfs(node.right);
+    
+    [node.left, node.right] = [node.right, node.left];
+  }
+  
+  dfs(root);
+  
+  return root;
+}
+```
+### Solution 2 - BFS
+```js
+// TC: O(n), SC: O(n)
+
+const invertTree = (root) => {
+  if (root === null) return null;
+  
+  const queue = [root];
+  let currNode;
+  while (queue.length > 0) {
+    currNode = queue.shift();
+    [currNode.left, currNode.right] = [currNode.right, currNode.left];
+    
+    if (currNode.left) queue.push(currNode.left);
+    if (currNode.right) queue.push(currNode.right);
+  }
+  
+  return root;
+}
+```
