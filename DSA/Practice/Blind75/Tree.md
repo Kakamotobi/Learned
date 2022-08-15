@@ -94,3 +94,31 @@ const invertTree = (root) => {
   return root;
 }
 ```
+
+## 4. [Subtree of Another Tree](https://leetcode.com/problems/subtree-of-another-tree/)
+- Traverse through `root` and if the current node's value is the same as `subRoot`'s (head's) value.
+```js
+// TC: O(n*m), SC: O(1)
+  // n: the number of nodes in root.
+  // m: the number of nodes in subRoot.
+
+const isSubtree = (root, subRoot) => {
+  // If the nodes are the same, recursive call will keep going until the end (both nodes are null).
+  const isSame = (treeNode, subtreeNode) => {
+    if (treeNode === null && subtreeNode === null) return true;
+    if (treeNode === null || subtreeNode === null) return false;
+    if (treeNode.val !== subtreeNode.val) return false;
+    return isSame(treeNode.left, subtreeNode.right) && isSame(treeNode.right, subtreeNode.right);
+  }
+  
+  // Return true if subtree exists, false if not.
+  // The `||` guarantees true if a subtree has been found anywhere in the tree.
+  const dfs = (node) => {
+    if (node === null) return false;
+    if (node.val === subRoot.val && isSame(node, subRoot)) return true;
+    return dfs(node.left) || dfs(node.right);
+  }
+  
+  return dfs(root);
+}
+```
