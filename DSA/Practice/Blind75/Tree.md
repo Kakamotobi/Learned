@@ -122,3 +122,20 @@ const isSubtree = (root, subRoot) => {
   return dfs(root);
 }
 ```
+
+## 5. [Lowest Common Ancestor of BST](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/)
+- The `root` is guaranteed to be a common ancestor so start loop from there.
+- If the current node is either `p` or `q`, return current node.
+- If `p` or `q` split up from current node, return current node.
+```js
+// TC: O(log n), SC: O(1)
+
+const lowestCommonAncestor = (root, p, q) => {
+  let currNode = root;
+  while (true) {
+    if (p.val < root.val && q.val < root.val) currNode = currNode.left;
+    else if (p.val > root.val && q.val > root.val) currNode = currNode.right;
+    else return currNode;
+  }
+}
+```
