@@ -139,3 +139,35 @@ const lowestCommonAncestor = (root, p, q) => {
   }
 }
 ```
+
+## 6. [Binary Tree Level Order Traversal](https://leetcode.com/problems/binary-tree-level-order-traversal/)
+- Use BFS.
+  - At the start of an iteration, the nodes in `queue` represents all the nodes in the current level.
+  - However, the next level's nodes are added to `queue` in the process.
+```js
+// TC: O(n), SC: O(n)
+
+const levelOrder = (root) => {
+  const ans = [];
+  
+  const queue = [root];
+  
+  while (queue.length > 0) {
+    const currLevel = [];
+    const numNodesInCurrLevel = queue.length;
+    
+    for (let i = 0; i < numNodesInCurrLevel; i++) {
+      const currNode = queue.shift();
+      
+      if (currNode !== null) {
+        currLevel.push(currNode.val);
+        queue.push(currNode.left, currNode.right);
+      }
+    }
+    
+    if (currLevel.length > 0) ans.push(currLevel);
+  }
+  
+  return ans;
+}
+```
