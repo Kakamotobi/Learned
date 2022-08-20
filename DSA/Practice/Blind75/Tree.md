@@ -171,3 +171,23 @@ const levelOrder = (root) => {
   return ans;
 }
 ```
+
+## 7. [Construct Binary Tree from Preorder and Inorder Traversal](https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/)
+- `preorder[0]` is always the root of the tree.
+- The nodes before `preorder[0]` in `inorder` are on the left of the root.
+- The nodes after `preorder[0]` in `inorder` are on the right of the root.
+```js
+// TC: O(n), SC: O(n)
+
+const buildTree = (preorder, inorder) => {
+  if (preorder.length === 0 || inorder.length === 0) return null;
+  
+  const root = preorder[0];
+  const rootPos = new TreeNode(preorder[0]);
+  
+  root.left = buildTree(preorder.slice(1, rootPos + 1), inorder.slice(0, rootPos + 1));
+  root.right = buildTree(preorder.slice(rootPos + 1), inorder.slice(rootPos + 1));
+  
+  return root;
+}
+```
