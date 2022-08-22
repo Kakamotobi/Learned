@@ -191,3 +191,25 @@ const buildTree = (preorder, inorder) => {
   return root;
 }
 ```
+
+## 8. [Validate Binary Search Tree](https://leetcode.com/problems/validate-binary-search-tree/)
+- Valid BST condition for each node.
+  - `node.left < node < node.right`.
+  - If node is a "left" child:
+    - `-Infinity < node < parentNode`.
+  - If node is a "right" child:
+    - `parentNode < node < Infinity`.
+```js
+// TC: O(n), SC: O(n)
+
+const isValidBST = (root) => {
+  const dfs = (node, leftBound, rightBound) => {
+    if (node === null) return true;
+    if (!(leftBound < node.val && node.val < rightBound)) return false;
+    
+    return dfs(node.left, leftBound, node.val) && dfs(node.right, node.val, rightBound);
+  }
+  
+  return dfs(root, -Infinity, Infinity);
+}
+```
