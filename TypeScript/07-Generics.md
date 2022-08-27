@@ -4,6 +4,8 @@
 - [What are Generics?](#what-are-generics)
 - [Some Built-in Generics](#some-built-in-generics)
 - [Writing Generics](#writing-generics)
+- [Inferred Generics](#inferred-generics)
+- [Generics in `.tsx` Files](#generics-in-tsx-files)
 
 ## What are Generics?
 - Allows us to define reusable functions and classes that work with multiple types rather than a single type.
@@ -82,3 +84,25 @@ function getRandomElement<T>(list: T[]): T {
 getRandomElement<string>(["a", "b", "c"]);
 getRandomElement<number>([1, 2, 3]);
 ```
+
+## Inferred Generics
+- TS does not always have to be given the parameter type as it will infer it by looking at the argument.
+```ts
+getRandomElement(["a", "b", "c"]);
+
+// same as: getRandomElement<string>(["a", "b", "c"]);
+```
+
+## Generics in `.tsx` Files
+- TS can get confused when a generic function is declared in arrow syntax.
+  ```tsx
+  const getRandomElement = <T>(list: T[]): T => { // Leads to TS error.
+    // ...
+  }
+  ```
+- To solve this, add a trailing comma to the parameter type.
+  ```tsx
+  const getRandomElement = <T,>(list: T[]): T => { // Leads to TS error.
+    // ...
+  }
+  ```
