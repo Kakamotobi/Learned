@@ -3,6 +3,7 @@
 ## Table of Contents
 - [What are Generics?](#what-are-generics)
 - [Some Built-in Generics](#some-built-in-generics)
+- [Writing Generics](#writing-generics)
 
 ## What are Generics?
 - Allows us to define reusable functions and classes that work with multiple types rather than a single type.
@@ -46,4 +47,38 @@ const inputEl = document.querySelector<HTMLInputElement>("#username");
 
 inputEl.value = "Blahblah"; // Object is possibly 'null'.
 inputEl?.value = "Blahblah";
+```
+
+## Writing Generics
+### Example 1
+- Identity Function: accepts some argument and returns that argument.
+  ```ts
+  function numberIdentity(item: number): number {
+    return item;
+  }
+
+  function stringIdentity(item: string): string {
+    return item;
+  }
+  ```
+- The above can be written as a Generic.
+  - Using this generic function, TS knows to return the same type that is received as an argument.
+  ```ts
+  function identity<Type>(item: Type): Type {
+    return item;
+  }
+
+  identity<string>("tom");
+  identity<string>(3); // Argument of type 'number' is not assignable to parameter of type 'string'.
+  ```
+### Example 2
+```ts
+// List of type T.
+function getRandomElement<T>(list: T[]): T {
+  const randIdx = Math.floor(Math.random() * list.length);
+  return list[randIdx];
+}
+
+getRandomElement<string>(["a", "b", "c"]);
+getRandomElement<number>([1, 2, 3]);
 ```
