@@ -64,6 +64,9 @@ npm i webpack webpack-cli -D
   - Specifies the transformations for the different type of files.
   - `test`: the target files (using regex to find particular extensions).
   - `loader`: the transformation (found in node_modules by webpack) to be applied to the target files.
+    - `loader`s provide a way to handle any kind of files that are not plain JavaScript.
+    - Use cases include: TypeScript, markdown, various css preprocessors.
+    - Ex: SASS --> CSS --> JS --> Eventually Injected into HTML.
   - `options`: the particular options to be used for the loader.
 #### Example
 ```js
