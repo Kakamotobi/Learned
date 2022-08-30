@@ -54,14 +54,15 @@ node app.js
   - Ex: package for React, package for Express, package for making rainbow text, etc.
 - A command line tool that we can use to easily install and manage those packages in our Node projects.
 ### Clarifications
-- Yarn - another JavaScript package manager.
-- Homebrew - a package management system that maintains the installation of software on maxOS and Linux.
-- NPX
-  - An npm package runner that was introduced from npm@5.2.0.
+- **Yarn** - another JavaScript package manager.
+- **Homebrew** - a package management system that maintains the installation of software on macOS and Linux.
+- **Node Package Execute (NPX)**
+  - An NPM package runner that was introduced and included in NPM since npm@5.2.0.
   - The same way npm makes it easy to install and manage dependencies hosted on the registry, npx makes it easy to use CLI tools and other executables hosted on the registry.
   - *Unlike NPM, which installs packages either globally or locally, NPX installs the package on your local machine while executing the package but then proceeds to delete it.*
-    - Therefore, it is useful for when using packages without having to have the packages remain on your local machine.
+    - Therefore, it is useful for when using packages without having to have the packages remain on your local machine (one-time usage packages).
     - For example, instead of installing `create-react-app` globally (which you will have to update versions manually), running `npx create-react-app app-name` when starting a project will ensure that you are using the latest version.
+- **Node Version Manager (NVM)** - a version manager for Node.js.
 ### Installing Packages (in the current directory)
 ```zsh
 npm install packageName
