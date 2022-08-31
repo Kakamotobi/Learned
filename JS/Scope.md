@@ -1,8 +1,15 @@
 # Scope
 - The location where a variable is defined dictates where we have access to that variable.
 
+## Table of Contents
+- [Function Scope](#function-scope)
+- [Block Scope](#block-scope)
+- [Lexical Scope](#lexical-scope)
+	- [Closure](#closure)
+- [Module Scope](#module-scope)
+
 ## Function Scope
-- Variables that are defined inside of a function are scoped to that function. So, it can't be accessed outside of the function.
+- Variables that are defined inside of a function are scoped to that function. So, they cannot be accessed outside of the function.
 
 ## Block Scope
 - Conditionals, loops, etc.
@@ -49,6 +56,10 @@
 	```
   - For `myFunc`, which is a reference to `outer()`, its instance of `inner()` still holds a reference to its lexical environment (the `name` variable) - closure. Therefore, `myFunc` still works as expected.
   - Henceforth changes to the closure will remain.
+
+## Module Scope
+- Variables that are defined inside of a module are scoped to that module.
+- Unlike function scopes, module scopes can make their variables accessible by other modules as well (`import`, `export`).
 
 ## Reference
 [Closures - MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures)  
