@@ -213,3 +213,49 @@ const isValidBST = (root) => {
   return dfs(root, -Infinity, Infinity);
 }
 ```
+
+## 9. [Kth Smallest Element in a BST](https://leetcode.com/problems/kth-smallest-element-in-a-bst/)
+### Solution 1 - Recursive Inorder Traversal
+- Collect the first `k` values through inorder traversal.
+```js
+// TC: O(k+1), SC: O(k+1)
+
+const kthSmallest = (root, k) => {
+  const values = [];
+  
+  const dfsInorder = (node) => {
+    if (values.length < k) {
+      if (node.left) dfsInorder(node.left);
+      values.push(node.val);
+      if (node.right) dfsInorder(node.right);
+    }
+  }
+  
+  dfsInorder(root);
+  
+  return values[k-1];
+}
+```
+### Solution 2 - Iterative Inorder Traversal
+```js
+// TC: O(k), SC: O(k)
+
+const kthSmallest = (root, k) => {
+  const stack = [];
+  let currNode = root;
+  
+  while (currNode !== null || stack.length > 0) {
+    // Traverse to the leftmost node.
+    while (currNode !== null) {
+      stack.push(currNode);
+      curNode = currNode.left;
+    }
+    // Once reached the leftmost node, pop from stack (to get the smallest number).
+    currNode = stack.pop();
+    // Check k.
+    if (--k === 0) return currNode.val;
+    // Move on to the right node.
+    currNode = currNode.right;
+  }
+}
+```
