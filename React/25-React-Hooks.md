@@ -10,7 +10,7 @@
   - [`useRef()`](#useref)
   - [`useReducer()`](#usereducer)
   - [`useMemo()`](#usememo)
-  - [`useCallbac()`](#usecallback)
+  - [`useCallback()`](#usecallback)
   - [`useLayoutEffect()`](#uselayouteffect)
   - [`useDebugValue()`](#usedebugvalue)
   - [`useId()`](#useid)
@@ -139,36 +139,110 @@ export default SWMovies;
   - `useContext` is a cleaner replacement for `<Context.Consumer></Context.Consumer>`.
 #### Example
 - **Setting Up Context API**
-```js
-import { createContext } from "react";
-import MoodEmoji from "MoodEmoji.js";
+  ```js
+  // context.js
+  
+  import { createContext, useState } from "react";
 
-const moods = {
-  happy: "😀",
-  sad: "😔"
-}
+  const themes = {
+    light: {
+      fontColor: "#000",
+      backgroundColor: "#fff",
+    },
+    dark: {
+      fontColor: "#fff",
+      backgroundColor: "#000",
+    },
+  };
 
-// Create a Context.
-const MoodContext = createContext(moods);
+  // Create a context object.
+  const ThemeContext = createContext();
 
-function App(props) {
-  return (
-    <MoodContext.Provider value={moods.happy}>
-      <MoodEmoji />
-    </MoodContext.Provider>
+  // Create a provider for the context object.
+  const ThemeProvider = (props) => {
+    // Initialize "theme" state.
+    const [theme, setTheme] = useState(themes.dark);
+
+    const changeTheme = () => {
+      setTheme(theme === themes.light ? themes.dark : themes.light);
+    };
+
+    return (
+      // Pass in the hook as the value for the Provider.
+      <ThemeContext.Provider value={{ theme, changeTheme }}>
+        {props.children}
+      </ThemeContext.Provider>
+    );
+  };
+
+  export { ThemeContext, ThemeProvider };
+  ```
+  ```js
+  // index.js
+  
+  import React from "react";
+  import ReactDOM from "react-dom/client";
+  import { ThemeProvider } from "./context.js";
+  import App from "./App.js";
+  
+  ReactDOM.createRoot(document.getElementById("root")).render(
+    <React.StrictMode>
+      <ThemeProvider>
+        <App />
+      </ThemeProvider>
+    </React.StrictMode>
   )
-}
-```
+  ```
+  ```js
+  // App.js
+  
+  import Navbar from "./Navbar";
+  
+  function App() {
+    return (
+      <div className="App">
+        <Navbar />
+      </div>
+    )
+  }
+  
+  export default App;
+  ```
 - **Using the `useContext` Hook**
-```js
-function MoodEmoji() {
-  // Consume context value from the nearest parent provider.
-  const mood = useContext(MoodContext);
-  return <p>{ mood }</p>
-}
+  ```js
+  // Navbar.js
+  
+  import { useContext } from "react";
+  import { ThemeContext } from "./context.js";
 
-export default MoodEmoji;
-```
+  function Navbar() {
+    // Use the `useContext` hook to access the context.
+    const { theme, changeTheme } = useContext(ThemeContext);
+
+    const handleChangeTheme = () => {
+      toggleTheme();
+    };
+
+    return (
+      <>
+        <nav
+          style={{
+            color: theme.fontColor,
+            backgroundColor: theme.backgroundColor,
+          }}
+        >
+          <ul>
+            <li>Home</li>
+            <li>About</li>
+          </ul>
+        </nav>
+        <button onClick={handleChangeTheme}>Change Theme</button>
+      </>
+    );
+  }
+
+  export default Navbar;
+  ```
 - Refer [here](https://github.com/Kakamotobi/Learned/blob/main/React/Context-API.md#hooks-based-approach).
 
 ## Additional Hooks
