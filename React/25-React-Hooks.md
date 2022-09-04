@@ -20,9 +20,7 @@
   - [Example 2 - Controlled Inputs in Forms](#example-2---controlled-inputs-in-forms)
 
 ## What are Hooks?
-- Hooks are essentially low-level primitives or building blocks of React that give you special abilities that you otherwise would not have in Vanilla JS.
-- Hooks allow us to use state and other React features without writing a class.
-  - Therefore, allowing us to write functional components with all the featuers of a class-based component.
+- **Hooks are functions for function components that "hook into" React's state and lifecycle features, which was only possible in class components until React version 16.8.**
 - Hooks allow us to write code that is shorter and easier to understand, and also reusable.
 - Notes
   - Hooks are functions that are prefixed with "use".
@@ -30,7 +28,7 @@
     - Except for when building your own custom hooks.
 ### Why do Hooks exist?
 - In the past, stateful logic was tightly coupled to a class-based component.
-  - Therefore, in order to work with reactive data, you needed to create a component.
+  - Therefore, in order to work with reactive data, you needed to create a class.
   - This resulted into a complex tree of nested components.
   - Sharing any logic required some frustrating solutions like higher ordered components and render props (patterns where components are passed in as arguments to other components).
 
