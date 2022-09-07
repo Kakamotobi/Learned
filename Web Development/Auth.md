@@ -127,6 +127,7 @@
 6. App B contacts app A's authorization server directly (not using the user's browser) with the client ID, client secret, and authorization code.
 7. App A's authorization server verifies the information and then sends an ID token and an access token to app B.
 8. App B should verify that the ID token was indeed sent by App A.
+    - Verify the JWT signature, the `aud` claim, the `exp` claim, and the `iss` claim.
     - App B can also use the access token to send requests to app A's resource server for additional information.
 
 ## Authorization
