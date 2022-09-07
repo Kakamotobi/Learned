@@ -75,10 +75,25 @@
       - a body/payload if any (typically in JSON).
 ### GraphQL
 - Introduced in 2015.
-- GraphQL is a query language specificially designed for APIs.
+- It is a query language that allows frontend (app) to communication with backend (API).
 - It prioritizes providing only the data that the client requested.
 - It serves as the single endpoint that is able to query to multiple databases, microservices, and APIs.
-  - This helps frontend developers develop projects more quickly.
+- GraphQL gives frontend developers more flexibility in structuring queries, and it is up to backend developers to write code to resolve the queries.
+- The Apollo Client is the most popular way to use GraphQL in the frontend.
+  - A state management library that allows you to write GraphQL queries, then see the results automatically update in your UI.
+#### GraphQL vs. REST API
+- For REST APIS, each request is mapped to its own unique endpoint, and each response from the server will contain the full JSON payload with everything that is needed.
+  - Excess/unnecessary data is just filtered out in the frontend code.
+- For GraphQL, instead of having multiple endpoints, there is a single entry point into the API.
+  - Therefore, the actual query sent from the frontend determines what the backend will return (not based on an endpoint or any specific mapping like REST).
+  - Only the requested fields of data is returned, despite requesting for multiple different resource entities.
+#### How it Works
+1. Define a Schema for your data.
+2. Inform GraphQL how to fetch (query) and supply that Schema.
+    - A query has the same shape that is expected to receive back from the API as JSON.
+    - On the server, GraphQL also functions as a runtime for executing incoming queries.
+      - The server defines types that are available and resolvers that actually fetch the data from a data source (Ex: DB).
+
 
 ## Reference
 [What is an Application Proramming Interface (API) | IBM](https://www.ibm.com/cloud/learn/api)  
@@ -87,5 +102,6 @@
 [SOAP - IBM Documentation](https://www.ibm.com/docs/en/wasdtfe?topic=applications-soap)  
 [What is a REST API? | IBM](https://www.ibm.com/cloud/learn/rest-apis)  
 [RESTful APIs in 100 Seconds // Build an API from Scratch with Node.js Express - YouTube](https://www.youtube.com/watch?v=-MTSQjw5DrM&ab_channel=Fireship)  
+[GraphQL Basics - Build an app with the SpaceX API - YouTube](https://www.youtube.com/watch?v=7wzR4Ig5pTI&ab_channel=Fireship)  
 [The Ultimate Guide to API Architecture: REST, SOAP or GraphQL? | DA-14](https://da-14.com/blog/ultimate-guide-api-architecture-rest-soap-or-graphql)  
 [SOAP vs REST vs gRPC vs GraphQL - DEV Community](https://dev.to/andreidascalu/soap-vs-rest-vs-grpc-vs-graphql-1ib6)  
