@@ -75,6 +75,16 @@
 ### Token-based Authentication
 - Use of encrypted security tokens to verify a user's identity.
 - **The authentication state (JWT) is handled on the client.**
+#### Token Storage on Client and Security
+##### Encrypted Http-Only Cookie
+- Upon first authentication, return the cookie instead of the tokens.
+- You can set the lifetime on these cookies to limit the logged in state.
+- Simply log a user out by deleting the cookie.
+- Encrypt the cookie with a key that is stored in the server just in case the user's computer is compromised.
+- *Notes*
+  - Some OAuth implementations do not support accepting cookies (only support sending via the Authorization header). In this case, after the token is decrypted, use a middleware to extract the token, and then add an Authorization header on the inbound request.
+##### CSRF Protection
+- Use a CSRF token and API key to encode the JWT to ensure that the requests are actually coming from your application.
 #### Flow
 1. User submits username and password to the server (HTTP request).
 2. The server generates a JWT. Then, it sends the JWT to the client (HTTP response).
@@ -274,6 +284,7 @@
 ## Reference
 [Stateless protocol - Wikipedia](https://en.wikipedia.org/wiki/Stateless_protocol)  
 [Authentication vs. Authorization - Auth0](https://auth0.com/docs/get-started/identity-fundamentals/authentication-and-authorization)  
+[Simple and Secure API Authentication for SPAs | by Josh Krawczyk | Medium](https://medium.com/@sadnub/simple-and-secure-api-authentication-for-spas-e46bcea592ad)  
 [OpenID Connect Protocol - Auth0](https://auth0.com/docs/authenticate/protocols/openid-connect-protocol)  
 [ID Token and Access Token: What Is the Difference? - Auth0](https://auth0.com/blog/id-token-access-token-what-is-the-difference/)  
 [Understanding OAuth: What Happens When You Log Into a Site with Google, Twitter, or Facebook](https://lifehacker.com/understanding-oauth-what-happens-when-you-log-into-a-s-5918086)  
