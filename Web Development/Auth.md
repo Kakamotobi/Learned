@@ -10,6 +10,7 @@
   - [OpenID Connect(OIDC) Protocol](#openid-connectoidc-protocol)
 - [Authorization](#authorization)
   - [OAuth 2.0](#oauth-20)
+- [Persistent Authentication](#persistent-authentication)
 - [Session Management](#session-management)
   - [Cookie and Session](#cookie-and-session)
     - [Cookie](#cookie)
@@ -77,6 +78,7 @@
 - **The authentication state (JWT) is handled on the client.**
 #### Token Storage on Client and Security
 ##### Encrypted Http-Only Cookie
+- An Http-Only Cookie is a cookie that prevents the frontend code from reading or writing to the cookie header, effectively blocking access to the contents of the cookie (not vulnerable to cross-site scripting(XSS) attacks).
 - Upon first authentication, return the cookie instead of the tokens.
 - You can set the lifetime on these cookies to limit the logged in state.
 - Simply log a user out by deleting the cookie.
@@ -202,6 +204,14 @@
   - Scenario 2: User created an account using GitHub OAuth (no password saved in DB). User tries to login with email and password (which does not exist in DB).
     - Tell the user to login using GitHub (no password needs to be stored in the DB)?
       - Ex: "There is an account by that email but no password. Login with GitHub".
+
+## Persistent Authentication
+### Storing Session ID on Server and Client sends Cookies ([Session Management](#session-management))
+- Use Http-Only cookies to avoid Cross-Site Scripting(XSS) attacks.
+- But this is still vulnerable to Cross-Site Request Forgery(CSRF) attacks.
+### Storing Session Information on Client
+- Not very much concerned about CSRF attacks.
+- But this is still vulnerable to XSS attacks, since an attacker may be able to see the user session information in the browser.
 
 ## Session Management
 ### Cookie and Session
