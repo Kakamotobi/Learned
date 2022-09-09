@@ -10,6 +10,7 @@
   - [OpenID Connect(OIDC) Protocol](#openid-connectoidc-protocol)
 - [Authorization](#authorization)
   - [OAuth 2.0](#oauth-20)
+  - [Proof Key for Code Exchange(PKCE) with OAuth 2.0](#proof-key-for-code-exchangepkce-with-oauth-20)
 - [Persistent Authentication](#persistent-authentication)
 - [Session Management](#session-management)
   - [Cookie and Session](#cookie-and-session)
@@ -204,6 +205,21 @@
   - Scenario 2: User created an account using GitHub OAuth (no password saved in DB). User tries to login with email and password (which does not exist in DB).
     - Tell the user to login using GitHub (no password needs to be stored in the DB)?
       - Ex: "There is an account by that email but no password. Login with GitHub".
+### Proof Key for Code Exchange(PKCE) with OAuth 2.0
+> PKCE (RFC 7636) is an extension to the Authorization Code flow to prevent CSRF and authorization code injection attacks. | oauth.net
+
+#### How it Works
+- The application generates a random value (called **Code Verifier**) at the beginning of the authorization flow.
+  - The Code Verifier is hashed, which is called the **Code Challenge**.
+- The application starts the Authorization Code flow as normal, but with the exception of including the Code Challenge in the query string for the request to the Authorization Server.
+  - The Authorization Server receives and stores the Code Challenge (to be used for verification later), and upon successfully authenticating the user, redirects back to the application along with an Authorization Code.
+  - The application requests to exchange the Authorization Code for an Access Token, sending the Code Verifier along with it instead of a fixed secret.
+  - The Authorization Server hashes the Code Verifier and compares it to the previously stored Code Challenge.
+  - If the hashed values match, The Authorization Server returns an Access Token to the application.
+
+<p align="center">
+  <img src="https://developer.okta.com/assets-jekyll/blog/okta-authjs-pkce/pkce-59cd81484ee5be4248d4f8efc986070d7d6ac20b8091da3b8377bf1e278a0b54.svg" alt="PKCE" width="80%" /><br>
+</p>
 
 ## Persistent Authentication
 ### Storing Session ID on Server and Client sends Cookies ([Session Management](#session-management))
@@ -302,3 +318,5 @@
 [Authorizing OAuth Apps - GitHub Docs](https://docs.github.com/en/developers/apps/building-oauth-apps/authorizing-oauth-apps)  
 [Session vs Token Authentication in 100s - YouTube](https://www.youtube.com/watch?v=UBUNrFtufWo&ab_channel=Fireship)  
 [Session cookies concepts - IBM](https://www.ibm.com/docs/en/sva/9.0?topic=cookies-session-concepts)  
+[PKCE for OAuth 2.0 - oauth.net](https://oauth.net/2/pkce/)  
+[Implement the OAuth 2.0 Authorization Code with PKCE Flow | Okta Developer](https://developer.okta.com/blog/2019/08/22/okta-authjs-pkce)  
