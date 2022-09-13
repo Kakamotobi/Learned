@@ -47,3 +47,32 @@ const isValid = (s) => {
   return stack.length === 0;
 }
 ```
+
+## 3. [Valid Palindrome](https://leetcode.com/problems/valid-palindrome/)
+- Filter out non-alphanumeric characters and then convert to lowercase.
+- Use two pointers to check if palindrome.
+```js
+// TC: O(n), SC: O(n)
+
+const parseString = (str) => {
+  const re = /[a-zA-Z0-9]/g;
+  const parsed = str.match(re);
+  
+  return parsed === null ? "" : parsed.toLowerCase();
+}
+
+const isPalindrome = (s) => {
+  const parsedS = parseString(s);
+  
+  let left = 0;
+  let right = parsedS.length - 1;
+  
+  while (left < right) {
+    if (parsedS[left] !== parsedS[right]) return false;
+    left++;
+    right--;
+  }
+  
+  return true;
+}
+```
