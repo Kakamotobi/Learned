@@ -103,3 +103,73 @@ const lengthOfLongestSubstring = (s) => {
   return maxLength;
 }
 ```
+
+## 5. [Longest Repeating Character Replacement](https://leetcode.com/problems/longest-repeating-character-replacement/)
+### Solution 1
+- In a given substring, all characters should match the most common character in that window (change less frequent characters to the most frequent character).
+  - Therefore, find out the number of characters that needs to be replaced in a given substring.
+    - substring length - frequency of the most frequent character.
+    - The substring is valid if this number is less than or equal to `k`.
+- Use a sliding window.
+  - Maintain the substring using a hashmap where `character: frequency in the substring`.
+  - If the substring is valid, increase window (increment right).
+  - If invalid, shrink window (increment left).
+```js
+// TC: O(26*n), SC: O(n)
+
+const characterReplacement = (s, k) => {
+  let maxLength = 0;
+  
+  const window = {};
+  
+  let left = 0;
+  for (let right = 0; right < s.length; right++) {
+    // Update frequency.
+    window[s[right]] = ++window[s[right]] || 1;
+    
+    // If window is invalid (need more than k operations).
+    if (((right - left + 1) - Math.max(...Object.values(window)) <= k) === false) {
+      window[s[left]]--;
+      left++;
+    }
+  
+    // Update maxLength if necessary.
+    maxLength = Math.max(maxLength, right - left + 1);
+  }
+  
+  return maxLength;
+}
+```
+### Solution 2
+- Same as Solution 1 but no need to go through the entire hashmap to get the largest frequency everytime.
+```js
+// TC: O(n), SC: O(n)
+
+const characterReplacement = (s, k) => {
+  let maxLength = 0;
+  
+  const window = {};
+  
+  let maxFreq = 0;
+  
+  let left = 0;
+  for (let right = 0; right < s.length; right++) {
+    // Update frequency.
+    window[s[right]] = ++window[s[right]] || 1;
+    
+    // Update maxFreq if necessary.
+    maxFreq = Math.max(maxFreq, window[s[right]]);
+    
+    // If window is invalid (need more than k operations).
+    if (((right - left + 1) - maxFreq <= k) === false) {
+      window[s[left]]--;
+      left++;
+    }
+  
+    // Update maxLength if necessary.
+    maxLength = Math.max(maxLength, right - left + 1);
+  }
+  
+  return maxLength;
+}
+```
