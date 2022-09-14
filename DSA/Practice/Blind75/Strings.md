@@ -76,3 +76,30 @@ const isPalindrome = (s) => {
   return true;
 }
 ```
+
+## 4. [Longest Substring Without Repeating Characters](https://leetcode.com/problems/longest-substring-without-repeating-characters/)
+- Use sliding window to maintain duplicate-less substring.
+  - Use a set for the window for quick lookup and delete.
+```js
+// TC: O(n), SC: O(n)
+
+const lengthOfLongestSubstring = (s) => {
+  let maxLength = 0;
+  const window = new Set();
+  let left = 0;
+  
+  for (let right = 0; right < s.length; right++) {
+    // Remove and update the left end until the right end does not have a duplicate(s) in the substring.
+    while (window.has(s[right])) {
+      window.delete(s[left]);
+      left++;
+    }
+    // Increase window.
+    window.add(s[right]);
+    // Update maxLength if necessary.
+    maxLength = Math.max(maxLength, right - left + 1);
+  }
+  
+  return maxLength;
+}
+```
