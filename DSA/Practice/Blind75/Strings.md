@@ -173,3 +173,46 @@ const characterReplacement = (s, k) => {
   return maxLength;
 }
 ```
+
+## 6. [Longest Palindromic Substring](https://leetcode.com/problems/longest-palindromic-substring/)
+### Solution 1
+- Loop through each character in `s`.
+  - Find the longest palindrome where the character is the center (expand from center).
+    - *When checking for palindrome from the center, you need to handle an edge case: palindromes of even length.*
+  - If the palindrome is longer than the existing longest palindrome substring, update it.
+```js
+// TC: O(n^3), SC: O(n)
+
+const longestPalindrome = (s) => {
+  let longestPalindromeString = "";
+  
+  let left = 0;
+  let right = 0;
+  
+  for (let i = 0; i < s.length; i++) {
+    // Check for palindromes of odd length.
+    left = i;
+    right = i;
+    while (left >= 0 && right < s.length && s[left] === s[right]) {
+      if ((right - left + 1) > longestPalindromeString.length) {
+        longestPalindromeString = s.slice(left, right + 1);
+      }
+      left--;
+      right++;
+    }
+    
+    // Check for palindromes of even length.
+    left = i;
+    right = i + 1;
+    while (left >= 0 && right < s.length && s[left] === s[right]) {
+      if ((right - left + 1) > longestPalindromeString.length) {
+        longestPalindromeString = s.slice(left, right + 1);
+      }
+      left--;
+      right++;
+    }
+  }
+  
+  return longestPalindromeString;
+}
+```
