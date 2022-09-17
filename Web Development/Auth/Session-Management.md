@@ -79,3 +79,6 @@
 </p>
 
 - Only keep track of sessions for users that log in.
+
+## Reference
+[Session cookies concepts - IBM](https://www.ibm.com/docs/en/sva/9.0?topic=cookies-session-concepts)  
