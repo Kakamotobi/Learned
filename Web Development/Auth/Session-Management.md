@@ -2,6 +2,10 @@
 
 ## Table of Contents
 - [Cookie and Session](#cookie-and-session)
+  - [Cookie](#cookie)
+  - [Session](#session)
+  - [Session Flow Illustration](#session-flow-illustration)
+  - [Issues to Consider](#issues-to-consider)
 
 ## Cookie and Session
 ### [Cookie](https://github.com/Kakamotobi/Learned/blob/main/Web%20Development/Client-side-Storage.md#cookies)
