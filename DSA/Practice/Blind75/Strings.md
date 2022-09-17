@@ -216,3 +216,38 @@ const longestPalindrome = (s) => {
   return longestPalindromeString;
 }
 ```
+
+## 7. [Palindromic Substrings](https://leetcode.com/problems/palindromic-substrings/)
+- Same approach as "Longest Palindromic Substring" problem.
+```js
+// TC: O(n^2), SC: O(n)
+
+const countSubstrings = (s) => {
+  let numPalindromes = 0;
+  
+  let left = 0;
+  let right = 0;
+  
+  for (let i = 0; i < s.length; i++) {
+    // Check for odd length palindromes.
+    left = i;
+    right = i;
+    while (left >= 0 && right < s.length && s[left] === s[right]) {
+      numPalindromes++;
+      left--;
+      right++;
+    }
+    
+    // Check for even length palindromes.
+    left = i;
+    right = i + 1;
+    while (left >= 0 && right < s.length && s[left] === s[right]) {
+      numPalindromes++;
+      left--;
+      right++;
+    }
+  }
+  
+  return numPalindromes;
+}
+```
