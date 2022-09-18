@@ -24,13 +24,22 @@
 - *Many (if not all) declarative APIs have some sort of underlying imperative implementation.*
 - Ex: event handling code for a button can be encapsulated behind a button component, HTML, CSS.
 - Ex: functional programming, logic programming.
-#### Example
+#### Examples
+##### Example 1
+- The flow control is abstracted away by using the functional `Array.prototype.map()` utility, which allows you to more clearly express the flow of data.
 ```js
 const doubleMap = numbers => numbers.map(n => n * 2);
 
 console.log(doubleMap([2, 3, 4])); // [4, 6, 8]
 ```
-  - The flow control is abstracted away by using the functional `Array.prototype.map()` utility, which allows you to more clearly express the flow of data.
+##### Example 2
+- Frontend frameworks (Ex: React) are declarative.
+```js
+let count = 0;
+
+<button onClick={() => count++}>{count}</button>
+```
+
 ### Imperative Programming
 - A type of programming paradigm that describes how the program executes.
 - ***Imperative programs spend lines of code describing the specific steps used to achieve the desired results — the flow control: How to do things.***
@@ -40,7 +49,9 @@ console.log(doubleMap([2, 3, 4])); // [4, 6, 8]
 - Think like a computer.
   - i.e. "*How* it is to be done."
 - Ex: object-oriented programming, procedural programming.
-#### Example
+#### Examples
+##### Example 1
+- The flow control is explicitly expressed in step by step order.
 ```js
 const doubleMap = numbers => {
   const doubled = [];
@@ -52,7 +63,19 @@ const doubleMap = numbers => {
 
 console.log(doubleMap([2, 3, 4])); // [4, 6, 8]
 ```
-  - The flow control is explicitly expressed in step by step order.
+##### Example 2
+- Using Vanilla JS to manipulate the DOM.
+```js
+const btn = document.querySelector("button");
+let count = 0;
+
+btn.eventListener(() => {
+  count++;
+  btn.innerText = count;
+});
+
+<button>0</button>
+```
 ### Reference
 [Difference Between Imperative and Declarative Programming - GeeksforGeeks](https://www.geeksforgeeks.org/difference-between-imperative-and-declarative-programming/)  
 [Imperative vs Declarative Programming - YouTube](https://www.youtube.com/watch?v=E7Fbf7R3x6I&ab_channel=uidotdev)
