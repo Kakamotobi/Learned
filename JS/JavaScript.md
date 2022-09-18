@@ -2,6 +2,7 @@
 
 ## Table of Contents
 - [About JavaScript](#about-javascript)
+- [JavaScript History](#javascript-history)
 - [JavaScript Engine](#javascript-engine)
 - [JavaScript Runtime Environment](#javascript-runtime-environment)
   - [Runtime](#runtime)
@@ -25,6 +26,43 @@
     - *JavaScript is only asynchronous in that it can hand off certain tasks to the browser (AJAX, etc.) to handle while it synchronously runs through the script.*
     - JavaScript runtime environments (browsers, node.js) allow you to run background jobs via web workers (worker thread). This is achieved through the Event Loop.
 - **[Dynamic language](https://github.com/Kakamotobi/Learned/blob/main/Computer%20Science/Basics.md#dynamic-typing)**
+
+## JavaScript History
+- The Netscape Navigator (web browser founded in 1994)'s founders realized that browsers needed to become more dynamic and web designers needed some sort of language to make websites more interactive. Hence, they turned to the general programming language Java, which they realized it was too complicated for web designers and non-programmers to use. Therefore, in 1995, Brendan Eich was hired to put the Scheme programming language in the browser but maintain a syntax resembling Java. 10 days later, the first version of JavaScript was born, named Mocha.
+  - Syntactically, Mocha resembled other curly bracket languages like Java or C, but it included features such as first-class functions (like Scheme), dynamic typing (like Lisp), and prototypes (like Self).
+  - Mocha was not a specialized language only for browsers in the 90s. Instead, it was a flexible, multi-paradigm language that developers could use to apply their own language patterns too.
+- In September 1995, Mocha was renamed to LiveScript and was shipped in the first beta releases of Netscape Navigator 2.0.
+- In December 1995, LiveScript was renamed to JavaScript in a marketing attempt.
+- JavaScript started impacting user experience mostly in the form of pop-up windows.
+- In 1996, Microsoft, launching Internet Explorer, reverse engineered JavaScript and named it JScript.
+- In 1997, there was a need to standardize JavaScript, which led to the born of ECMAScript.
+  - ECMAScript provided browser vendors and server-side applications a consistent set of guidelines for implementing the JavaScript language.
+- In December 1999, ECMAScript version 3 was released.
+  - Fixing problems such as lenient equality testing, and better error handling.
+- Netscape was acquired by AOL, Microsoft's Internet Explorer took over the browser market share and did not care for complying to ECMAScript's spec, implementing its own extensions for JavaScript.
+  - This led to some revolutionary features such as AJAX, which is a precursor to modern day SPAs.
+- In the early 2000s ES3.1 and ES4 (major changes to the language) proposals competed, which saw ES4 abandoned ultimately in 2008.
+  - However, in 2006, Adobe created a scripting language supported by Flash called ActionScript, which complied to ES4.
+- In the mid 2000s, developers struggled to create web applications that ran on all browsers.
+- In 2006, jQuery was born, which allowed developers to create applications that work more reliably on all browsers.
+- In September 2008, Google Chrome and the V8 Engine was born.
+  -V8 completely changed how JavaScript was compiled and interpreted, enabling applications requiring higher performance both in the browser and server-side. 
+- In May 2009, Node.js was born, becoming a great solution for building real-time web applications that scale.
+  - Node.js meant that developers could build a whole web application using a single programming langauge.
+- In December 2009, 10 years after its previous official spec, ECMAScript released ES5, which used ES3.1 as the basis.
+  - ES5 included JSON support, functional array and object methods, strict mode, accessors, etc.
+- In 2010, JavaScript frameworks designed specifically for SPAs began to roll out.
+  - In October 2010, Backbone.js and Angular.js, each with its own approach, were released to solve the same problem.
+    - Imperative vs declarative style, respectively.
+    - The founder of Backbone.js also created CoffeeScript, which enabled transpiling to go mainstream.
+- In 2015, ES6 (later renamed to ES2015) was released.
+  - ES2015 included promises, `let` and `const`, arrow functions, spread, destructuring, etc.
+  - However, it was hard for developers to use these features because many legacy browsers did not support them.
+  - Hence, developers resorted to transpilers such as Babel and TypeScript because they can convert the code to previous ES versions supported by legacy browsers.
+- In 2015, React.js was born.
+  - React adopted declarative UI (like Angular.js) but improved it with a unidirectional data flow, immutability and the use of the virtual DOM.
+- Around this period, bundlers such as Webpack and Rollup were introduced to manage the complexities of these heavyweight JavaScript applications.
+- Henceforth, ECMAScript is making proposals and adjustments to JavaScript on a yearly basis.
 
 ## JavaScript Engine
 - **A program that reads, interprets, compiles the source code and executes the corresponding machine code.**
