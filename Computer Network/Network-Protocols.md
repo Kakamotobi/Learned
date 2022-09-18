@@ -6,7 +6,7 @@
 - [HTTP vs HTTPS](#http-vs-https)
 - [Transport Layer Security(TLS)](#transport-layer-securitytls)
 - [TCP vs UDP vs IP vs TCP/IP](#tcp-vs-udp-vs-ip-vs-tcpip)
-- [Protocol Stacks](#protocol-stacks)
+- [Protocol Suites](#protocol-suites)
 
 ## What are Network Protocols?
 > A network protocol is an accepted set of rules that govern data communication between different devices in the network. It determines what is being communicated, how it is being communicated, and when it is being communicated. It permits connected devices to communicate with each other, irrespective of internal and structural differences. | GeeksforGeeks
@@ -82,9 +82,10 @@
 - There is no guarantee of successful data transmission.
   - With less overhead of guaranteeing successful data transmission, UDP is faster than TCP.
 - Data can be lost, duplicated and can arrive out of order.
-### Internet Protocol
+### Internet Protocol (IP)
 - IP is a network layer protocol.
 - It provides a datagram service between applications, which supports both TCP and UDP.
+- IP is used to identify different computers on the network by signing each computer a unique IP address.
 ### TCP/IP
 - TCP/IP simply refers to a large family of protocols. TCP and IP are the two most important protocols among them; hence, named TCP/IP.
 <p align="center">
@@ -92,7 +93,7 @@
 </p>
 
 
-## Protocol Stacks
+## Protocol Suites
 ### Example 1 - regular, non-encrypted HTTP
 | Layer               | Protocol |
 | ------------------- | -------- |
