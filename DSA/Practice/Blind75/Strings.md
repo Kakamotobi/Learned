@@ -175,7 +175,6 @@ const characterReplacement = (s, k) => {
 ```
 
 ## 6. [Longest Palindromic Substring](https://leetcode.com/problems/longest-palindromic-substring/)
-### Solution 1
 - Loop through each character in `s`.
   - Find the longest palindrome where the character is the center (expand from center).
     - *When checking for palindrome from the center, you need to handle an edge case: palindromes of even length.*
@@ -249,5 +248,31 @@ const countSubstrings = (s) => {
   }
   
   return numPalindromes;
+}
+```
+
+## 8. [Group Anagrams](https://leetcode.com/problems/group-anagrams/)
+- Use a hashmap to keep track of the anagrams that belong in the same group.
+  - The key should represent the combination of alphabets by indicated the frequency of each of the 26 alphabets.
+```js
+// TC: O(n * k), SC: O(n)
+  // n - number of elements in `strs`.
+  // k - average number of characters in `strs[i]`.
+
+const groupAnagrams = (strs) => {
+  const map = {};
+  
+  for (let str of strs) {
+    const combination = new Array(26).fill(0);
+    
+    // Record the frequency of each character.
+    for (let char of str) combination[char.charCodeAt() - "a".charCodeAt()]++;
+    
+    const combinationKey = combination.join(",");
+    
+    map[combinationKey] = map[combinationKey] ? [...map[CombinationKey], str] : [str];
+  }
+  
+  return Object.values(map);
 }
 ```
