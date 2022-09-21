@@ -87,3 +87,42 @@ const setZeroes = (matrix) => {
   return matrix;
 }
 ```
+
+## 2. [Spiral Matrix](https://leetcode.com/problems/spiral-matrix/)
+- Keep clearing the outer layers, effectively shrinking the matrix.
+- Use boundaries (top, bottom, left, right) to keep track of until what point has been recorded.
+  - Shrink the boundary as the layer for that boundary is cleared.
+  - Stop if any boundaries are no longer valid.
+```js
+// TC: O(n * m), SC: O(1)
+
+const spiralOrder = (matrix) => {
+  const ans = [];
+  
+  let left = 0;
+  let right = matrix[0].length;
+  let top = 0;
+  let bottom = matrix.length;
+  
+  while (left < right && top < bottom) {
+    // Get all elements in the top row.
+    for (let i = left; i < right; i++) ans.push(matrix[top][i]);
+    top++;
+    // Get all elements in the right column.
+    for (let i = top; i < bottom; i++) ans.push(matrix[i][right - 1]);
+    right--;
+    
+    // Edge Case: if matrix is a single row or column.
+    if (!(left < right && top < bottom)) break;
+    
+    // Get all elements in the bottom row.
+    for (let i = right - 1; i >= left; i--) ans.push(matrix[bottom - 1][i]);
+    bottom--;
+    // Get all elements in the left column.
+    for (let i = bottom - 1; i >= top; i--) ans.push(matrix[i][left]);
+    left++;
+  }
+  
+  return ans;
+}
+```
