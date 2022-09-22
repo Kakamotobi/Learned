@@ -259,3 +259,87 @@ const kthSmallest = (root, k) => {
   }
 }
 ```
+
+## 10. [Implement Trie (Prefix Tree)](https://leetcode.com/problems/implement-trie-prefix-tree/)
+### Solution 1 - Class-based
+- A TrieNode should contain two information: its children in an object, and if it is an end of a word.
+```js
+class TrieNode {
+  constructor() {
+    this.children = {};
+    this.endOfWord = false;
+  }
+}
+
+class Trie {
+  constructor() {
+    this.root = null;
+  }
+  
+  insert(word) {
+    let currNode = this.root;
+    for (let char of word) {
+      // If a node for the character doesn't exist, create one.
+      if (!(char in currNode.children)) currNode.children[char] = new TrieNode();
+      // Move currNode.
+      currNode = currNode.children[char];
+    }
+    // Record the letter to indicate the end.
+    currNode.endOfWord = true;
+    return;
+  }
+  
+  search(word) {
+    let currNode = this.root;
+    for (let char of word) {
+      if (!(char in currNode.children)) return false;
+      currNode = currNode.children[char];
+    }
+    return currNode.endOfWord;
+  }
+  
+  startsWith(prefix) {
+    let currNode = this.root;
+    for (let char of word) {
+      if (!(char in currNode.children)) return false;
+      currNode = currNode.children[char];
+    }
+    return true;
+  }
+}
+```
+### Solution 2 - Function Prototype-based
+- A trie node contains its children as key-value pairs where the key is the child's alphabet and the value is the node object, and if it is an end of a word.
+```js
+const Trie = function() {
+  this.root = {}; // a node is represented as an object.
+}
+
+Trie.prototype.insert = function(word) {
+  let currNode = this.root;
+  for (let char of word) {
+    if (!currNode[char]) currNode[char] = {};
+    currNode = currNode[char];
+  }
+  currNode.endOfWord = true;
+  return;
+}
+
+Trie.prototype.search = function(word) {
+  let currNode = this.root;
+  for (let char of word) {
+    if (!currNode[char]) return false;
+    currNode = currNode[char];
+  }
+  return currNode.endOfWord === true;
+}
+
+Trie.prototype.startsWith = function(prefix) {
+  let currNode = this.root;
+  for (let char of prefix) {
+    if (!currNode[char]) return false;
+    currNode = currNode[char];
+  }
+  return true;
+}
+```
