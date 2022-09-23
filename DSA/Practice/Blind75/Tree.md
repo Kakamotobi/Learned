@@ -343,3 +343,53 @@ Trie.prototype.startsWith = function(prefix) {
   return true;
 }
 ```
+
+## 11. [Design Add and Search Words Data Structure](https://leetcode.com/problems/design-add-and-search-words-data-structure/)
+- Implement a Trie structure.
+- For `search`, use DFS to handle `"."`s.
+```js
+class TrieNode {
+  constructor() {
+    this.children = {};
+    this.endOfWord = false;
+  }
+}
+
+class WordDictionary {
+  constructor() {
+    this.root = new TrieNode();
+  }
+  
+  addWord(newWord) {
+    let currNode = this.root;
+    for (let char of newWord) {
+      if (!(char in currNode.children)) currNode.children[char] = new TrieNode();
+      currNode = currNode.children[char];
+    }
+    currNode.endOfWord = true;
+    return;
+  }
+  
+  search(word) {
+    const dfs = (node, idx) => {
+      for (let i = idx; i < word.length; i++) {
+        // If encountered a ".", call dfs on the current node's children.
+        if (word[i] === ".") {
+          for (let child of Object.values(node.children)) {
+            if (dfs(child, i + 1) === true) return true;
+          }
+          return false;
+        } 
+        // Otherwise (alphabet), normal traverse.
+        else {
+          if (!(word[i] in node.children)) return false;
+          node = node.children[word[i]];
+        }
+      }
+      return node.endOfWord;
+    }
+    
+    return dfs(this.root, 0);
+  }
+}
+```
