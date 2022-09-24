@@ -126,3 +126,46 @@ const spiralOrder = (matrix) => {
   return ans;
 }
 ```
+
+## 3. [Rotate Image](https://leetcode.com/problems/rotate-image/)
+- Handle rotation layer by layer (i.e. rotate outer layer first).
+  - Use boundary pointers (left, right, top, bottom) to keep track of which layer is being worked on.
+- For each layer, rotate the element in the same positions first (Ex: first element on each top, right bottom, left). Then, rotate the second, third, etc. on each side.
+- To minimize temporary variables to one, store the top-left element only and start rotation with the bottom-left (to top-left). Order is counter-clockwise.
+```js
+// TC: O(n^2), SC: O(1)
+
+const rotate = (matrix) => {
+  let left = 0;
+  let right = matrix.length - 1;
+  let top = 0;
+  let bottom = matrix.length - 1;
+  
+  while (left < right) {
+    // Make rotations for right - left elements (elements in this layer).
+    // Use `i` to offset the current position that is being rotated.
+    for (let i = 0; i < right - left; i++) {
+      // Temporarily store the top-left element.
+      const tempTopLeft = matrix[top][left + i];
+      
+      // Rotate the bottom-left to top-left.
+      matrix[top][left + i] = matrix[bottom - i][left];
+      
+      // Rotate the bottom-right to bottom-left.
+      matrix[bottom - i][left] = matrix[bottom][right - i];
+      
+      // Rotate the top-right to bottom-right.
+      matrix[bottom][right - i] = matrix[top + i][right];
+      
+      // Rotate the top-left to top-right.
+      matrix[top + i][right] = tempTopLeft;
+    }
+    
+    // Update boundaries (move on to inner layer).
+    left++;
+    right--;
+    top++;
+    bottom--;
+  }
+}
+```
