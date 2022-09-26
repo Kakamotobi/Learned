@@ -221,26 +221,154 @@ btn.eventListener(() => {
 - Fundamental elements: objects and methods.
 - It is an *imperative* type of programming style.
 #### The 4 Pillars of OOP
-- **Encapsulation**
-  > ... the packing of data and functions into one component (ex: a class) and then controlling access to that component to make a “blackbox” out of the object. | MDN
-  - i.e., bundling related variables and methods that operate on them into an object.
-  - Reduce complexity and increase reusability.
-- **Abstraction**
-  > ... a way to reduce complexity and allow efficient design and implementation in complex software systems. It hides the technical complexity of systems behind simpler APIs. | MDN
-  - Simpler interface since the complexity is less exposed.
-  - Reduce the impact of change.
-    - Any change within will not leak to the outside.
-- **Inheritance**
-  > Data abstraction can be carried up several levels, that is, classes can have superclasses and subclasses. | MDN
-  - Helps eliminate redundant code.
-- **Polymorphism**
-  > the presentation of one interface for multiple data types. In the case of OOP, by making the class responsible for its code as well as its own data, polymorphism can be achieved in that each class has its own function that (once called) berhaves properly for any object. | MDN
-  - Polymorphism = many forms.
-  - Allows us to get rid of long if and elses or switch and case statements.
+##### Encapsulation
+> ... the packing of data and functions into one component (ex: a class) and then controlling access to that component to make a “blackbox” out of the object. | MDN
+- i.e., bundling related variables and methods that operate on them into an object.
+- Reduce complexity and increase reusability.
+##### Abstraction
+> ... a way to reduce complexity and allow efficient design and implementation in complex software systems. It hides the technical complexity of systems behind simpler APIs. | MDN
+- Simpler interface since the complexity is less exposed.
+- Reduce the impact of change.
+  - Any change within will not leak to the outside.
+##### Inheritance
+> Data abstraction can be carried up several levels, that is, classes can have superclasses and subclasses. | MDN
+- Inheritance helps eliminate redundant code.
+- Start with a larger base class and have child classes inherit all its functionality and overwrite/extend it with whatever custom behaviors they need.
+- Inheritance can be great in the right situation but it's good to avoid deeply nested classes as it can become very hard to debug.
+###### Example
+```ts
+class Human {
+  constructor(public name) {}
+  
+  sayHello() {
+    return `Hello, I'm ${this.name}.`;
+  }
+}
 
+class SuperHuman extends Human {
+  heroName;
+  
+  constructor(name) {
+    super(name); // Execute the code in the constructor of Human (initialize name property).
+    this.heroName = `HERO ${name}`;
+  }
+  
+  superpower() {
+    return `${this.heroName} beams light off eyes!`;
+  }
+}
+
+const superman = new SuperHuman("Clark Kent");
+superman.superpower(); // Clark Kent beams light off his eyes!
+superman.sayHello(); // Hello, I'm Clark Kent.
+```
+###### Composition
+- Inheritance and Composition can be used as an alternative to each other for code reusability.
+- Composition Breaks apart the interfaces and logic into small pieces then builds up larger functions or objects by combining these pieces together.
+- There are multiple ways to implement composition.
+  - Mixin Pattern - concatenate objects together.
+    - The idea is to decouple your properties or behaviors into objects or functions that return objects. Then merge all these objects together into a final function that does everything that we need it to.
+    - Basically, a certain type of multiple inheritance.
+    ```js
+    const hasName = (name) => {
+      return { name };
+    }
+    
+    const canSayHello = (name) => {
+      return {
+        sayHello: () => `Hello, I'm ${name}.`;
+      }
+    }
+    
+    const Human = function(name) {
+      return {
+        ...hasname(name),
+        ...canSayHello(name)
+      }
+    }
+    
+    const tom = Human("Tom");
+    console.log(tom.sayHello()); // Hello, I'm Tom.
+    ```
+    - The mixin pattern can be powerful but in its current form we lose all of the ergonomics of Class-based OOP.
+      - TypeScript allows us to use mixins in a Class-based format.
+      - Instead of encapsulating everything in a single Class, create behavior classes that define the individual behaviors.
+    ```ts
+    function applyMixins(//) {
+      //
+    }
+    
+    // Mixin 1
+    class CanSayHello {
+      name;
+      
+      sayHello() {
+        return `Hello, I'm ${this.name}`;
+      }
+    }
+    
+    // Mixin 2
+    class HasSuperPower {
+      heroName;
+      
+      superpower() {
+        return `${this.heroName} beams light off eyes!`;
+      }
+    }
+    
+    // Build up SuperHero using mixins 
+    class SuperHero implements CanSayHi, HasSuperPower {
+      heroName;
+      
+      constructor(public name) {
+        this.heroName = `HERO ${name}`;
+      }
+      
+      sayHello: () => string;
+      superpower: () => string;
+    }
+    
+    applyMixins(SuperHero, [CanSayHello, HasSuperPower]);
+    
+    const superman = new SuperHero("Super Man");
+    console.log(superman.superpower()); // HERO Super Man
+    ```
+##### Polymorphism
+> the presentation of one interface for multiple data types. In the case of OOP, by making the class responsible for its code as well as its own data, polymorphism can be achieved in that each class has its own function that (once called) berhaves properly for any object. | MDN
+- Polymorphism = many forms.
+- Allows us to get rid of long if and elses or switch and case statements.
+#### Example
+- The Emoji Class encapsulates all the logic for how an emoji should work.
+```ts
+class Emoji {
+  private _prev;
+
+  constructor(private _icon) {}
+  
+  get icon() {
+    return this._icon;
+  }
+  
+  get prev() {
+    return this._prev;
+  }
+  
+  change(newVal) {
+    this._prev = this._icon;
+    this._icon = newVal;
+  }
+}
+
+const emoji = new Emoji("🌞");
+console.log(emoji.icon, emoji.prev); // 🌞 undefined
+emoji.change("🥶");
+emoji.change("😡");
+console.log(emoji.icon, emoji.prev); // 😡 🥶
+```
 ### Reference
 [Difference between Functional Programming and Object-oriented Programming - GeeksforGeeks](https://www.geeksforgeeks.org/difference-between-functional-programming-and-object-oriented-programming/)  
 [Functional Programming VS Object Oriented Programming - Medium](https://medium.com/@shaistha24/functional-programming-vs-object-oriented-programming-oop-which-is-better-82172e53a526)  
 [Master the JavaScript Interview: What is a Pure Function? | by Eric Elliott | JavaScript Scene | Medium](https://medium.com/javascript-scene/master-the-javascript-interview-what-is-a-pure-function-d1c076bec976)  
 [Master the JavaScript Interview: What is Functional Programming? | by Eric Elliott | JavaScript Scene | Medium](https://medium.com/javascript-scene/master-the-javascript-interview-what-is-functional-programming-7f218c68b3a0)  
+[Object Oriented vs Functional Programming with TypeScript - YouTube](https://www.youtube.com/watch?v=fsVL_xrYO0w&ab_channel=Fireship)  
 [MDN Web Docs Glossary: Definitions of Web-related terms | MDN](https://developer.mozilla.org/en-US/docs/Glossary)  
