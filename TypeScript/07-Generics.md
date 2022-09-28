@@ -6,6 +6,10 @@
 - [Writing Generics](#writing-generics)
 - [Inferred Generics](#inferred-generics)
 - [Generics in `.tsx` Files](#generics-in-tsx-files)
+- [Generics with Multiple Types](#generics-with-multiple-types)
+- [Adding Type Constraints](#adding-type-constraints)
+- [Generics with Default Type Parameters](#generics-with-default-type-parameters)
+- [Writing Generic Classes](#writing-generic-classes)
 
 ## What are Generics?
 - Allows us to define reusable functions and classes that work with multiple types rather than a single type.
@@ -64,7 +68,7 @@ inputEl?.value = "Blahblah";
   }
   ```
 - The above can be written as a Generic.
-  - Using this generic function, TS knows to return the same type that is received as an argument.
+  - **Using this generic function, TS knows to return the same type that is received as an argument.**
   ```ts
   function identity<Type>(item: Type): Type {
     return item;
@@ -106,3 +110,89 @@ getRandomElement(["a", "b", "c"]);
     // ...
   }
   ```
+
+## Generics with Multiple Types
+```ts
+function merge<T, U>(object1: T, object2: U) { // return type `T & U` is inferred.
+  return {
+    ...object1,
+    ...object2
+  }
+}
+
+const obj = merge({ name: "kakamotobi" }, { pets: ["tom", "jerry"] }; // { name: string; } & { pets: string[] }
+```
+
+## Adding Type Constraints
+- `T` and `U` are any type. Therefore, TS does not complain about `merge({ name: "tom" }, 3)`.
+  ```ts
+  function merge<T, U>(object1: T, object2: U) { // return type `T & U` is inferred.
+    return {
+      ...object1,
+      ...object2
+    }
+  }
+  ```
+- To constraint to a particular type, user the `extends` keyword.
+  ```ts
+  function merge<T extends object, U extends object>(object1: T, object2: U) { // return type `T & U` is inferred.
+    return {
+      ...object1,
+      ...object2
+    }
+  }
+  ```
+  ```ts
+  interface Length {
+    length: number;
+  }
+  
+  // Generic
+  function printDoubleLength<T extends Length>(thing: T): number {
+    return thing.length * 2;
+  }
+  
+  // No Generic
+  function printDoubleLength(thing: Length): number {
+    return thing.length * 2;
+  }
+  ```
+
+## Generics with Default Type Parameters
+```ts
+function makeEmptyArray<T = number>(): T[] {
+  return [];
+}
+
+const default = makeEmptyArray(); // number[]
+const strings = makeEmptyArray<string>(); // string[]
+```
+
+## Writing Generic Classes
+- Define a class with a generic type and use that type within the class.
+```ts
+interface Song {
+  title: string;
+  artist: string;
+}
+
+interface Video {
+  title: string;
+  creator: string;
+  resolution: string;
+}
+
+class Playlist<T> {
+  public queue: T[] = [];
+  
+  add(el: T) {
+    this.queue.push(el);
+  }
+}
+
+const songsPlaylist = new Playlist<Song>();
+songs.add({ title: "songtitle", artist: "songartist" });
+
+const videosPlaylist = new Playlist<Video>();
+videos.add({ title: "videotitle", creator: "videocreator", resolution: "resolution" });
+```
