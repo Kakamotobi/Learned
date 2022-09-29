@@ -8,8 +8,8 @@
 - [React Query Caching](#react-query-caching)
 - [Core Concepts](#core-concepts)
   - [Queries (`useQuery`)](#queries-usequery)
-  - [Mutations](#mutations)
-  - [Query Invalidation](#query-invalidation)
+  - [Mutations (`useMutation`)](#mutations-usemutation)
+  - [Query Invalidation (`queryClient.invalidateQueries`)](#query-invalidation-queryclientinvalidatequeries)
 - [Example](#example)
 
 ## What Is It?
@@ -70,7 +70,7 @@
 - Example
   - Data is fresh for 5s. Therefore, data is refetched from the server when 5s have passed after receiving the data.
   - Data remains in the cache forever.
-  ```js
+  ```jsx
   const { data } = useQuery("users", getUsers, { // options
     staleTime: 5000,
     cacheTime: Infinity
@@ -83,53 +83,56 @@
 
 - If there are multiple queries in the same component, React Query runs them in parallel.
 - If a query depends on another query, the `enabled` option can be set to wait for the specified query to resolve first.
-- Use the `useQuery` hook to subscribe to a query in your component.
-  - The `useQuery` hook needs:
-    - **A unique key for the query.**
-      - This unique key is used by React Query for refetching, caching, and sharing your queries throughout the application.
-      - It can be a string or array.
-      - *If the query relies on a variable, the variable needs to be included in the array as well.*
-        - Example
-          ```js
-          const { data, isLoading, error } = useQuery(['todos', id], () => axios.get(`http://.../${id}`));
-          ```
+- Use the [`useQuery`](https://tanstack.com/query/v4/docs/reference/useQuery) hook to subscribe to a query in your component.
+- Syntax: `const query = useQuery(queryKey, queryFn, options)`
+  - **`queryKey`**
+    - A unique key for the query.
+    - This key is used by React Query for refetching, caching, and sharing your queries throughout the application.
+    - It can be a string or array.
+    - *If the query relies on a variable, the variable needs to be included in the array as well.*
+      - Example
+        ```js
+        const { data, isLoading, error } = useQuery(['todos', id], () => axios.get(`http://.../${id}`));
+        ```
+  - **`queryFn`**
     - **A (data fetching) function that returns a promise, which resolves the data or throws an error.**
-  - The result returned by `useQuery` contains all the information about the query and usage of the data.
-    - Ex: `isLoading`, `isError`, `isSuccess` states to indicate the status of the query.
-    - Ex: `error` if the query is in an `isError` state.
-    - Ex: `data` if the query is in a `isSuccess` state.
-    - Ex: `refetch` to manually refetch data (ignores cache, straight to server).
-#### Query Options
-- **`enabled`**
-  - `true`: automatically refetch data (default).
-  - `false`: prevent automatically refetching data.
-    - Ex: only fetch data when a button is clicked.
-- **`retry`**
-  - `true`: if data fetching failed, keep trying.
-  - `false`: if data fetching failed, stop trying.
-  - `number`: if data fetching failed, try only `number` times to fetch again.
-- **`staleTime`**
-  - `number`: number of milliseconds until fresh data becomes stale (default is 0).
-  - `Infinity`: treat data to always be fresh.
-- **`cacheTime`**
-  - `number`: number of milliseconds until data stays cached.
-  - `Infinity`: always keep the data cached.
-- **`onSuccess: (data) => `**
-  - The callback when data fetching succeeded.
-- **`onError: (error) => `**
-  - The callback to be executed when data fetching failed.
-- **`onSettled: (data, error) => `**
-  - The callback to be executed regardless of success or error in fetching data.
-- **`select: (data) => `**
-  - Function to process the data.
-  - The returned value in this function will be the shape of the requested data.
-- **`keepPreviousData`**
-  - Keep the previous data rendered on the screen while new data is being fetched.
-- **`initialData`**
-  - The initial value to use when there is no cached data.
-  - You can use values stored in local storage for this value.
+  - **`options`**
+    - **`enabled`**
+      - `true`: automatically refetch data (default).
+      - `false`: prevent automatically refetching data.
+        - Ex: only fetch data when a button is clicked.
+    - **`retry`**
+      - `true`: if data fetching failed, keep trying.
+      - `false`: if data fetching failed, stop trying.
+      - `number`: if data fetching failed, try only `number` times to fetch again.
+    - **`staleTime`**
+      - `number`: number of milliseconds until fresh data becomes stale (default is 0).
+      - `Infinity`: treat data to always be fresh.
+    - **`cacheTime`**
+      - `number`: number of milliseconds until data stays cached.
+      - `Infinity`: always keep the data cached.
+    - **`onSuccess: (data) => `**
+      - The callback when data fetching succeeded.
+    - **`onError: (error) => `**
+      - The callback to be executed when data fetching failed.
+    - **`onSettled: (data, error) => `**
+      - The callback to be executed regardless of success or error in fetching data.
+    - **`select: (data) => `**
+      - Function to process the data.
+      - The returned value in this function will be the shape of the requested data.
+    - **`keepPreviousData`**
+      - Keep the previous data rendered on the screen while new data is being fetched.
+    - **`initialData`**
+      - The initial value to use when there is no cached data.
+      - You can use values stored in local storage for this value.
+  - **Returns**
+    - The result returned by `useQuery` contains all the information about the query and usage of the data.
+      - Ex: `isLoading`, `isError`, `isSuccess` states to indicate the status of the query.
+      - Ex: `error` if the query is in an `isError` state.
+      - Ex: `data` if the query is in a `isSuccess` state.
+      - Ex: `refetch` to manually refetch data (ignores cache, straight to server).
 #### Example
-```js
+```tsx
 function Todos() {
   const { isLoading, isError, data, error } = useQuery(['todos'], fetchTodoList, {
     staleTime: 5000,
@@ -154,8 +157,83 @@ function Todos() {
   )
 }
 ```
-### Mutations
-### Query Invalidation
+### Mutations (`useMutation`)
+> Unlike queries, mutations are typically used to create/update/delete data or perform server side-effects. | TanStack
+
+- Use the [`useMutation`](https://tanstack.com/query/v4/docs/reference/useMutation) hook to mutate data on the server.
+- Syntax: `const mutation = useMutation(mutationFn, options)`
+  - **`mutationFn: (variables) => Promise`**
+    - **A (data fetching) function that returns a promise, which resolves the data or throws an error.**
+    - It accepts a `variables` object.
+  - **`options`**
+    - **`cacheTime`**
+    - **`mutationKey`**
+    - **`networkMode`**
+    - **`onMutate`**
+    - **`onSuccess`**
+    - **`onError`**
+    - **`onSettled`**
+    - **`retry`**
+    - **`retryDelay`**
+    - **`useErrorBoundary`**
+    - **`meta`**
+    - **`context`**
+  - **Returns**
+    - **`mutate: (variables: TVariables, { onSuccess, onSettled, onError }) => void`**
+      - The mutation function you can call with variables to trigger the mutation and optionally override options passed to `useMutation`.
+      - Does not return the server's response from the data after mutating.
+    - **`mutateAsync: (variables: TVariables, { onSuccess, onSettled, onError }) => Promise<TData>`**
+      - Similar to `mutate` but returns a Promise resolving with the response.
+    - **`status`**, **`isIdle`**, **`isLoading`**, **`isSuccess`**, **`isError`**, **`isPaused`**, **`data`**, **`error`**.
+    - **`reset: () => void`**
+      - A function to reset the mutation to its initial state.
+#### Example
+```tsx
+function App() {
+  const mutation = useMutation(newTodo => {
+    return axios.post('/todos', newTodo)
+  })
+
+  return (
+    <div>
+      {mutation.isLoading ? (
+        'Adding todo...'
+      ) : (
+        <>
+          {mutation.isError ? (
+            <div>An error occurred: {mutation.error.message}</div>
+          ) : null}
+
+          {mutation.isSuccess ? <div>Todo added!</div> : null}
+
+          <button
+            onClick={() => {
+              mutation.mutate({ id: new Date(), title: 'Do Laundry' })
+            }}
+          >
+            Create Todo
+          </button>
+        </>
+      )}
+    </div>
+  )
+}
+```
+### Query Invalidation (`queryClient.invalidateQueries`)
+> Waiting for queries to become stale before they are fetched again doesn't always work, especially when you know for a fact that a query's data is out of date because of something the user has done. For that purpose, the `QueryClient` has an `invalidateQueries` method that lets you intelligently mark queries as stale and potentially refetch them too! | TanStack
+
+- Two Effects
+  - The query is marked as stale, any `staleTime` configurations specified in `useQuery` are overridden.
+  - If the query is currently being rendered via `useQuery`, it will also be refetched in the background.
+- When should you invalidate queries?
+  - After mutating some data, data currently on the screen should also be updated. However, since the query key has not been changed, it needs to be manually refreshed. Therefore, you can use the `invalidateQueries` method to 
+#### Example
+```tsx
+// Invalidate every query in the cache
+queryClient.invalidateQueries()
+// Invalidate every query with a key that starts with `todos`
+queryClient.invalidateQueries(['todos'])
+```
 
 ## Example
 1. Instantiate the React Query Client.
