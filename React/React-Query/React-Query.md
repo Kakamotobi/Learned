@@ -3,9 +3,11 @@
 ## Table of Contents
 - [What Is It?](#what-is-it)
   - [Background](#background)
-  - [Some Features and Use Case Examples](#some-features-and-use-case-examples)
+  - [Features and Use Case Examples](#features-and-use-case-examples)
+- [Conceptual State of Data](#conceptual-state-of-data)
+- [React Query Caching](#react-query-caching)
 - [Core Concepts](#core-concepts)
-  - [Queries](#queries)
+  - [Queries (`useQuery`)](#queries-usequery)
   - [Mutations](#mutations)
   - [Query Invalidation](#query-invalidation)
 - [Example](#example)
@@ -29,23 +31,141 @@
 #### Debug
 - React Query provides integrated dev tools for developers to debug all data fetching logic.
 
+## Conceptual State of Data
+- **fetching**
+  - Data is being requested.
+- **fresh**
+  - Data is fresh.
+  - *Data is not refetched even if the component state changes.*
+  - *Data is refetched when the page is refreshed.*
+- **stale**
+  - Data is stale.
+  - *Any data that the client received from the server is, in effect, stale data that needs to be updated.*
+    - *This is because another user could mutate (Ex: add, edit, delete) the data on the server after you received the data from the server.*
+    - *Data is refetched when the component mounts/updates.*
+    - *Therefore, cached data is also stale.*
+  - **`staleTime`**
+    - The time it takes for fresh data to become stale.
+    - Default value is 0.
+    - The `staleTime` option can be used to change the time.
+      - Longer `staleTime` means queries will not refetch their data as often.
+- **inactive**
+  - If there is no other action in the query or the query instance unmounts, the data remains inactive in the cache for 5 minutes, and then garbage collected.
+  - **`cacheTime`**
+    - The time it takes for inactive data to stay cached in memory.
+    - Default value is 5 minutes.
+    - `cacheTime` is irrelevant to `staleTime` in thta `cacheTime` starts the moment the data becomes inactive.
+- **delete**
+  - Data is removed from the cache by the garbage collector.
+
+## React Query Caching
+- The received data is stored in React Query's cache.
+  - `staleTime` is an option that sets the time until the fresh data is to be considered stale.
+- **Data is cached but is never fresh under the default options (`staleTime` and `cacheTime`).**
+  - If `staleTime` is not specified when calling `useQuery`, it assumes cached data is always stale, and therefore will keep refetching the data from the server.
+- **Setting `enabled: false` will only call the data fetching function once upon mounting, and prevent the query from retrying.**
+  - Since `enabled: false` means that you do not wish to use `useQuery`'s features, you need to manually call it using the `refetch` function, which is included in the returned object from calling `useQuery`.
+  - **The `refetch` function does NOT check the cache and just proceeds to send an AJAX request.**
+  - **Therefore, do NOT set `enabled: false` if you wish to use cache.**
+- Example
+  - Data is fresh for 5s. Therefore, data is refetched from the server when 5s have passed after receiving the data.
+  - Data remains in the cache forever.
+  ```js
+  const { data } = useQuery("users", getUsers, { // options
+    staleTime: 5000,
+    cacheTime: Infinity
+  });
+  ```
+
 ## Core Concepts
-### Queries
+### Queries (`useQuery`)
+> A query is a declarative dependency on an asynchronous source of data that is tied to a unique key. A query can be used with any Promise based method (including GET and POST methods) to fetch data from a server. If your method modifies data on the server, we recommend using Mutations instead. | TanStack
+
 - If there are multiple queries in the same component, React Query runs them in parallel.
 - If a query depends on another query, the `enabled` option can be set to wait for the specified query to resolve first.
+- Use the `useQuery` hook to subscribe to a query in your component.
+  - The `useQuery` hook needs:
+    - **A unique key for the query.**
+      - This unique key is used by React Query for refetching, caching, and sharing your queries throughout the application.
+      - It can be a string or array.
+      - *If the query relies on a variable, the variable needs to be included in the array as well.*
+        - Example
+          ```js
+          const { data, isLoading, error } = useQuery(['todos', id], () => axios.get(`http://.../${id}`));
+          ```
+    - **A (data fetching) function that returns a promise, which resolves the data or throws an error.**
+  - The result returned by `useQuery` contains all the information about the query and usage of the data.
+    - Ex: `isLoading`, `isError`, `isSuccess` states to indicate the status of the query.
+    - Ex: `error` if the query is in an `isError` state.
+    - Ex: `data` if the query is in a `isSuccess` state.
+    - Ex: `refetch` to manually refetch data (ignores cache, straight to server).
+#### Query Options
+- **`enabled`**
+  - `true`: automatically refetch data (default).
+  - `false`: prevent automatically refetching data.
+    - Ex: only fetch data when a button is clicked.
+- **`retry`**
+  - `true`: if data fetching failed, keep trying.
+  - `false`: if data fetching failed, stop trying.
+  - `number`: if data fetching failed, try only `number` times to fetch again.
+- **`staleTime`**
+  - `number`: number of milliseconds until fresh data becomes stale (default is 0).
+  - `Infinity`: treat data to always be fresh.
+- **`cacheTime`**
+  - `number`: number of milliseconds until data stays cached.
+  - `Infinity`: always keep the data cached.
+- **`onSuccess: (data) => `**
+  - The callback when data fetching succeeded.
+- **`onError: (error) => `**
+  - The callback to be executed when data fetching failed.
+- **`onSettled: (data, error) => `**
+  - The callback to be executed regardless of success or error in fetching data.
+- **`select: (data) => `**
+  - Function to process the data.
+  - The returned value in this function will be the shape of the requested data.
+- **`keepPreviousData`**
+  - Keep the previous data rendered on the screen while new data is being fetched.
+- **`initialData`**
+  - The initial value to use when there is no cached data.
+  - You can use values stored in local storage for this value.
+#### Example
+```js
+function Todos() {
+  const { isLoading, isError, data, error } = useQuery(['todos'], fetchTodoList, {
+    staleTime: 5000,
+    cacheTime: 5000
+  });
+
+  if (isLoading) {
+    return <span>Loading...</span>
+  }
+
+  if (isError) {
+    return <span>Error: {error.message}</span>
+  }
+
+  // We can assume by this point that `isSuccess === true`
+  return (
+    <ul>
+      {data.map(todo => (
+        <li key={todo.id}>{todo.title}</li>
+      ))}
+    </ul>
+  )
+}
+```
 ### Mutations
 ### Query Invalidation
 
 ## Example
-- Instantiate the React Query Client.
-- Provide it in your component tree to let child components be able to fetch data with React Query.
-  - Include the ReactQueryDevtools as a child component in order to debug in development.
-- Use the `useQuery(key, fetchFunc)` hook to send the request.
-  - If we want to update the data on the server, the `useMutation()` hook is used.
-  - When data is written to the server, we can hook into it with the `onSuccess` function and automatically invalidate the query we already made based on the `key`.
-    - This tells React Query to invalidate and refetch the original request.
-    - We can also tap into the state of this process by referencing `isFetching`.
-
+1. Instantiate the React Query Client.
+2. Provide it in your component tree to let child components be able to fetch data with React Query.
+    - Include the ReactQueryDevtools as a child component in order to debug in development.
+3. Use the `useQuery(key, fetchFunc)` hook to send the request.
+    - If we want to update the data on the server, the `useMutation()` hook is used.
+    - When data is written to the server, we can hook into it with the `onSuccess` function and automatically invalidate the query we already made based on the `key`.
+      - This tells React Query to invalidate and refetch the original request.
+      - We can also tap into the state of this process by referencing `isFetching`.
 ```jsx
 // App.jsx
 
@@ -109,4 +229,6 @@ function Things() {
 
 
 ## Reference
-[Overview | TanStack Query Docks](https://tanstack.com/query/v4/docs/overview)  
+[Overview | TanStack Query Docs](https://tanstack.com/query/v4/docs/overview)  
+[Important Defaults | TanStack Query Docs](https://tanstack.com/query/v4/docs/guides/important-defaults?from=reactQueryV3&original=https://react-query-v3.tanstack.com/guides/important-defaults)  
+[React Query in 100 Seconds - YouTube](https://www.youtube.com/watch?v=novnyCaa7To&ab_channel=Fireship)  
