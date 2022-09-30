@@ -10,6 +10,7 @@
   - [Queries (`useQuery`)](#queries-usequery)
   - [Mutations (`useMutation`)](#mutations-usemutation)
   - [Query Invalidation (`queryClient.invalidateQueries`)](#query-invalidation-queryclientinvalidatequeries)
+- [React Query Devtools](#react-query-devtools)
 - [Example](#example)
 
 ## What Is It?
@@ -235,6 +236,16 @@ queryClient.invalidateQueries()
 queryClient.invalidateQueries(['todos'])
 ```
 
+## React Query Devtools
+- React Query Devtools are only included in bundles when `process.env.NODE_ENV === "development"`. Therefore, there is no need to exclude it in production build.
+### Installation
+```zsh
+npm i @tanstack/react-query-devtools
+```
+### Usage
+- Place the Devtools inside the Query Client Provider, as high as possible.
+- [Options](https://tanstack.com/query/v4/docs/devtools#install-and-import-the-devtools)
+
 ## Example
 1. Instantiate the React Query Client.
 2. Provide it in your component tree to let child components be able to fetch data with React Query.
@@ -247,7 +258,8 @@ queryClient.invalidateQueries(['todos'])
 ```jsx
 // App.jsx
 
-import { QueryClient, ReactQueryDevtools } from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 const queryClient = new QueryClient();
 
@@ -303,6 +315,8 @@ function Things() {
     </ul>
   )
 }
+
+export default Things;
 ```
 
 
