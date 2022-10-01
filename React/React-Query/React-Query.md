@@ -6,15 +6,20 @@
   - [Important Disclaimer](#important-disclaimer)
   - [Use Case Examples](#use-case-examples)
 - [Conceptual State of Data](#conceptual-state-of-data)
-- [React Query Caching](#react-query-caching)
+- [State Management with React Query](#state-management-with-react-query)
+  - [React Query Caching](#react-query-caching)
 - [Core Concepts](#core-concepts)
   - [Queries (`useQuery`)](#queries-usequery)
   - [Mutations (`useMutation`)](#mutations-usemutation)
   - [Query Invalidation (`queryClient.invalidateQueries`)](#query-invalidation-queryclientinvalidatequeries)
 - [React Query Devtools](#react-query-devtools)
+- [Concerns](#concerns)
 - [Example](#example)
 
 ## What Is It?
+> React Query is a **server-state** library, responsible for managing asynchronous operations between your server and client | Tanstack
+
+- cf. Redux is a client-state library that is used to store asynchronous data.
 - React Query is a React library that provide hooks for fetching, caching, synchronizing and updating data from a server.
 ### Background
 - React itself is unopinionated on how the frontend stores and provides asynchronous data throughout the application (fetching and updating data).
@@ -35,7 +40,7 @@
       - The `queryKey` is a unique identifier for your particular query. Therefore, calling the query with the same key in different places will result to the same data.
       - This is ideally abstracted away with a custom hook so that the actual data fetching function doesn't have to be accessed twice.
       - Components under the same *QueryClientProvider* will get the same data.
-        - Even though multiple components request the same data, React Query deduplicates requests so there will only be one network request.
+        - Even though multiple components request the same data, React Query **deduplicates** requests so there will only be one network request.
       - Example
         ```ts
         // useUser.ts
@@ -45,10 +50,26 @@
         ```
         ```tsx
         // ComponentA.tsx
-        import useUser from "./useUser.js";
+        import useUser from "./useUser";
         
         function ComponentA() {
           const { data: user } = useUser();
+          
+          return (
+            // ...
+          )
+        }
+        ```
+        ```tsx
+        // ComponentB.tsx
+        import useUser from "./useUser";
+        
+        function componentB() {
+          const { data: user } = useUser(); // Exactly the same data as ComponentA.
+          
+          return (
+            // ...
+          )
         }
         ```
   - **a Data Synchronization Tool**
@@ -91,7 +112,11 @@
 - **delete**
   - Data is removed from the cache by the garbage collector.
 
-## React Query Caching
+## State Management with React Query
+- After calling `useQuery` to invoke the query function you defined, React Query stores the data in the **cache** that is globally available (just like the Redux store).
+- This caching mechanism is the gist of React Query's state management.
+  - React Query caches data for you and give it to you when you need it, even if the data is stale. "Stale data is better than no data" because no data usually means users will perceive the loading spinner as slow. Stale data is temporarily shown while it performs a background refetch to revalidate the data.
+### React Query Caching
 - The received data is stored in React Query's cache.
   - `staleTime` is an option that sets the time until the fresh data is to be considered stale.
 - **Data is cached but is never fresh under the default options (`staleTime` and `cacheTime`).**
@@ -255,11 +280,13 @@ function App() {
 ### Query Invalidation (`queryClient.invalidateQueries`)
 > Waiting for queries to become stale before they are fetched again doesn't always work, especially when you know for a fact that a query's data is out of date because of something the user has done. For that purpose, the `QueryClient` has an `invalidateQueries` method that lets you intelligently mark queries as stale and potentially refetch them too! | TanStack
 
+- Query Invalidation refers to declaring a query to be invalid, marking the cache to be stale.
+  - Invoke a manual invalidation in certain points in the application that you know should declare the data stale.
 - Two Effects
   - The query is marked as stale, any `staleTime` configurations specified in `useQuery` are overridden.
   - If the query is currently being rendered via `useQuery`, it will also be refetched in the background.
 - When should you invalidate queries?
-  - After mutating some data, data currently on the screen should also be updated. However, since the query key has not been changed, it needs to be manually refreshed. Therefore, you can use the `invalidateQueries` method to 
+  - After **mutating** some data, data currently on the screen should also be updated. However, since the query key has not been changed, it needs to be manually refreshed.
 #### Example
 ```tsx
 // Invalidate every query in the cache
@@ -267,6 +294,14 @@ queryClient.invalidateQueries()
 // Invalidate every query with a key that starts with `todos`
 queryClient.invalidateQueries(['todos'])
 ```
+#### Query Revalidation (Smart Refetch)
+- React Query provides strategic points for triggering a refetch.
+- **refetchOnMount**
+  - Whenever a component that calls `useQuery` mounts, revalidate.
+- **refetchOnWindowFocus**
+  - Whenever the user focuses the browser tab, revalidate.
+- **refetchOnReconnect**
+  - Whenever the user regains network connect after losing it, revalidate.
 
 ## React Query Devtools
 - React Query Devtools are only included in bundles when `process.env.NODE_ENV === "development"`. Therefore, there is no need to exclude it in production build.
@@ -277,6 +312,10 @@ npm i @tanstack/react-query-devtools
 ### Usage
 - Place the Devtools inside the Query Client Provider, as high as possible.
 - [Options](https://tanstack.com/query/v4/docs/devtools#install-and-import-the-devtools)
+
+## Concerns
+- React Query is focused on keeping things up-to-date. Therefore, be mindful of not overloading the server with lots of network requests (`staleTime` defaults to 0 means a background refresh upon page refresh).
+  - React Query cannot deduplicate in these situations.
 
 ## Example
 1. Instantiate the React Query Client.
@@ -351,8 +390,8 @@ function Things() {
 export default Things;
 ```
 
-
 ## Reference
 [Overview | TanStack Query Docs](https://tanstack.com/query/v4/docs/overview)  
 [Important Defaults | TanStack Query Docs](https://tanstack.com/query/v4/docs/guides/important-defaults?from=reactQueryV3&original=https://react-query-v3.tanstack.com/guides/important-defaults)  
+[React Query as a State Manager | TkDodo's blog](https://tkdodo.eu/blog/react-query-as-a-state-manager)  
 [React Query in 100 Seconds - YouTube](https://www.youtube.com/watch?v=novnyCaa7To&ab_channel=Fireship)  
