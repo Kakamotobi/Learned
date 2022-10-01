@@ -3,7 +3,8 @@
 ## Table of Contents
 - [What Is It?](#what-is-it)
   - [Background](#background)
-  - [Features and Use Case Examples](#features-and-use-case-examples)
+  - [Important Disclaimer](#important-disclaimer)
+  - [Use Case Examples](#use-case-examples)
 - [Conceptual State of Data](#conceptual-state-of-data)
 - [React Query Caching](#react-query-caching)
 - [Core Concepts](#core-concepts)
@@ -22,7 +23,38 @@
 - React Query simplifies your data fetching code and also handles these complex implementations (caching, etc.) out of the box.
 - Hence, it might even eliminate the need for a global state management solution (Ex: Redux).
   - *Traditional state management libraries are great for client state but not so great for asynchronous or server state.*
-### Features and Use Case Examples
+### Important Disclaimer
+- React Query does NOT fetch any data for you.
+  - You have to use something else like `fetch`, `axios`, `graphql-request` to actually fetch the data.
+- React Query is:
+  - **an Async State Manager**
+    - It manages any form of asynchronous state.
+      - i.e. it receives a Promise.
+    - It handles loading and error states.
+    - It acts as a "global state manager".
+      - The `queryKey` is a unique identifier for your particular query. Therefore, calling the query with the same key in different places will result to the same data.
+      - This is ideally abstracted away with a custom hook so that the actual data fetching function doesn't have to be accessed twice.
+      - Components under the same *QueryClientProvider* will get the same data.
+        - Even though multiple components request the same data, React Query deduplicates requests so there will only be one network request.
+      - Example
+        ```ts
+        // useUser.ts
+        import { useQuery } from "@tanstack/react-query";
+        
+        export const useUser = () => useQuery(["user"], fetchUser);
+        ```
+        ```tsx
+        // ComponentA.tsx
+        import useUser from "./useUser.js";
+        
+        function ComponentA() {
+          const { data: user } = useUser();
+        }
+        ```
+  - **a Data Synchronization Tool**
+    - Since the one true source of data is the server, once the frontend receives the data, the data is considered "stale" (depending on the nature of the data).
+    - React Query provides a way to synchronize the data displayed on the frontend with the actual data in the backend.
+### Use Case Examples
 #### Preventing data from becoming stale.
 - Using `refetchOnWindowFocus: true`, you can refetch data when the user leaves and comes back to the same window. Therefore, data will remain up to date despite the user not staying on the page.
 #### Inifinite Scroll Feature
