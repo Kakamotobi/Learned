@@ -125,15 +125,39 @@
   - Since `enabled: false` means that you do not wish to use `useQuery`'s features, you need to manually call it using the `refetch` function, which is included in the returned object from calling `useQuery`.
   - **The `refetch` function does NOT check the cache and just proceeds to send an AJAX request.**
   - **Therefore, do NOT set `enabled: false` if you wish to use cache.**
-- Example
-  - Data is fresh for 5s. Therefore, data is refetched from the server when 5s have passed after receiving the data.
-  - Data remains in the cache forever.
-  ```jsx
-  const { data } = useQuery("users", getUsers, { // options
-    staleTime: 5000,
-    cacheTime: Infinity
-  });
-  ```
+#### Examples
+##### Example 1
+- Data is fresh for 5s. Therefore, data is refetched from the server when 5s have passed after receiving the data.
+- Data remains in the cache forever.
+```jsx
+const { data } = useQuery("users", getUsers, { // options
+  staleTime: 5000,
+  cacheTime: Infinity
+});
+```
+##### Example 2
+- `ComponentB` also needs to use the same todos data as `ComponentA`. `ComponentB` only mounts after the user clicks the button. Say a user updated the todos data in `ComponentA`, and a few minutes later the user clicks the button to mount `ComponentB`.
+  - It would be good to have a background refetch for `ComponentB` to have fresh data.
+  - This can be done by customizing `staleTime`.
+    - As long as data is fresh, it will always come from the cache, and not a request to the server.
+    - The appropriate value for `staleTime` depends on the situation.
+```jsx
+function ComponentA() {
+  const { data } = useTodos();
+  const [showMore, toggleShowMore] = React.useReducer(val => val, false);
+  
+  if (!data) return <Loading />;
+  
+  return (
+    <div>
+      <p>Todo Count: {data.length};
+      <button onClick={toggleShowMore}>Show More</button>
+      {showMore && <ComponentB />} // ComponentB is mounted after the button is clicked.
+    </div>
+  );
+}
+```
+
 
 ## Core Concepts
 ### Queries (`useQuery`)
