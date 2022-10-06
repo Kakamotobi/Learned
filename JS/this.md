@@ -7,6 +7,7 @@
 - [What is it REALLY?](#what-is-it-really)
   - [Call Site](#call-site)
   - [How the Call Site Decides the Value of `this`](#how-the-call-site-decides-the-value-of-this)
+    - [Order of Priority (Most to Least)](#order-of-priority-most-to-least)
     - [1. Default Binding - Standalone Function Invocation](#1-default-binding---standalone-function-invocation)
     - [2. Implicit Binding](#2-implicit-binding)
     - [3. Explicit Binding](#3-explicit-binding)
@@ -116,8 +117,8 @@ capitalize.call({ name: "tom" }); // "TOM" // `this` refers to the object that w
 ### How the Call Site Decides the Value of `this`
 - After checking the Call Site, check which of the following 4 rules apply.
   - If several rules can be applied to the situation, prioritize.
-#### Order of Priority
-- Default Binding < Implicit Binding < `new` Binding < Explicit Binding
+#### Order of Priority (Most to Least)
+- Explicit Binding --> `new` Binding --> Implicit Binding --> Default Binding
 #### 1. Default Binding - Standalone Function Invocation
 - **This is the default rule that is applied whenever a standalone function is invoked AND if none of the other rules apply.**
   - *i.e. if a dot(`.`), `.call()`, `.apply()`, or `.bind()` is not being used.*
@@ -213,14 +214,69 @@ obj.implicitBinding(); // "implicit binding"
   doImplicitBinding(implicitBinding); // "i am in the global scope!"
   ```
 #### 3. Explicit Binding
-- Using `.call()`, `.apply()`, or `.bind()` on a function.
-  - These methods accept an object to bind this to as the first argument.
-- *“Explicit” because we are directly binding `this` to a specified object.*
-- Unlike Implicit Binding, what is on the left of the dot notation in the function call is no longer `this`.
-- **Hard Binding**
-  - Hard coding a specific object as `this` by passing in that object as the argument for `.call()`. Hence, that object will be `this` no matter how the function is invoked.
+- **Directly binding `this` to the specified object.**
+  - i.e. using `.call()`, `.apply()`, or `.bind()` on a function.
+    - These methods accept an object to bind `this` to as the first argument. The following arguments are passed on to the function.
+  - Unlike Implicit Binding, what is on the left of the dot notation in the function call is no longer the Context Object of `this`.
+- However, the binding of `this` can also be lost or frameworks can overwrite it. [Hard Binding](#hard-binding) is a way to avoid this.
+##### Example
+```js
+function explicitBinding() {
+  console.log(this.a);
+}
+
+const obj = {
+  a: "explicit binding"
+}
+
+explicitBinding.call(obj); // 2
+explicitBinding(); // undefined
+```
+##### Hard Binding
+- Wrapping the explicitly bound function call with another function.
+- It is useful in cases where you need to pass in an argument and receive a return value.
+###### Example
+```js
+function explicitBinding() {
+  console.log(this.a);
+}
+
+const obj = {
+  a: "explicit binding"
+}
+
+const hardBinding = function() {
+  explicitBinding.call(obj); // `obj` is hard coded as `this` no matter how the `hardBinding` function is invoked.
+}
+
+hardBinding(); // "explicit binding"
+setTimeout(hardbinding, 100); // "explicit binding"
+hardBinding.call(window); // "explicit binding" // redefining `this` to `window` has no use.
+```
+```js
+// ES5 `Function.prototype.bind()` Implementation
+// `.bind()` returns a function that is hard coded to call the original function in the specified `this` context.
+
+function bind(fn, obj) {
+  return function() {
+    return fn.apply(obj, arguments);
+  }
+}
+
+const hardBoundFunc = bind(someFunc, someObj);
+```
 #### 4. `new` Binding
-- When using `new`, `this` is bound to the newly created object, which is created by the constructor attached to the class.
+- **Using the `new` keyword to call a function binds `this` to the newly created object, which is returned by the constructor of the function that was called.**
+  - Calling a function prefixed with the `new` keyword causes [these](https://github.com/Kakamotobi/Learned/blob/main/JS/new.md#the-4-things-that-new-does) to happen.
+##### Example
+```js
+function newBinding(a) {
+  this.a = a;
+}
+
+const test = new newBinding("new binding");
+test.a; // "new binding"
+```
 
 ## `this` and Arrow Functions
 - **Arrow functions do not get their own `this` value.**
