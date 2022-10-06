@@ -8,6 +8,7 @@
   - [Call Site](#call-site)
   - [How the Call Site Decides the Value of `this`](#how-the-call-site-decides-the-value-of-this)
     - [Order of Priority (Most to Least)](#order-of-priority-most-to-least)
+      - [Checklist](#checklist)
     - [1. Default Binding - Standalone Function Invocation](#1-default-binding---standalone-function-invocation)
     - [2. Implicit Binding](#2-implicit-binding)
     - [3. Explicit Binding](#3-explicit-binding)
@@ -119,6 +120,15 @@ capitalize.call({ name: "tom" }); // "TOM" // `this` refers to the object that w
   - If several rules can be applied to the situation, prioritize.
 #### Order of Priority (Most to Least)
 - Explicit Binding --> `new` Binding --> Implicit Binding --> Default Binding
+##### Checklist
+1. Was `new` used to call the function? - `new` binding
+    - If so, `this` is the newly created object.
+2. Were methods like `call` or `apply` used to call the function?
+    - If so, `this` is the specified object. - explicit binding
+3. Was the function called as a part of a context object?
+    - If so, `this` is the context object.
+4. None of the above applies. - default binding
+    - If so, `this` is the `window` object or `undefined` depending on the strict mode.
 #### 1. Default Binding - Standalone Function Invocation
 - **This is the default rule that is applied whenever a standalone function is invoked AND if none of the other rules apply.**
   - *i.e. if a dot(`.`), `.call()`, `.apply()`, or `.bind()` is not being used.*
@@ -254,7 +264,7 @@ setTimeout(hardbinding, 100); // "explicit binding"
 hardBinding.call(window); // "explicit binding" // redefining `this` to `window` has no use.
 ```
 ```js
-// ES5 `Function.prototype.bind()` Implementation
+// ES5 `Function.prototype.bind()` Pseudo Implementation
 // `.bind()` returns a function that is hard coded to call the original function in the specified `this` context.
 
 function bind(fn, obj) {
