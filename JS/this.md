@@ -13,7 +13,7 @@
     - [2. Implicit Binding](#2-implicit-binding)
     - [3. Explicit Binding](#3-explicit-binding)
     - [4. `new` Binding](#4-new-binding)
-- [`this` and Arrow Functions](#this-and-arrow-functions)
+- [Lexical `this` ft. Arrow Functions](#lexical-this-ft-arrow-functions)
 - [Rules of Thumb](#rules-of-thumb)
 
 ## What Is It?
@@ -288,12 +288,30 @@ const test = new newBinding("new binding");
 test.a; // "new binding"
 ```
 
-## `this` and Arrow Functions
-- **Arrow functions do not get their own `this` value.**
-  - i.e., `this` in an arrow function will not change from the `this` of its parent or of its nearest `this` (the local execution context).
-### How It Can Be Useful
+## Lexical `this` ft. Arrow Functions
+- **Arrow Functions bind `this` based on its Enclosing/Lexical Scope (function or global).**
+  - i.e. an arrow function's `this` is inherited from its parent or from its nearest `this`.
 - It can be better to use arrow functions when we don't want a new `this` value.
-#### Example
+### Examples
+```js
+function lexicalThis() {
+  return (a) => {
+    console.log(this.a); // `this` is bound lexically based on `lexicalThis`.
+  }
+}
+
+const obj1 = {
+  a: "obj1"
+}
+
+const obj2 = {
+  a: "obj2"
+}
+
+const returnedArrowFunc = lexicalThis.call(obj1); // `lexicalThis`'s `this` is bound to `obj`.
+returnedArrowFunc(); // obj1 // The arrow function's `this` is inherited from its lexical scope: `lexicalThis`.
+returnedArrowFunc.call(obj2); // obj1 // An arrow function's lexical binding cannot be overridden in any way.
+```
 ```js
 const annoyer = {
   phrases: ["literally", "cray cray", "I can't even", "Totes!", "YOLO", "Can't Stop, Won't Stop"],
@@ -312,11 +330,28 @@ const annoyer = {
   }
 }
 ```
+### Before Arrow Functions
+- Arrow functions are a good way to guarantee the use of its lexical scope's `this`, and thus can replace `bind()`.
+- Before arrow functions, developers did something like this to do what arrow functions do:
+  ```js
+  function lexicalThis() {
+    const self = this; // `this` is captured.
+    setTimeout(function() {
+      console.log(self.a);
+    }, 100);
+  }
+  
+  const obj = {
+    a: "before arrow functions"
+  }
+  
+  lexicalThis.call(obj); // "before arrow functions"
+  ```
 
 ## Rules of Thumb
 - If the function was defined with an arrow function.
-  - Write `console.log(this)` on the first valid line above the arrow function. Value of this in the arrow function will be equal to that console log.
-- If the functionw as invoked using `.bind()`, `.call()`, or `.apply()`.
+  - Write `console.log(this)` on the first valid line above the arrow function. Value of `this` in the arrow function will be equal to that console log.
+- If the function was invoked using `.bind()`, `.call()`, or `.apply()`.
   - `this` is equal to the first argument of `.bind()`, `.call()`, or `.apply()`.
 - All other cases
   - `this` is equal to whatever is on the left of the `.` in the method call.
