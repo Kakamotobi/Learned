@@ -37,6 +37,8 @@ capitalize.call({ name: "tom" }); // "TOM" // `this` refers to the object that w
 ### Why Use It?
 - Instead of using the `this` keyword to pass along the object reference, why not just pass in context objects as arguments?
   - Because it’s neater and clearer, especially when things get more complicated.
+- `this` allows us to reuse functions in different execution contexts.
+  - i.e. allows us to invoke the same function for different objects.
 ### Disclaimers
 #### `this` does NOT refer to the Function itself
 - Since `this` does not refer to the function itself, we have a few options to choose from.
@@ -97,7 +99,7 @@ capitalize.call({ name: "tom" }); // "TOM" // `this` refers to the object that w
 
 ## What is it REALLY?
 ### Call Site
-- Upon invoking a function, an **Execution Context** is created. This Execution Context contains information including the call stack, invocation method, arguments that were passed in, and the `this` reference, which serves to be used during the execution of the function.
+- Upon invoking a function, an **Execution Context**(a.k.a. Environment/Activation Record) is created. This Execution Context contains information including the variable and function names, call stack, invocation method, arguments that were passed in, and the `this` reference, which serves to be used during the execution of the function.
   - Therefore to understand what `this` binds to, we must look at the function's **Call Site** (invocation of the function; NOT declaration).
     - **The Call Site is inside the piece of code "right before" the currently executing function in the call stack.**
       - i.e. where the current function (in the call stack) was executed in.
@@ -359,3 +361,4 @@ const annoyer = {
 ## Reference
 You Don't Know JS - Kyle Simpson  
 [this - JavaScript | MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this)  
+[The JavaScript `this` Keyword + 5 Key Binding Rules Explained for JS Beginners](https://www.freecodecamp.org/news/javascript-this-keyword-binding-rules/)  
