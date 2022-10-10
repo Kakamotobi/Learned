@@ -43,30 +43,26 @@
 
 ## Installing MongoDB (macOS community edition)
 1. Install Homebrew
-  - `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
+    - `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
 2. Tap the MongoDB Homebrew Tap
-  - `brew tap mongodb/brew`
+    - `brew tap mongodb/brew`
 3. Install MongoDB
-  - `brew install mongodb-community`
+   - `brew install mongodb-community`
 4. Run MongoDB as a macOS service
-  - `brew services start mongodb-community`
-  - Stopping running a mongod running as a macOS service
-    - `brew services stop mongodb-community`
+    - `brew services start mongodb-community`
+    - Stopping running a mongod running as a macOS service
+      - `brew services stop mongodb-community`
 5. Verify that MongoDB is running as a macOS service.
-  - `brew services list`
+   - `brew services list`
 6. Begin using MongoDB
-  - `mongo`
-  - If error: "zsh: command not found: mongo"
-    1. `cd ~`.
-    2. `ls -a` to check if `.zshrc` file exists.
-    3. If it doesn't, `touch .zshrc`.
-    4. Append the path to the file by doing: `echo export PATH="$PATH:/usr/local/Cellar/mongodb-community@4.4/4.4.5/bin" >> .zshrc`.
-    5. Verify that it has been properly added by doing: `cat .zshrc`.
-    6. `mongo` works now.
-### Reference
-[Install MongoDB Community Edition on macOS - MongoDB](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-os-x/)  
-[remove mongodb that was installed via brew](https://gist.github.com/katychuang/10439243)  
-[mongodb/homebrew-brew: The Official MongoDB Software Homebrew Tap](https://github.com/mongodb/homebrew-brew)  
+    - `mongo`
+    - If error: "zsh: command not found: mongo"
+      1. `cd ~`.
+      2. `ls -a` to check if `.zshrc` file exists.
+      3. If it doesn't, `touch .zshrc`.
+      4. Append the path to the file by doing: `echo export PATH="$PATH:/usr/local/Cellar/mongodb-community@4.4/4.4.5/bin" >> .zshrc`.
+      5. Verify that it has been properly added by doing: `cat .zshrc`.
+      6. `mongo` works now.
 
 ## The Mongo Shell
 - **`mongo`**
@@ -183,6 +179,9 @@
   - Ex: `db.dogs.find({$or: [{"personality.catFriendly": true}, {age: {$lte: 20}}]})`
 
 ### Reference
+[Install MongoDB Community Edition on macOS - MongoDB](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-os-x/)  
+[remove mongodb that was installed via brew](https://gist.github.com/katychuang/10439243)  
+[mongodb/homebrew-brew: The Official MongoDB Software Homebrew Tap](https://github.com/mongodb/homebrew-brew)  
 [MongoDB CRUD Operations - MongoDB Manual](https://docs.mongodb.com/manual/crud/)  
 [mongo Shell Methods - MongoDB manual](https://docs.mongodb.com/manual/reference/method/)  
 [Operators - MongoDB Manual](https://docs.mongodb.com/manual/reference/operator/)  
