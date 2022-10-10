@@ -169,3 +169,87 @@ const rotate = (matrix) => {
   }
 }
 ```
+
+## 4. [Word Search](https://leetcode.com/problems/word-search/)
+- DFS on each block.
+- Keep track of current path for each search.
+- Make sure to "unvisit" the current character before returning from DFS (for the next block to start DFS).
+- Base Cases
+  - If coords are out of bounds, return false.
+  - If the current character in `board` does not match the current character in `word`, return false.
+  - If reached the last character of word, return true.
+```js
+// TC: O(mn * 4^l), SC: O(mn + l)
+  // l: number of characters in `word`.
+  // DFS call stack will always be the length of the word. And DFS has 4 branches. So, 4^word.length.
+
+const exist = (board, word) => {
+  const m = board.length; // # of rows.
+  const n = board[0].length; // # of columns.
+  const moves = [[-1,0],[0,1],[1,0],[0,-1]];
+  
+  const dfs = (x, y, idx) => {
+    // Base Cases
+    if (x < 0 || x >= m || y < 0 || y >= n) return false;
+    if (board[x][y] !== word[idx]) return false;
+    if (idx === word.length - 1) return true;
+    
+    const temp = board[x][y];
+    // Mark block as visited.
+    board[x][y] = "*";
+    
+    for (const [mx, my] of moves) {
+      if (dfs(mx, my, idx + 1)) return true;
+    }
+    
+    // "Unvisit" the block.
+    board[x][y] = temp; // or word[idx]
+    
+    return false;
+  }
+  
+  // Call DFS on all blocks in `board`.
+  for (let i = 0; i < m; i++) {
+    for (let j = 0; j < n; j++) {
+      if (dfs(i, j, 0)) return true;
+    }
+  }
+  
+  return false;
+}
+```
+```js
+// alternative
+
+const exist = function(board, word) {
+    const m = board.length; // # of rows
+    const n = board[0].length; // # of columns
+    const moves = [[-1,0],[0,1],[1,0],[0,-1]];
+    const path = new Map();
+    
+    const dfs = (x, y, idx) => {
+        if (x < 0 || x >= m || y < 0 || y >= n) return false;
+        if (board[x][y] !== word[idx]) return false;
+        if (path.get(`${x},${y}`)) return false;
+        if (idx === word.length - 1) return true;
+        
+        path.set(`${x},${y}`, true);
+        
+        for (const [mx, my] of moves) {
+            if(dfs(x + mx, y + my, idx + 1)) return true;
+        }
+        
+        path.set(`${x},${y}`, false);
+        
+        return false;
+    }
+    
+    for (let i = 0; i < m; i++) {
+        for (let j = 0; j < n; j++) {
+            if (dfs(i, j, 0)) return true;
+        }
+    }
+    
+    return false;
+};
+```
