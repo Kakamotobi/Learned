@@ -13,6 +13,8 @@
 - It also supports Hot Module Reloading (HMR) for development.
   - HMR: changes in the code are reflected instantly without losing the state of the application.
 - When building for production, it uses Rollup under the hood. Therefore, no need to worry about configuring it.
+- Vite, as do other module bundlers, runs in your computer's Node.js.
+  - i.e. a Node-based process does the transformation.
 
 ### Two Parts to Vite
 1. Provide a local development server.
