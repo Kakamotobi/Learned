@@ -171,7 +171,8 @@ function ComponentA() {
     - A unique key for the query.
     - This key is used by React Query for refetching, caching, and sharing your queries throughout the application.
     - It can be a string or array.
-    - *If the query relies on a variable, the variable needs to be included in the array as well.*
+    - It is essentially a dependecy array (like for `useEffect` in React).
+      - *If the query relies on a variable, the variable needs to be included in the array as well.*
       - Example
         ```js
         const { data, isLoading, error } = useQuery(['todos', id], () => axios.get(`http://.../${id}`));
@@ -193,26 +194,44 @@ function ComponentA() {
     - **`cacheTime`**
       - `number`: number of milliseconds until data stays cached.
       - `Infinity`: always keep the data cached.
-    - **`onSuccess: (data) => `**
+    - **`onSuccess: (data) => void`**
       - The callback when data fetching succeeded.
-    - **`onError: (error) => `**
+    - **`onError: (error) => void`**
       - The callback to be executed when data fetching failed.
-    - **`onSettled: (data, error) => `**
+    - **`onSettled: (data, error) => void`**
       - The callback to be executed regardless of success or error in fetching data.
-    - **`select: (data) => `**
+    - **`select: (data) => unknown`**
       - Function to process the data.
       - The returned value in this function will be the shape of the requested data.
     - **`keepPreviousData`**
       - Keep the previous data rendered on the screen while new data is being fetched.
-    - **`initialData`**
-      - The initial value to use when there is no cached data.
-      - You can use values stored in local storage for this value.
+    - **`initialData: TData | () => TData`**
+      - The initial data for the query cache when the query has not been created or cached yet.
+        - i.e. prefill with data from the cache.
+      - You can use (stale) data currently existing in the cache while waiting for the refetch.
+        - Example
+          ```js
+          export const useTodosQuery = (state: State) =>
+            useQuery(['todos', state], () => fetchTodos(state), {
+              initialData: () => {
+                const allTodos = queryClient.getQueryData<Todos>(['todos', 'all']);
+                const filteredTodos =
+                  allTodos?.filter((todo) => todo.state === state) ?? [];
+
+                return filteredData.length > 0 ? filteredData : undefined;
+              },
+            });
+          ```
+      - You can also use values stored in other places such as local storage.
   - **Returns**
     - The result returned by `useQuery` contains all the information about the query and usage of the data.
       - Ex: `isLoading`, `isError`, `isSuccess` states to indicate the status of the query.
       - Ex: `error` if the query is in an `isError` state.
       - Ex: `data` if the query is in a `isSuccess` state.
       - Ex: `refetch` to manually refetch data (ignores cache, straight to server).
+        - *`refetch` is for refetching with the same parameters.*
+        - If you have state that changes data, include that state in the Query Key.
+          - If the state changes, React Query will trigger a refetch. Thereby, use local client state to "drive" the query.
 #### Example
 ```tsx
 function Todos() {
