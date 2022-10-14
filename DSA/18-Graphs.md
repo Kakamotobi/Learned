@@ -12,7 +12,8 @@
   - [Graph Traversal Uses](#graph-traversal-uses)
   - [Depth-First Traversal](#depth-first-traversal)
   - [Breadth-First Traversal](#breadth-first-traversal)
-- [Undirected Graph Im  plementation - using adjacency list](#undirected-graph-implementation---using-adjacency-list)
+- [Undirected Graph Implementation - using adjacency list](#undirected-graph-implementation---using-adjacency-list)
+- [Topological Sorting for Directed Acyclic Graphs](#topological-sorting-for-directed-acyclic-graphs)
 
 ## What are Graphs?
 - A data structure that consists of nodes and connections between those nodes, where there is no specific pattern or root.
@@ -78,6 +79,16 @@
   <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/DSA/refImg/weighted-graph.png" alt="Unweighted Graph Example" width="40%" />
 </p>
 
+- **Bipartite Graph**
+  - A graph *G = (V,E)* is bipartite if *V* can be partitioned into sets *X,Y* such that EVERY EDGE has one end in *X* and one in *Y*.
+  - Ex: client-server connections, student-college stable matching graph.
+  - Any graph containing an odd cycle (odd number of nodes) is not a bipartite.
+  - Bipartite Testing
+    - Nodes in the same layer should not have any edges between them.
+    - Algorithm
+      - Run BFS on a node.
+      - If there is an edge between two nodes in the same layer, the graph is not a bipartite.
+      - Continue with BFS.
 ### Some Uses for Graphs
 - Social Networks
 - Location/Mapping/Directions
@@ -317,3 +328,18 @@ class UndirectedGraph {
   }
 }
 ```
+
+## Topological Sorting for Directed Acyclic Graphs
+- A topological sorting is an ordering of the nodes in a **directed acyclic graph** such that all edges go "forward" in the ordering,
+  - i.e. returns an array of the nodes where each node appears before all the nodes that it points to.
+- A graph can have more than one valid topological ordering.
+### Algorithm
+- The idea is that a DAG always has a node with no incoming edges, and removing that node always produces a new DAG.
+  - Any node with no incoming edges is valid to be first in topological sorting.
+- Algorithm - TC: O(n^2 + m)
+  - While there are nodes remaining
+    - Find a node that has no incoming edges
+    - Place that node in the order
+    - Remove that node and all of its outgoing edges from the graph
+- Algorithm - TC: O(m + n)
+  - Same as above but instead of searching the whole graph every time for a node that has no incoming edges, maintain an incoming edge count for each node (Set up requires O(m + n), update requires O(1)). When a node's count becomes 0, add it to the order.
