@@ -67,8 +67,8 @@ const canFinish = (numCourses, prerequisites) => {
   }
   
   // Check each course if it has any cycles.
-  for (let course in adjList) {
-    if (dfs(course) === false) return false;
+  for (let i = 0; i < numCourses; i++) { // use `numCourses` instead of the adjacency list to account for unconnected graphs.
+    if (dfs(i) === false) return false;
   }
   
   return true;
