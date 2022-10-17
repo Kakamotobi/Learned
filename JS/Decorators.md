@@ -43,25 +43,53 @@ loggedSayHello("Kakamotobi");
 - Decorators in JavaScript are yet a work in progress (Stage 3 Proposal) and can be used on a class or its members (properties, methods, getters, setters).
 ### Class Decorators
 - Decorators that are applied to the entier class.
+#### Examples
 ```js
-function logger() {
+const argsLogger = () => {
   return function decorator() { // decorator function
     return (...args) => {
-      console.log(`Parameters: ${args}`);
+      console.log(`Parameters: ${args}`); // log the arguments
       return new Class(...args);
     }
   }
 }
 
-@logger
+@argsLogger
 class Cat {
   constructor(name, age) {}
 }
 
-const tom = new Cat("tom", 3);
+const tom = new Cat("tom", 3); // "tom", 3
+```
+```js
+const withNumTails = (className) => {
+  return class extends classname {
+    constructor(...args) {
+      super(...args);
+      this.numTails = 9;
+    }
+    
+    setNumTails(num) {
+      this.numTails = num;
+    }
+  }
+}
+
+@withNumTails
+class Cat {
+  constructor(name, age) {
+    this.name = name;
+    this.age = age;
+  }
+}
+
+const tom = new Cat("Tom", 3);
+tom.numTails; // 9
+tom.setNumTails(2);
 ```
 ### Class Member Decorators
 - Decorators that are applied to a single member of a class.
+#### Example
 ```js
 // target: the class that the member belongs to.
 // name: the name of the member.
@@ -86,3 +114,4 @@ tom.species = "dog";
 [What are decorators and how are they used in JavaScript ? - GeeksforGeeks](https://www.geeksforgeeks.org/what-are-decorators-and-how-are-they-used-in-javascript/)  
 [JavaScript Decorators: What They Are and When to Use Them - SitePoint](https://www.sitepoint.com/javascript-decorators-what-they-are/)  
 [tc39/proposal-decorators: Decorators for ES6 Classes](https://github.com/tc39/proposal-decorators)  
+[WONISM | JavaScript Decorator 이해하기](https://wonism.github.io/what-is-decorator/)  
