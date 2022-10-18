@@ -23,9 +23,10 @@
 ### Controllers
 - Controllers are responsible for handling incoming **requests** and returning **responses** to the client.
   - It's purpose is to receive specific requests for the application.
-- Classes and **Decorators** are used to create controllers.
-  - **Decorators enable Nest to create a routing map.**
-  - The **Request Object** can be accessed using decorators such as `@Body()`, `@Param()`, `@Headers()`, `@Query()`.
+- To create a controller, add the `@Controller()` decorator to a class.
+  - Inside the class, implement methods and decorate them with HTTP verbs, HTTP status code, HTTP headers, etc.
+  - Use parameter decorators (`@Body()`, `@Param()`, `@Headers`) to access the request object.
+  - The returned value in the method will be the response body.
 - Controllers should handle HTTP requests and delegate more complex tasks to **providers**.
 - Once controllers are fully defined, Nest needs to be informed about them in `app.module.ts`.
 #### Example
@@ -84,19 +85,46 @@ export class ListAllEntities {
 }
 ```
 ### Providers
-- Many of the basic Nest classes may be treated as a provider - services, repositories, factories, helpers, etc.
-- Providers are JS classes that are declared as `providers` in a **module**.
-- Providers can be **injected** as a dependency.
-  - i.e. objects can create various relationships with each other.
-#### Example
-- **Services** are responsible for data storage and retrieval, and are designed to be used by Controllers.
+- Providers are JS classes that contain shared logic throughout the entire application and can be injected as a dependency where needed.
+- To create a provider, add the `@Injectable()` decorator to a class.
+  - Now this class can be injected in the constructor of another class.
+#### Examples
+##### Example 1 - Guard
+- A Guard implements the `CanActivate` interface.
+- A provider can be implemented as a **Guard** to handle role-based user authentication.
+- Request --> Guard --> Controller
+```ts
+@Injectable() // attaches metadata, which declares that this class can be managed by the Nest IoC container.
+export class AuthGuard implements CanActivate {
+  canActivate() {
+    if (isAdmin) return true;
+  }
+}
+
+@Controller()
+export class AppController {
+  constructor(private readonly appService: AppService) {}
+}
+```
+##### Example 2 - Pipe
+- A Pipe implements the `PipeTransform` interface.
+- A provider can implemented as a **Pipe** to to validate and transform values in a controller.
+- Request --> Pipe --> Controller
+```ts
+@Get(':id)
+findOne(@Param('id', ValidationPipe) user) {
+  return { user };
+}
+```
+##### Example 3
+- A provider responsible for data storage and retrieval, and are designed to be used by Controllers.
 ```ts
 // users.service.ts
 
 import { Injectable } from '@nestjs/common';
 import { User } from './interfaces/user.interface';
 
-@Injectable() // attaches metadata, which declares that this class can be managed by the Nest IoC container.
+@Injectable()
 export class UsersService {
   private readonly users: User[] = [];
 
@@ -133,19 +161,20 @@ export class UsersController {
 }
 ```
 ### Modules
-- A module is a class that is annotated with a `@Module()` decorator.
+- Modules allow code to be organized into smaller chunks that can be lazy-loaded to run faster in serverless environments.
+- To create a module, use the `@Module()` decorator.
   - This decorator provides metadata for Nest to use to organize the application structure.
 - Each feature can have a module which will ultimately need to be included in the application's root module.
   - The root module is the starting point at which Nest builds the application graph.
-- Module properties include:
-  - `imports`
-    - The list of imported modules that export the providers which are required in this module.
-  - `controllers`
-    - The set of controllers in this module which have to be instantiated.
-  - `providers`
-    - The providers that will be instantiated by the Nest injector and that may be shared at least across this module.
-  - `exports`
-    - The subset of `providers` that are provided by this module and should be available in other modules which import this module.
+### Module Properties
+- `imports`
+  - The list of imported modules that export the providers which are required in this module.
+- `controllers`
+  - The set of controllers in this module which have to be instantiated.
+- `providers`
+  - The providers that will be instantiated by the Nest injector and that may be shared at least across this module.
+- `exports`
+  - The subset of `providers` that are provided by this module and should be available in other modules which import this module.
 #### Example
 ```ts
 // users/users.module.ts
@@ -209,3 +238,4 @@ nest new project-name
 
 ## Reference
 [NestJS - A progressive Node.js framework](https://nestjs.com/)  
+[NestJS in 100 Seconds - YouTube](https://www.youtube.com/watch?v=0M8AYU_hPas&ab_channel=Fireship)  
