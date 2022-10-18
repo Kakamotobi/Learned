@@ -4,22 +4,38 @@
 - [What is NestJS?](#what-is-nestjs)
 - [Key Concepts](#key-concepts)
   - [Controllers](#controllers)
-  - [Providers](#providers)
+  - [Providers/Services](#providersservices)
+    - [Data Transfer Object (DTO)](#data-transfer-object-dto)
   - [Modules](#modules)
 - [Getting Started](#getting-started)
 
 ## What is NestJS?
 > A progressive Node.js framework for building efficient, reliable and scalable server-side applications. | NestJS
 
-- It provides a suite of tools that leverages HTTP Server microframeworks (either Express or Fastify).
-  - Basically, enhancing them through a layer of abstraction but also exposing their APIs directly to the developer, which allows developers to use third-party modules for said framework.
+- It provides a suite of tools that leverages HTTP server microframeworks (Ex: Express or Fastify).
 - It supports REST and GraphQL APIs out of the box. Or it can be used to create a full-stack application using the MVC pattern.
 - It contains built-in modules for building a server-side application.
   - Ex: modules to work with databases (Ex: MongoDB, Redis), handle security, implement streaming, caching, logging, cors, websockets, rate-limiting, etc.
+- In NestJS, modularity is very important. It is built around **Dependency Injection**.
+  - Dependency Injection is used to avoid having to manage where a class is created and who manages it.
+  - It solves the problem of dependency management.
 - It has its own CLI, which can be used to create a new project (`nest new` command).
-- NestJS is built around **Dependency Injection**.
+### NestJS vs Microframeworks (Express, Fastify)
+- NestJS solves a different problem from Express. It solves architecture.
+- Express is very unopinionated and does not give a direction as to how the project should be structured or how to do particular things.
+  - Therefore, you need to know how to structure and scale it properly.
+- NestJS uses Express or Fastify under the hood. It is an abstraction of NestJS.
+  - Basically, enhancing them through a layer of abstraction but also exposing their APIs directly to the developer, which allows developers to use third-party modules for said framework.
+### Why use NestJS?
+- Structure, modularity, native TypeScript support, built-in functionality to integrate REST API or GraphQL, and security.
 
 ## Key Concepts
+- In a NestJS application, logic is largely separated into Controllers and Providers/Services.
+- The Controller receives a request from a client and will call a function from the Service and return the response to the client.
+  - But to do so, the Controller needs an instance of the Service class.
+    - Instead of the Controller having to import and instantiate a Service class manually (Ex: `const service = new AuthService()`), the Controller receives an instance of the Service class through its constructor.
+    - Ex: `constructor(private authService: AuthService)`. NestJS takes care of how to instantiate the Service and how to pass it to the Controller.
+  - Functions in the Controller and Service will usually match each other.
 ### Controllers
 - Controllers are responsible for handling incoming **requests** and returning **responses** to the client.
   - It's purpose is to receive specific requests for the application.
@@ -84,14 +100,69 @@ export class ListAllEntities {
   // ...
 }
 ```
-### Providers
+### Providers/Services
+- Providers/Services are responsible for executing business logic.
 - Providers are JS classes that contain shared logic throughout the entire application and can be injected as a dependency where needed.
 - To create a provider, add the `@Injectable()` decorator to a class.
   - Now this class can be injected in the constructor of another class.
+#### Data Transfer Object (DTO)
+- A DTO is an object that carries data between processes.
+- It is an object where you push your data for example, from a request, and run validation on it.
+- Example
+  ```ts
+  // auth.dto.ts
+  
+  import { IsEmail, IsString } from 'class-validator';
+  
+  export class AuthDto {
+    @IsEmail()
+    email: string;
+
+    @IsString()
+    password: string;
+  }
+  ```
+  ```ts
+  // auth.controller.ts
+  
+  import { Controller, Body, Post } from '@nestjs/common';
+  import { AuthService } from './auth.service';
+  import { AuthDto } from './auth.dto';
+  
+  @Controller('auth')
+  export class AuthController {
+    constructor(private authService: AuthService) {}
+    
+    @Post('signup')
+    signup(@Body() dto: AuthDto) {
+      return this.authService.signup(dto);
+    }
+  }
+  ```
+  ```ts
+  // auth.service.ts
+  
+  import { Injectable } from '@nestjs/common';
+  import { User, UserDocument } from './user.schema';
+  import { InjectModel } from '@nestjs/mongoose';
+  import { Model } from 'mongoose';
+  import { AuthDto } from './auth.dto';
+  
+  @Injectable()
+  export class AuthService {
+    constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
+
+    async signup(dto: AuthDto) {
+      return await this.userModel.create({
+        ...dto,
+      });
+    }
+  }
+  ```
 #### Examples
 ##### Example 1 - Guard
-- A Guard implements the `CanActivate` interface.
-- A provider can be implemented as a **Guard** to handle role-based user authentication.
+- A **Guard** implements the `CanActivate` interface.
+- A provider can be implemented as a Guard to handle role-based user authentication.
 - Request --> Guard --> Controller
 ```ts
 @Injectable() // attaches metadata, which declares that this class can be managed by the Nest IoC container.
@@ -107,8 +178,9 @@ export class AppController {
 }
 ```
 ##### Example 2 - Pipe
-- A Pipe implements the `PipeTransform` interface.
-- A provider can implemented as a **Pipe** to to validate and transform values in a controller.
+- A **Pipe** implements the `PipeTransform` interface.
+- Pipes are functions that transform your data.
+- A provider can be implemented as a Pipe to to validate and transform values in a controller.
 - Request --> Pipe --> Controller
 ```ts
 @Get(':id)
