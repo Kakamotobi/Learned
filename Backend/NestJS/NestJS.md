@@ -8,6 +8,9 @@
     - [Data Transfer Object (DTO)](#data-transfer-object-dto)
   - [Modules](#modules)
 - [Getting Started](#getting-started)
+  - [Installation](#installation)
+  - [Setup](#setup)
+  - [Core Files](#core-files)
 
 ## What is NestJS?
 > A progressive Node.js framework for building efficient, reliable and scalable server-side applications. | NestJS
@@ -162,8 +165,10 @@ export class ListAllEntities {
 #### Examples
 ##### Example 1 - Guard
 - A **Guard** implements the `CanActivate` interface.
-- A provider can be implemented as a Guard to handle role-based user authentication.
+- Guards determine whether a given request will be handled by the route handler or not, depending on certain conditions (like permissions, roles, ACLs, etc.) present at run-time.
+  - i.e. authorization.
 - Request --> Guard --> Controller
+- A provider can be implemented as a Guard to handle role-based user authentication.
 ```ts
 @Injectable() // attaches metadata, which declares that this class can be managed by the Nest IoC container.
 export class AuthGuard implements CanActivate {
@@ -179,9 +184,12 @@ export class AppController {
 ```
 ##### Example 2 - Pipe
 - A **Pipe** implements the `PipeTransform` interface.
-- Pipes are functions that transform your data.
-- A provider can be implemented as a Pipe to to validate and transform values in a controller.
+- Pipes operate on the `arguments` that are being processed by a controller route handler.
+- Use Cases
+  - Transformation: transform input data to the desired form (Ex: string to integer).
+  - Validation: evaluate input data and if valid, simply pass it through unchanged; otherwise, throw an exception when the data is incorrect.
 - Request --> Pipe --> Controller
+- A provider can be implemented as a Pipe to to validate and transform values in a controller.
 ```ts
 @Get(':id)
 findOne(@Param('id', ValidationPipe) user) {
@@ -269,6 +277,42 @@ export class UsersModule {}
 ```zsh
 nest new project-name
 ```
+### Setup
+#### Environment
+- The `ConfigModule`, which is provided by the `@nestjs/config` package, loads the `.env` file into the application.
+  - It uses the `dotenv` library under the hood.
+- Like any Module in NestJS, it also has a Service and uses dependency injection.
+  - Therefore, we can import that Config Service inside any of our Modules of our application.
+```ts
+// app.module.ts
+
+import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+
+@Module({
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+  ],
+})
+export class AppModule {}
+```
+```ts
+// auth.service.ts
+
+import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+
+@Injectable()
+export class AuthService {
+  constructor(private configService: ConfigService,) {}
+  
+  verifyToken(token: string) {
+    const tokenSecret = configService.get('TOKEN_SECRET'); // from `.env` file.
+  }
+}
+```
 ### Core Files
 - **`main.ts`**
   - The entry file of the application which uses the core function `NestFactory` to create a Nest application instance.
@@ -284,8 +328,6 @@ nest new project-name
     }
     bootstrap();
     ```
-- **`app.service.ts`**
-  - A basic service with a single method.
 - **`app.module.ts`**
   - The root module of the application.
   - Example
@@ -307,6 +349,8 @@ nest new project-name
   - A basic controller with a single route.
 - **`app.controller.spec.ts`**
   - The unit tests for the controller.
+- **`app.service.ts`**
+  - A basic service with a single method.
 
 ## Reference
 [NestJS - A progressive Node.js framework](https://nestjs.com/)  
