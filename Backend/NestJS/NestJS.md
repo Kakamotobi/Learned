@@ -4,6 +4,7 @@
 - [What is NestJS?](#what-is-nestjs)
 - [Design Idea](#design-idea)
   - [Inversion of Control](#inversion-of-control)
+    - [IoC in NestJS](#ioc-in-nestjs)
   - [Dependency Injection](#dependency-injection)
   - [Dependency Inversion Principle](#dependency-inversion-principle)
 - [Key Concepts](#key-concepts)
@@ -43,9 +44,13 @@
   - "Control" refers to all of the processes in a class other than the completion of its main workflow, including control over the application flow, as well as the dependency object creation and binding process.
 - **An object does not personally create/construct another object that it depends on. Instead, the object receives that other object already instantiated as an argument.**
 - We just say who needs what. Then, the container looks at the type and determines what needs to be called.
+#### IoC in NestJS
+- Instance creation of dependencies in NestJS is delegated to the **IoC Container** (NestJS runtime).
+- When the NestJS application starts, all classes are registered in the Dependency Injection Container.
+  - The `@Injectable()` decorator is prefixed to the class --> the class is included in the Module's `providers` --> the `@Controller` decorator prefixed registers the controller to the Dependency Injection Container and generates an instance --> the Container identifies each class' dependencies --> the Container generates an instance of each class' dependencies and provides them (NestJS does this automatically) --> the constructed instance does is reused when needed (not removed or regenerated).
 ### Dependency Injection
 - Refers to an object or function receiving other objects or functions that it depends on, as arguments.
-- It is a form of Inversion of Control that aims to separate the concerns of constructing objects and using them, leading to loosely coupled program.s
+- It is a form of Inversion of Control that aims to separate the concerns of constructing objects and using them, leading to loosely coupled program.
 ### Dependency Inversion Principle
 - The idea behind this principle is also referred to as the Adapter Pattern, Facade Pattern, where a wrapper is created around external dependencies so that our codebase depends on the wrapper and not the actual implementation of the dependencies that are being used.
 - **Therefore, the high-level class should rather define an interface for the low-level class that it wants to use, which the low-level classes will follow and implement.**
@@ -496,3 +501,4 @@ export class AuthService {
 [Dependency Inversion Principle Explained - SOLID Design Principles - YouTube](https://www.youtube.com/watch?v=9oHY5TllWaU&ab_channel=WebDevSimplified)  
 [Dependency inversion principle - Wikipedia](https://en.wikipedia.org/wiki/Dependency_inversion_principle)  
 [Dependency injection - Wikipedia](https://en.wikipedia.org/wiki/Dependency_injection)  
+[[Nestjs]IoC 와 DI](https://velog.io/@jeong3320/NestJsIoC-%EC%99%80-DI)  
