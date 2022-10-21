@@ -2,6 +2,10 @@
 
 ## Table of Contents
 - [What is NestJS?](#what-is-nestjs)
+- [Design Idea](#design-idea)
+  - [Inversion of Control](#inversion-of-control)
+  - [Dependency Injection](#dependency-injection)
+  - [Dependency Inversion Principle](#dependency-inversion-principle)
 - [Key Concepts](#key-concepts)
   - [Controllers](#controllers)
   - [Providers/Services](#providersservices)
@@ -31,6 +35,140 @@
   - Basically, enhancing them through a layer of abstraction but also exposing their APIs directly to the developer, which allows developers to use third-party modules for said framework.
 ### Why use NestJS?
 - Structure, modularity, native TypeScript support, built-in functionality to integrate REST API or GraphQL, and security.
+
+## Design Idea
+- The most core design idea in NestJS is the **Dependency Inversion Principle**, which embraces **Inversion of Control** and **Dependency Injection**.
+### Inversion of Control
+- Refers to reversing different kinds of controls in object-oriented design to achieve loose coupling.
+  - "Control" refers to all of the processes in a class other than the completion of its main workflow, including control over the application flow, as well as the dependency object creation and binding process.
+- **An object does not personally create/construct another object that it depends on. Instead, the object receives that other object already instantiated as an argument.**
+- We just say who needs what. Then, the container looks at the type and determines what needs to be called.
+### Dependency Injection
+- Refers to an object or function receiving other objects or functions that it depends on, as arguments.
+- It is a form of Inversion of Control that aims to separate the concerns of constructing objects and using them, leading to loosely coupled program.s
+### Dependency Inversion Principle
+- The idea behind this principle is also referred to as the Adapter Pattern, Facade Pattern, where a wrapper is created around external dependencies so that our codebase depends on the wrapper and not the actual implementation of the dependencies that are being used.
+- **Therefore, the high-level class should rather define an interface for the low-level class that it wants to use, which the low-level classes will follow and implement.**
+  - This makes it much easier to make changes/transformations in the future, by simply having to change the properties of the new instance that follows the interface.
+#### Rules
+1. High-level modules should not import anything from low-level modules. Both should depend on abstractions (Ex: interfaces).
+2. Abstractions should not depend on details. Rather, details (concrete implementations) should depend on abstractions.
+    - Ex: Paypal APIs (details/implementations) should adopt the interface provided by the high-level module.
+#### Background
+- If an application *directly* implements and calls APIs or other executions (the conventional way), the application is very coupled and dependent on those specific APIs (Ex: transaction APIs in e-commerce, using Mongoose to query MongoDB).
+  - This has some problems:
+    - It makes it hard to test our code because when testing, we don't want to call the APIs.
+    - It makes it hard to switch to another set of APIs.
+      - Ex: switching DBs will mean a lot of editing and refactoring in our application's codebase.
+  - Store(Application) --> Paypal APIs
+    - Ex: `paypal.checkout()` in the application.
+- Therefore, in the Dependency Inversion Principle, an interface of sort is added in the middle between the application and APIs.
+  - This interface will contain all of the behavior that we want the APIs to perform, regardless of whichever API is used (i.e. independent of anything).
+  - This allows us to have multiple sets of APIs.
+  - Store(Application) --> Payment Processor(Interface) <-- Paypal APIs, Stripe APIs 
+    - Ex: Paypal APIs is an implementation of the Payment Processor Interface and is plugged into the Store. When the Store calls methods on the Payment Processor, the calls are delegated to the Paypal APIs.
+#### Example
+##### Conventional Approach
+```js
+// The Architecture that Dependency Inversion is trying to Solve
+// Very exhaustive to make changes, especially when APIs have different approaches.
+
+class Store {
+  constructor(user) {
+    // this.paypal = new Paypal(user);
+    
+    this.user = user;
+    this.stripe = new Stripe(user);
+  }
+  
+  purchaseLaptop(quantity) {
+    // this.paypal.makePayment(2000 * quantity);
+    
+    this.stripe.makePayment(this.user, 2000 * quantity)
+  }
+}
+
+// APIs
+class Paypal {
+  constructor(user) {
+    this.user = user;
+  }
+  
+  makePayment(amount) {
+    console.log(`${this.user} made a payment of $${amount}`);
+  }
+}
+
+class Stripe {
+  makePayment(user, amount) {
+    console.log(`${user} made a payment of $${amount}`);
+  }
+}
+
+// Example
+const store = new Store("Kakamotobi");
+store.purchaseLaptop(2); // Kakamotobi made a payment of $4000
+```
+##### Dependency Inversion Approach
+```ts
+// Changes can now be made easily (Ex: switch from Paypal to Stripe) without having to change code in Store thanks to the Payment Processor interface that acts as a intermediary wrapping around the API.
+
+class Store {
+  constructor(paymentProcessor) {
+    this.paymentProcessor = paymentProcessor;
+  }
+  
+  purchaseLaptop(quantity) {
+    this.paymentProcessor.makePayment(2000 * quantity);
+  }
+}
+
+// Payment Processors
+class PaypalPaymentProcessor {
+  constructor(user) {
+    this.paypal = new Paypal(user);
+  }
+  
+  makePayment(amount) {
+    this.paypal.makePayment(amount);
+  }
+}
+
+class StripePaymentProcessor {
+  constructor(user) {
+    this.user = user;
+    this.stripe = new Stripe();
+  }
+  
+  makePayment(amount) {
+    this.stripe.makePayment(this.user, amount);
+  }
+}
+
+// APIs
+class Paypal {
+  constructor(user) {
+    this.user = user;
+  }
+  
+  makePayment(amount) {
+    console.log(`${this.user} made a payment of $${amount} with Paypal`);
+  }
+}
+
+class Stripe {
+  makePayment(user, amount) {
+    console.log(`${user} made a payment of $${amount}`);
+  }
+}
+
+// Example
+const storeWithPaypal = new Store(new PaypalPaymentProcessor("Kakamotobi"));
+storeWithPaypal.purchaseLaptop(2); // Kakamotobi made a payment of $4000 with Paypal
+
+const storeWithStripe = new Store(new StripePaymentProcessor("Kakamotobi"));
+storeWithStripe.purchaseLaptop(2); // Kakamotobi made a payment of $4000 with Paypal
+```
 
 ## Key Concepts
 - In a NestJS application, logic is largely separated into Controllers and Providers/Services.
@@ -355,3 +493,6 @@ export class AuthService {
 ## Reference
 [NestJS - A progressive Node.js framework](https://nestjs.com/)  
 [NestJS in 100 Seconds - YouTube](https://www.youtube.com/watch?v=0M8AYU_hPas&ab_channel=Fireship)  
+[Dependency Inversion Principle Explained - SOLID Design Principles - YouTube](https://www.youtube.com/watch?v=9oHY5TllWaU&ab_channel=WebDevSimplified)  
+[Dependency inversion principle - Wikipedia](https://en.wikipedia.org/wiki/Dependency_inversion_principle)  
+[Dependency injection - Wikipedia](https://en.wikipedia.org/wiki/Dependency_injection)  
