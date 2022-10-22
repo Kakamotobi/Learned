@@ -74,3 +74,72 @@ const canFinish = (numCourses, prerequisites) => {
   return true;
 }
 ```
+
+## 3. [Pacific Atlantic Water Flow](https://leetcode.com/problems/pacific-atlantic-water-flow/)
+### Solution 1
+- Call DFS on every cell to check if it can reach both the Pacific Ocean and Atlantic Ocean.
+- TC: O((m\*n)<sup>2</sup>)
+  - m: number of rows.
+  - n: number of columns.
+### Solution 2
+- For each ocean, we know that its bordering cells lead to that respective ocean.
+  - So, start from the bordering cells of each ocean and use DFS to reach the highest height it can reach (record the path to that cell).
+- The commonly shared cells are the cells where rain water can flow from it to both oceans.
+```js
+// TC: O(m * n), SC: O()
+
+const pacificAtlantic = (heights) => {
+  const result = [];
+
+  const moves = [[-1,0],[0,1],[1,0],[0,-1]];
+  
+  const numRows = heights.length;
+  const numCols = heights[0].length;
+  
+  const pacificVisited = new Set();
+  const atlanticVisited = new Set();
+  
+  const dfs = (r, c, visited, prevHeight) => {
+    // If cell has already been visited, OR
+    // if cell is out of bounds, OR
+    // if cell is not "reachable"
+    if (visited.has(`[${r}, ${c}]`) ||
+        r < 0 || r >= numRows || c < 0 || c >= numCols ||
+        heights[r][c] < prevHeight
+       ) return;
+    
+    visited.add(`[${r},${c}]`);
+    
+    for (let [x, y] of moves) {
+      dfs(r + x, c + y, visited, heights[r][c]);
+    }
+  }
+  
+  // Horizontal Bordering Cells
+  for (let c = 0; c < numCols; c++) {
+    // Cells bordering Pacific Ocean
+    dfs(0, c, pacificVisited, heights[0][c]);
+    
+    // Cells bordering Atlantic Ocean
+    dfs(numRows - 1, c, atlanticVisited, heights[numRows - 1][c]);
+  }
+  
+  // Vertical Bordering Cells
+  for (let r = 0; r < numRows; r++) {
+    // Cells bordering Pacific Ocean
+    dfs(r, 0, pacificVisited, heights[r][0]);
+    
+    // Cells bordering Atlantic Ocean
+    dfs(r, numCols - 1, atlanticVisited, heights[r][numCols - 1]);
+  }
+  
+  // Check for overlapping cells.
+  for (let r = 0; r < numRows; r++) {
+    for (let c = 0; c < numCols; c++) {
+      if (pacificVisited.has(`[${r}, ${c}]`) && atlanticVisited.has(`[${r}, ${c}]`)) result.push([r,c]);
+    }
+  }
+  
+  return result;
+}
+```
