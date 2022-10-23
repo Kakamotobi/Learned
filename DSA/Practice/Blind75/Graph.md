@@ -143,3 +143,45 @@ const pacificAtlantic = (heights) => {
   return result;
 }
 ```
+
+## 4. [Number of Islands](https://leetcode.com/problems/number-of-islands/)
+- Loop over all cells in `grid`.
+  - If cell is `"1"` and has not been visited, DFS (objective is to mark all connected `"1"` cells as visited).
+    - Base Cases:
+      - If cell is out of bounds OR cell is `"0"` OR cell has already been visited.
+```js
+const numIslands = (grid) => {
+  let numIslands = 0;
+  
+  const moves = [[-1,0],[0,1],[1,0],[0,-1]];
+  
+  const m = grid.length;
+  const n = grid[0].length;
+  
+  const visited = new Set();
+  
+  const dfs = (x, y) => {
+    if (x < 0 || x >= m || y < 0 || y >= n ||
+        grid[x][y] === "0" ||
+        visited.has(`${x},${y}`)
+       ) return;
+    
+    visited.add(`${x},${y}`);
+    
+    for (let [mx, my] of moves) {
+      dfs(x + mx, y + my);
+    }
+  }
+  
+  for (let x = 0; x < m; x++) {
+    for (let y = 0; y < n; y++) {
+      if (grid[x][y] === "1" && !visited.has(`${x},${y}`)) {
+        dfs(x, y);
+        numIslands++;
+      }
+    }
+  }
+  
+  return numIslands;
+}
+```
