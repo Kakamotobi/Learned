@@ -150,6 +150,8 @@ const pacificAtlantic = (heights) => {
     - Base Cases:
       - If cell is out of bounds OR cell is `"0"` OR cell has already been visited.
 ```js
+// TC: O(m * n), SC: O(m * n)
+
 const numIslands = (grid) => {
   let numIslands = 0;
   
