@@ -54,8 +54,10 @@
 > A closure is the combination of a function bundled together (enclosed) with references to its surrounding state (the lexical environment within which that function was declared). In other words, a closure gives you access to an outer function’s scope from an inner function. In JavaScript, closures are created every time a function is created, at function creation time. | MDN
 
 - **Closure is the idea of storing the "free variables" along with the function, so that those variables can be resolved when the function is invoked.**
+	- Variables include those in the function itself, those in its lexical environment, and global variables.
+	- Therefore, deeply nested functions could deter performance and use a lot of memory.
 - Functions in JavaScript form closures.
-  - When a new function is declared and assigned to a variable, the function definition is stored, *as well as a **closure**.*
+  - When a new function is declared and assigned to a variable, the function definition is stored, *as well as a **closure***.
   - ***The closure contains all the variables that are in scope at the time of creation of the function.***
 - **Closures control what is and isn't in scope in a particular function.**
 - **You can use a closure by exposing it.**
@@ -63,19 +65,35 @@
 	- The inner function will still access the outer function's scope, even after the outer function has returned.
 	- Example
 		```js
+		// Closure
+		
 		function outer() {
 			const name = "Tom";
 
 			function inner() {
-				//inner() is the inner function, a closure.
 				alert(name);
 			}
 
-			return inner;
+			return inner; // `inner` is a closure (it will still have a reference to the `name` variable from its lexical environment).
 		}
 
-		const test = outer();
+		const test = outer(); // `test` is a closure (`inner`).
 		test(); // alerts "Tom" because the variable `name` is included in the closure.
+		```
+		```js
+		// NOT a closure
+		
+		function outer() {
+			const name = "Tom";
+			
+			inner(); // `inner()` is merely a function that is declared and called in `outer()`.
+			
+			function inner() {
+				alert(name);
+			}
+		}
+		
+		outer();
 		```
 #### Example
 ```js
@@ -96,6 +114,23 @@ myFunc(); // Calling this returned function will alert with `"Tom"` and not `"Je
 ```
 - For `myFunc`, which is a reference to `outer()`, its instance of `inner()` still holds a reference to its lexical environment (the `name` variable) - closure. Therefore, `myFunc` still works as expected.
 - Henceforth changes to the closure will remain.
+#### Closure and `for` loops
+- A function in a `for` loop that uses `var` looks for `i` in the highest scope first, which is `outer`.
+- The functions are stacked in the call stack and when the `for` loop iteration is done, they are executed one by one.
+	- At this point, `i` is `3`. Therefore, `3` is printed for all calls.
+		- To avoid this, wrap the `setTimeout` with an IIFE OR use block scope (`let`, `const`).
+```js
+function outer() {
+	for (var i = 0; i < 3; i++) { // Note: using `const` or `let` applies block scope.
+		setTimeout(() => console.log(i), 0);
+	}
+}
+
+outer();
+// 3
+// 3
+// 3
+```
 
 ## Module Scope
 - Variables that are defined inside of a module are scoped to that module.
