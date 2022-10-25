@@ -115,10 +115,10 @@ myFunc(); // Calling this returned function will alert with `"Tom"` and not `"Je
 - For `myFunc`, which is a reference to `outer()`, its instance of `inner()` still holds a reference to its lexical environment (the `name` variable) - closure. Therefore, `myFunc` still works as expected.
 - Henceforth changes to the closure will remain.
 #### Closure and `for` loops
-- A function in a `for` loop that uses `var` looks for `i` in the highest scope first, which is `outer`.
-- The functions are stacked in the call stack and when the `for` loop iteration is done, they are executed one by one.
+- A function in a `for` loop that uses `var` looks for `i` in the scope above it first, which is the function `outer`.
+- The functions are stacked in the call stack and when the `for` loop reaches the end, they are executed one by one from the top.
 	- At this point, `i` is `3`. Therefore, `3` is printed for all calls.
-		- To avoid this, wrap the `setTimeout` with an IIFE OR use block scope (`let`, `const`).
+		- To avoid this, wrap the `setTimeout` in an IIFE OR use block scope (`let`, `const`).
 ```js
 function outer() {
 	for (var i = 0; i < 3; i++) { // Note: using `const` or `let` applies block scope.
@@ -141,3 +141,4 @@ outer();
 [Master the JavaScript Interview: What is a Closure? | by Eric Elliott | JavaScript Scene | Medium](https://medium.com/javascript-scene/master-the-javascript-interview-what-is-a-closure-b2f0d2152b36)  
 [I never understood JavaScript closures](https://medium.com/dailyjs/i-never-understood-javascript-closures-9663703368e8)  
 [Is lexical scope the same definition as closure in JavaScript? If not, what are the differences in meaning and example? - Quora](https://www.quora.com/Is-lexical-scope-the-same-definition-as-closure-in-JavaScript-If-not-what-are-the-differences-in-meaning-and-example)  
+[WONISM | 자바스크립트 클로저](https://wonism.github.io/closure/)  
