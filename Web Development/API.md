@@ -6,7 +6,10 @@
 - [API Paradigms](#api-paradigms)
   - [Simple Object Access Protocol(SOAP)](#simple-object-access-protocolsoap)
   - [REpresentational State Transfer(REST)](#representational-state-transferrest)
+    - [How REST Works](#how-rest-works)
   - [GraphQL](#graphql)
+    - [GraphQL vs. REST API](#graphql-vs-rest-api)
+    - [How GraphQL Works](#how-graphql-works)
 - [Reference](#reference)
 
 ## What is an API?
@@ -57,7 +60,7 @@
 - REST is stateless. Therefore, the client and the server do not have to store any information about each other, and every request/response cycle is independent.
 - RESTful API simply means that the API follows the REST architecture.
 - It is currently the most prevalent API.
-#### How it Works
+#### How REST Works
 - A client and server communicate with each other using data (usually in JSON format) over HTTP.
   - HTTP methods are used to perform CRUD actions.
   - The client sends a request to one of the endpoints on the server via HTTP.
@@ -75,25 +78,163 @@
       - a body/payload if any (typically in JSON).
 ### GraphQL
 - Introduced in 2015.
-- It is a query language that allows frontend (app) to communication with backend (API).
+- It is a query language that allows the frontend (application) to communicate with the backend (API).
 - It prioritizes providing only the data that the client requested.
 - It serves as the single endpoint that is able to query to multiple databases, microservices, and APIs.
 - GraphQL gives frontend developers more flexibility in structuring queries, and it is up to backend developers to write code to resolve the queries.
-- The Apollo Client is the most popular way to use GraphQL in the frontend.
-  - A state management library that allows you to write GraphQL queries, then see the results automatically update in your UI.
+- The Apollo Client is the most popular way to use GraphQL in the frontend. However, you can use other libraries such as React Query.
+  - Apollo Client is a state management library that allows you to write GraphQL queries, then see the results automatically update in your UI.
+- GraphQL is language agnostic.
+  - i.e. frontend and backend can each use any language.
 #### GraphQL vs. REST API
 - For REST APIS, each request is mapped to its own unique endpoint, and each response from the server will contain the full JSON payload with everything that is needed.
   - Excess/unnecessary data is just filtered out in the frontend code.
 - For GraphQL, instead of having multiple endpoints, there is a single entry point into the API.
   - Therefore, the actual query sent from the frontend determines what the backend will return (not based on an endpoint or any specific mapping like REST).
   - Only the requested fields of data is returned, despite requesting for multiple different resource entities.
-#### How it Works
-1. Define a Schema for your data.
+#### How GraphQL Works
+1. Define a Schema for your data using the `type` keyword.
 2. Inform GraphQL how to fetch (query) and supply that Schema.
     - A query has the same shape that is expected to receive back from the API as JSON.
     - On the server, GraphQL also functions as a runtime for executing incoming queries.
       - The server defines types that are available and resolvers that actually fetch the data from a data source (Ex: DB).
+##### GraphQL Request (Frontend)
+- A GraphQL request consists of:
+  - the **GraphQL Endpoint** - the single endpoint on the server.
+  - **Headers** - the relevant authorization headers if required.
+  - **Request Body** - the request body, which is usually JSON.
+    - **`"operationName"`**
+      - Optional, but if included, has to be included in the `query`.
+    - **`"query"`**
+      - The full GraphQL query containing the operation type (`query` or `mutation`), the types and fields being requested, and any variables included.
+      - Example
+        ```gql
+        query getPlayers {
+          player {
+            name
+            email
+            stats {
+              numWins
+              numLosses
+            }
+          }
+        }
+        ```
+    - **`"variables"`**
+      - Optional if there are no variables included in the `query`.
+    - Example
+      ```json
+      {
+        "operationName": "GetUserNameAndEmail",
+        "query": "query GetUserNameAndEmail($id: String) { user(id: $id) { name email } }",
+        "variables": { "id": "someidstring" }
+      }
+      ```
+###### Example
+```js
+import axios from "axios";
 
+const endpoint = "iamgraphqlendpointontheserver";
+
+const headers = {
+  "content-type": "application/json",
+  "Authorization": "<token>"
+}
+
+const graphqlQuery = {
+  "operationName": "GetUserName",
+  "query": `query GetUserName() { user { name }}`,
+  "variables": {}
+  
+}
+
+const res = axios({
+  url: endpoint,
+  method: "post",
+  headers: headers,
+  data: graphqlQuery
+});
+
+console.log(res.data); // name of the user
+console.log(res.errors);
+
+// OR
+
+const res = axios.get(endpoint, {
+  headers: headers,
+  params: {
+    query: `GetUserName() { user { name }}`,
+    variables: {},
+    operationName: "GetUserName"
+  }
+});
+```
+##### GraphQL Server (Backend)
+- Define the schema.
+- Resolve requests received from the client.
+###### Example
+```js
+// schema.js
+
+import { buildSchema } from "graphql";
+
+export default buildSchema(`
+  type Creator {
+    id: ID!
+    name: String
+    numSubscribers: Int
+    videos: [Video]
+  }
+
+  type Video {
+    url: String!
+    creator: Creator
+  }
+  
+  // The entry point for the API's consumer to read data.
+  type Query {
+    videos: [Video]
+    creator(id: String!): Creator
+  }
+  
+  // The entry point for the API's consumer to mutate data.
+  // Defines how data can be modified on the API.
+  type Mutation {
+    createVideo(url: String): Video
+    deleteVideo(url: String): String
+  }
+`)
+```
+```js
+// resolver.js
+
+export default {
+  createVideo: ({ url }) => {
+    // create the video.
+    // return a Video.
+  }
+  
+  deleteVideo: ({ url }) => {
+    // delete the video.
+    // return a String.
+  }
+}
+```
+```js
+// Endpoint
+
+import schema from "./schema.js";
+import resolver from "./resolver.js";
+
+app.use(
+  "/graphql",
+  graphqlHTTP({
+    schema,
+    resolver,
+    graphiql: true
+  })
+)
+```
 
 ## Reference
 [What is an Application Proramming Interface (API) | IBM](https://www.ibm.com/cloud/learn/api)  
@@ -105,3 +246,4 @@
 [GraphQL Basics - Build an app with the SpaceX API - YouTube](https://www.youtube.com/watch?v=7wzR4Ig5pTI&ab_channel=Fireship)  
 [The Ultimate Guide to API Architecture: REST, SOAP or GraphQL? | DA-14](https://da-14.com/blog/ultimate-guide-api-architecture-rest-soap-or-graphql)  
 [SOAP vs REST vs gRPC vs GraphQL - DEV Community](https://dev.to/andreidascalu/soap-vs-rest-vs-grpc-vs-graphql-1ib6)  
+[How to request a GraphQL API with Fetch or Axios](https://hasura.io/blog/how-to-request-a-graphql-api-with-fetch-or-axios/)  
