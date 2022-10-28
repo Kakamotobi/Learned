@@ -9,6 +9,13 @@
     - [How REST Works](#how-rest-works)
   - [GraphQL](#graphql)
     - [GraphQL vs. REST API](#graphql-vs-rest-api)
+    - [GraphQL Concepts](#graphql-concepts)
+      - [Queries and Mutations](#queries-and-mutations)
+        - [Arguments](#arguments)
+        - [Aliases](#aliases)
+        - [Fragments](#fragments)
+        - [Variables](#variables)
+      - [Schemas and Types](#schemas-and-types)
     - [How GraphQL Works](#how-graphql-works)
 - [Reference](#reference)
 
@@ -92,6 +99,178 @@
 - For GraphQL, instead of having multiple endpoints, there is a single entry point into the API.
   - Therefore, the actual query sent from the frontend determines what the backend will return (not based on an endpoint or any specific mapping like REST).
   - Only the requested fields of data is returned, despite requesting for multiple different resource entities.
+#### GraphQL Concepts
+##### Queries and Mutations
+- Queries and Mutations (and Subscription) are operation types available in GraphQL.
+  - Queries are interactive and has the same shape as the result.
+  - IF not using the shorthand syntax, the operation type is required.
+###### Arguments
+- Arguments can be passed to fields.
+- Unlike in REST where only a single set of arguments can be passed in (query parametsers and URL segments), GraphQL allows every field and nested object to have its own set of arguments. This allows to make a single API fetch request as to multiple round trips.
+- Example
+  ```gql
+  # Query content
+
+  {
+    person(id: "idforkakamotobi") {
+      name
+      age
+    }
+  }
+  ```
+  ```json
+  // Response
+
+  {
+    "data": {
+      "person": {
+        "name": "Kakamotobi",
+        "age": 3
+      }
+    }
+  }
+  ```
+###### Aliases
+- It is not possible to directly query for the same field with different arguments because the fields in the result object matches the name of the fields in the query.
+- Aliases allow you to rename the result of a field, without changing the original schema.
+- Example
+  - `appleDevices` is an array of all apple devices (Ex: `[{ name: "iPhone 14", ... }, { name: "MacBook Pro 16", ... }]`).
+  ```gql
+  # This throws an error.
+  # "Fields 'appleDevices' conflict because they have differing arguments. Use different aliases on the fields to fetch both if this was intentional."
+  
+  {
+    appleDevices(type: "phone") {
+      name
+      chip
+      price
+    }
+    appleDevices(type: "mac") {
+      name
+      chip
+      price
+    }
+  }
+  ```
+  ```gql
+  # Use aliases
+  
+  {
+    phones: appleDevices(type: "phone") {
+      name
+      chip
+      price
+    }
+    macbooks: appleDevices(type: "macbook") {
+      name
+      chip
+      price
+    }
+  }
+  ```
+  ```json
+  // Response
+  
+  {
+    "data": {
+      "phones": [
+        {
+          "name": "iPhone 14",
+          "chip": "A15",
+          "price": 1250000
+        },
+        // ...
+      ],
+      "macbooks": [
+        {
+          "name": "Macbook Pro 16",
+          "chip": "M1 Pro",
+          "price": 2690000
+        },
+        // ...
+      ]
+    }
+  }
+  ```
+###### Fragments
+- GraphQL includes reusable units called Fragments, which allow you to construct sets of fields and then include them in queries.
+- Example
+  - Comparing two (or more) iPhones.
+  ```gql
+  {
+    leftComparison: iphones(model: "iPhone 14") {
+      ...comparisonFields
+    }
+    
+    rightComparison: iphones(model: "iPhone 14 Pro") {
+      ...comparisonFields
+    }
+  }
+  
+  fragment comparisonFields on Phone {
+    name
+    chip
+    price
+  }
+  ```
+  ```json
+  // Response
+  
+  {
+    "data": {
+      "leftComparison": {
+        "name": "iPhone 14",
+        "chip": "A15",
+        "price": 1250000
+      },
+      "rightComparison": {
+        "name": "iPhone 14 Pro",
+        "chip": "A16",
+        "price": 1550000
+      }
+    }
+  }
+  ```
+- Using variables inside fragments.
+  ```gql
+  query PhoneComparison($releaseYear: Int = 2022) {
+    leftComparison: iphones(model: "iPhone 14") {
+      ...comparisonFields
+    }
+    
+    rightComparison: iphones(model: "iPhone 14 Pro") {
+      ...comparisonFields
+    }
+  }
+  
+  fragment comparisonFields(releaseYear: $releaseYear) on Phone {
+    name
+    chip
+    price
+  }
+  ```
+###### Variables
+- Arguments to fields will most likely be dynamic.
+- It is not good to pass these dynamic arguments directly in the query string because that means the client-side will have to dynamically manipulate and serialize the query string into a GraphQL format at runtime.
+- Instead,GraphQL provides a way to factory dynamic values out of the query, and pass them as a separate dictionary.
+- Steps to use Variables
+    1) Replace the static value in the query with `$variableName`.
+    2) Declare `$variableName` as one of the variables accepted by the query.
+    3) Pass `variableName: value` in the separate, transport-specific (usually JSON) variables dictionary.
+- Example
+  ```gql
+  query Phones($releaseYear: 2022) {
+    phone(releaseYear: $releaseYear) {
+      name
+      chip
+      price
+    }
+  }
+  ```
+###### Directives
+##### Schemas and Types
+
+
 #### How GraphQL Works
 1. Define a Schema for your data using the `type` keyword.
 2. Inform GraphQL how to fetch (query) and supply that Schema.
@@ -247,3 +426,4 @@ app.use(
 [The Ultimate Guide to API Architecture: REST, SOAP or GraphQL? | DA-14](https://da-14.com/blog/ultimate-guide-api-architecture-rest-soap-or-graphql)  
 [SOAP vs REST vs gRPC vs GraphQL - DEV Community](https://dev.to/andreidascalu/soap-vs-rest-vs-grpc-vs-graphql-1ib6)  
 [How to request a GraphQL API with Fetch or Axios](https://hasura.io/blog/how-to-request-a-graphql-api-with-fetch-or-axios/)  
+[Queries and Mutations | GraphQL](https://graphql.org/learn/queries/)  
