@@ -15,6 +15,7 @@
         - [Aliases](#aliases)
         - [Fragments](#fragments)
         - [Variables](#variables)
+        - [Directives](#directives)
       - [Schemas and Types](#schemas-and-types)
     - [How GraphQL Works](#how-graphql-works)
 - [Reference](#reference)
@@ -103,7 +104,8 @@
 ##### Queries and Mutations
 - Queries and Mutations (and Subscription) are operation types available in GraphQL.
   - Queries are interactive and has the same shape as the result.
-  - IF not using the shorthand syntax, the operation type is required.
+  - If not using the shorthand syntax, the operation type is required.
+- It is possible to mutate existing data and query the new value of the field with one request.
 ###### Arguments
 - Arguments can be passed to fields.
 - Unlike in REST where only a single set of arguments can be passed in (query parametsers and URL segments), GraphQL allows every field and nested object to have its own set of arguments. This allows to make a single API fetch request as to multiple round trips.
@@ -252,14 +254,16 @@
 ###### Variables
 - Arguments to fields will most likely be dynamic.
 - It is not good to pass these dynamic arguments directly in the query string because that means the client-side will have to dynamically manipulate and serialize the query string into a GraphQL format at runtime.
-- Instead,GraphQL provides a way to factory dynamic values out of the query, and pass them as a separate dictionary.
+  - **Do NOT use string interpolation (template literals) to construct queries from user-supplied values.**
+- Instead, GraphQL provides a way to factory dynamic values out of the query, and pass them as a separate dictionary.
+  - All arguments must be either scalars, enums, or input object types.
 - Steps to use Variables
     1) Replace the static value in the query with `$variableName`.
     2) Declare `$variableName` as one of the variables accepted by the query.
     3) Pass `variableName: value` in the separate, transport-specific (usually JSON) variables dictionary.
 - Example
   ```gql
-  query Phones($releaseYear: 2022) {
+  query Phones($releaseYear: Int = 2022) { # $variableName: type = defaultValue
     phone(releaseYear: $releaseYear) {
       name
       chip
@@ -268,6 +272,25 @@
   }
   ```
 ###### Directives
+- Directives allow us to dynamically change the structure and shape of the query using variables.
+  - Ex: summarized view and detailed view (more fields) of movie.
+- A directive can be attached to a field or fragment inclusion.
+- There are two directive:
+  - `@include(if: Boolean)` - include this field in the result if the argument is `true`.
+  - `@skip(if: Boolean)` - skip this field if the argument is `true`.
+- Example
+  ```gql
+  query Phones($releaseYear: Int, $withSimilarPhones: Boolean!) {
+    phone(releaseYear: $releaseYear) {
+      name
+      chip
+      price
+      similarPhones @include(if: $withSimilarPhones) {
+        name
+      }
+    }
+  }
+  ```
 ##### Schemas and Types
 
 
