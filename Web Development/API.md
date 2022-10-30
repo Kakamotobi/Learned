@@ -17,6 +17,9 @@
         - [Variables](#variables)
         - [Directives](#directives)
       - [Schemas and Types](#schemas-and-types)
+        - [Built-in Types](#built-in-types)
+      - [Validation](#validation)
+      - [Execution](#execution)
     - [How GraphQL Works](#how-graphql-works)
 - [Reference](#reference)
 
@@ -108,6 +111,7 @@
 - It is possible to mutate existing data and query the new value of the field with one request.
 ###### Arguments
 - Arguments can be passed to fields.
+  - Every field can have zero or more arguments (arguments are passed by name specifically; not in an ordered list).
 - Unlike in REST where only a single set of arguments can be passed in (query parametsers and URL segments), GraphQL allows every field and nested object to have its own set of arguments. This allows to make a single API fetch request as to multiple round trips.
 - Example
   ```gql
@@ -196,6 +200,7 @@
   ```
 ###### Fragments
 - GraphQL includes reusable units called Fragments, which allow you to construct sets of fields and then include them in queries.
+- A fragment cannot refer to itself or create a cycle because it could result in an unbounded result.
 - Example
   - Comparing two (or more) iPhones.
   ```gql
@@ -233,7 +238,7 @@
     }
   }
   ```
-- Using variables inside fragments.
+- **Using variables inside fragments.**
   ```gql
   query PhoneComparison($releaseYear: Int = 2022) {
     leftComparison: iphones(model: "iPhone 14") {
@@ -249,6 +254,17 @@
     name
     chip
     price
+  }
+  ```
+- **Inline Fragments**
+  ```gql
+  {
+    phone {
+      name
+      ... on Android {
+        isFoldable
+      }
+    }
   }
   ```
 ###### Variables
@@ -292,8 +308,187 @@
   }
   ```
 ##### Schemas and Types
+- The GraphQL Type System describes what data can be queried.
+- The point of **Schemas** is to exactly describe the data that can be queried.
+  - i.e. what fields are available to select and what objects they return.
+  - *Every GraphQL service defines a set of types which completely describe the set of possible data you can query on that service. Then, the received queries are validated and executed against that schema.*
+  - Every GraphQL service has a `Query` type and may or may not have a `Mutation` type.
+    ```gql
+    # Query
 
+    query {
+      phone {
+        name
+        similarPhones
+      }
+      laptop(os: "macos") {
+        name
+      }
+    }
+    ```
+    ```gql
+    # The above query means that the GraphQL service has to have a `Query` type with a `phone` field.
+    # Define the fields on the `Query`/`Mutation` type to make available as the root fields that can be called in the query.
 
+    type Query {
+      phone: Phone
+      laptop(os: OS!): Laptop
+    }
+    ```
+###### Built-in Types
+- **Scalar Types**
+  - Types that resolve to a single scalar object, and cannot have sub-selections in the query.
+    - i.e. the leaves of the query.
+  - `String`, `Int`, `Float`, `Boolean`, `ID`.
+  - Custom scalar types can also be specified.
+    - Ex: `scalar Date`.
+    - Then, our implementation defines how that type should be serialized, deserialized, and validated.
+- **Enumeration Types**
+  - Special kind of scalar that is restricted to a particular set of allowed values.
+  - Enums can be used to validate that any arguments of this type are one of the allowed values.
+  - Example
+    - When the type `Phone` is used in our Schema, it is expected to be either one of `ANDROID`, `IOS`, or `BLACKBERRY`.
+    ```gql
+    enum Phone {
+      ANDROID
+      IOS
+      BLACKBERRY
+    }
+    ```
+- **Object Types**
+  - Object types are 
+    - *Object types do not include arrays.*
+  - *`query` and `mutation` are the same as a regular object types but are only different in that they define the entry point into the Schema.*
+- **Lists and Non-Null(`!`)**
+  - Scalars, Enums, and Object Types are the only types that can be defined in GraphQL. However, additional *type modifiers* can be applied in other parts of the schema or in query variable declarations.
+  - Using the Non-Null type modifier means that the server will always expect to return a non-null value.
+  - Using the `[]` type modifier indicates that the field will return an array of the specific type.
+  - Example
+    ```gql
+    type Actor {
+      name: String!
+      filmography: [Movie]!
+    }
+    ```
+- **Interfaces**
+  - An abstract type that includes a certain set of fields that a type must include to implement the interface, and can add additional fields.
+  - Useful for when returning an object or set of objects that may be of several different types.
+  - Example
+    ```gql
+    interface Human {
+      name: String!
+      age: Int!
+    }
+    
+    type SuperHero implements Human {
+      name: String!
+      age: Int!
+      power: String!
+      filmography: [Movie]!
+    }
+    ```
+##### Validation
+- You can only query for a field that exists on the given type.
+  - Ex: if the query `phone` returns a `Phone`, you can query fields on `Phone`.
+- A valid query must return a scalar or an enum.
+##### Execution
+- A GraphQL query cannot be executed without a type system.
+- Each **field** in a query is essentially a function/method of the previous type, whih returns the next type.
+  - Each field on each type is backed by a function called the resolver (provided by the GraphQL server).
+  - When a field executes, the corresponding resolver is called.
+  - The execution stops when scalar or enum values are returned.
+- During execution, GraphQL waits for Promises to complete before continuing.
+###### Root Fields and Resolvers
+- At the top level of a GraphQL server, there is a type called the **Root** type or **Query** type that represents all entry points into the API.
+- Example
+  ```gql
+  # Query type with resolver function that accesses DB, constructs and returns an `Actor` object.
+  
+  Query: {
+    actor(obj, args, context, info) {
+      return context.db.findByName(args.name).then(
+        actorData => new Actor(actorData);
+      )
+    }
+  }
+  ```
+    - `obj` - the previous object.
+    - `args` - the arguments provided to the field in the query.
+    - `context` - a value that is provided to every resolver and holds contextual information (Ex: currently logged in user, provide access to DB).
+    - `info` - a value that is field-specific relevant to the currenty query, incl. Schema details.
+- **List Resolvers Example**
+  - Returning a list of Promises.
+  - An `Actor` object has a list of ids of his `Film`s. These ids need to be used to get the real Film objects.
+  ```gql
+  Actor: {
+    filmography(obj, args, context, info) {
+      return obj.filmIDs.map(
+        id => context.db.findFilmByID(id).then(
+          filmData => new Film(filmData);
+        )
+      )
+    }
+  }
+  ```
+##### Example
+- Type system
+  ```gql
+  type Query {
+    actor(name: String!): Actor
+  }
+  
+  type Actor {
+    name: String
+    age
+    filmography: [Media]
+    socialprofiles: [SocialProfile]
+  }
+  
+  enum Media {
+    MOVIE
+    TVSHOW
+    MUSICVIDEO
+  }
+  
+  type SocialProfile {
+    platform: String
+    accountName: String
+    numFollowers: Int
+  }
+  ```
+- Query
+  ```gql
+  {
+    actor(name: "Steve Carell") {
+      name
+      filmography
+      socialprofiles {
+        platform
+        accountName
+      }
+    }
+  }
+  ```
+- Response
+  ```gql
+  {
+    "data": {
+      "actor": {
+        "name": "Steve Carell",
+        "filmography": [
+          "The Office",
+          "The Big Short"
+        ],
+        "socialProfiles": [
+          {
+            "platform": "Twitter",
+            "accountName": "@SteveCarell"
+          }
+        ]
+      }
+    }
+  }
+  ```
 #### How GraphQL Works
 1. Define a Schema for your data using the `type` keyword.
 2. Inform GraphQL how to fetch (query) and supply that Schema.
