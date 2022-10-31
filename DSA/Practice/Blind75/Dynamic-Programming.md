@@ -105,3 +105,40 @@ const climbStairs = (n) => {
   return one;
 }
 ```
+
+## 2. [House Robber](https://leetcode.com/problems/house-robber/)
+### Solution 1 - Recursion
+```js
+// TC: O(2^n)
+// SC: O(n)
+
+const rob = (nums) => {
+  const helper = (i) => {
+    if (i >= nums.length) return 0;
+  
+    return Math.max(nums[i] + helper(i+2), helper(i+1));
+  }
+  
+  return helper(0);
+}
+```
+### Solution 2 - Memoization
+```js
+// TC: O(n)
+// SC: O(n)
+
+const rob = (nums) => {
+  const memo = {};
+  
+  const helper = (i) => {
+    if (i >= nums.length) return 0;
+    if (memo[i] !== undefined) return memo[i];
+    
+    memo[i] = Math.max(nums[i] + helper(i+2), helper(i+1));
+    
+    return memo[i];
+  }
+  
+  return helper(0);
+}
+```
