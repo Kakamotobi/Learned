@@ -107,6 +107,10 @@ const climbStairs = (n) => {
 ```
 
 ## 2. [House Robber](https://leetcode.com/problems/house-robber/)
+- Recurrence Relation
+  - Rob the current house (`nums[i]`) and find the maximum from the remaining houses (`nums[i+2:nums.length]`).
+  - Skip the current house and find the maximum from the remaining houses (`nums[i+1:nums.length]`).
+- The subproblem is to find the maximum of the subarray of the entire array.
 ### Solution 1 - Recursion
 ```js
 // TC: O(2^n)
@@ -122,7 +126,7 @@ const rob = (nums) => {
   return helper(0);
 }
 ```
-### Solution 2 - Memoization
+### Solution 2 - Top-Down (Memoization)
 ```js
 // TC: O(n)
 // SC: O(n)
@@ -140,5 +144,43 @@ const rob = (nums) => {
   }
   
   return helper(0);
+}
+```
+### Solution 3 - Bottom-Up (Tabulation)
+```js
+// TC: O(n)
+// SC: O(n)
+
+const rob = (nums) => {
+  // table[i] represents the maximum loot possible up to that point.
+  const table = new Array(nums.length+1);
+  table[0] = 0;
+  table[1] = nums[0];
+  
+  for (let i = 1; i < nums.length; i++) {
+    table[i+1] = Math.max(table[i], table[i-1] + nums[i]);
+  }
+  
+  return table[nums.length];
+}
+```
+### Solution 4 - Bottom-Up (2 Variables)
+- From the Tabulation approach, we essentially only need to know the maximum possible loot for `i-1` and `i-2` in order to determine the maximum possible loot for `i`. Therefore, instead of a whole array, we can simply use two variables to keep track of the maximum possible loot for `i-1` and `i-2`.
+```js
+// TC: O(n)
+// SC: O(1)
+
+const rob = (nums) => {
+  let maxUntilPrevHouse = 0;
+  let maxUntilHouseBeforePrevHouse = 0;
+  let temp;
+  
+  for (let num of nums) {
+    temp = Math.max(num + maxUntilHouseBeforePrevHouse, maxUntilPrevHouse);
+    maxUntilHouseBeforePrevHouse = maxUntilPrevHouse;
+    maxUntilPrevHouse = temp;
+  }
+  
+  return maxUntilPrevHouse;
 }
 ```
