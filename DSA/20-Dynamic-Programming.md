@@ -5,6 +5,7 @@
 - [Conditions for Dynamic Programming](#conditions-for-dynamic-programming)
   - [1. Overlapping Subproblems](#1-overlapping-subproblems)
   - [2. Optimal Substructure](#2-optimal-substructure)
+- [Approach for Solving DP Problems](#approach-for-solving-dp-problems)
 - [Example - Fibonacci Sequence](#example---fibonacci-sequence)
   - [Recursion Solution](#recursion-solution)
   - [Top-Down Dynamic Programming (Memoization) Solution](#top-down-dynamic-programming-memoization-solution)
@@ -58,6 +59,14 @@
   - The longest simple path from `A` to `C` is `A -> B -> C`.
   - The longest simple path from `C` to `D` is `C -> B -> D`.
   - However, the longest simple path from `A` to `D` is not `A -> B -> C -> B -> D`. The longest simple path is `A -> B -> D`.
+
+## Approach for Solving DP Problems
+1. Find a **Recurrence Relation**.
+    > a recurrence relation is an equation according to which the nth term of a sequence of numbers is equal to some combination of the previous terms. | Wikipedia
+2. Find a **Recursive** solution (top-down).
+3. Find a **Recursive + Memoization** solution (top-down).
+4. Find an **Iterative + Tabulation** solution (bottom-up).
+5. Find an **Iterative + N Variables** solution (bottom-up).
 
 ## Example - Fibonacci Sequence
 ### Recursion Solution
@@ -237,3 +246,5 @@ const fib = (n) => {
 ## Reference
 [Dynamic Programming - GeeksforGeeks](https://www.geeksforgeeks.org/dynamic-programming/)  
 [Top 5 Dynamic Programming Patterns for Coding Interviews - For Beginners](https://www.youtube.com/watch?v=mBNrRy2_hVs&ab_channel=AbdulBari)  
+[Recurrence relation - Wikipedia](https://en.wikipedia.org/wiki/Recurrence_relation)  
+[Leetcode DP Problem Solution Example](https://leetcode.com/problems/house-robber/discuss/156523/From-good-to-great.-How-to-approach-most-of-DP-problems.)  
