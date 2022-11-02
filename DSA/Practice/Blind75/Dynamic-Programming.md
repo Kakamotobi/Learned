@@ -184,3 +184,82 @@ const rob = (nums) => {
   return maxUntilPrevHouse;
 }
 ```
+
+## 3. [House Robber II](https://leetcode.com/problems/house-robber-ii/)
+- Recurrence Relation
+  - Same as [House Robber](#2-house-robber) but with one more constraint: the first and last houses are considered adjacent.
+    - i.e. if the first house was robbed, you cannot rob the last house, and vice versa.
+### Solution 1 - Recursion
+- Calculate the max for two subarrays and return the max.
+  - Subarray including the first but excluding the last house.
+  - Subarray excluding the first but including the last house.
+```js
+// TC: O(2^n), SC: O(n)
+
+const rob = (nums) => {
+  if (nums.length === 1) return nums[0];
+
+  const helper = (idx, arr) => {
+    if (idx >= arr.length) return 0;
+    
+    return Math.max(arr[i] + helper(idx+2, arr), helper(idx+1, arr));
+  }
+  
+  const maxInclFirstHouse = helper(0, nums.slice(0, nums.length - 1));
+  const maxExclFirstHouse = helper(0, nums.slice(1));
+  
+  return Math.max(maxInclFirstHouse, maxExclFirstHouse);
+}
+```
+### Solution 2 - Top-Down (Memoization)
+```js
+// TC: O(n), SC: O(n)
+
+const rob = (nums) => {
+  if (nums.length === 1) return nums[0];
+
+  let memo = {};
+
+  const helper = (idx, arr) => {
+    if (idx >= arr.length) return 0;
+    if (memo[idx] !== undefined) return memo[idx];
+
+    memo[idx] = Math.max(arr[idx] + helper(idx+2, arr), helper(idx+1, arr));
+
+    return memo[idx];
+  }
+
+  const maxInclFirstHouse = helper(0, nums.slice(0, nums.length - 1));
+  memo = {}; // reset memo
+  const maxExclFirstHouse = helper(0, nums.slice(1));
+
+  return Math.max(maxInclFirstHouse, maxExclFirstHouse);
+}
+```
+### Solution 3 - Bottom-Up (2 Variables)
+```js
+// TC: O(n), SC: O(1)
+
+const rob = (nums) => {
+  if (nums.length === 1) return nums[0];
+
+  const helper = (arr) => {
+    let maxUntilPrevHouse = 0;
+    let maxUntilHouseBeforePrevHouse = 0;
+    let temp;
+
+    for (let num of arr) {
+      temp = Math.max(num + maxUntilHouseBeforePrevHouse, maxUntilPrevHouse);
+      maxUntilHouseBeforePrevHouse = maxUntilPrevHouse;
+      maxUntilPrevHouse = temp;
+    }
+
+    return maxUntilPrevHouse;
+  }
+
+  const maxInclFirstHouse = helper(nums.slice(0, nums.length - 1));
+  const maxExclFirstHouse = helper(nums.slice(1));
+
+  return Math.max(maxInclFirstHouse, maxExclFirstHouse);
+}
+```
