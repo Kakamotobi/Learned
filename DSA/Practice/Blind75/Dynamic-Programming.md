@@ -263,3 +263,39 @@ const rob = (nums) => {
   return Math.max(maxInclFirstHouse, maxExclFirstHouse);
 }
 ```
+
+## 3. [Combination Sum](https://leetcode.com/problems/combination-sum/)
+### Naive Approach
+- At each point, create `candidates.length` number of recursive branches.
+  - Ex: if `candidates` = `[2,3,6,7]` for combination `[2]`, we branch out to `2,3,6,7`, for combination`[2,3]` we branch out to `2,3,6,7`, and so on.
+- This approach is successful in finding combinations but results to duplicates.
+### Solution
+- At each point, create 2 recursive branches.
+    1) Get all combinations that henceforth, include this number at least once.
+    2) Get all combinations that henceforth, do NOT include this number (no combination in this path will contain this number).
+- Ex: the combination `[2,2]` branches out to `[2,2,2]`(where this number is kept added on) and `[2,2]` (where this number is no longer added on. i.e. move on to the next number).
+```js
+// TC: O(2^target), SC: O(target)
+
+const combinationSum = (candidates, target) => {
+  const result = [];
+  
+  const helper = (idx, combination, currSum) => {
+    if (idx >= candidates.length) return;
+    if (currSum > target) return;
+    if (currSum === target) {
+      result.push(combination);
+      return;
+    }
+    
+    // Keep including duplicates of this number.
+    helper(idx, [...combination, candidates[idx]], currSum + candidates[idx]);
+    // Don't add this number anymore and move on to the next number.
+    helper(idx+1, combination, currSum);
+  }
+  
+  helper(0, [], 0);
+  
+  return result;
+}
+```
