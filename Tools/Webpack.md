@@ -12,9 +12,9 @@
   - [Run Webpack](#run-webpack)
   - [Make Bundled Files Accessible by the Browser](#make-bundled-files-accessible-by-the-browser)
   - [Connect Bundled Files to HTML](#connect-bundled-files-to-html)
-- 
 - [Enhance Development Experience](#enhance-development-experience)
 - [React, Webpack, Babel Setup](#react-webpack-babel-setup)
+- [Webpack with TypeScript](#wepack-with-typescript)
 
 ## What is Webpack?
 > At its core, **webpack** is a *static module bundler* for modern JavaScript applications. When webpack processes your application, it internally builds a dependency graph from one or more *entry points* and then combines every module your project needs into one or more *bundles*, which are static assets to serve your content from. | webpack
@@ -229,7 +229,7 @@ module.exports = {
 
 ## React, Webpack, Babel Setup
 ### Webpack
-#### Entry/Ouput
+#### Entry/Output
 ```js
 const path = require("path");
 
@@ -294,6 +294,9 @@ module.exports= {
   }
 }
 ```
+
+## Webpack with TypeScript
+- Check [here](https://github.com/Kakamotobi/Learned/blob/main/TypeScript/11-Webpack-and-TypeScript.md).
 
 ## Reference
 [Concepts | webpack](https://webpack.js.org/concepts/)  
