@@ -103,6 +103,39 @@
 - For GraphQL, instead of having multiple endpoints, there is a single entry point into the API.
   - Therefore, the actual query sent from the frontend determines what the backend will return (not based on an endpoint or any specific mapping like REST).
   - Only the requested fields of data is returned, despite requesting for multiple different resource entities.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/Web%20Development/refImg/graphql-vs-rest.png" alt="GraphQL vs REST" width="60%" />
+</p>
+
+##### Key Pointers
+- Multiple requests &rarr; One request.
+  - Mitigate underfetching and overfetching.
+- Control of the data is handed over to the frontend, which gives more flexibility and efficiency.
+#### GraphQL Ecosystem
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/Web%20Development/refImg/graphql-ecosystem.png" alt="GraphQL vs REST" width="60%" />
+</p>
+
+- **GraphQL Client**
+  - Libraries that construct GraphQL queries and send them to the server.
+  - Ex: Apollo Client, GraphQL Request, Relay.
+- **GraphQL Gateway**
+  - A mechanism to find issues with the API quickly and improve performance.
+  - It is placed on top of the server or as a standalone proxy to route to the server to provide features including:
+    - query execution tracing (complete route of the query).
+    - query caching.
+    - error tracking.
+    - performance tracking.
+  - Ex: Apollo Engine.
+- **GraphQL Server**
+  - A server that receives GraphQL requests and responds with data.
+  - Ex: Apollo Server, GraphQL Yoga.
+- **Database-to-GraphQL Server**
+  - Middleman between the GraphQL server and the database that provides features including:
+    - writing SQL queries in your resolvers.
+    - simplifying complex database operations.
+  - Ex: Prisma.
 #### GraphQL Concepts
 ##### Queries and Mutations
 - Queries and Mutations (and Subscription) are operation types available in GraphQL.
@@ -490,6 +523,15 @@
   }
   ```
 #### How GraphQL Works
+1. The backend (GraphQL server) provides a predefined Schema for the frontend (clients), effectively informing the frontend on the shape of the data and how to request it.
+    - The Schema is basically the middle ground between the client and the server as it defines what types of data can be fetched, and how to access them.
+    - The Schema is written in human readable SDL.
+      - Use the `type` keyword to describe the object(s) that can be queried on the server and the fields that they have.
+2. When the GraphQL server receives a GraphQL operation, it interprets it against the Schema and resolves the operation accordingly.
+    - Ex: query &rarr; resolver &rarr; result
+3. 
+
+
 1. Define a Schema for your data using the `type` keyword.
 2. Inform GraphQL how to fetch (query) and supply that Schema.
     - A query has the same shape that is expected to receive back from the API as JSON.
@@ -643,5 +685,6 @@ app.use(
 [GraphQL Basics - Build an app with the SpaceX API - YouTube](https://www.youtube.com/watch?v=7wzR4Ig5pTI&ab_channel=Fireship)  
 [The Ultimate Guide to API Architecture: REST, SOAP or GraphQL? | DA-14](https://da-14.com/blog/ultimate-guide-api-architecture-rest-soap-or-graphql)  
 [SOAP vs REST vs gRPC vs GraphQL - DEV Community](https://dev.to/andreidascalu/soap-vs-rest-vs-grpc-vs-graphql-1ib6)  
+[GraphQL: Core Features, Architecture, Pros and Cons | AltexSoft](https://www.altexsoft.com/blog/engineering/graphql-core-features-architecture-pros-and-cons/)  
 [How to request a GraphQL API with Fetch or Axios](https://hasura.io/blog/how-to-request-a-graphql-api-with-fetch-or-axios/)  
 [Queries and Mutations | GraphQL](https://graphql.org/learn/queries/)  
