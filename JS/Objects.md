@@ -6,6 +6,14 @@
   - [Creating Objects](#creating-objects)
   - [JavaScript Language Type/Sub-type Classifications](#javascript-language-typesub-type-classifications)
   - [The Disclaimer Explained](#the-disclaimer-explained)
+- [Anatomy of Objects](#anatomy-of-objects)
+  - [Properties vs Methods](#properties-vs-methods)
+  - [Arrays](#arrays)
+  - [Objects](#objects)
+    - [Property Descriptor](#property-descriptor)
+    - [Accessing Object Properties](#accessing-object-properties)
+      - [`[[Get]]`](#get)
+      - [`[[Put]]`](#put)
 - [Working with Object Literals](#working-with-object-literals)
   - [Shorthand Object Properties](#shorthand-object-properties)
   - [Computed Property Names](#computed-property-names)
@@ -50,7 +58,7 @@
     - *Despite `typeof null` returning an `'object'`, it is not an object.*
   - Objects
     - (Ordinary) Objects
-      - Object literals, array literals.
+      - Objects, arrays, functions and regular expressions are all objects, irrespective of their form (literal/constructor).
     - Built-in Objects
     - Callable Objects
       - Functions
@@ -62,12 +70,14 @@
     ```js
     // Literal
     const strLiteral = "hello";
+    strLiteral.length; // 5
     typeof strLiteral; // 'string'
     console.log(strLiteral); // 'hello'
     Object.prototype.toString.call(strLiteral); // '[object String]'
     
     // Constructor
     const strConstructor = new String("hello");
+    strConstructor.length; // 5
     typeof strConstructor; // 'object'
     console.log(strConstructor); // String {'hello'}
     Object.prototype.toString.call(strLiteral); // '[object String]'
@@ -75,6 +85,46 @@
       - We can see that both `strLiteral`'s and `strConstructor`'s constructor/sub-type is the built-in object `String`.
         - `Object.prototype.toString.call(num)` will result to `[object Number]`.
 
+## Anatomy of Objects
+- An **Object Container** (i.e. an object) contains the pointer (reference) to where the property's value is placed at (NOT the actual value itself).
+  - Property names (keys) of objects are always converted to strings.
+### Properties vs Methods
+- A function in an object (whether it was declared in that object or not) does not mean that it is a method tied to that object. Rather, it is just a reference to that function.
+  - i.e. the object does not "own" the function.
+  - Despite `this` sometimes refering to the object that was used to call the function (Ex: `obj.funcA()`), it does not mean that the function belongs to that object. This function is not any more of a "method" than other "ordinary" functions.
+    - `this` only dynamically binds at runtime. Therefore, a function only has an indirect relationship with an object.
+- *In JavaScript, the terms functions and methods are used interchangeably.*
+### Arrays
+- Arrays store values in locations indicated by numeric indexing (non-negative integers).
+- However, since arrays themselves are objects, it is possible to add properties to the array using property/key access. This does not affect the length of the array.
+### Objects
+#### Property Descriptor
+- An object consists of properties (key-value pairs) and each property has a **descriptor**, which contains the property value and other meta data describing the property.
+- Example
+  ```js
+  const tom = { name: "Tom", age: 3 };
+  Object.getOwnPropertyDescriptor(tom, "name"); // { value: 'Tom', writable: true, enumerable: true, configurable: true }
+  ```
+    - The meta properties (`writable`, `enumerable`, `configurable`) determines the behavior of the `name` property (whether or not it is writable, enumerable, configurable).
+      - `writable` - whether or not the property's value is writable (if `false`, cannot edit value).
+      - `configurable` - whether or not we can use `Object.defineProperty()` to, henceforth, change the property's descriptors (not the value).
+      - `enumerable` - whether to expose/reveal the property when, for example, looping over the object properties.
+    - Use `Object.defineProperty(objName, propertyName, descriptor)` to add a new descriptor property or edit an existing one (if `configurable` is set to `true`).
+#### Accessing Object Properties
+##### `[[Get]]`
+```js
+const obj = {
+  name: "tom"
+};
+
+obj.name; // "tom"
+```
+- Technically speaking, `obj.name` does not mean it looks for `name` in `obj`. Rather, it calls a `[[Get]]` operation (kind of like a function call `[[Get]]()`) on `obj`.
+#### `[[Put]]`
+- When executed, `[[Put]]` undergoes a few steps.
+  1) Is the property an **Accessor Descriptor**? If so, call the **Setter**.
+  2) If the peroperty's `writable` is `false`, silently fail (unstrict mode) or return `TypeError` (strict mode).
+  3) Set the value to the property.
 
 ## Working with Object Literals
 ### Shorthand Object Properties
