@@ -14,6 +14,7 @@
     - [Accessing Object Properties](#accessing-object-properties)
       - [`[[Get]]`](#get)
       - [`[[Put]]`](#put)
+      - [Getters and Setters](#getters-and-setters)
 - [Working with Object Literals](#working-with-object-literals)
   - [Shorthand Object Properties](#shorthand-object-properties)
   - [Computed Property Names](#computed-property-names)
@@ -125,6 +126,39 @@ obj.name; // "tom"
   1) Is the property an **Accessor Descriptor**? If so, call the **Setter**.
   2) If the peroperty's `writable` is `false`, silently fail (unstrict mode) or return `TypeError` (strict mode).
   3) Set the value to the property.
+#### Getters and Setters
+- A **Getter** is a property that calls a hidden function to "get" a value on a *property-level* (not an object-level).
+- A **Setter** is a property that calls a hidden function go "set" a value on a *property-level* (not an object-level).
+- Getters and Setters override the default `[[Get]]` and `[[Put]]` operations, respectively, on a property-level.
+- A property that is designated as either a Getter or Setter or both is called an **Accessor Descriptor**.
+  - In Accessor Descriptors, the property value and `writable` are ignored, but `configurable`, `enumerable` and the property's Get/Set is important.
+  - Example
+    ```js
+    // Literal Syntax
+    const obj = {
+      get a() { // define getter for "a"
+        return "blah";
+      }
+    }
+    
+    // Imperative Syntax
+    Object.defineProperty(
+      obj, // Target Object
+      "b", // Property Name
+      { // Accessor Descriptior
+        get: function() { return this.a + "!!!!!" }, // define getter for "b"
+        enumerable: true // "b" is an object property for certain.
+      }
+    );
+    
+    // Test
+    obj; // {}
+    obj.a; // "blah"
+    obj.b; // "blah!!!!!"
+    
+    obj.a = "iama"; // cannot change since there is no setter (plus the getter is hardcoded to return "blah").
+    obj.a; // "blah"
+    ```
 
 ## Working with Object Literals
 ### Shorthand Object Properties
@@ -207,9 +241,8 @@ function updateState(obj, key, value) {
 updateState(state, "name", "john");
 state; // { loading: true, name: "john", job: "" }
 ```
-
-## Shorthand for Adding Methods to Objects
-### Example
+### Shorthand for Adding Methods to Objects
+#### Example
 ```js
 const math = {
   blah: "Hi!",
