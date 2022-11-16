@@ -163,6 +163,19 @@ const rob = (nums) => {
 // TC: O(n)
 // SC: O(n)
 
+// Approach 1
+const rob = (nums) => {
+  // table[i] represents the maximum loot possible up to that point.
+  const table = [nums[0], Math.max(nums[0], nums[1])];
+  
+  for (let i = 2; i < nums.length; i++) {
+    table[i] = Math.max(nums[i] + table[i-2], table[i-1]);
+  }
+  
+  return table[nums.length - 1];
+}
+
+// Approach 2
 const rob = (nums) => {
   // table[i] represents the maximum loot possible up to that point.
   const table = new Array(nums.length+1);
@@ -182,14 +195,32 @@ const rob = (nums) => {
 // TC: O(n)
 // SC: O(1)
 
+// Approach 1
+const rob = (nums) => {
+  if (nums.length === 1) return nums[0];
+
+  let maxUntilPrevHouse = Math.max(nums[0], nums[1]);
+  let maxUntilPrevPrevHouse = nums[0];
+  let temp;
+  
+  for (let i = 2; i < nums.length; i++) {
+    temp = maxUntilPrevHouse;
+    maxUntilPrevHouse = Math.max(nums[i] + maxUntilPrevPrevHouse, maxUntilPrevHouse);
+    maxUntilPrevPrevHouse = temp;
+  }
+  
+  return maxUntilPrevHouse;
+}
+
+// Approach 2
 const rob = (nums) => {
   let maxUntilPrevHouse = 0;
-  let maxUntilHouseBeforePrevHouse = 0;
+  let maxUntilPrevPrevHouse = 0;
   let temp;
   
   for (let num of nums) {
-    temp = Math.max(num + maxUntilHouseBeforePrevHouse, maxUntilPrevHouse);
-    maxUntilHouseBeforePrevHouse = maxUntilPrevHouse;
+    temp = Math.max(num + maxUntilPrevPrevHouse, maxUntilPrevHouse);
+    maxUntilPrevPrevHouse = maxUntilPrevHouse;
     maxUntilPrevHouse = temp;
   }
   
