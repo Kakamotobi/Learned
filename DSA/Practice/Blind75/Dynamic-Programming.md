@@ -57,6 +57,18 @@ const climbStairs = (n) => {
 ```js
 // TC: O(n), SC: O(n)
 
+// Forwards
+const climbStairs = (n) => {
+  const table = [1,1];
+  
+  for (let i = 2; i <= n; i++) {
+    table[i] = table[i-1] + table[i-2];
+  }
+  
+  return table[n];
+}
+
+// Backwards
 const climbStairs = (n) => {
   const table = new Array(n);
   table[n] = 1;
