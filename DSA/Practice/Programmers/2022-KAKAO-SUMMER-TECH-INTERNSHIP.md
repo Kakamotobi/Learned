@@ -1,6 +1,6 @@
 # 2022 KAKAO SUMMER TECH INTERNSHIP
 
-## 성격 유형 검사지
+## 성격 유형 검사하기
 - **Inputs:**
   - An array of strings `survey` where `survey[i]` represents the category that each question indicates.
     - The first character in `survey[i]` represents the type for the disagree option for the `i+1`<sup>th</sup> question.
@@ -47,38 +47,36 @@ solution(["TR", "RT", "TR"], [7, 1, 3]); // "RCJA"
 #### Solution 1
 ```js
 const solution = (survey, choices) => {
-  const points = [3, 2, 1, 0, 1, 2, 3];
+  let ans = "";
 
-  let R = 0,
-    T = 0,
-    C = 0,
-    F = 0,
-    J = 0,
-    M = 0,
-    A = 0,
-    N = 0;
+  const pointsSystem = [3, 2, 1, 0, 1, 2, 3];
 
+  // Initialize tally.
+  const types = ["R", "T", "C", "F", "J", "M", "A", "N"];
+  const tally = {};
+  for (let type of types) {
+    tally[type] = 0;
+    }
+
+  // Accumulate points.
   for (let i = 0; i < survey.length; i++) {
-    // Find the type to earn points.
-    let type;
-    if (choices[i] < 4) type = survey[i][0];
-    else if (choices[i] > 4) type = survey[i][1];
+    const choice = choices[i];
 
-    if (type === "R") R += points[choices[i] - 1];
-    else if (type === "T") T += points[choices[i] - 1];
-    else if (type === "C") C += points[choices[i] - 1];
-    else if (type === "F") F += points[choices[i] - 1];
-    else if (type === "J") J += points[choices[i] - 1];
-    else if (type === "M") M += points[choices[i] - 1];
-    else if (type === "A") A += points[choices[i] - 1];
-    else if (type === "N") N += points[choices[i] - 1];
+    const points = pointsSystem[choice-1];
+
+    let type;
+    if (choice < 4) type = survey[i][0];
+    else if (choice > 4) type = survey[i][1];
+
+    tally[type] += points;
   }
 
-  let ans = "";
-  ans += R >= T ? "R" : "T";
-  ans += C >= F ? "C" : "F";
-  ans += J >= M ? "J" : "M";
-  ans += A >= N ? "A" : "N";
+  // Determine personality.
+  res += tally["R"] >= tally["T"] ? "R" : "T";
+  res += tally["C"] >= tally["F"] ? "C" : "F";
+  res += tally["J"] >= tally["M"] ? "J" : "M";
+  res += tally["A"] >= tally["N"] ? "A" : "N";
+
   return ans;
 }
 ```
