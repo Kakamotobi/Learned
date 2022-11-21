@@ -46,6 +46,8 @@ solution(["TR", "RT", "TR"], [7, 1, 3]); // "RCJA"
 ### Solutions
 #### Solution 1
 ```js
+// TC: O(n), SC: O(1)
+
 const solution = (survey, choices) => {
   let ans = "";
 
@@ -56,7 +58,7 @@ const solution = (survey, choices) => {
   const tally = {};
   for (let type of types) {
     tally[type] = 0;
-    }
+  }
 
   // Accumulate points.
   for (let i = 0; i < survey.length; i++) {
@@ -82,6 +84,8 @@ const solution = (survey, choices) => {
 ```
 #### Solution 2
 ```js
+// TC: O(n), SC: O(1)
+
 const solution = (survey, choices) => {
   const points = [3,2,1,0,1,2,3];
 
@@ -128,24 +132,41 @@ solution([3, 2, 7, 2], [4, 6, 5, 1]);
 solution([1, 2, 1, 2], [1, 10, 1, 2]);
 solution([1, 1], [1, 5]);
 ```
-### Solution
+### Solution - Sliding Window
 - Add the sum of both queues and divide it by 2 to get the target sum.
 - Concatenate the two queues into one array.
 - Use two pointers to find the point where the target sum is achieved.
   - First pointer initialized to index 0.
   - Second pointer initialized to the start of the second queue.
+- Reduce sum calculation from O(n) to O(1).
 ```js
+// TC: O(n), SC: O(n)
+
 const solution = (queue1, queue2) => {
-  const targetSum = queue1.reduce((sum,x) => sum + x, 0) + queue2.reduce((sum,x) => sum + x, 0);
+  // Concatenate queues into one array an initialize pointers.
   const arr = [...queue1, ...queue2];
   let leftPointer = 0;
-  let rightPointer = queue1.length;
+  let rightPointer = queue1.length; // always represents the start of queue2.
+  
+  // Current sum for queue1.
+  let currSum = queue1.reduce((sum, x) => sum + x, 0);
+  
+  // Get the target sum for a single queue.
+  const targetSum = arr.reduce((sum, x) => sum + x, 0) / 2;  
+  
+  // Execute necessary operations.
   while (leftPointer <= rightPointer && rightPointer < arr.length) {
-    const runningSum = arr.slice(leftPointer, rightPointer+1).reduce((sum, x) => sum + x, 0);
-    if (runningSum < targetSum) rightPointer++;
-    else if (runningSum > targetSum) leftPointer++;
-    else return leftPointer + (rightPointer - (queue1.length - 1));
+    if (currSum < targetSum) {
+      currSum += arr[rightPointer];
+      rightPointer++;
+    } else if (currSum > targetSum) {
+      currSum -= arr[leftPointer];
+      leftPointer++;
+    } else {
+      return leftPointer + (rightPointer - queue1.length);
+    }
   }
+  
   return -1;
 }
 ```
