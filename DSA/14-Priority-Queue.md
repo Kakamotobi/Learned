@@ -1,16 +1,24 @@
 # Priority Queue
 
 ## Table of Contents
-- [What are Priority Queues?](#what-is-are-priority-queues)
-- [Simple Priority Queue Implementation Using an Array](#priority-queue-implementation-using-an-array)
+- [What are Priority Queues?](#what-are-priority-queues)
+- [Simple Priority Queue Implementation Using an Array](#simple-priority-queue-implementation-using-an-array)
 - [Priority Queue Implementation Using Min Binary Heap](#priority-queue-implementation-using-min-binary-heap)
 
 ## What are Priority Queues?
 - **A data structure where each element has a priority. Elements with higher priorities are served before elements with lower priorities.**
-  - Ex: computer processes.
-- *Priority Queues are an abstract concept separate from heaps. Other data structures such as arrays can be used to implement a priority queue (although not as efficient as using binary heap).*
+  - Priority Queues are basically queues where each element has a priority.
+  - Ex: emergency room, computer processes.
+- ***Priority Queues are just an abstract concept separate from any particular data structure.** Priority queues are most commonly implemented using binary heaps. However, other data structures such as arrays can also be used to implement a priority queue (although not as efficient as using a binary heap).*
+  - Just like how linked lists can be implemented using arrays, nodes, etc.
+### Uses of Priority Queues
+- Priority Queues are used to manage data of varying priority where things are not being inserted in order of priority.
 
 ## Simple Priority Queue Implementation Using an Array
+- Simple but inefficient.
+  - Insertion - O(n)
+  - Removal - O(n)
+  - Searching - O(n)
 ```js
 class PriorityQueue {
   constructor() {
@@ -36,6 +44,8 @@ class PriorityQueue {
 ```
 
 ## Priority Queue Implementation Using Min Binary Heap
+- Lower priority value means the highest priority.
+- Use the priority of each element to build the heap.
 ```js
 // Each Node has a value and a priority (which is used to build the heap).
 class Node {
@@ -76,6 +86,7 @@ class PriorityQueue {
   }
   
   // Removes and returns the root.
+  // In Priority Queues, the root is always the target to be removed as it has the highest priority.
   dequeue() {
     // Swap the root with the last value.
     [this.nodes[0], this.nodes[this.nodes.length-1]] = [this.nodes[this.nodes.length-1], this.nodes[0]];
