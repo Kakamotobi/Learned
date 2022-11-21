@@ -6,7 +6,7 @@
   - [Binary Heaps vs. Binary Search Trees](#binary-heaps-vs-binary-search-trees)
   - [Binary Heap Big O](#binary-heap-big-o)
   - [Uses of Binary Heaps](#uses-of-binary-heaps)
-  - [Types of Binary Heaps](#types-of-binary-heaps)
+  - [2 Types of Binary Heaps](#2-types-of-binary-heaps)
     - [Max Binary Heap](#max-binary-heap)
     - [Min Binary Heap](#min-binary-heap)
 - [Storing Binary Heaps](#storing-binary-heaps)
@@ -18,12 +18,17 @@
 ## What are Heaps?
 > A Heap is a special Tree-based data structure in which the tree is a complete binary tree. | GeeksforGeeks
 
+- Heaps are just another category of tree data structures.
+  - i.e. everything that applies to trees in general applies to heaps but has additional rules.
+- There are many types of heaps.
+  - Ex: binary heap, Fibonacci heap, Leonardo heap, etc.
+
 ## Binary Heaps
 > A **binary heap** is a heap data structure that takes the form of a binary tree. | Wikipedia
 ### Binary Heaps vs Binary Search Trees
-- Similar in that each node can have at most two children.
-- However, unlike a binary search tree, *binary heaps have no order to the left or right*.
-- Also, unlike a binary search tree, which can become lop-sided to one side, binary heaps are compact and take the least amount of space possible.
+- Similar in that **each node can have at most two children**.
+- However, unlike a binary search tree, **binary heaps have no order to the left or right**.
+- Also, unlike a binary search tree, which can become lop-sided to one side, **binary heaps are compact and take the least amount of space possible**.
   - i.e., ***every left and right is filled before going down. All the children of each node are as full as they can be and the left children are filled out first.***
 ### Binary Heap Big O
 - Insertion - O(log n)
@@ -32,9 +37,10 @@
 ### Uses of Binary Heaps
 - Binary Heaps are commonly used to implement ***Priority Queues***.
 - Binary Heaps are also used with ***Graph Traversal algorithms***.
-### Types of Binary Heaps
+### 2 Types of Binary Heaps
 #### Max Binary Heap
 - **Parent nodes are always larger than child nodes.**
+  - However, there are no guarantees between sibling nodes.
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/DSA/refImg/max-binary-heap.png" alt="Max Binary Heap" width="80%" />
@@ -42,6 +48,7 @@
 
 #### Min Binary Heap
 - **Parent nodes are always smaller than child nodes.**
+  - However, there are no guarantees between sibling nodes.
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/DSA/refImg/min-binary-heap.png" alt="Min Binary Heap" width="80%" />
@@ -55,10 +62,10 @@
 </p>
 
 ### Formulas
-#### Finding the Children
+#### Finding the (index of the) Children
 - `leftChild = 2n + 1`
 - `rightChild = 2n + 2`
-#### Finding the Parent
+#### Finding the (index of the) Parent
 - `parent = Math.floor((n-1)/2)`
 #### Examples
   - The children of the node at index 6 are:
@@ -75,12 +82,14 @@ class MaxBinaryHeap {
   }
   
   // Insert value to the binary heap.
+  // First, push the new value to the end of the array (effectively filling the heap from the left).
+  // Then, keep "bubbling up" that value to its correct place.
   insert(val) {
     this.values.push(val);
     this.bubbleUp();
   }
   
-  // Helper for insert (places the newly added val in its right place).
+  // Helper for insert (places the newly added val, which is at the end of the array, to its right place).
   bubbleUp() {
     // Initialize variable to keep track of where the newly inserted value is in the array.
     let idx = this.values.length - 1;
@@ -88,7 +97,7 @@ class MaxBinaryHeap {
     while (idx > 0) {
       // Find index of parent.
       let parentIdx = Math.floor((idx - 1)/2);
-      // If val is less than its parent, break.
+      // If val is less than its parent, the value is in its correct place.
       if (this.values[idx] < this.values[parentIdx]) break;
       else {
         // Swap places.
@@ -100,6 +109,9 @@ class MaxBinaryHeap {
   }
   
   // Remove and return the root from the binary heap.
+  // First, swap the root and the last value in the heap.
+  // Then, keep "sinking down" that last value to its correct place.
+  // Note: when removing an element from a priority queue based on its priority level, the highest priority would be the root from the heap. Therefore, remove the root.
   extractMax() {
     // Swap the root with the last value.
     [this.values[0], this.values[this.values.length-1]] = [this.values[this.values.length-1], this.values[0]];
