@@ -58,7 +58,7 @@ capitalize.call({ name: "tom" }); // "TOM" // `this` refers to the object that w
     if (i > 5) incrementCount();
   }
 
-  console.log(data.count); // 4
+  console.log(data.count); // 10
   ```
   ```js
   // Lexical Scope Approach 2 - avoid using `this`
@@ -74,7 +74,7 @@ capitalize.call({ name: "tom" }); // "TOM" // `this` refers to the object that w
     incrementCount();
   }
 
-  console.log(incrementCount.count); // 4
+  console.log(incrementCount.count); // 10
   ```
   ```js
   // `this` Approach
@@ -90,7 +90,7 @@ capitalize.call({ name: "tom" }); // "TOM" // `this` refers to the object that w
     incrementCount.call(incrementCount);
   }
 
-  console.log(incrementCount.count); // 4
+  console.log(incrementCount.count); // 10
   ```
 #### `this` does NOT refer to the Lexical Scope of the Function
 - `this` does not refer to the function's scope.
