@@ -238,11 +238,11 @@ class UndirectedGraph {
   
   // Remove a vertex from the graph.
   removeVertex(vertex) {
-    // Remove all values in the adjacency list for this vertex.
+    // Remove all edges for this vertex.
     for (let v of this.adjacencyList[vertex]) {
       this.removeEdge(vertex, v);
     }
-    // Delete the key in the adjacency list for this vertex.
+    // Delete this vertex from the graph.
     delete this.adjacencyList[vertex];
   }
   
