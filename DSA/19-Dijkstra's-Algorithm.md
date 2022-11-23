@@ -36,8 +36,7 @@
 2. Once we've moved to that node, look at each of its neighbors.
 3. **For each neighboring node, calculate the distance from the starting node** by summing the total edges that lead to that neighboring node.
 4. If the calculated distance to that neighboring node is less than the previously calculated distance, update the shortest path to that node by **storing the new shorter distance for that neighboring node**.
-
-## Example
+### Example
 <p align="center">
   <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/DSA/refImg/dijkstra-flow-1.png" alt="Dijkstra Flow 1" width="45%" />
   <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/DSA/refImg/dijkstra-flow-2.png" alt="Dijkstra Flow 2" width="45%" />
@@ -75,29 +74,38 @@ class WeightedGraph {
 - [Implementation here](https://github.com/Kakamotobi/Learned/blob/main/DSA/14-Priority-Queue.md#priority-queue-implementation-using-min-binary-heap)
 
 ## Dijkstra's Algorithm Implementation
-- Define it as a function in the weighted graph class.
-- It should accept a starting and ending vertex (ex: `A` to `E`).
-- Create a few data structures.
-  - Hash Map called `shortestDistFromStart` storing the **current shortest distance from the starting vertex to each vertex**.
-    - i.e. how far each vertex is from the starting vertex.
-    - Initialize each vertex/key's shortest distance to `Infinity` (since we don't know yet) except for the starting vertex initialized to `0`.
-    - Ex: `{ A: 0, B: Infinity, C: Infinity, D: Infinity, E: Infinity, F: Infinity }`.
-  - Priority Queue where **each vertex has a priority that represents the distance from the starting vertex**.
-    - Initialize all vertices' priorities to `Infinity` except for the starting vertex with `0`.
-    - Ex: `[{ vertex: A, priority: 0 }, { vertex: B, priority: Infinity }, { vertex: C, priority: Infinity }, ...]`.
-  - Hash Map called `previousVertices` storing the **previous node to this node on the shortest path from the starting vertex**.
-    - i.e. what node did we come from (on the shortest path)?
-    - Initialize all values to `null`.
-    - Ex: `{ A: null, C: null, D: null, E: null, F: null }`.
-- Loop as long as there is anything in the Priority Queue.
-  - Dequeue a vertex from the priority queue.
-  - If that vertex is the same as the ending vertex, end algorithm.
-  - Else, loop through each of the vertex's neighbors.
-    - Calculate the distance to the neighbor from the starting vertex.
-    - If the distance is less than what is currently stored in `shortestDistFromStart`.
-      - Update `shortestDistFromStart` with the new lower distance.
-      - Update `previousVertices` to reflect where we came from.
-      - Enqueue the neighbor with the new total distance from the starting vertex.
+1. Define the algorithm as a function in the Weighted Graph Class.
+    - The function should accept a starting and ending vertex (Ex: `A` to `E`).
+2. Initialize a a few data structures.
+    - A Hash Map called `shortestDistFromStart` storing the **current shortest distance from the starting vertex to each vertex**.
+      - i.e. the currently calculated minimum distance that each vertex is from the starting vertex.
+      - Initialize each vertex's shortest distance to `Infinity` (since they are yet to be calculated) except for the starting vertex initialized to `0`.
+        - Ex: `{ A: 0, B: Infinity, C: Infinity, D: Infinity, E: Infinity, F: Infinity }`.
+      - The objective is to "greedily" calculate the shortest distance starting from the starting vertex to the ending vertex.
+    - Hash Map called `previousVertices` storing the **previous node to this node on the shortest path from the starting vertex**.
+      - i.e. what node did we come from on the shortest path to get to this node?
+      - Initialize all values to `null`.
+        - Ex: `{ A: null, C: null, D: null, E: null, F: null }`.
+      - This should update every time any value in `shortestDistFromStart` updates.
+      - *At the end of the algorithm, this data structure ends up representing the shortest path from the starting vertex to any given vertex between the ending vertex.*
+    - An Array/Set called `visited` storing the vertices to which the shortest distance have already been calculated.
+      - Only move on to the next vertex (i.e. mark the current vertex as visited) after calculating the shortest distance to all of the current vertex's neighbors.
+    - Priority Queue where **each vertex has a priority that represents the distance from the starting vertex**.
+      - It serves to determine the next vertex to be visited.
+      - Initialize all vertices' priorities to `Infinity` except for the starting vertex with `0`.
+      - Ex: `[{ vertex: A, priority: 0 }, { vertex: B, priority: Infinity }, { vertex: C, priority: Infinity }, ...]`.
+      - The objective is to 
+3. For as long as the Priority Queue is not empty,
+    - Pick the vertex with the shortest distance from A currently that has not been visited already.
+      - i.e. dequeue (root) vertex from the Priority Queue.
+    - If that vertex is the ending vertex, compute the path, and end algorithm.
+    - Otherwise, loop through each of the vertex's neighbors.
+      - If the vertex has not been visited,
+        - Calculate the shortest path from the starting vertex to the neighbor.
+          - i.e. use `previousVertices` to determine how we got to the current vertex. Then, retrieve its shortest distance from `shortestDistFromStart`. Then, add that value with the distance to the neighbor from the current vertex.
+        - If the newly calculated distance is shorter than what is currently stored in `shortestDistFromStart`, update the corresponding values in `shortestDistFromStart` and `previousVertices`.
+        - Enqueue the neighbor with the new shortest distance form the starting vertex to the Priority Queue.
+    - Record the vertex as visited.
 ```js
 class WeightedGraph {
   constructor() {
@@ -147,10 +155,12 @@ class WeightedGraph {
       }
       
       if (shortestVertexVal || shortestDistFromStart[shortestVertexVal] !== Infinity) {
+        // `shortestVertexVal` is used to pick the vertex with the shortest distance from the start currently.
+        // This is the vertex that is going to be marked as visited in this iteration.
         for (let neighbor in this.adjacencyList[shortestVertexVal]) {
-          // Find neighboring vertex.
+          // Find the neighbor vertex.
           const neighborVertex = this.adjacencyList[shortestVertexVal][neighbor];
-          // Calculate new distance to neighbor vertex (current distance for our vertex + distance to the neighbor).
+          // Calculate new distance to the neighbor vertex (current distance for the vertex + distance to the neighbor).
           const distanceToNeighborVertex = shortestDistFromStart[shortestVertexVal] + neighborVertex.weight;
           // If the newly calculated distance is shorter than what is currently stored.
           if (distanceToNeighborVertex < shortestDistFromStart[neighborVertex.vertex]) {
