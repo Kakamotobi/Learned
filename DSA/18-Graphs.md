@@ -248,83 +248,91 @@ class UndirectedGraph {
   
   // Depth-First Traversal Recursive
   DepthFirstTraversalRecursive(startingVertex) {
-    // To account for `this`'s meaning changing in helper function.
     const adjacencyList = this.adjacencyList;
-    // If starting vertex is invalid, return undefined.
+    
+    // If starting vertex is invalid, return.
     if (!adjacencyList[startingVertex]) return undefined;
-    // Initialize array to store the visited node values.
-    const visited = [];
-    // Initialize an object to keep track of visited nodes.
-    const tracker = {};
+    
+    // Array to store the traversal path.
+    const path = [];
+    // Hash Set to keep track of visited vertices.
+    const visited = new Set();
+    
     // Recursive helper function.
     function traverse(vertex) {
-      // Push vertex to visited array and record in tracker.
-      visited.push(vertex);
-      tracker[vertex] = true;
-      // Loop over all neighbors/vertices in the adjacency list for that vertex.
+      // Push vertex to path array and record as visited.
+      path.push(vertex);
+      visited.add(vertex);
+      // Loop over all neighbors in the adjacency list for this vertex.
       for (let neighbor of adjacencyList[vertex]) {
-        // If the neighbor vertex has not been visited, recursive call on that vertex.
-        if (!tracker[neighbor]) traverse(neighbor);
+        // If the neighbor vertex has not been visited yet, recursive call on that neighbor.
+        if (!visited.has(neighbor)) traverse(neighbor);
       }
     }
+    
     traverse(startingVertex);
-    return visited;
+    
+    return path;
   }
   
   // Depth-First Traversal Iterative using Stack
   DepthFirstTraversalIterative(startingVertex) {
     if (!this.adjacencyList[startingVertex]) return undefined;
-    const visited = [];
-    const tracker = {};
+    
+    const path = [];
+    const visited = new Set();
+    
     // Initialize stack with starting vertex.
     const stack = [startingVertex];
+    
     // Variable for current vertex (top stack).
     let currVertex;
+    
     // While the stack is not empty.
     while (stack.length) {
-      // Pop from stack.
       currVertex = stack.pop();
-      // If currVertex has not been visited yet.
-      if (!tracker[currVertex]) {
-        // Push currVertex to visited array and record in tracker.
-        visited.push(currVertex);
-        tracker[currVertex] = true;
-        // Push currVertex's neighbors onto the stack.
+      
+      if (!visited.has(currVertex)) {
+        path.push(currVertex);
+        visited.add(currVertex);
         stack.push(...this.adjacencyList[currVertex]);
       }
     }
-    return visited;
+    
+    return path;
   }
   
   // Breadth-First Traversal using Queue
   BreadthFirstTraversal(startingVertex) {
     if (!this.adjacencyList[startingVertex]) return undefined;
-    const visited = [];
-    const tracker = {};
+    
+    const path = [];
+    const visited = new Set();
+    
     // Initialize queue with starting vertex.
     const queue = [startingVertex];
-    // Record in tracker.
-    tracker[startingVertex] = true;
+    
+    // Record startingVertex as visited.
+    visited.add(startingVertex);
+    
     // Variable for current vertex (first in queue).
     let currVertex;
+    
     // While the queue is not empty.
     while (queue.length) {
-      // Dequeue from queue.
       currVertex = queue.shift();
-      // Push currVertex to visited array and record in tracker.
-      visited.push(currVertex);      
-      // Loop over each neighbor/vertex in the adjacency list for currVertex.
+
+      path.push(currVertex);
+      
       for (let neighbor of this.adjacencyList[currVertex]) {
-        // If neighbor has not been visited yet.
-        if (!tracker[neighbor]) {
-          // Enqueue neighbor.
+        if (!tracker.has(neighbor)) {
           queue.push(neighbor);
-          // Record in tracker.
-          tracker[neighbor] = true;
+          visited.add(neighbor);
         }
       }
     }
-    return visited;
+    
+    return path;
   }
 }
 ```
