@@ -27,10 +27,18 @@
 - The mechanism by which JS objects inherit features from one another.
 - Objects can have a prototype object, which acts as a *template object* that it inherits properties and methods from.
 - `.prototype` vs. `__proto__`
-  - `.prototype` is the actual object where properties and methods are added to.
+  - `.prototype` is the object that is used to build `__proto__` when creating an object with the `new` keyword.
+    - It is the actual object/blueprint where properties and methods are added to.
+      - i.e. `prototype` is not available on individual instances, but only on constructor functions.
     - Ex: `Array.prototype` <-- prototype object that every array shares.
+    ```js
+    (new String).prototype === undefined; // true
+    ```
   - `__proto__` is a reference to the `.prototype` object.
     - It is a property name on a JS object.
+    ```js
+    (new String).__proto__ === String.prototype; // true
+    ```
 
 ## Factory Function
 - Make a prototype object to which we can add properties and methods based off of arguments that have been provided, and then return that object.
@@ -159,3 +167,6 @@
 ![spike](refImg/spike.png)
 
 ![tom](refImg/tom.png)
+
+## Reference
+[__proto__ VS. prototype in JavaScript - Stack Overflow](https://stackoverflow.com/questions/9959727/proto-vs-prototype-in-javascript)  
