@@ -342,3 +342,33 @@ const combinationSum = (candidates, target) => {
   return result;
 }
 ```
+
+## 4. [Coin Change](https://leetcode.com/problems/coin-change/)
+### Solution 1 - Top-Down (Memoization)
+- Each "step" has `coins.length` amount of branches.
+- Helper function returns the fewest number of coins needed.
+```js
+// TC: O(n * m), SC: O(n * m)
+
+const coinChange = (coins, amount) => {
+  const memo = {};
+
+  const helper = (runningSum) => {
+    if (runningSum === amount) return 0;
+    if (runningSum > amount) return Infinity;
+    if (memo[runningSum]) return memo[runningSum];
+    
+    let fewestNumCoinsUsed = Infinity;
+    for (let coin of coins) {
+      fewestNumCoinsUsed = Math.min(fewestNumCoinsUsed, helper(runningSum + coin) + 1);
+    }
+    
+    memo[runningSum] = fewestNumCoinsUsed;
+    
+    return fewestNumCoinsUsed;
+  }
+  
+  const ans = helper(0);
+  return ans === Infinity ? -1 : ans;
+}
+```
