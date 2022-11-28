@@ -24,20 +24,28 @@
 - Rather, it is a *prototype-based language*.
   - This prototype object serves as a template for which features, methods, functionalities can be inherited.
 ### Object Prototypes
-- The mechanism by which JS objects inherit features from one another.
+- Prototypes in JS are the mechanism by which JS objects inherit features from one another.
 - Objects can have a prototype object, which acts as a *template object* that it inherits properties and methods from.
-- `.prototype` vs. `__proto__`
-  - `.prototype` is the object that is used to build `__proto__` when creating an object with the `new` keyword.
-    - It is the actual object/blueprint where properties and methods are added to.
-      - i.e. `prototype` is not available on individual instances, but only on constructor functions.
-    - Ex: `Array.prototype` <-- prototype object that every array shares.
-    ```js
-    (new String).prototype === undefined; // true
-    ```
-  - `__proto__` is a reference to the `.prototype` object.
+- `prototype` vs. `__proto__`
+  - `prototype` is a property/object on a Function object that serves as the prototype/blueprint for objects constructed by that function.
+    - Properties and methods can be added to it.
+    - Ex: `const arr = new Array()` uses the `Array.prototype` object, which is shared by all arrays, to create an array.
+    - `prototype` is not available on individual instances, but only on constructor functions.
+      ```js
+      (new Array).prototype === undefined; // true
+      ```
+  - `__proto__` is a reference to its `prototype` object.
     - It is a property name on a JS object.
+      ```js
+      (new Array).__proto__ !== undefined; // true
+      ```
+  - Example
     ```js
-    (new String).__proto__ === String.prototype; // true
+    const arr = new Array(); // At this point, `arr.__proto__` is set to reference `Array.prototype`.
+    
+    arr.__proto__ === Array.prototype; // true
+    arr instanceof Array; // true
+    arr instanceof Object; // true
     ```
 
 ## Factory Function
