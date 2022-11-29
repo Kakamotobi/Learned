@@ -372,3 +372,73 @@ const coinChange = (coins, amount) => {
   return ans === Infinity ? -1 : ans;
 }
 ```
+### Solution 2 - Bottom-Up (Tabulation)
+- `table[i]` represents the fewest number of coins needed to sum to `i`.
+  - `0 <= i <= amount`.
+- First, check all coins for each `i` and store the minimum number of coins required.
+- Example
+  ```js
+  // coins = [1,3,4,5], amount = 7
+  
+  // dp[0] = 0
+  // dp[1] = 1 (coin 1) + dp[0] = 1
+  // dp[2] = 1 (coin 1) + dp[1] = 2
+  // dp[3] = 1 (coin 1) + dp[2] = 3
+  //       = 1 (coin 3) + dp[0] = 1 <-- stored
+  // dp[4] = 1 (coin 1) + dp[3] = 2
+  //       = 1 (coin 3) + dp[1] = 2
+  //       = 1 (coin 4) + dp[0] = 1 <-- stored
+  // dp[5] = 1 (coin 1) + dp[4] = 2
+  //       = 1 (coin 3) + dp[2] = 3
+  //       = 1 (coin 4) + dp[1] = 2
+  //       = 1 (coin 5) + dp[0] = 1 <-- stored
+  // dp[6] = 1 (coin 1) + dp[5] = 2 <-- stored
+  //       = 1 (coin 3) + dp[3] = 2
+  //       = 1 (coin 4) + dp[2] = 3
+  //       = 1 (coin 5) + dp[1] = 2
+  // dp[7] = 1 (coin 1) + dp[6] = 3
+  //       = 1 (coin 3) + dp[4] = 2 <-- stored
+  //       = 1 (coin 4) + dp[3] = 2
+  //       = 1 (coin 5) + dp[2] = 3
+  ```
+```js
+// TC: O(m * n), SC: O(m)
+  // m - `amount`
+  // n - `coins.length`
+
+const coinChange = (coins, amount) => {
+  const table = [0];
+  
+  for (let i = 1; i <= amount; i++) {
+    let minNumCoinsForI = Infinity;
+    for (let coin of coins) {
+      const remSum = i - coin;
+      if (remSum < 0) continue;
+      
+      minNumCoinsForI = Math.min(minNumCoinsForI, 1 + table[remSum]);
+    }
+    table[i] = minNumCoinsForI;
+  }
+  
+  return table[table.length - 1] === Infinity ? -1 : table[table.length - 1];
+}
+```
+```js
+// Alternative
+
+const coinChange = (coins, amount) => {
+  const table = new Array(amount + 1).fill(Infinity);
+  table[0] = 0;
+  
+  for (let i = 1; i <= amount; i++) {
+    for (let coin of coins) {
+      const remSum = i - coin;
+      if (remSum >= 0) {
+        table[i] = Math.min(table[i], 1 + table[remSum]);
+      }
+    }
+  }
+  
+  return table[table.length - 1] === Infinity ? -1 : table[table.length - 1];
+}
+```
