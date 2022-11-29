@@ -692,9 +692,30 @@ function search(arr, num) {
 - Find the best substructore/subproblem to the given problem.
 - Determine what the solution will include (ex: largest sum, shortest path).
 - Create an iterative process for traversing through local stages (subproblems) and making decisions to reach a global optimum solution.
+### Example
+- You can only watch one TV show at a time at the time of broadcast. Some broadcast times overlap. What is the highest number of shows that you can watch?
+#### Implementation
+- Determine the greedy criteria/standard by which shows picked will be compatible and optimal - Finish Time of shows.
+```js
+const solution = (shows) => {
+  const sortedShowsByFinishTime = shows.sort((a,b) => a.finish - b.finish); // O(n log n)
+  
+  const ans = [];
+  
+  let prevShowFinishTime = 0;
+  for (let i = 0; i < sortedShowsByFinishTime.length; i++) {
+    if (sortedShowsByFinishTime[i].start >= prevShowFinishTime) {
+      ans.push(sortedShowsByFinishTime[i]);
+      prevShowFinishTime = sortedShowsByFinishTime[i].finish;
+    }
+  }
+  
+  return ans;
+}
+```
 ### Reference
 [Greedy Algorithms | Brilliant Math & Science Wiki](https://brilliant.org/wiki/greedy-algorithm/)  
 [Greedy Algorithm | What is Greedy Algorithm? | Introduction To Greedy Algorithms | Simplilearn](https://www.youtube.com/watch?v=ilYwrsP7zzk)  
 
-## Dynamic Programming
+## [Dynamic Programming](https://github.com/Kakamotobi/Learned/blob/main/DSA/20-Dynamic-Programming.md)
 ## Many more
