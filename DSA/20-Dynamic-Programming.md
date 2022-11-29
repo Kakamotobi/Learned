@@ -5,6 +5,7 @@
 - [Conditions for Dynamic Programming](#conditions-for-dynamic-programming)
   - [1. Overlapping Subproblems](#1-overlapping-subproblems)
   - [2. Optimal Substructure](#2-optimal-substructure)
+- [Dynamic Programming Big O](dynamic-programming-big-o)
 - [Approach for Solving DP Problems](#approach-for-solving-dp-problems)
 - [Example - Fibonacci Sequence](#example---fibonacci-sequence)
   - [Recursion Solution](#recursion-solution)
@@ -59,6 +60,10 @@
   - The longest simple path from `A` to `C` is `A -> B -> C`.
   - The longest simple path from `C` to `D` is `C -> B -> D`.
   - However, the longest simple path from `A` to `D` is not `A -> B -> C -> B -> D`. The longest simple path is `A -> B -> D`.
+
+## Dynamic Programming Big O
+- The time and space complexity for dynamic programming solutions differ per implementation/approach. But the following is a simple formula for Top-Down dynamic programming.
+- `Time Complexity = number of function calls * work done per function call`
 
 ## Approach for Solving DP Problems
 1. Find a **Recurrence Relation**.
@@ -248,3 +253,4 @@ const fib = (n) => {
 [Top 5 Dynamic Programming Patterns for Coding Interviews - For Beginners](https://www.youtube.com/watch?v=mBNrRy2_hVs&ab_channel=AbdulBari)  
 [Recurrence relation - Wikipedia](https://en.wikipedia.org/wiki/Recurrence_relation)  
 [Leetcode DP Problem Solution Example](https://leetcode.com/problems/house-robber/discuss/156523/From-good-to-great.-How-to-approach-most-of-DP-problems.)  
+[DP is Easy! (part 2). Deriving Time Complexity of Top-Down DP | by Tim Park | Medium](https://medium.com/@timpark0807/dp-is-easy-part-2-74422931dd98)  
