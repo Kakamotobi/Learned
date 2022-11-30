@@ -1,7 +1,7 @@
 # Dynamic Programming
 
 ## 1. [Climbing Stairs](https://leetcode.com/problems/climbing-stairs/)
-### Solution 1 - Brute Force (Pure Recursion)
+### Solution 1 - Brute Force (Recursion)
 ```js
 // TC: O(2^n), SC: O(n)
 
@@ -23,7 +23,7 @@ const climbStairs = (n) => {
   return numDistinctWays;
 }
 ```
-### Solution 2 - Dynamic Programming (Memoization)
+### Solution 2 - Top-Down (Memoization)
 ```js
 // TC: O(n), SC: O(n)
 
@@ -53,7 +53,7 @@ const climbStairs = (n) => {
   return numDistinctWays;
 }
 ```
-### Solution 3 - Dynamic Programming (Tabulation)
+### Solution 3 - Bottom-Up (Tabulation)
 ```js
 // TC: O(n), SC: O(n)
 
@@ -123,7 +123,7 @@ const climbStairs = (n) => {
   - Rob the current house (`nums[i]`) and find the maximum from the remaining houses (`nums[i+2:nums.length]`).
   - Skip the current house and find the maximum from the remaining houses (`nums[i+1:nums.length]`).
 - The subproblem is to find the maximum of the subarray of the entire array.
-### Solution 1 - Recursion
+### Solution 1 - Brute Force (Recursion)
 ```js
 // TC: O(2^n)
 // SC: O(n)
@@ -232,7 +232,7 @@ const rob = (nums) => {
 - Recurrence Relation
   - Same as [House Robber](#2-house-robber) but with one more constraint: the first and last houses are considered adjacent.
     - i.e. if the first house was robbed, you cannot rob the last house, and vice versa.
-### Solution 1 - Recursion
+### Solution 1 - Brute Force (Recursion)
 - Calculate the max for two subarrays and return the max.
   - Subarray including the first but excluding the last house.
   - Subarray excluding the first but including the last house.
@@ -440,5 +440,105 @@ const coinChange = (coins, amount) => {
   }
   
   return table[table.length - 1] === Infinity ? -1 : table[table.length - 1];
+}
+```
+
+## 5. [Longest Increasing Subsequence](https://leetcode.com/problems/longest-increasing-subsequence/)
+- Numbers in the subsequence do not have to be contiguous.
+### Solution 1 - Brute Force (Recursion)
+- Generate every possible (meaning, strictly increasing subsequence) subsequence to find the longest one.
+- Recursive Relation
+  - Include or Not Include the current value to the current subsequence.
+- Recursive function should return the length of the resulting longest subsequence when starting from that value.
+- Base Cases
+  - If `idx` is out of bounds.
+  - If the current value is equal to or less than the last value considered in the current subsequence, cannot go further.
+```js
+// TC: O(2^n), SC: O(n)
+
+const lengthOfLIS = (nums) => {
+  const helper = (idx, lastValInSubsequence) => {
+    if (idx >= nums.length) return 0;
+    if (nums[idx] <= lastValInSubsequence) return helper(idx+1, lastValInSubsequence);
+    
+    // Return the length of the longest increasing subsequence derived from either including or not including the current value.
+    return Math.max(1 + helper(idx+1, nums[idx]), helper(idx+1, lastValInSubsequence));
+  }
+  
+  return helper(0, -Infinity);
+}
+```
+```js
+// Alternative
+
+const lengthOfLIS = (nums) => {
+  const helper = (idx, lastValInSubsequence) => {
+    if (idx >= nums.length) return 0;
+    if (nums[idx] <= lastValInSubsequence) return helper(idx+1, lastValInSubsequence);
+    
+    let ans = -Infinity;
+    for (let i = idx; i < nums.length; i++) {
+      if (nums[i] > lastValInSubsequence) {
+        ans = Math.max(1+helper(idx+1, nums[idx]), helper(idx+1, lastValInSubsequence));
+      }
+    }
+    return ans;
+  }
+  
+  return helper(0, -Infinity);
+}
+```
+### Solution 2 - Top-Down (Memoization)
+#### Approach 1
+- `memo[idx]` represents the length of the longest increasing subsequence when starting from the index `idx` in `nums`.
+```js
+// TC: O(n^2), SC: O(n)
+  // n - nums.length
+
+const lengthOfLIS = (nums) => {
+  const memo = new Array(nums.length).fill(-Infinity);
+
+  const helper = (idx, lastValInSubsequence) => {
+    if (idx >= nums.length) return 0;
+
+    let left = 0;
+    let right = 0;
+
+    // Include this value.
+    if (nums[idx] > lastValInSubsequence) {
+      if (memo[idx] === -Infinity) {
+        memo[idx] = 1 + helper(idx+1, nums[idx]);
+      }
+      left = memo[idx]; // grab from cache here
+    }
+
+    // Don't include this value.
+    right = helper(idx+1, lastValInSubsequence);
+
+    return Math.max(left, right);
+  }
+
+  return helper(0, -Infinity);
+};
+```
+#### Approach 2
+- Start from the end of `nums` and check every position that comes after the current number.
+```js
+// TC: O(n^2), SC: O(n)
+
+const lengthOfLIS = (nums) => {
+  // `1` represents the current number (`nums[i]`) by itself as the subsequence.
+  const memo = new Array(nums.length).fill(1);
+  
+  for (let i = nums.length - 1; i >= 0; i--) {
+    for (let j = i+1; j < nums.length; j++) {
+      if (nums[i] < nums[j]) {
+        // `memo[j]` represents the length of the LIS when starting from index `j`, which represents the LIS in `nums.slice(j)`.
+        memo[i] = Math.max(memo[i], memo[j]);
+      }
+    }
+  }
+  
+  return Math.max(...memo);
 }
 ```
