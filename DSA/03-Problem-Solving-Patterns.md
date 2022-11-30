@@ -692,13 +692,16 @@ function search(arr, num) {
 - Find the best substructore/subproblem to the given problem.
 - Determine what the solution will include (ex: largest sum, shortest path).
 - Create an iterative process for traversing through local stages (subproblems) and making decisions to reach a global optimum solution.
-### Example
+### Examples
+#### Example 1
 - You can only watch one TV show at a time at the time of broadcast. Some broadcast times overlap. What is the highest number of shows that you can watch?
-#### Implementation
+##### Implementation
 - Determine the greedy criteria/standard by which shows picked will be compatible and optimal - Finish Time of shows.
 ```js
+// TC: O(nlogn)
+
 const solution = (shows) => {
-  const sortedShowsByFinishTime = shows.sort((a,b) => a.finish - b.finish); // O(n log n)
+  const sortedShowsByFinishTime = shows.sort((a,b) => a.finish - b.finish);
   
   const ans = [];
   
@@ -713,6 +716,45 @@ const solution = (shows) => {
   return ans;
 }
 ```
+#### Example 2
+- Schedule all classes such that the minimum number of classrooms are used throughout the day. Overlapping classes cannot use the same room.
+##### Implementation
+- The minimum number of rooms required is the most number of classes that run at the same time.
+- Determine the greedy criteria/standard - Start Time of classes.
+```js
+// TC: O(nlogn + n*m)
+  // n - number of classes.
+  // m - minimum number of rooms.
+
+const solution = (schedules) => {
+  const sortedClassesByStartTime = schedules.sort((a,b) => a.start - b.start);
+  
+  // Find out the min. number of rooms required at any given time.
+  let minNumRooms = 0;
+  // ...
+  
+  const prevClassFinishTimes = new Array(minNumRooms).fill(0);
+  
+  for (let i = 0; i < sortedClassesByStartTime.length; i++) { // for each class
+    for (let j = 0; j < minNumRooms; j++) { // for each room
+      if (sortedClassesByStartTime[i].start >= prevClassFinishTimes[j]) {
+        sortedClassesByStartTime[i]["roomNum"] = j; // assign room number to this class
+        prevClassFinishTimes[j] = sortedClassesByStartTime[i].finish; // update this room's last class' finish time
+        break;
+      }
+    }
+    if (j > minNumRooms) { // if all rooms are occupied
+      sortedClassesByStartTime[i]["roomNum"] = "unschedulable";
+    }
+  }
+  
+  return sortedClassesByStartTime;
+}
+```
+- Can be optimized by using a Priority Queue to maintain the last finish times for each room.
+  - Finding room - O(1)
+  - Updating - O(logm)
+  - Loop - O(nlogm)
 ### Reference
 [Greedy Algorithms | Brilliant Math & Science Wiki](https://brilliant.org/wiki/greedy-algorithm/)  
 [Greedy Algorithm | What is Greedy Algorithm? | Introduction To Greedy Algorithms | Simplilearn](https://www.youtube.com/watch?v=ilYwrsP7zzk)  
