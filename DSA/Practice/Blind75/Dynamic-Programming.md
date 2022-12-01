@@ -498,22 +498,24 @@ const lengthOfLIS = (nums) => {
 const lengthOfLIS = (nums) => {
   const memo = new Array(nums.length).fill(-Infinity);
 
-  const helper = (idx, lastValInSubsequence) => {
+  const helper = (idx, lastVal) => {
     if (idx >= nums.length) return 0;
 
     let left = 0;
     let right = 0;
 
     // Include this value.
-    if (nums[idx] > lastValInSubsequence) {
-      if (memo[idx] === -Infinity) {
-        memo[idx] = 1 + helper(idx+1, nums[idx]);
+    if (nums[idx] > lastVal) {
+      if (memo[idx] !== -Infinity) {
+        left = memo[idx];
+      } else {
+        left = 1 + helper(idx+1, nums[idx]);
+        memo[idx] = left;
       }
-      left = memo[idx]; // grab from cache here
     }
 
     // Don't include this value.
-    right = helper(idx+1, lastValInSubsequence);
+    right = helper(idx+1, lastVal);
 
     return Math.max(left, right);
   }
@@ -527,14 +529,15 @@ const lengthOfLIS = (nums) => {
 // TC: O(n^2), SC: O(n)
 
 const lengthOfLIS = (nums) => {
-  // `1` represents the current number (`nums[i]`) by itself as the subsequence.
+  // `memo[i]` represents the length of the longest strictly increasing subsequence starting from and INCLUDING index `i` to the end.
   const memo = new Array(nums.length).fill(1);
   
   for (let i = nums.length - 1; i >= 0; i--) {
     for (let j = i+1; j < nums.length; j++) {
       if (nums[i] < nums[j]) {
+        // `1` represents the current number (`nums[i]`) by itself as the subsequence.
         // `memo[j]` represents the length of the LIS when starting from index `j`, which represents the LIS in `nums.slice(j)`.
-        memo[i] = Math.max(memo[i], memo[j]);
+        memo[i] = Math.max(memo[i], 1 + memo[j]);
       }
     }
   }
