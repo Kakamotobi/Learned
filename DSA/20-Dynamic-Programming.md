@@ -2,11 +2,13 @@
 
 ## Table of Contents
 - [What is Dynamic Progamming?](#what-is-dynamic-programming)
-- [Conditions for Dynamic Programming](#conditions-for-dynamic-programming)
-  - [1. Overlapping Subproblems](#1-overlapping-subproblems)
-  - [2. Optimal Substructure](#2-optimal-substructure)
-- [Dynamic Programming Big O](dynamic-programming-big-o)
+- [How to Identify Dynamic Programming Problems](#how-to-identify-dynamic-programming-problems)
+  - [Steps](#steps)
+  - [Conditions](#conditions)
+    - [1. Overlapping Subproblems](#1-overlapping-subproblems)
+    - [2. Optimal Substructure](#2-optimal-substructure)
 - [Approach for Solving DP Problems](#approach-for-solving-dp-problems)
+- [Dynamic Programming Big O](dynamic-programming-big-o)
 - [Example - Fibonacci Sequence](#example---fibonacci-sequence)
   - [Recursion Solution](#recursion-solution)
   - [Top-Down Dynamic Programming (Memoization) Solution](#top-down-dynamic-programming-memoization-solution)
@@ -25,26 +27,63 @@
 - It is an approach that is applicable to a small subset of problems (most problems cannot be solved with it).
   - Kind of like "divide and conquer" in that it can make a huge difference for those problems that can be solved with it.
 
-## Conditions for Dynamic Programming
+## How to Identify Dynamic Programming Problems
+### Steps
+1. **Can the problem solution be expressed as a solution to similar smaller problems**?
+    - i.e. **does a recursive structure (recurrence relation) exist between subproblems?**
+    - Ex: given an index, the last value in a subsequence, and the `nums` array, we could determine valid/possible options for a strictly increasing subsequence starting from that index. Furthermore, we can either include or not include the value at the index, which makes the problems smaller as we move up the index.
+    - **This process should be repeatable until an obvious end.**
+      - Ex: an obvious end would be the index going out of bounds, or the value being equal to or less than the last value in the subsequence.
+2. **Express the problem in terms of the given parameters, and see which of those parameters are changing. Also, identify the number of subproblems.**
+    - List examples of several subproblems and compare the parameters.
+    - Ex: `solution(idx, lastValInSubsequence)` --> `solution(idx+1, nums[idx])` and `solution(idx+1, lastValInSubsequence)`.
+      - There are two parameters that change.
+3. **Clearly express the Recurrence Relation.**
+    - Now that subproblems have been computed, compute the main problem.
+    - Ex: a strictly increasing subsequence does not have to be contiguous and therefore, as long as a value is greater than the last value in the increasing strictly increasing subsequence, we can either include or not include that value.
+      - If it is possible to stop the algorithm in any of the subproblems, then it is also possible to stop in the main problem since we can transition from the main problem to any of the two options.
+      - Therefore, the Recurrence Relation is `solution(idx, lastVal) = 1 + solution(idx+1, nums[i]) || solution(idx+1, lastVal)` as long as the value is greater than `lastVal`.
+4. **Identify the Base Cases.**
+    - Ex: if `idx` is out of bounds or the value is less than `lastVal`.
+5. **Decide Implementation: Iteration or Recursion.**
+    - The above steps are agnostic concerning whether to be implemented recursively or iteratively.
+    - Consider the trade-offs between Iteration and Recursion.
+
+<p align="center">
+  <img src="https://cdn-media-1.freecodecamp.org/images/E-2qbrD5g7UtOJIN7ULrdwAdgiL0jAU7uGFH" alt="Trade-off between Recursion and Iteration" width="80%" />
+</p>
+
+6. **Add Memoization.**
+    - For recursive solutions:
+      - Treat memoization as the cache of a function result.
+      - Store the function result before every `return` statement.
+      - Look up the memory for the function result before any computation.
+7. **Determine Time Complexity.**
+    - Count the number of states (depends on the number of parameters that change).
+      - Ex: O(n)
+    - Consider the amount of work done per each state.
+      - Ex: O(n)
+    - Final Time Complexity = O(n^2).
+### Conditions
 - Dynamic programming can be used on problems with *optimal substructure* and *overlapping subproblems*.
-### 1. Overlapping Subproblems
+#### 1. Overlapping Subproblems
 - A problem is said to have overlapping subproblems if it can be broken down into subproblems which are reused several times.
   - i.e., subproblems that are repeated.
-#### Example of Overlapping Subproblems
+##### Example of Overlapping Subproblems
 <p align="center">
   <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/DSA/refImg/overlapping-subproblems-example.png" alt="Overlapping Subproblems Example" width="60%" />
 </p>
 
   - In the Fibonacci sequence, to find the fifth Fibonnaci number, `fib(3)` has to be calculated twice, `fib(2)` three times, `fib(1)` twice.
-#### Dynamic Programming vs Recursion
+##### Dynamic Programming vs Recursion
 - Recursive solutions involve subproblems. However, that does not mean the subproblems overlap.
   - For example, in normal circumstances, merge sort does not have overlapping subproblems.
     - Special Case Ex: `mergeSort([10,24,10,24])`. In this case, dynamic programming can be used.
 - Dynamic programming solutions require subproblems to overlap. Need to look for repetition.
-### 2. Optimal Substructure
+#### 2. Optimal Substructure
 - A problem is said to have optimal substructure if an optimal solution for the problem can be constructed from optional solutions for its subproblems.
 - Ex: the optimal solution of `fib(5)` depends on the optimal solutions of `fib(4)` and `fib(3)`, etc.
-#### Example of Optimal Substructure
+##### Example of Optimal Substructure
 <p align="center">
   <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/DSA/refImg/optimal-substructure-example.png" alt="Optimal Substructure Example" width="60%" />
 </p>
@@ -52,7 +91,7 @@
   - The optimal solution for the shortest path from `A` to `D` is `A -> B -> C -> D`.
     - Then optimal solution from `A` to `C` has to be `A -> B -> C`.
     - Then optimal solution from `A` to `B` has to be `A -> B`.
-#### Example of Non-Optimal Substructure
+##### Example of Non-Optimal Substructure
 <p align="center">
   <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/DSA/refImg/non-optimal-substructure-example.png" alt="Non-Optimal Substructure Example" width="60%" />
 </p>
@@ -61,10 +100,6 @@
   - The longest simple path from `C` to `D` is `C -> B -> D`.
   - However, the longest simple path from `A` to `D` is not `A -> B -> C -> B -> D`. The longest simple path is `A -> B -> D`.
 
-## Dynamic Programming Big O
-- The time and space complexity for dynamic programming solutions differ per implementation/approach. But the following is a simple formula for Top-Down dynamic programming.
-- `Time Complexity = number of function calls * work done per function call`
-
 ## Approach for Solving DP Problems
 1. Find a **Recurrence Relation**.
     > a recurrence relation is an equation according to which the nth term of a sequence of numbers is equal to some combination of the previous terms. | Wikipedia
@@ -72,6 +107,10 @@
 3. Find a **Recursive + Memoization** solution (top-down).
 4. Find an **Iterative + Tabulation** solution (bottom-up).
 5. Find an **Iterative + N Variables** solution (bottom-up).
+
+## Dynamic Programming Big O
+- The time and space complexity for dynamic programming solutions differ per implementation/approach. But the following is a simple formula for Top-Down dynamic programming.
+- `Time Complexity = number of function calls * work done per function call`
 
 ## Example - Fibonacci Sequence
 ### Recursion Solution
@@ -254,3 +293,4 @@ const fib = (n) => {
 [Recurrence relation - Wikipedia](https://en.wikipedia.org/wiki/Recurrence_relation)  
 [Leetcode DP Problem Solution Example](https://leetcode.com/problems/house-robber/discuss/156523/From-good-to-great.-How-to-approach-most-of-DP-problems.)  
 [DP is Easy! (part 2). Deriving Time Complexity of Top-Down DP | by Tim Park | Medium](https://medium.com/@timpark0807/dp-is-easy-part-2-74422931dd98)  
+[Follow these steps to solve any Dynamic Programming interview problem](https://www.freecodecamp.org/news/follow-these-steps-to-solve-any-dynamic-programming-interview-problem-cc98e508cd0e/)  
