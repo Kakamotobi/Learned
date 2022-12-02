@@ -545,3 +545,51 @@ const lengthOfLIS = (nums) => {
   return Math.max(...memo);
 }
 ```
+
+## 6. [Longest Common Subsequence](https://leetcode.com/problems/longest-common-subsequence/)
+- Subsequences do not have to be contiguous.
+- Main Problem: find the longest common subsequence from the two given strings.
+- Sub Problem: find the longest common subsequence between the remainder of both strings.
+  - Ex: "abcde" and "ace".
+    - Since both have "a" in common, the problem becomes `1 + sub problem(longest common subsequence of the remainder of both strings)`.
+    - If the characters are different, 2 sub problems arise (return the max of the two).
+      - Check `text1` (incl. its char) and `text2` (excl. its char).
+      - Check `text1` (excl. its char) and `text2` (incl. its char).
+### Solution 1 - Brute Force (Recursion)
+- Time Limit Exceeded
+```js
+// TC: O(n^2), SC: O()
+
+const longestCommonSubsequence = (text1, text2) => {
+  const helper = (t1Idx, t2Idx) => {
+    if (t1Idx >= text1.length || t2Idx >= text2.length) return 0;
+    
+    if (text1[t1Idx] === text2[t2Idx]) return 1 + helper(t1Idx+1, t2Idx+1);
+    else return Math.max(helper(t1Idx, t2Idx+1), helper(t1Idx+1, t2Idx));
+  }
+  
+  return helper(0, 0);
+}
+```
+### Solution 2 - Bottom-Up
+- Use a 2D matrix where `matrix[i][j]` represents the longest common subsequence when starting from index `i` in `text1` and index `j` in `text2`.
+- Start filling the matrix from the bottom/end.
+```js
+// TC: O(m*n), SC: O(m*n)
+
+const longestCommonSubsequence = (text1, text2) => {
+  const dp = new Array(text1.length + 1);
+  for (let i = 0; i < text1.length + 1; i++) {
+    dp[i] = new Array(text2.length + 1).fill(0);
+  }
+  
+  for (let i = text1.length - 1; i >= 0; i--) {
+    for (let j = text2.length - 1; j >= 0; j--) {
+      if (text1[i] === text2[j]) dp[i][j] = 1 + dp[i+1][j+1];
+      else dp[i][j] = Math.max(dp[i][j+1], dp[i+1][j]);
+    }
+  }
+  
+  return dp[0][0];
+}
+```
