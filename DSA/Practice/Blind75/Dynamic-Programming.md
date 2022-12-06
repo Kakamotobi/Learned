@@ -1,5 +1,15 @@
 # Dynamic Programming
 
+## Table of Contents
+- [1. Climbing Stairs](#1-climbing-stairs)
+- [2. House Robber](#2-house-robber)
+- [3. House Robber II](#3-house-robber-ii)
+- [4. Combination Sum](#4-combination-sum)
+- [5. Coin Change](#5-coin-change)
+- [6. Longest Increasing Subsequence](#6-longest-increasing-subsequence)
+- [7. Longest Common Subsequence](#7-longest-common-subsequence)
+- [8. Word Break](#8-word-break)
+
 ## 1. [Climbing Stairs](https://leetcode.com/problems/climbing-stairs/)
 ### Solution 1 - Brute Force (Recursion)
 ```js
@@ -307,7 +317,7 @@ const rob = (nums) => {
 }
 ```
 
-## 3. [Combination Sum](https://leetcode.com/problems/combination-sum/)
+## 4. [Combination Sum](https://leetcode.com/problems/combination-sum/)
 ### Naive Approach
 - At each point, create `candidates.length` number of recursive branches.
   - Ex: if `candidates` = `[2,3,6,7]` for combination `[2]`, we branch out to `2,3,6,7`, for combination`[2,3]` we branch out to `2,3,6,7`, and so on.
@@ -343,7 +353,7 @@ const combinationSum = (candidates, target) => {
 }
 ```
 
-## 4. [Coin Change](https://leetcode.com/problems/coin-change/)
+## 5. [Coin Change](https://leetcode.com/problems/coin-change/)
 ### Solution 1 - Top-Down (Memoization)
 - Each "step" has `coins.length` amount of branches.
 - Helper function returns the fewest number of coins needed.
@@ -443,7 +453,7 @@ const coinChange = (coins, amount) => {
 }
 ```
 
-## 5. [Longest Increasing Subsequence](https://leetcode.com/problems/longest-increasing-subsequence/)
+## 6. [Longest Increasing Subsequence](https://leetcode.com/problems/longest-increasing-subsequence/)
 - Numbers in the subsequence do not have to be contiguous.
 ### Solution 1 - Brute Force (Recursion)
 - Generate every possible (meaning, strictly increasing subsequence) subsequence to find the longest one.
@@ -546,7 +556,7 @@ const lengthOfLIS = (nums) => {
 }
 ```
 
-## 6. [Longest Common Subsequence](https://leetcode.com/problems/longest-common-subsequence/)
+## 7. [Longest Common Subsequence](https://leetcode.com/problems/longest-common-subsequence/)
 - Subsequences do not have to be contiguous.
 - Main Problem: find the longest common subsequence from the two given strings.
 - Sub Problem: find the longest common subsequence between the remainder of both strings.
@@ -591,5 +601,71 @@ const longestCommonSubsequence = (text1, text2) => {
   }
   
   return dp[0][0];
+}
+```
+
+## 8. [Word Break](https://leetcode.com/problems/word-break/description/)
+### Solution 1 - Top-Down (Memoization)
+- Take each word in `wordDict`, and check if the corresponding substring of that length in `s` matches it.
+- If found, start from the next position in `s`.
+- Decision Tree
+  - Branches = number of words in `wordDict`.
+- Cache
+  - Possible position in `s` that may yield false.
+```js
+// TC: O(n*m*n), SC: O(n)
+
+const wordBreak = function(s, wordDict) {
+  const memo = {};
+  
+  const helper = (idx) => {
+    if (idx >= s.length) return true;
+    if (memo[idx]) return memo[idx];
+    
+    let isBreakable = false;
+    for (let word of wordDict) {
+      const substring = s.substring(idx, idx + word.length);
+      if (substring === word) {
+        isBreakable = isBreakable || helper(idx + word.length);
+      }
+    }
+    
+    memo[idx] = isBreakable;
+    
+    return isBreakable;
+  }
+  
+  return helper(0);
+}
+```
+### Solution 2 - Bottom-Up (Tabulation)
+- Start from the end of `s`.
+- Is the substring (starting from index `i` to the length of each word in `wordDict`) word breakable?
+```js
+// TC: O(m*n), OC: O(n)
+  // m - wordDict.length
+  // n - s.length
+
+const wordBreak = function(s, wordDict) {
+  // + 1 for base case
+  const dp = new Array(s.length + 1).fill(false);
+  dp[s.length] = true; // the out of bounds position (base case) is always true.
+  
+  for (let i = s.length - 1; i >= 0; i--) {
+    for (let word of wordDict) {
+      // If the word is within bounds of `s` AND the substring is the same as word.
+      if ((i + word.length) <= s.length &&
+          s.slice(i, i + word.length) === word
+      ) {
+        // Since the above condition confirms "true" for this substring, check whether the remaining segment is true or not.
+        dp[i] = dp[i + word.length];
+      }
+      
+      // If found one that yields true, there is no need to check other words.
+      if (dp[i] === true) break;
+    }
+  }
+  
+  return dp[0];
 }
 ```
