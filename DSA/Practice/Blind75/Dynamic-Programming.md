@@ -628,6 +628,8 @@ const wordBreak = function(s, wordDict) {
       if (substring === word) {
         isBreakable = isBreakable || helper(idx + word.length);
       }
+      
+      if (isBreakable === true) break;
     }
     
     memo[idx] = isBreakable;
