@@ -523,20 +523,16 @@
   }
   ```
 #### How GraphQL Works
-1. The backend (GraphQL server) provides a predefined Schema for the frontend (clients), effectively informing the frontend on the shape of the data and how to request it.
-    - The Schema is basically the middle ground between the client and the server as it defines what types of data can be fetched, and how to access them.
-    - The Schema is written in human readable SDL.
-      - Use the `type` keyword to describe the object(s) that can be queried on the server and the fields that they have.
-2. When the GraphQL server receives a GraphQL operation, it interprets it against the Schema and resolves the operation accordingly.
-    - Ex: query &rarr; resolver &rarr; result
-3. 
-
-
-1. Define a Schema for your data using the `type` keyword.
-2. Inform GraphQL how to fetch (query) and supply that Schema.
-    - A query has the same shape that is expected to receive back from the API as JSON.
+1. The backend (GraphQL Server) provides a predefined Schema.
+    - The Schema is basically the middle ground between the client and the server as it defines what types of data can be fetched and in what shape, and how to access them.
+    - The Schema can be written in human readable SDL or programmatically using a code-first approach.
+      - Use the `type` keyword to describe the objects that can be queried on the server and the fields that they have.
+2. The GraphQL Server prepares resolvers for all possible GraphQL requests.
+    - Each possible request has a corresponding resolver function that executes the necessary task (Ex: fetch data from the DB).
     - On the server, GraphQL also functions as a runtime for executing incoming queries.
-      - The server defines types that are available and resolvers that actually fetch the data from a data source (Ex: DB).
+3. The frontend (GraphQL Client) assembles a request (GraphQL Operation) based on the predefined Schema and sends it to the server.
+4. The GraphQL Server receives the GraphQL Operation, interprets it against the Schema, and resolves the operation accordingly.
+    - query &rarr; resolver &rarr; response
 ##### GraphQL Request (Frontend)
 - A GraphQL request consists of:
   - the **GraphQL Endpoint** - the single endpoint on the server.
@@ -582,14 +578,13 @@ const headers = {
 
 const graphqlQuery = {
   "operationName": "GetUserName",
-  "query": `query GetUserName() { user { name }}`,
-  "variables": {}
-  
+  "query": `query GetUserName($id: String) { user(id: $id) { name }}`,
+  "variables": { "id": "someidstring" }
 }
 
 const res = axios({
   url: endpoint,
-  method: "post",
+  method: "get",
   headers: headers,
   data: graphqlQuery
 });
@@ -602,8 +597,8 @@ console.log(res.errors);
 const res = axios.get(endpoint, {
   headers: headers,
   params: {
-    query: `GetUserName() { user { name }}`,
-    variables: {},
+    query: `GetUserName($id: String) { user(id: $id) { name }}`,
+    variables: { "id": "someidstring"},
     operationName: "GetUserName"
   }
 });
@@ -615,9 +610,13 @@ const res = axios.get(endpoint, {
 ```js
 // schema.js
 
+// Approach 1 - using SDL
+// `buildSchema` receives a schema in SDL and returns a `GraphQLSchema` object.
+// `buildSchema` does not allow you to specify a resolver function for any field in the schema. You have to rely on GraphQL's default resolver behavior (GraphQL tries to find a property on the parent value that matches the name of the field) and pass in a `root` value.
 import { buildSchema } from "graphql";
 
 export default buildSchema(`
+  // Entity types.
   type Creator {
     id: ID!
     name: String
@@ -643,27 +642,94 @@ export default buildSchema(`
     deleteVideo(url: String): String
   }
 `)
+
+// Approach 2 - using the `GraphQLSchema` constructor
+import { GraphQLSchema, GraphQLObjectType } from "graphql";
+import resolver from "./resolver.js";
+
+// Entity types
+type Creator {
+  id: ID!
+  name: String
+  numSubscribers: Int
+  videos: [Video]
+}
+
+type Video {
+  url: String!
+  creator: Creator
+}
+
+// Schema Constructor
+export default new GraphQLSchema({
+  query: new GraphQLObjectType({
+    name: "Query",
+    fields: {
+      videos: {
+        type: [Video],
+        args: {}, // the arguments that the `videos` query accepts
+        resolve: () => resolver.videos(),
+      },
+      creator: {
+        type: creator,
+        args: {
+          id: { type: GraphQLString },
+        },
+        resolve: (obj, {id}) => resolver.creator(id),
+      },
+    },
+  }),
+});
 ```
 ```js
 // resolver.js
+// A resolver is a function that is responsible for populating the data for a single field in your schema.
+// You can fetch it from your own DB, or a third-party API.
+// These resolvers run against the schema, hence, the top-level fields (Ex: "Query", "Mutation") should correspond to the types defined in the schema. And each resolver function belongs to whichever type its corresponding field belongs to. i.e. names should match.
 
 export default {
-  createVideo: ({ url }) => {
-    // create the video.
-    // return a Video.
-  }
+  Query: {
+    videos: (obj, args, context, info) => {
+      return context.db.getVideos(args.id);
+    },
+    creator: (obj, args, context, info) => {
+      return context.db.getCreator(args.id);
+    }
+  },
   
-  deleteVideo: ({ url }) => {
-    // delete the video.
-    // return a String.
-  }
+  Mutation: {
+    createVideo: ({ url }) => {
+      // create the video.
+      // return a Video.
+    },
+    deleteVideo: ({ url }) => {
+      // delete the video.
+      // return a String.
+    }
+  } 
 }
 ```
+- Every resolver receives these arguments.
+  - `obj`: the previous object.
+    - a.k.a. `root`, `parent`.
+  - `args`: all the arguments provided to the field in the query.
+  - `context`: a ***mutable object*** (execution context) that is provided to all resolvers. It holds information such as the currently logged in user, or access to a DB.
+    - `context` is created and destroyed between every request.
+    - It is great to store common auth data, models/fetchers for APIs and DBs, etc.
+      - Ex: store Express' `req` in `context`.
+    - It should not be used as a general purpose cache since the order of invocation of functions is not guaranteed. Therefore, avoid mutating context inside of resolvers.
+  - `info`: field-specific information (also includes schema details) relevant to the query.
+
 ```js
 // Endpoint
+// Pass the Schema definition and Resolvers to the GraphQL server constructor you are using (Ex: ApolloServer).
 
+import express from "express";
+import { graphqlHTTP } from "express-graphql";
 import schema from "./schema.js";
 import resolver from "./resolver.js";
+
+const app = express();
 
 app.use(
   "/graphql",
@@ -672,7 +738,9 @@ app.use(
     resolver,
     graphiql: true
   })
-)
+);
+
+app.listen(3000);
 ```
 
 ## Reference
@@ -688,3 +756,7 @@ app.use(
 [GraphQL: Core Features, Architecture, Pros and Cons | AltexSoft](https://www.altexsoft.com/blog/engineering/graphql-core-features-architecture-pros-and-cons/)  
 [How to request a GraphQL API with Fetch or Axios](https://hasura.io/blog/how-to-request-a-graphql-api-with-fetch-or-axios/)  
 [Queries and Mutations | GraphQL](https://graphql.org/learn/queries/)  
+[Constructing Types | GraphQL](https://graphql.org/graphql-js/constructing-types/)  
+[Resolvers - Apollo GraphQL Docs](https://www.apollographql.com/docs/apollo-server/data/resolvers/)  
+[GraphQL Resolvers: Best Practices | by Mark Stuart | The PayPal Technology Blog | Medium](https://medium.com/paypal-tech/graphql-resolvers-best-practices-cd36fdbcef55) 
+[graphql - Notable differences between buildSchema and GraphQLSchema? - Stack Overflow](https://stackoverflow.com/questions/53984094/notable-differences-between-buildschema-and-graphqlschema)  
