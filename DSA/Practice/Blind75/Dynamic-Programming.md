@@ -9,6 +9,7 @@
 - [6. Longest Increasing Subsequence](#6-longest-increasing-subsequence)
 - [7. Longest Common Subsequence](#7-longest-common-subsequence)
 - [8. Word Break](#8-word-break)
+- [9. Unique Paths](#9-unique-paths)
 
 ## 1. [Climbing Stairs](https://leetcode.com/problems/climbing-stairs/)
 ### Solution 1 - Brute Force (Recursion)
@@ -669,5 +670,103 @@ const wordBreak = function(s, wordDict) {
   }
   
   return dp[0];
+}
+```
+
+## 9. Unique Paths
+### Solution 1 - Recursion (DFS)
+- Time limit exceeded
+```js
+// TC: O(2^(m*n)), SC: O(m*n)
+
+const uniquePaths = (m, n) => {
+  const moves = [[1,0],[0,1]];
+  
+  const dfs = (x,y) => {
+    if (x >= n || y >= n) return 0;
+    if (x === m - 1 && y === n - 1) return 1;
+    
+    let numUniquePathsForThisPosition = 0;
+    for (let [ax, ay] of moves) {
+      numUniquePathsForThisPosition += dfs(x + ax, y + ay);
+    }
+    
+    return numUniquePathsForThisPosition;
+  }
+  
+  return dfs(0,0);
+}
+```
+### Solution 2 - Top-Down (Memoization)
+```js
+// TC: O(m*n), SC: O(m*n)
+
+const uniquePaths = (m, n) => {
+  const moves = [[1,0],[0,1]];
+  
+  const memo = {};
+  
+  const dfs = (x,y) => {
+    if (x >= n || y >= n) return 0;
+    if (x === m - 1 && y === n - 1) return 1;
+    if (memo[`${x},${y}`]) return memo[`${x},${y}`];
+    
+    let numUniquePathsForThisPosition = 0;
+    for (let [ax, ay] of moves) {
+      numUniquePathsForThisPosition += dfs(x + ax, y + ay);
+    }
+    
+    memo[`${x},${y}`] = numUniquePathsForThisPosition;
+    
+    return numUniquePathsForThisPosition;
+  }
+  
+  return dfs(0,0);
+}
+```
+### Solution 3 - Bottom-Up (Tabulation)
+- Subproblem: `grid[i][j] = grid[i+1][j] + grid[i][j+1]`.
+  - `grid[i][j]` represents the number of possible unique paths from that position.
+```js
+// TC: O(m*n), SC: O(m*n)
+
+const uniquePaths = (m, n) => {
+  const grid = new Array(m+1);
+  for (let i = 0; i < m+1; i++) {
+    grid[i] = new Array(n+1).fill(0);
+  }
+  grid[m-1][n-1] = 1;
+  
+  for (let i = m-1; i >= 0; i--) {
+    for (let j = n-1; j >= 0; j--) {
+      // Skip the bottom-right corner
+      if (i === m-1 && j === n-1) continue;
+      // Below cell + Right cell
+      grid[i][j] = grid[i+1][j] + grid[i][j+1];
+    }
+  }
+  
+  return grid[0][0];
+}
+```
+### Solution 4 - Bottom-Up (One Array)
+- The bottom-most row and right-most column are all `1`.
+```js
+// TC: O(m*n), SC: O(n)
+
+const uniquePaths = (m, n) => {
+  let prevRow = new Array(n).fill(1);
+
+  for (let i = m-2; i >= 0; i--) {
+    const newRow = new Array(n).fill(1);
+
+    for (let j = n-2; j >= 0; j--) {
+      newRow[j] = prevRow[j] + newRow[j+1];
+    }
+
+    prevRow = newRow;
+  }
+
+  return prevRow[0];
 }
 ```
