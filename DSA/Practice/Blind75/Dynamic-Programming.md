@@ -10,6 +10,7 @@
 - [7. Longest Common Subsequence](#7-longest-common-subsequence)
 - [8. Word Break](#8-word-break)
 - [9. Unique Paths](#9-unique-paths)
+- [10. Jump Game](#10-jump-game)
 
 ## 1. [Climbing Stairs](https://leetcode.com/problems/climbing-stairs/)
 ### Solution 1 - Brute Force (Recursion)
@@ -674,7 +675,7 @@ const wordBreak = function(s, wordDict) {
 ```
 
 ## 9. Unique Paths
-### Solution 1 - Recursion (DFS)
+### Solution 1 - Brute Force (Recursion)
 - Time limit exceeded
 ```js
 // TC: O(2^(m*n)), SC: O(m*n)
@@ -768,5 +769,72 @@ const uniquePaths = (m, n) => {
   }
 
   return prevRow[0];
+}
+```
+
+## 10. [Jump Game](https://leetcode.com/problems/jump-game/description/)
+### Solution 1 - Brute Force (Recursion)
+```js
+// TC: O(m^n), SC: O(m^n)
+  // m - nums[i]
+  // n - nums.length
+
+const canJump = (nums) => {
+  const helper = (idx) => {
+    if (idx === nums.length - 1) return true;
+    if (idx > nums.length - 1) return false;
+    if (nums[idx] === 0) return false;
+    
+    let res = false;
+    for (let i = 1; i <= nums[idx]; i++) {
+      res = res || helper(idx+i);
+    }
+    return res;
+  }
+  
+  return helper(0);
+}
+```
+### Solution 2 - Top-Down (Memoization)
+```js
+// TC: O(n), SC: O(n)
+
+const canJump = (nums) => {
+  const memo = {};
+
+  const helper = (idx) => {
+    if (idx === nums.length - 1) return true;
+    if (idx > nums.length - 1) return false;
+    if (nums[idx] === 0) return false;
+    if (memo[idx] !== undefined) return memo[idx];
+    
+    let res = false;
+    for (let i = 1; i <= nums[idx]; i++) {
+      res = res || helper(idx+i);
+    }
+    memo[idx] = res;
+    return res;
+  }
+  
+  return helper(0);
+}
+```
+### Solution 3 - Bottom-Up (Tabulation)
+```js
+// TC: O(n), SC: O(n)
+
+const canJump = (nums) => {
+  const dp = new Array(nums.length).fill(false);
+  dp[0] = true;
+  
+  for (let i = 0; i < dp.length; i++) {
+    if (dp[i] === true && nums[i] !== 0) {
+      for (let j = i + 1; j <= (i + nums[i]); j++) {
+        dp[j] = true;
+      }
+    }
+  }
+  
+  return dp[dp.length - 1];
 }
 ```
