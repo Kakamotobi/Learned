@@ -674,7 +674,7 @@ const wordBreak = function(s, wordDict) {
 }
 ```
 
-## 9. Unique Paths
+## 9. [Unique Paths](https://leetcode.com/problems/unique-paths/)
 ### Solution 1 - Brute Force (Recursion)
 - Time limit exceeded
 ```js
