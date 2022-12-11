@@ -11,6 +11,7 @@
 - [8. Word Break](#8-word-break)
 - [9. Unique Paths](#9-unique-paths)
 - [10. Jump Game](#10-jump-game)
+- [11. Decode Ways](#11-decode-ways)
 
 ## 1. [Climbing Stairs](https://leetcode.com/problems/climbing-stairs/)
 ### Solution 1 - Brute Force (Recursion)
@@ -836,5 +837,118 @@ const canJump = (nums) => {
   }
   
   return dp[dp.length - 1];
+}
+```
+
+## 11. [Decode Ways](https://leetcode.com/problems/decode-ways/description/)
+### Solution 1 - Brute Force (Recursion)
+```js
+// TC: O(2^n), SC: O(n)
+
+const numDecodings = (s) => {
+  const helper = (idx) => {
+    // If we have gone through every digit in `s`, one decoding has been found.
+    if (idx === s.length) return 1;
+    // If we have surpassed the end of `s`, no decoding was found.
+    if (idx > s.length) return 0;
+    
+    let res = 0;
+    // Check whether the two options are valid code in the mapping.
+    // 1-digit option condition: has to be between 1 and 9, inclusive.
+    if (s[idx] !== "0") {
+      res += helper(idx+1);
+      // 2-digit option condition: has to be between 1 and 26 inclusive.
+      if ((s[idx] + s[idx+1]) <= 26) {
+        res += helper(idx+2);
+      }
+    }
+    
+    return res;
+  }
+  
+  return helper(0);
+}
+```
+### Solution 2 - Top-Down (Memoization)
+```js
+// TC: O(n), SC: O(n)
+
+const numDecodings = (s) => {
+  const memo = {};
+
+  const helper = (idx) => {
+    if (idx === s.length) return 1;
+    if (idx > s.length) return 0;
+    if (memo[idx]) return memo[idx];
+    
+    let res = 0;
+    if (s[idx] !== "0") {
+      res += helper(idx+1);
+      if ((s[idx] + s[idx+1]) <= 26) {
+        res += helper(idx+2);
+      }
+    }
+    
+    memo[idx] = res;
+    
+    return res;
+  }
+  
+  return helper(0);
+}
+```
+### Solution 3 - Bottom-Up (Tabulation)
+- `dp[i]` represents the number of ways to decode from that position to the end of `s`.
+- if `s[i] === "0"`, then `dp[i] = 0`.
+- `dp[i] = dp[i+1] if valid + dp[i+2] if valid`.
+```js
+// TC: O(n), SC: O(n)
+
+const numDecodings = (s) => {
+  // `+1` to account for `dp[i+1]` since it is out of bounds when `i === s.length - 1`.
+  const dp = new Array(s.length + 1).fill(0);
+  dp[dp.length - 1] = 1;
+  
+  for (let i = s.length - 1; i >= 0; i--) {
+    if (s[i] !== "0") continue;
+    else {
+      // 1-digit
+      dp[i] = dp[i+1];
+      // 2-digit
+      if (s[i] + s[i+1] <= 26) dp[i] += dp[i+2];
+    }
+  }
+  
+  return dp[0];
+}
+```
+### Solution 4 - Bottom-Up (2 Variables)
+```js
+// TC: O(n), SC: O(1)
+
+const numDecodings = (s) => {
+  if (s[0] === "0") return 0;
+
+  let curr = 0;
+  let next = 1;
+  let nextNext = 0;
+  
+  for (let i = s.length - 1; i >= 0; i--) {
+    if (s[i] !== "0") {
+      nextNext = next;
+      next = 0;
+    } else {
+      // 1-digit
+      curr = next;
+      // 2-digit
+      if (s[i] + s[i+1] <= 26) curr += nextNext;
+      
+      // Update variables
+      nextNext = next;
+      next = curr;
+    }
+  }
+  
+  return curr;
 }
 ```
