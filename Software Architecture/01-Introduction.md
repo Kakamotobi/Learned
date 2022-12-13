@@ -31,4 +31,5 @@
   - Ex: responsibilities/functions of individual modules/classes, what design pattern it should use, etc.
 
 ## Reference
+[Software Architecture & Technology of Large-Scale Systems | Udemy](https://www.udemy.com/course/developer-to-architect/)  
 [What’s the difference between software architecture and design? | by Concise Software | Medium](https://stackoverflow.com/questions/704855/software-design-vs-software-architecture)  
