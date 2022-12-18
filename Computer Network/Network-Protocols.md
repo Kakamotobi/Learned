@@ -71,7 +71,7 @@
   - ACK: Acknowledgement
 ##### The Process
 1) The client sends a SYN packet to the server.
-2) The server receives the SYN packet from the client. Then, responds by sending a SYN + ACK to the client.
+2) The server receives the SYN packet from the client. Then, creates a connection and responds by sending a SYN + ACK to the client.
 3) The client receives the SYN + ACK. Then, sends an ACK to the server. Now, the TCP socket connection between the client and server is established.
 ### User Datagram Protocol (UDP)
 - UDP is an alternative transport layer protocol.
