@@ -4,10 +4,12 @@
 - [Sample System](#sample-system)
 - [Understanding Performance](#understanding-performance)
   - [What is Performance?](#what-is-performance)
-  - [Performance Problems](#performance-problems)
-  - [Principles of Performance](#principles-of-performance)
+    - [Performance-related Problems](#performance-related-problems)
+    - [Principles of Performance](#principles-of-performance)
   - [Performance Objectives](#performance-objectives)
   - [Measuring Performance](#measuring-performance)
+
+
 - [Improving Performance](#improving-performance)
   - [Latency](#latency)
   - [Concurrency](#concurrency)
@@ -26,7 +28,7 @@
   - a given **hardware** (kind, capacity).
 - *i.e. how fast requests are satisfied with responses and how fast batch processes are completed.*
 - The goal is to maintain or mitigate performance even if workload increases, and to improve performance by upgrading hardware.
-### Performance Problems
+#### Performance-related Problems
 - **Every performance problem is the result of some queue building up somewhere (like a traffic jam).**
   - Ex: network socket queue (too many requests), DB IO queue (too many requests to DB), OS run queue (how many threads are available in the CPU), etc.
   - *i.e. system resources are congested.*
@@ -37,7 +39,7 @@
     - Ex: only a single thread can access the resource at a time.
   - Limited Resource Capacity
     - Ex: limited number of CPUs to process the queue.
-### Principles of Performance
+#### Principles of Performance
 - **High Efficiency** (the deciding factor for serial request processing)
   - Efficient System Resource Utilization
     - IO - Memory, Network, Disk
@@ -63,6 +65,7 @@
 
 #### 1) Minimize Request-Response Latency
 - **Latency** is a measure of how much time a request-response process spends within a system.
+  - There are 2 types of Latency: serial request latency and parallel/concurrent request latency.
 - Latency = Wait/Idle Time + Processing Time
 #### 2) Maximize Throughput
 - **Throughput** is a measure of how many requests a system can process in a given time.
@@ -87,6 +90,17 @@
 - How much hardware capacity is utilized.
   - Ex: 100% CPU usage or Network bottleneck indicate that the resource/capacity is completely utilized.
 - Determine whether the system resources are being efficiently utilized.
+### Network Latency
+- The two kinds of network being referred to here are 1) the browser and the web application (i.e. the Internet), 2) intranet communications (i.e. within the system).
+  - The Internet is generally more unreliable while the network between the system servers are more reliable. Therefore, the two networks require different considerations.
+#### Latency between Browser and Web Application
+- Any network is connected by wires and data physically travels over those wires. Therefore, there is bound to be *some* latency - called **Data Transfer Latency**.
+- For a client to communicate with a server, it has to first create a [**TCP connection**](https://github.com/Kakamotobi/Learned/blob/main/Computer%20Network/Network-Protocols.md#tcp-3-way-handshake), which HTTP is used on top of it. This causes for a latency of one round trip (SYN ,SYN+ACK).
+- For clients and servers (and between system servers if necessary) to communicate securely, a cryptographic protocol like [**TLS**](https://github.com/Kakamotobi/Learned/blob/main/Computer%20Network/Network-Protocols.md#tls-handshake) is used on top of TCP. This causes for a latency of two round trips (three round trips including TCP).
+##### How to Minimize Latency between Browser and Web Application
+#### Latency between System Servers
+
+
 
 ## Improving Performance
 ### Latency
