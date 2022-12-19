@@ -5,6 +5,9 @@
 - [Computer Hardware](#computer-hardware)
   - [I/O Devices](#io-devices)
   - [Central Processing Unit(CPU)](#central-processing-unitcpu)
+    - [Machine Instruction Cycle](#machine-instruction-cycle)
+    - [Parts of a CPU](#parts-of-a-cpu)
+    - [Number of General Purpose Processors](#number-of-general-purpose-processors)
   - [Memory](#memory)
     - [Memory Hierarchy](#memory-hierarchy)
     - [Memory Segments and Addresses](#memory-segments-and-addresses)
@@ -43,7 +46,30 @@
 ### Central Processing Unit(CPU)
 > A **central processing unit (CPU)**, also called a **central processor**, **main processor** or just **processor**, is the electronic circuitry that executes instructions comprising a computer program. The CPU performs basic arithmetic, logic, controlling, and input/output (I/O) operations specified by the instructions in the program. | Wikipedia
 
-- A CPU is a chip embedded into the motherboard.
+- A CPU is a chip (piece of metal and silicon) that contains a lot of **transistors** (on/off switches that represent 1s and 0s).
+  - To perform mathematical calculations, a CPU combines multiple transistors together to form **logic gates** (OR, NOR, AND, NAND, XOR, XNOR, Buffer, NOT). These logic gates are used to solve the computations.
+    - For example, the logic gate `AND` takes two binary inputs and validate that both are true to produce true output.
+- A CPU calculates the necessary computations for running applications on the computer.
+  - Ex: a software written in JS, which are essentially a set of instructions, will be compiled into machine code for the CPU to execute.
+- The **clock speed/rate** of a CPU is measured in GHz (billions of cycles per second).
+#### Machine Instruction Cycle
+<p align="center">
+  <img src="https://github.com/Kakamotobi/Learned/blob/main/Computer%20Science/refImg/machine-instruction-cycle.png" alt="Machine Instruction Cycle" width="80%" /><br />
+  <em>This cycle is repeated billions of times per second.</em>
+</p>
+
+1. Fetch
+    - A program is essentially a set of instructions stored in the **RAM**.
+    - The CPU has registers to temporarily store the address in memory that it wants to interact with.
+    - The **Program Counter** starts at 0 and copies that address to the **Memory Address Register**.
+    - The **Control Unit** sends out a signal to copy the data from that address to the **Instruction Register**, effectively fetching the set of instructions.
+2. Decode
+    - The Control Unit parses the actual bits/instructions.
+      - OptCode - instruction (Ex: add, subtract).
+      - Operand - address in memory to perform that operation on.
+    - The decoded information is passed as electrical signals to the relevant parts of the CPU.
+3. Execute
+    - The **Arithmetic Logic Unit(ALU)** performs math on the data and stores the result in memory to change the state of the program.
 #### Parts of a CPU
 <p align="center">
   <img src="https://github.com/Kakamotobi/Learned/blob/main/Computer%20Science/refImg/CPU.png" alt="CPU" width="60%" />
@@ -330,3 +356,4 @@
 [CS 225 | Stack and Heap Memory](https://courses.engr.illinois.edu/cs225/sp2022/resources/stack-heap/)  
 [Thread (computing) - Wikipedia](https://en.wikipedia.org/wiki/Thread_(computing))  
 [Multithreading and Multiprocessing in 10 Minutes | by Kay Jan Wong | Towards Data Science](https://towardsdatascience.com/multithreading-and-multiprocessing-in-10-minutes-20d9b3c6a867)  
+[How a CPU Works in 100 Seconds // Apple Silicon M1 vs Intel i9 - YouTube](https://www.youtube.com/watch?v=vqs_0W-MSB0&ab_channel=Fireship)  
