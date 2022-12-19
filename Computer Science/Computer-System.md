@@ -69,7 +69,9 @@
       - Operand - address in memory to perform that operation on.
     - The decoded information is passed as electrical signals to the relevant parts of the CPU.
 3. Execute
-    - The **Arithmetic Logic Unit(ALU)** performs math on the data and stores the result in memory to change the state of the program.
+    - The **Arithmetic Logic Unit(ALU)** performs math on the data.
+4. Store
+    - The result is stored in memory to change the state of the program.
 #### Parts of a CPU
 <p align="center">
   <img src="https://github.com/Kakamotobi/Learned/blob/main/Computer%20Science/refImg/CPU.png" alt="CPU" width="60%" />
