@@ -52,6 +52,8 @@
 - A CPU calculates the necessary computations for running applications on the computer.
   - Ex: a software written in JS, which are essentially a set of instructions, will be compiled into machine code for the CPU to execute.
 - The **clock speed/rate** of a CPU is measured in GHz (billions of cycles per second).
+- **Instructions Per Cycle(IPC)** refers to the number of instructions that the CPU can complete per cycle.
+  - Ex: CPU A with 2.4 GHz and 2 IPC is better than CPU B with 2.4 GHz and 1 IPC.
 #### Machine Instruction Cycle
 <p align="center">
   <img src="https://github.com/Kakamotobi/Learned/blob/main/Computer%20Science/refImg/machine-instruction-cycle.png" alt="Machine Instruction Cycle" width="80%" /><br />
@@ -85,14 +87,18 @@
 - Handles arithmetic and logical operations.
 #### Number of General Purpose Processors
 ##### Single Processor System
-- Previously a CPU only had one core, which meant that only one task could be executed at a time.
+- A system that uses one processor/CPU.
+- Previously, a processor/CPU only had one core, which meant that only one task could be executed at a time.
+- cf. **Singlecore System**
+  - Each processor/CPU contains one core.
 ##### Multiprocessor System
 - a.k.a. parallel systems, tightly coupled systems.
 - A system that uses two or more CPUs that execute **concurrently** and share a common RAM.
   - *Multithreading on a multiprocessor increases concurrency.*
 - cf. **Multicore System**
-  - Contains multiple cores/processors in a single CPU.
-  - Ex: dual-core simply means that there are two processors in a CPU.
+  - Each processor/CPU contains multiple cores.
+  - Ex: dual-core simply means that there are two cores in the processor/CPU.
+  - **Hyper-Threading / Simultaneous Multi-Threading** refers to splitting up a CPU core into two virtual cores.
 - **Symmetric Multiprocessing**
   - All core processors are involved in executing the same tasks.
 - **Asymmetric Multiprocessing**
@@ -359,3 +365,4 @@
 [Thread (computing) - Wikipedia](https://en.wikipedia.org/wiki/Thread_(computing))  
 [Multithreading and Multiprocessing in 10 Minutes | by Kay Jan Wong | Towards Data Science](https://towardsdatascience.com/multithreading-and-multiprocessing-in-10-minutes-20d9b3c6a867)  
 [How a CPU Works in 100 Seconds // Apple Silicon M1 vs Intel i9 - YouTube](https://www.youtube.com/watch?v=vqs_0W-MSB0&ab_channel=Fireship)  
+[Single Core vs Multi Core - Which is more important? A CPU primer. - YouTube](https://www.youtube.com/watch?v=D8ooMQG0T4k&ab_channel=ConstantGeekery)  
