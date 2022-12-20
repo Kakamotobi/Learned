@@ -34,11 +34,15 @@
 - Data is received in the order that it was sent in.
 - Data is treated as a stream of bytes.
 #### TCP 3-Way Handshake
-- The communication between the client and the server concerning the parameters of the connection before transmitting data such as HTTP requests.
+- The communication between the client and the server concerning the parameters of the connection before TLS handshake and transmitting data such as HTTP requests.
 - The three messages are: SYN, SYN + ACK, ACK.
   - SYN: Synchronize sequence numbers.
   - ACK: Acknowledgement
 ##### The Process
+<p align="center">
+  <img src="https://github.com/Kakamotobi/Learned/blob/main/Computer%20Network/refImg/tcp.png" alt="TCP Illustration" width="80%" />
+</p>
+
 1) The client sends a SYN packet to the server.
 2) The server receives the SYN packet from the client. Then, creates a connection and responds by sending a SYN + ACK to the client.
 3) The client receives the SYN + ACK. Then, sends an ACK to the server. Now, the TCP socket connection between the client and server is established.
@@ -70,13 +74,24 @@
 - The TLS handshake is fundamental to HTTPS.
   - Therefore, it also occurs during API calls.
 #### The Process
-1) The client initiates the handshake by sending a "client hello" message along with its TLS version, cipher algorithms and data compression methods that it supports, and a string of random bytes to the server.
-2) In response, the server sends a "server hello" message along with the TLS version, the selected cipher algorithm and compression method, its public certificate (containing the server's public key), and a string of random bytes to the client.
-3) The client verifies the server's certificate against its trusted Certificate Authorities(CAs). If the certificate can be trusted, the client generates and sends one more string of random bytes called *premaster secret* that has been encrypted with the server's public key. This string can only be decrypted with the private key on the server.
-4) The server decrypts the premaster secret using its private key.
-5) At this point, both the client and the server generate the same session keys using the client random, server random, and the premaster secret. *Subsequent communications are encrypted with the session key.*
-6) The client sends a "finished" messaged to the server.
-7) The server sends a "finished" message to the client.
+- TLS 1.3, which was finalized in 2018, reduces the handshake to one round trip as to two round trips in TLS 1.2, thereby improving latency.
+##### TLS 1.2
+<p align="center">
+  <img src="https://github.com/Kakamotobi/Learned/blob/main/Computer%20Network/refImg/tls1.2.png" alt="TLS 1.2" width="80%" />
+</p>
+
+1) The client initiates the handshake by sending a "client hello" message along with its TLS version, cipher algorithms and data compression methods that it supports, and a string of random bytes (client random) to the server.
+2) In response, the server sends a "server hello" message along with the TLS version, the selected cipher algorithm and compression method, its public certificate (containing the server's public key), and a string of random bytes (server random) to the client.
+3) The client verifies the server's certificate against its trusted Certificate Authorities(CAs). If the certificate can be trusted, the client generates and sends one more string of random bytes called *premaster secret* that has been encrypted with the server's public key. This string can only be decrypted with the private key on the server. The client sends a "finished" message.
+4) The server decrypts the premaster secret using its private key. At this point, both the client and the server have the same master secrets that are generated using the client random, server random, and the premaster secret. *Subsequent communications between the client and server are encrypted with this master secret.* The server sends a "finished" messaged.
+##### TLS 1.3
+<p align="center">
+  <img src="https://github.com/Kakamotobi/Learned/blob/main/Computer%20Network/refImg/tls1.3.png" alt="TLS 1.3" width="80%" />
+</p>
+
+1. The client initiates the handshake by sending a "client hello" message along with its TLS version, cipher alogrithms, data compression methods that it supports, a string of random bytes (client random), and a client key share.
+2. The server generates the premaster secret using the client key share and server key share (that it just generated). It then generates the master secret using the client random, server random (that it just generated), and premaster secret. The server sends a "server hello" message along with the TLS version, the selected cipher algorithm and compression method, the server random, and server key share.
+3. The client generates the premaster secret using the client key share and server key share. It then generates the master secret using the client random, server random, and premaster secret. *Subsequent communications between the client and server are encrypted with this master secret.*
 
 ## HTTP vs HTTPS
 ### Hypertext Transfer Protocol (HTTP)
@@ -139,5 +154,6 @@
 [Transport Layer Security - Wikipedia](https://en.wikipedia.org/wiki/Transport_Layer_Security)  
 [An overview of the SSL or TLS handshake - IBM Documentation](https://www.ibm.com/docs/en/ibm-mq/7.5?topic=ssl-overview-tls-handshake)  
 [What happens in a TLS handshake? | SSL Handshake](https://www.cloudflare.com/learning/ssl/what-happens-in-a-tls-handshake/#:~:text=A%20TLS%20handshake%20is%20the,and%20agree%20on%20session%20keys.)  
+[TLS 1.2 and TLS 1.3 Handshake Walkthrough | by Carson | Medium](https://cabulous.medium.com/tls-1-2-andtls-1-3-handshake-walkthrough-4cfd0a798164)  
 [security - Difference between HTTPS and SSL - Stack Overflow](https://stackoverflow.com/questions/6093430/difference-between-https-and-ssl)  
 [HTTP vs HTTPS](https://seopressor.com/blog/http-vs-https/)  
