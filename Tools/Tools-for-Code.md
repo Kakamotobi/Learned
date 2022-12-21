@@ -27,6 +27,7 @@
     "rules": {
       "prettier/prettier": ["error"]
     }
+    // ...
   }
   ```
 - The `.prettierrc.json` file contains your Prettier settings.
