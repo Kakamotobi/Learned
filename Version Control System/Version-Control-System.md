@@ -484,6 +484,11 @@
   - The proceeding commits of the specified commit are not removed (keeps them in record) but the changes are gone.
   - Reverting can cause conflicts.
   - ***If you want to reverse some commits that other people already have on their machines, use revert.***
+#### Applying Undone Commits on Local to Remote
+- **`git push origin -f`**
+  - Force push the current branch on local to the corresponding branch on origin.
+- **`git push origin +HEAD`**
+  - Force a non-fastword(`+`) push so that the top commit on origin is the parent of the current top commit.
 
 ## Git Collaboration Workflows
 ### Centralized Workflow
