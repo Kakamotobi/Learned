@@ -3,8 +3,8 @@
 ## [70. Climbing Stairs](https://leetcode.com/problems/climbing-stairs/)
 - At each step, there are two branches: 1 step or 2 steps.
 - Recurrence Relation
-  - The number of distinct ways for the current step can be calculated by adding the number of distinct ways for the previous step and that of the one before previous.
-  - `solution(3) = solution(2) + solution(1)` <-- Fibonacci
+  - For a staircase size of `N`, the first step is always `1` or `2`. Therefore, if the first step was `1` step, there are `N-1` steps left. Similarly, if the first step was `2` steps, the subproblem becomes `N-2`.
+  - Therefore, `solution(N) = solution(N-1) + solution(N-2)` <-- Fibonacci
 ```js
 // TC: O(n), SC: O(1)
 
