@@ -1,6 +1,49 @@
 # Dynamic Programming - Medium
 
-## 494. Target Sum (0/1 Knapsack Problem)
+## Table of Contents
+- [198. House Robber](#198-house-robber)
+- [494. Target Sum (0/1 Knapack Problem)](#494-target-sum-01-knapsack-problem)
+- [416. Partition Equal Subset Sum (0/1 Knapsack Problem)](#416-partition-equal-subset-sum-01-knapsack-problem)
+- [322. Coin Change (Unbounded Knapsack Problem)](#322-coin-change-unbounded-knapsack-problem)
+- [518. Coin Change 2 (Unbounded Knapsack Problem)](#518-coin-change-2-unbounded-knapsack-problem)
+
+## [198. House Robber](https://leetcode.com/problems/house-robber/description/)
+- At each step, there are two branches: rob current house, or not rob current house.
+- Recurrence Relation
+  - *M(n)*: the maximum amount that can be robbed up to the `n`th house, 
+  - *A(n)*: the amount that can be robbed at the `n`th house.
+  - *M(n)* = Maximum between *A(n) + M(n-2)* and *M(n-1)*
+### Solution 1 - Memoization
+```js
+const rob = (nums) => {
+  const memo = {};
+  
+  const helper = (idx) => {
+    if (idx >= nums.length) return 0;
+    if (memo[idx] !== undefined) return memo[idx];
+    
+    memo[idx] = Math.max(nums[idx] + helper(idx+2), helper(idx+1));
+    
+    return memo[idx];
+  }
+  
+  return helper(0);
+}
+```
+### Solution 2 - Tabulation
+```js
+const rob = (nums) => {
+  const dp = [nums[0], Math.max(nums[0], nums[1])];
+  
+  for (let i = 2; i < nums.length; i++) {
+    dp[i] = Math.max(nums[i] + dp[i-2], dp[i-1]);
+  }
+  
+  return dp[nums.length - 1]; // `nums.length` instead of `dp.length` to account for when `nums = [0]`.
+}
+```
+
+## [494. Target Sum (0/1 Knapsack Problem)](https://leetcode.com/problems/target-sum/)
 - Inputs
   - An array of integers `nums`.
   - An integer `target`.
@@ -16,7 +59,7 @@ findTargetSumWays([1,1,1,1,1], 3); // 5
   // +1 + 1 + 1 - 1 + 1 = 3
   // +1 + 1 + 1 + 1 - 1 = 3
 ```
-### Solution 1 - Pure Recursion (brute force)
+### Solution 1 - Brute Force (Recursion)
 - **TC: O(2<sup>n</sup>)**
 - Keep track of:
   - The index (representing the current number in `nums` that is in consideration).
@@ -41,7 +84,6 @@ const findTargetSumWays = (nums, target) => {
   return helper(0,0);
 }
 ```
-
 ### Solution 2 - Memoization
 - **TC: O(n\*t)**
   - n: the number of items in `nums`.
@@ -69,7 +111,7 @@ const findTargetSumWays = (nums, target) => {
 }
 ```
 
-## 416. Partition Equal Subset Sum (0/1 Knapsack Problem)
+## [416. Partition Equal Subset Sum (0/1 Knapsack Problem)](https://leetcode.com/problems/partition-equal-subset-sum/)
 - Input: a non-empty array of only positive integers `nums`.
 - Output: return true if `nums` can be partitioned into two subsets such that the sum of elements in both subsets is equal.
 ### Example
@@ -198,7 +240,7 @@ const canPartition = (nums) => {
 }
 ```
 
-## 322. Coin Change (Unbounded Knapsack Problem)
+## [322. Coin Change (Unbounded Knapsack Problem)](https://leetcode.com/problems/coin-change/)
 - Inputs:
   - An array of coins `coins` of different denominations.
   - An integer `amount`.
@@ -275,7 +317,7 @@ const coinChange = (coins, amount) => {
 }
 ```
 
-## 518. Coin Change 2 (Unbounded Knapsack Problem)
+## [518. Coin Change 2 (Unbounded Knapsack Problem)](https://leetcode.com/problems/coin-change-ii/)
 - Inputs:
   - An array of coins `coins` of different denominations.
   - An integer `amount`.
