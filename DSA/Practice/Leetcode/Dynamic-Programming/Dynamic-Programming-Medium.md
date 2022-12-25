@@ -2,6 +2,7 @@
 
 ## Table of Contents
 - [198. House Robber](#198-house-robber)
+- [213. House Robber II](#213-house-robber-ii)
 - [494. Target Sum (0/1 Knapack Problem)](#494-target-sum-01-knapsack-problem)
 - [416. Partition Equal Subset Sum (0/1 Knapsack Problem)](#416-partition-equal-subset-sum-01-knapsack-problem)
 - [322. Coin Change (Unbounded Knapsack Problem)](#322-coin-change-unbounded-knapsack-problem)
@@ -15,6 +16,8 @@
   - *M(n)* = Maximum between *A(n) + M(n-2)* and *M(n-1)*
 ### Solution 1 - Memoization
 ```js
+// TC: O(n), SC: O(n)
+
 const rob = (nums) => {
   const memo = {};
   
@@ -31,7 +34,10 @@ const rob = (nums) => {
 }
 ```
 ### Solution 2 - Tabulation
+- Can be optimized to `SC: O(1)` by using two variables instead of an array.
 ```js
+// TC: O(n), SC: O(n)
+
 const rob = (nums) => {
   const dp = [nums[0], Math.max(nums[0], nums[1])];
   
@@ -40,6 +46,69 @@ const rob = (nums) => {
   }
   
   return dp[nums.length - 1]; // `nums.length` instead of `dp.length` to account for when `nums = [0]`.
+}
+```
+
+## [213. House Robber II](https://leetcode.com/problems/house-robber-ii/)
+### Solution 1 - Brute Force
+```js
+// TC: O(2^n), SC: O(n)
+
+const rob = (nums) => {
+  const helper = (idx, arr) => {
+    if (idx >= arr.length) return 0;
+    
+    return Math.max(nums[idx] + helper(idx+2, arr), helper(idx+1, arr));
+  }
+  
+  return Math.max(helper(0, nums.slice(0, nums.length-1), helper(0, nums.slice(1)));
+}
+```
+### Solution 2 - Memoization
+```js
+// TC: O(n), SC: O(n)
+
+const rob = (nums) => {
+  let memo = {};
+
+  const helper = (idx, arr) => {
+    if (idx >= arr.length) return 0;
+    if (memo[idx] !== undefined) return memo[idx];
+
+    memo[idx] = Math.max(arr[idx] + helper(idx+2, arr), helper(idx+1, arr));
+
+    return memo[idx];
+  }
+
+  const maxInclFirstHouse = helper(0, nums.slice(0, nums.length-1));
+  memo = {};
+  const maxExclFirstHouse = helper(0, nums.slice(1));
+
+  return Math.max(maxInclFirstHouse, maxExclFirstHouse);
+};
+```
+### Solution 3 - Tabulation
+- Can be optimized to `SC: O(1)` by using two variables instead of an array.
+```js
+// TC: O(n), SC: O(n)
+
+const rob = (nums) => {
+  if (nums.length === 1) return nums[0];
+  
+  const helper = (arr) => {
+    const dp = [arr[0], Math.max(arr[0], arr[1])];
+    
+    for (let i = 2; i <= arr.length; i++) {
+      dp[i] = Math.max(arr[i] + dp[i-2], dp[i-1]);
+    }
+    
+    return dp[dp.length-1];
+  }
+  
+  const maxInclFirstHouse = helper(nums.slice(0, nums.length-1));
+  const maxExclFirstHouse = helper(nums.slice(1));
+  
+  return Math.max(maxInclFirstHouse, maxExclFirstHouse);
 }
 ```
 
