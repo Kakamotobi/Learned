@@ -3,6 +3,7 @@
 ## Table of Contents
 - [198. House Robber](#198-house-robber)
 - [213. House Robber II](#213-house-robber-ii)
+- [1911. Maximum Alternating Subsequence](#1911-maximum-alternating-subsequence)
 - [494. Target Sum (0/1 Knapack Problem)](#494-target-sum-01-knapsack-problem)
 - [416. Partition Equal Subset Sum (0/1 Knapsack Problem)](#416-partition-equal-subset-sum-01-knapsack-problem)
 - [322. Coin Change (Unbounded Knapsack Problem)](#322-coin-change-unbounded-knapsack-problem)
@@ -109,6 +110,66 @@ const rob = (nums) => {
   const maxExclFirstHouse = helper(nums.slice(1));
   
   return Math.max(maxInclFirstHouse, maxExclFirstHouse);
+}
+```
+
+## [1911. Maximum Alternating Subsequence](https://leetcode.com/problems/maximum-alternating-subsequence-sum/description/)
+- At each step, there are two branches: include this number, or don't include this number.
+- If including the number, you need to know whether to add it or subtract it from the total.
+### Solution 1 - Brute Force
+```js
+// TC: O(2^n), SC: O(n)
+
+const maxAlternatingSum = (nums) => {
+  let maxAltSum = -Infinity;
+
+  const calcAlternatingSum = (arr) => {
+    let evenSum = 0;
+    let oddSum = 0;
+
+    for (let i = 0; i < arr.length; i++) {
+      if (i % 2 === 0) evenSum += arr[i];
+      else oddSum += arr[i];
+    }
+
+    return evenSum - oddSum;
+  }
+
+  const helper = (idx, subsequence) => {
+    if (idx === nums.length) {
+      maxAltSum = Math.max(maxAltSum, calcAlternatingSum(subsequence));
+      return;
+    }
+
+    helper(idx+1, subsequence); // Don't include this num.
+    helper(idx+1, [...subsequence, nums[idx]]); // Include this num.
+  }
+
+  helper(0, []);
+
+  return maxAltSum;
+};
+```
+### Solution 2 - Memoization
+- Use a variable to keep track of even-indexed numbers to be added and odd-indexed numbers to be subtracted, *in the (reindexed) subsequence*.
+  - i.e. whether `nums[idx]` should be added or subtracted.
+```js
+// TC: O(n), SC: O(n)
+
+const maxAlternatingSum = (nums) => {
+  const memo = {};
+  
+  const helper = (idx, isEven) => {
+    if (idx === nums.length) return ;
+    if (memo[`${idx},${isEven}`] !== undefined) return memo[`${idx},${isEven}`];
+    
+    const num = isEven ? nums[idx] : -nums[idx];
+    memo[`${idx},${isEven}`] = Math.max(num + helper(idx+1, !isEven), helper(idx+1, isEven));
+    
+    return memo[`${idx},${isEven}`];
+  }
+  
+  return helper(0, true);
 }
 ```
 
