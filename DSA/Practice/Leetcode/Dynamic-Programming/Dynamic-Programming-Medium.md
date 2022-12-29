@@ -4,8 +4,8 @@
 - [198. House Robber](#198-house-robber)
 - [213. House Robber II](#213-house-robber-ii)
 - [1911. Maximum Alternating Subsequence](#1911-maximum-alternating-subsequence)
+- [416. Partition Equal Subset Sum](#416-partition-equal-subset-sum)
 - [494. Target Sum (0/1 Knapack Problem)](#494-target-sum-01-knapsack-problem)
-- [416. Partition Equal Subset Sum (0/1 Knapsack Problem)](#416-partition-equal-subset-sum-01-knapsack-problem)
 - [322. Coin Change (Unbounded Knapsack Problem)](#322-coin-change-unbounded-knapsack-problem)
 - [518. Coin Change 2 (Unbounded Knapsack Problem)](#518-coin-change-2-unbounded-knapsack-problem)
 
@@ -173,6 +173,84 @@ const maxAlternatingSum = (nums) => {
 }
 ```
 
+## [416. Partition Equal Subset Sum](https://leetcode.com/problems/partition-equal-subset-sum/)
+### Solution 1 - Brute Force
+- Check all possible subsets to see if any is equal to the sum of all numbers in `nums` divided by 2.
+```js
+// TC: O(2^n), SC: O(n*t)
+  // n: `nums.length`
+  // t: the sum of all elements in `nums` / 2
+
+const canPartition = (nums) => {
+  const targetSum = nums.reduce((acc, curr) => acc + curr, 0) / 2;
+  
+  const helper = (idx, runningSum) => {
+    if (runningSum === targetSum) return true;
+    if (runningSum > targetSum) return false;
+    if (idx === nums.length) return false;
+    
+    return helper(idx+1, runningSum) || helper(idx+1, runningSum + nums[idx]);
+  }
+  
+  return helper(0, 0);
+}
+```
+### Solution 2 - Memoization
+```js
+// TC: O(n*t), SC: O(t)
+
+const canPartition = (nums) => {
+  const targetSum = nums.reduce((acc, curr) => acc + curr, 0) / 2;
+
+  if ((targetSum % 1) !== 0) return false; // If targetSum is a decimal.
+
+  const memo = {};
+
+  const helper = (idx, runningSum) => {
+    if (runningSum === targetSum) return true;
+    if (runningSum > targetSum) return false;
+    if (idx === nums.length) return false;
+    if (memo[`${idx},${runningSum}`] !== undefined) return memo[`${idx},${runningSum}`];
+
+    memo[`${idx},${runningSum}`] = helper(idx+1, runningSum) || helper(idx+1, runningSum + nums[idx]);
+
+    return memo[`${idx},${runningSum}`];
+  }
+
+  return helper(0, 0);
+}
+```
+### Solution 3 - Bottom-Up
+- Recurrence Relation
+  - If a possible sum from the subset after the current number is the target sum, return true.
+  - If the current number + a possible sum from the subset after the current number is the target sum, return true.
+```js
+// TC: O(n*t), SC: O(t)
+
+const canPartition = (nums) => {
+  const targetSum = nums.reduce((acc, curr) => acc + curr, 0) / 2;
+
+  if ((targetSum % 1) !== 0) return false;
+
+  // Accumulate all possible sums.
+  let allPossibleSums = new Set([0]);
+  for (let i = nums.length-1; i >= 0; i--) {
+    // Create a temporary Set since we cannot modify an iterative (`allPossibleSums`) while iterating over it.
+    const temp = new Set();
+
+    // Accumulate all possible sums from nums[i] to the end.
+    for (let sum of allPossibleSums) {
+      temp.add(sum + nums[i]);
+      temp.add(sum); // Need to include `sum` as well (avoid another loop to merge `temp` and `allPossibleSums`).
+    }
+
+    allPossibleSums = temp;
+  }
+
+  return allPossibleSums.has(targetSum);
+}
+```
+
 ## [494. Target Sum (0/1 Knapsack Problem)](https://leetcode.com/problems/target-sum/)
 - Inputs
   - An array of integers `nums`.
@@ -238,135 +316,6 @@ const findTargetSumWays = (nums, target) => {
   }
   
   return helper(0,0);
-}
-```
-
-## [416. Partition Equal Subset Sum (0/1 Knapsack Problem)](https://leetcode.com/problems/partition-equal-subset-sum/)
-- Input: a non-empty array of only positive integers `nums`.
-- Output: return true if `nums` can be partitioned into two subsets such that the sum of elements in both subsets is equal.
-### Example
-```js
-canPartition([1,5,11,5]); // true because [1,5,5] and [11].
-canPartition([1,2,3,5]); // false.
-```
-### Solution 1 - Pure Recursion (brute force)
-- **TC: O(2<sup>n</sup>)**
-- "... the sum of both subsets is equal" means that the function should return `true` if any single subset is equal to the sum of `nums` divided by 2.
-  - Therefore, we have to essentially determine every single sum that can be made with any single subset from `nums`. And check if any of those sums equal the sum of nums / 2.
-  - At any point, if we have a running total of the sum of all elements in the array divided by 2, the solution should return `true`.
-- Keep track of:
-  - The index (representing the current number in `nums` that is in consideration).
-  - The total sum so far.
-- Base Cases
-  - If index is out of bounds, return false (we have reached the end of `nums` but was not able to sum to target).
-  - If the current total is greater than the target, return false (we don't need to continue down the path).
-  - If the current total is equal to the target, return true.
-- At each call/step we can make one of two choices (use the number at the current index or not).
-```js
-const canPartition = (nums) => {
-  let target = 0;
-  for (let num of nums) {
-    target += num;
-  }
-  // Edge Case
-  if (target % 2 !== 0) return false;
-  else target /= 2;
-  
-  const helper = (idx, total) => {
-    // Base Cases
-    if (idx >= nums.length) return false;
-    if (total > target) return false;
-    if (total === target) return true;
-    
-    return helper(idx + 1, total + nums[idx]) || helper(idx + 1, total);
-  }
-  
-  return helper(0,0);
-}
-```
-### Solution 2 - Memoization
-- **TC: O(n\*t)**
-  - n: the number of items in `nums`.
-  - t: the sum of all elements in `nums` / 2. Ex: if `nums = [1,2,3]`, `t = 6`.
-- Keep track of:
-  - The index (representing the current number in `nums` that is in consideration).
-  - The total sum so far.
-- Additional Base Case
-  - If the `idx`, `total` pair was seen before, and thus exists in our cache.
-```js
-const canPartition = (nums) => {
-  let target = 0;
-  for (let num of nums) {
-    target += num;
-  }
-  // Edge Case
-  if (target % 2 !== 0) return false;
-  else target /= 2;
-  
-  const memo = {};
-  
-  const helper = (idx, total) => {
-    // Base Cases
-    if (idx >= nums.length) return false;
-    if (total > target) return false;
-    if (total === target) return true;
-    if (memo[[idx, total]] !== undefined) return memo[[idx, total]];
-    
-    memo[[idx, total]] = helper(idx + 1, total + nums[idx]) || helper(idx + 1, total);
-    
-    return memo[[idx, total]];
-  }
-  
-  return helper(0,0);
-}
-```
-### Solution 3 - Tabulation
-- **TC: O(n\*t)**
-  - n: the number of items in `nums`.
-  - t: the sum of all elements in `nums` / 2. Ex: if `nums = [1,2,3]`, `t = 6`.
-- Bottom-Up Approach.
-- Store all the possible sums of any given subset from the remainder of the array.
-  - For each possible sum in that subset:
-    - If the sum is equal to the target, return true.
-    - If the current number + the sum is equal to the target, return true.
-- How many possible sums could we create from each subset?
-- **Flow**
-  ```js
-  nums = [1,5,11,5];
-  target = 11;
-
-  // Possible sums using or not using [5]: [0,5].
-  // Possible sums using or not using [11] after using or not using 5: [0,5,11,16,0]. But we don't need duplicates so, [0,5,11,16].
-  // Possible sums using or not using [5] after using or not using 5 and 11: [0,5,11,16,5,10,16,21,0]. But we don't need duplicates so, [0,5,11,16,10,21].
-  // Possible sums using or not using [1] after using or not using 5, 11, and 5: [0,5,11,16,10,21,1,6,12,17,11,22,0]. But we don't need duplicates so, [0,5,11,16,10,21,1,6,12,17,22].
-
-  // [0,5,11,16,10,21,1,6,12,17,22] is the entire list of all the possible sums that can be computed from the given input nums.
-  // If this list contains the target, return true. Otherwise, return false.
-  ```
-```js
-const canPartition = (nums) => {
-  let target = 0;
-  for (let num of nums) {
-    target += num;
-  }
-  // Edge Case
-  if (target % 2 !== 0) return false;
-  else target /= 2;
-  
-  const allPossibleSums = new Set([0]);
-  for (let num of nums) {
-    // Create a temporary Set since we cannot modify an iterative while iterating over it.
-    const temp = new Set();
-    for (let s of allPossibleSums) {
-      temp.add(s + num);
-    }
-    // Join temp to allPossibleSums.
-    for (let s of temp) {
-      allPossibleSums.add(s);
-    }
-  }
-  
-  return allPossibleSums.has(target);
 }
 ```
 
