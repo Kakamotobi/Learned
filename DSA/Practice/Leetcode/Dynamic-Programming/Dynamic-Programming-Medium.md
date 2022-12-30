@@ -258,7 +258,8 @@ const canPartition = (nums) => {
 ```js
 // TC: O(n*t), SC: O(n)
   // n: `nums.length`
-  // t: the possible sum of all expressions (Ex: if `nums = [1,2,3]`, `-6 <= t <= 6`)
+  // t: the number of values that can be passed in as `runningSum`
+    // i.e. the extremes where all is positive or negative. Ex: if `nums = [1,2,3]`, `-6 <= t <= 6`.
 
 const findTargetSumWays = (nums, target) => {
   const memo = {};
