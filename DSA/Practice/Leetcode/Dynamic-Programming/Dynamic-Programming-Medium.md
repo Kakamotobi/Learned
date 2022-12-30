@@ -5,7 +5,7 @@
 - [213. House Robber II](#213-house-robber-ii)
 - [1911. Maximum Alternating Subsequence](#1911-maximum-alternating-subsequence)
 - [416. Partition Equal Subset Sum](#416-partition-equal-subset-sum)
-- [494. Target Sum (0/1 Knapack Problem)](#494-target-sum-01-knapsack-problem)
+- [494. Target Sum](#494-target-sum)
 - [322. Coin Change (Unbounded Knapsack Problem)](#322-coin-change-unbounded-knapsack-problem)
 - [518. Coin Change 2 (Unbounded Knapsack Problem)](#518-coin-change-2-unbounded-knapsack-problem)
 
@@ -251,71 +251,29 @@ const canPartition = (nums) => {
 }
 ```
 
-## [494. Target Sum (0/1 Knapsack Problem)](https://leetcode.com/problems/target-sum/)
-- Inputs
-  - An array of integers `nums`.
-  - An integer `target`.
-- Output: return the number of different expressions that can be built with all the integers in `num`, which evaluate to `target`.
-- Description
-  - An expression refers to adding `+` or `-` before each integer in `nums`, and then concatenate all the integers.
-### Example
+## [494. Target Sum](https://leetcode.com/problems/target-sum/)
+- Recurrence Relation
+  - Each number can be added or subtracted.
+### Solution 1 - Memoization
 ```js
-findTargetSumWays([1,1,1,1,1], 3); // 5
-  // -1 + 1 + 1 + 1 + 1 = 3
-  // +1 - 1 + 1 + 1 + 1 = 3
-  // +1 + 1 - 1 + 1 + 1 = 3
-  // +1 + 1 + 1 - 1 + 1 = 3
-  // +1 + 1 + 1 + 1 - 1 = 3
-```
-### Solution 1 - Brute Force (Recursion)
-- **TC: O(2<sup>n</sup>)**
-- Keep track of:
-  - The index (representing the current number in `nums` that is in consideration).
-  - The total sum so far.
-- Base Case
-  - If index is out of bounds (we have reached the end of `nums`).
-- At each call/step we can make one of two choices (`+` or `-`).
-```js
-const findTargetSumWays = (nums, target) => {
-  // helper eventually returns the number of successful expressions.
-  const helper = (idx, total) => {
-    // Base Case
-    if (idx >= nums.length) {
-     return total === target ? 1 : 0;
-    }
-    
-    // helper returns either 1 (expression is successful) or 0 (expression is unsuccessful), representing the number of successful expressions.
-    // Therefore, once the recursive calls backtrack to the first call, the number of successful expressions is computed.
-    return helper(idx + 1, total + nums[idx]) + helper(idx + 1, target - nums[idx]);
-  }
-  
-  return helper(0,0);
-}
-```
-### Solution 2 - Memoization
-- **TC: O(n\*t)**
-  - n: the number of items in `nums`.
-  - t: the total possible values of `target`. i.e., the sum of the entire array `nums` (Ex: if `nums = [1,2,3]`, `-6 <= t <= 6`).
-- Additional Base Case
-  - If the `idx`, `total` pair was seen before, and thus exists in our cache.
-```js
+// TC: O(n*t), SC: O(n)
+  // n: `nums.length`
+  // t: the possible sum of all expressions (Ex: if `nums = [1,2,3]`, `-6 <= t <= 6`)
+
 const findTargetSumWays = (nums, target) => {
   const memo = {};
-  
-  const helper = (idx, total) => {
-    // Base Cases
-    if (idx >= nums.length) {
-      return total === target ? 1 : 0;
-    }
-    if (memo[[idx, total]] !== undefined) return memo[[idx, total]];
+
+  const helper = (idx, runningSum) => {
+    if (idx === nums.length && runningSum === target) return 1;
+    if (idx === nums.length) return 0;
+    if (memo[`${idx},${runningSum}`] !== undefined) return memo[`${idx},${runningSum}`];
     
-    // Cache the result.
-    memo[[idx, total]] = helper(idx + 1, total + nums[idx]) + helper(idx + 1, total - nums[idx]]);
-    
-    return memo[[idx, total]];
+    memo[`${idx},${runningSum}`] = helper(idx+1, runningSum + nums[idx]) + helper(idx+1, runningSum - nums[idx]);
+
+    return memo[`${idx},${runningSum}`];
   }
   
-  return helper(0,0);
+  return helper(0, 0);
 }
 ```
 
