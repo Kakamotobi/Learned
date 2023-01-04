@@ -7,6 +7,7 @@
 - [Transport Layer Security(TLS)](#transport-layer-securitytls)
 - [HTTP vs HTTPS](#http-vs-https)
 - [Protocol Suites](#protocol-suites)
+- [Secure Shell(SSH)](#secure-shellssh)
 
 ## What are Network Protocols?
 > A network protocol is an accepted set of rules that govern data communication between different devices in the network. It determines what is being communicated, how it is being communicated, and when it is being communicated. It permits connected devices to communicate with each other, irrespective of internal and structural differences. | GeeksforGeeks
@@ -146,6 +147,19 @@
   </tbody>
 </table>
 
+## Secure Shell(SSH)
+> The SSH protocol uses encryption to secure the connection between a client and a server. All user authentication, commands, output, and file transfers are encrypted to protect against attacks in the network. | SSH Academy
+
+- SSH is used for remote login and command-line execution.
+- SSH works by an SSH client connecting to an SSH server (called SSHD).
+
+<p align="center">
+  <img src="https://www.ssh.com/hubfs/Imported_Blog_Media/SSH_simplified_protocol_diagram-2.png" alt="SSH Key-based Authentication" width="80%" />
+</p>
+
+
+
+
 ## Reference
 [Types of Network Protocols and Their Uses - GeeksforGeeks](https://www.geeksforgeeks.org/types-of-network-protocols-and-their-uses/)  
 [TCP/IP TCP, UDP, and IP protocols - IBM Documentation](https://www.ibm.com/docs/en/zos/2.2.0?topic=internets-tcpip-tcp-udp-ip-protocols)  
@@ -157,3 +171,4 @@
 [TLS 1.2 and TLS 1.3 Handshake Walkthrough | by Carson | Medium](https://cabulous.medium.com/tls-1-2-andtls-1-3-handshake-walkthrough-4cfd0a798164)  
 [security - Difference between HTTPS and SSL - Stack Overflow](https://stackoverflow.com/questions/6093430/difference-between-https-and-ssl)  
 [HTTP vs HTTPS](https://seopressor.com/blog/http-vs-https/)  
+[What is SSH (Secure Shell)? | SSH Academy](https://www.ssh.com/academy/ssh)  
