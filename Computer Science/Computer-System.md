@@ -7,7 +7,7 @@
   - [Central Processing Unit(CPU)](#central-processing-unitcpu)
     - [Machine Instruction Cycle](#machine-instruction-cycle)
     - [Parts of a CPU](#parts-of-a-cpu)
-    - [Number of General Purpose Processors](#number-of-general-purpose-processors)
+    - [CPU Architecture](#cpu-architecture)
   - [Memory](#memory)
     - [Memory Hierarchy](#memory-hierarchy)
     - [Memory Segments and Addresses](#memory-segments-and-addresses)
@@ -85,29 +85,33 @@
 - Responsible for controlling the order of execution of commands.
 ##### Combinational Logic
 - Handles arithmetic and logical operations.
-#### Number of General Purpose Processors
-##### Single Processor System
-- A system that uses one processor/CPU.
-- Previously, a processor/CPU only had one core, which meant that only one task could be executed at a time.
-- cf. **Singlecore System**
-  - Each processor/CPU contains one core.
-##### Multiprocessor System
-- a.k.a. parallel systems, tightly coupled systems.
-- A system that uses two or more CPUs that execute **concurrently** and share a common RAM.
-  - *Multithreading on a multiprocessor increases concurrency.*
-- cf. **Multicore System**
-  - Each processor/CPU contains multiple cores.
-  - Ex: dual-core simply means that there are two cores in the processor/CPU.
-  - **Hyper-Threading / Simultaneous Multi-Threading** refers to splitting up a CPU core into two virtual cores.
-- **Symmetric Multiprocessing**
-  - All core processors are involved in executing the same tasks.
-- **Asymmetric Multiprocessing**
-  - One processor acts as a "master" and the remaining processors serve as "slaves".
-  - The "master" supervises the "slaves", and the "slaves" take care of individual tasks.
-##### Clustered Systems
-- Use multiple CPUs to accomplish computational work.
-- Two or more individual systems are coupled together.
-- Can be structured symmetrically or asymmetrically.
+#### CPU Architecture
+##### CPU/Processor
+- A computer may have one or more CPUs (**multiprocessing**).
+  - **Symmetric Multiprocessing**
+    - All processors are involved in executing the same tasks.
+  - **Asymmetric Multiprocessing**
+    - One processor acts as a "master" and the remaining processors serve as "slaves".
+    - The "master" supervises the "slaves", and the "slaves" take care of individual tasks.
+  - **Clustered Systems**
+    - Use multiple CPUs to accomplish computational work.
+    - Two or more individual systems are coupled together.
+    - Can be structured symmetrically or asymmetrically.
+##### Core
+- A processing unit of the CPU.
+- A CPU may have one (**singlecore**) or more cores (**multicore**) that work in ***parallel***, each doing their own thing on their own thread(s).
+- **Physical Core** vs **Logical Core**
+  - Physical Core: the physical hardware on the CPU itself.
+  - Logical Core: the number of pathways that the computer has to process information (i.e. threads).
+  - Ex: 4 Physical Cores and 8 Threads mean that there are 8 Logical Cores.
+##### Thread
+- A sequence of commands given to the core to execute.
+- A core may use one (**singlethread**) or more threads (**multithreading**).
+  - cf. **hyperthreading/simultaneous multithreading** is when a single physical core (hardware) is split into two virtual cores, and the OS recognizes them as two separate cores.
+- A core cannot work on multiple threads at a time.
+  - Rather, a core can switch between processing different threads ***concurrently***. Therefore, it can efficiently switch over to another thread when the current thread is on a downtime (Ex: waiting for resources, cache, etc).
+- Threads share resources (Ex: computing units, caches) of the core that they belong to.
+- **Context Switching** refers to storing the state of a thread so that it can resume execution later from that state. This allows for multitasking.
 ### Memory
 #### Memory Hierarchy
 <p align="center">
