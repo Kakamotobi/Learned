@@ -14,12 +14,19 @@
   - [JavaScript Bit Tips](#javascript-bit-tips)
 - [Negative Binary](#negative-binary)
 - [Signedness](#signedness)
+- [Number Systems](#number-systems)
+- [Memory Structure (Byte Ordering)](#memory-structure-byte-ordering)
 
 ## What is it?
 - **A bit (a.k.a. binary digit) is the most basic unit of information that holds one of two values: 0 or 1.**
   - i.e. the smallest building block of storage.
-- Computers count based on this binary unit (base 2).
-  - cf. We count in base 10.
+- Computers count based on this binary unit (base 2) because it is all it needs to be able to compute logic.
+  - Therefore, all number sytems, code, etc. are ultimately 0s and 1s.
+  - **Binary/Machine Code** are expressed in numbers (Ex: hexadecimals).
+  - **Assembly Code** is the corresponding string expression of the numbers in Binary/Machine Code.
+- However, **the binary system does not reliably express all numbers**.
+  - There are lots of decimals (floating point numbers) that cannot be exactly stored in memory.
+  - Ex: representing 0.1 in binary is not 100% precise.
 ### Number of Permutations
 - 1 bit holds 2^1 = 2 permutations (0 or 1).
 - 2 bits hold 2^2 = 4 permutations.
@@ -55,14 +62,17 @@
   - Therefore, for example, if you press a character on the keyboard, the system's character encoding maps the character to its specific bytes in computer memory and then reads the bytes back into the character to display it.
 
 ## Types of Character Encoding Standards
-- ASCII is a 7-bit character set was devised as a standard for the English language.
-  - There came to be various character encoding standards for the various languages in the world as well.
-- To accommodate more characters, ASCII Extended (an 8-bit character set) was introduced.
-- To accommodate other languages that are not latin-based, Unicode was introduced.
-  - Encoding formats of Unicode: UTF-8, UTF-16, UTF-32.
+- All characters, strings and code are ultimately binaries.
+- "Code" is just a way to express numbers, which need to be uniform for everyone to be on the same page.
+- ASCII and Unicode are simply standards for stating what binary combination corresponds to what string/character.
+- **ASCII** is the American standard for character encoding, which includes the alphabet and some special characters. These encodings are mostly universal.
+  - It initially used 7 bits to represent 128 characters.
+  - It then added 1 more bit (8 bits total) to represent 256 characters.
+- **Unicode** is the international standard that was introduced to accommodate languages and characters of the rest of the world, which has been expanding.
+  - Unicode includes emojis. Although, each platform's corresponding UI may differ from that of another.
+  - Most platforms and programming languages support unicode.
+  - Unicode Encoding Formats: UTF-8, UTF-16, UTF-32.
 - [More on ASCII and Unicode here](https://github.com/Kakamotobi/Learned/blob/main/Computer%20Science/Basics.md#ascii-and-unicode)
-
-
 
 ## Bitwise Operation
 - Bitwise operations refer to working with individual bits.
@@ -216,6 +226,57 @@
 | ---------- | -------------- | ---------------- |
 | Definition | Can represent both positive and negative numbers. | Can represent only non-negative numbers. |
 | Example    | A signed 32-bit integer can hold the values from -2,147,483,648 to 2,147,483,647 (inclusive). | An unsigned 32-bit integer can hold the values from 0 to 4,294,967,295 (inclusive). |
+
+## Number Systems
+- A **binary system** has two digits (0 and 1), where the base is 2 (numbers are expressed in powers of 2).
+  - 1s, 2s, 4s, 8s, 16s, 32s ...
+  - Ex: `1101(bin) = (1*2^3)+(1*2^2)+(0*2^1)+(1*2^0) = 13(dec)`
+- A **decimal system** has ten digits (0 to 9), where the base is 10 (numbers are expressed in powers of 10).
+  - 1s, 10s, 100s, 1000s, ...
+  - Ex: `1101(dec) = (1*10^3)+(1*10^2)+(0*10^1)+(1*10^0)`
+- A **hexadecimal system** has 16 digits (0-9 to A-F), where the base is 16 (numbers are expressed in powers of 16).
+  - 1s, 16s, 256s, 4096s, ...
+  - Ex: `1101(hex) = (1*16^3)+(1*16^2)+(0*16^1)+(1*16^0) = 4353(dec)`
+  - _Note_
+    - A, B, C, D, E, F are 10, 11, 12, 13, 14, 15, 16, respectively.
+- **Conversion Rule of Thumb**
+  - **Decimal &rarr; _r_ Radix**
+    - Keep dividing decimal by _r_.
+  - ***r* Radix &rarr; Decimal**
+    - Multiply each digit(starting from the least significant) of the *r* Radix number by *r*<sup>p</sup> where *p* represents the digit position.
+### Decimal to Binary
+- Since binary numbers are base 2, keep dividing the decimal number by 2 until the quotient is 1 (i.e. no longer divisible by 2).
+- The _concatenation_ of the remainders from each division put together back to front (most recent to earliest division) is the binary representation.
+### Binary to Decimal
+- Since binary numbers are base 2, multiply each binary digit (starting from the least significant/rightmost digit) with the corresponding power of 2.
+- The sum of these are the decimal representation.
+### Decimal to Hexadecimal
+- Keep dividing the decimal number by 16 until the quotient is 1 (i.e. no longer divisible by 16).
+- The _concatentation_ of the remainders from each division put together back to front (most recent to earliest division) is the hexadecimal representation.
+### Binary to Hexadecimal
+#### Indirect Approach
+- First [convert the binary number into decimal](#binary-to-decimal).
+- Then [convert the decimal to hexadecimal](#decimal-to-hexadecimal).
+#### Direct Approach
+- Each hexadecimal digit(0 to F) requires maximum 4 bits.
+  - 0 = 0000 and F = 1111.
+- Therefore, group the binary number in 4s. Then convert each group into its corresponding hexadecimal digit.
+- The _concatenation_ of these are the hexadecimal representation.
+  - Ex: 11010110 = 1101 + 0110 = D + 6 = D6
+### Hexadecimal to Decimal
+- Multiply each hexadecimal digit (starting from the rightmost digit) with the corresponding power of 16.
+- The sum of these are the decimal representation.
+
+## Memory Structure (Byte Ordering)
+- There are two ways to express binary in memory: Little-Endian and Big-Endian
+- **Little-Endian**
+  - Store the least significant bit first.
+    - i.e. store LSB to MSB.
+  - ARM usually uses Little-Endian.
+- **Big-Endian**
+  - Store the most significant bit first.
+    - i.e. store MSB to LSB.
+  - Intel usually uses Big-Endian.
 
 ## Reference
 [Algorithms: Bit Manipulation - YouTube](https://www.youtube.com/watch?v=NLKQEOgBAnw)  
