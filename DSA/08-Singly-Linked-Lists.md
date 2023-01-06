@@ -43,253 +43,217 @@
 ## Singly Linked List Implementation
 ```js
 class Node {
-  constructor(val) {
-    this.val = val; // the element.
-    this.next = null; // reference to the next node.
+  constructor(val, next = null) {
+    this.val = val;
+    this.next = next;
   }
 }
 
-class SinglyLinkedList {
+export class SinglyLinkedList {
   constructor() {
     this.head = null;
     this.tail = null;
     this.length = 0;
   }
-  
-  // Add a node to the end of the linked list.
-  push(val) {
-    // Create a new node using val.
-    const newNode = new Node(val);
-    // If head is null (meaning, list is empty).
-    if (!this.head) {
-      // Set the head and tail to be the newly created node.
-      this.head = newNode;
-      this.tail = newNode;
-    }
-    // Else (list is not empty).
-    else {
-      // Set the next property on the current tail to be the newly created node.
-      this.tail.next = newNode;
-      // Set the tail property on the list to be the newly created node.
-      this.tail = newNode;
-    }
-    // Increment the length by one.
-    this.length++;
-    // Return the singly linked list.
-    return this;
+
+  isEmpty() {
+    return this.length === 0 ? true : false;
   }
-  
-  // Remove a node from the end of the linked list.
-  pop() {
-    // If list is empty, return undefined.
-    if (!this.length) return undefined;
-    // Else if list has only one node.
-    else if (this.length === 1) {
-      const popTarget = this.head;
-      this.head = null;
-      this.tail = null;
-      this.length--;
-      return popTarget;
-    }
-    else {      
-      // Initialize pointer to identify the 2nd to last element (new tail).
-      let newTail = this.head;
-      // Initialize popTarget to be the current tail.
-      const popTarget = this.tail;
-      // Loop until newTail reaches the 2nd to last element.
-      while (newTail.next !== popTarget) {
-        // Update newTail.
-        newTail = newTail.next;
-      }
-      // Set the newTail's next property to be null.
-      newTail.next = null;
-      // Update this.tail to be newTail.
-      this.tail = newTail;
-      // Decrement the length of the list by 1.
-      this.length--;
-      return popTarget;
-    }
-  // Garbage Collection. After a pop there remains no references to the removed tail. So the JS engine safely deletes it from memory.
+
+  size() {
+    return this.length;
   }
-  
-  // Remove a node from the beginning of the linked list.
-  shift() {
-    if (this.length === 0) return undefined;
-    // Store the current head property in a variable (to return at the end).
-    const shiftTarget = this.head;
-    // Set the head property to be the current head's next property.
-    this.head = shiftTarget.next;
-    // Decrement length.
-    this.length--;
-    // If list is empty after shift, set the tail to null.
-    if (this.length === 0) this.tail = null;
-    return shiftTarget;
-  }
-  
-  // Add a new node to the beginning of the linked list.
-  unshift(val) {
-    const newNode = new Node(val);
-    if (!this.length) {
-      this.head = newNode;
-      this.tail = newNode;
-    }
-    else {
-      // Set the next property for the new node to be the current head.
-      newNode.next = this.head;
-      // Update the current head to be the new node.
-      this.head = newNode;
-    }
-    // Increment length.
-    this.length++;
-    return this;
-  }
-  
-  // Retrieve a node by its position (0-based) in the linked list.
-  get(idx) {
-    // If idx is invalid, return null.
-    if (idx < 0 || idx >= this.length) return null;
-    // Initialize counter.
+
+  getByIdx(idx) {
+    if (idx < 0 || idx >= this.length) return undefined;
     let counter = 0;
-    // Initialize target to be the first node.
-    let target = this.head;
-    // Loop until index is reached.
+    let currNode = this.head;
     while (counter !== idx) {
-      // Update target to be the next node.
-      target = target.next;
-      // Increment counter.
+      currNode = currNode.next;
       counter++;
     }
-    return target;
+    return currNode;
   }
-  
-  // Change the value of a node based on it's position in the linked list.
+
+  getById(valId) {
+    let currNode = this.head;
+    while (currNode !== null) {
+      if (currNode.val.id === valId) return currNode;
+      currNode = currNode.next;
+    }
+    return undefined;
+  }
+
   set(idx, val) {
-    // Get the specific node.
-    const targetNode = this.get(idx);
-    // If node is found, set the target node's value to be the new val.
-    if (targetNode) {
-      targetNode.val = val;
+    if (idx < 0 || idx >= this.length) return undefined;
+    const target = this.get(idx);
+    if (target) {
+      target.val = val;
       return true;
     }
     return false;
   }
-  
-  // Add a node to a specific position in the linked list.
-  insert(idx, val) {
-    // If idx is invalid, return false.
-    if (idx < 0 || idx > this.length) return false;
-    // If idx is equal to the length, push new node to the end of the list.
-    if (idx === this.length) return !!this.push(val);
-    // If idx is 0, unshift new node to the start of the list.
-    if (idx === 0) return !!this.unshift(val);
-    // Else idx is somewhere in the middle.
+
+  addToStart(val) {
+    const newNode = new Node(val);
+    if (this.length === 0) {
+      this.head = newNode;
+      this.tail = newNode;
+    } else {
+      newNode.next = this.head;
+      this.head = newNode;
+    }
+    this.length++;
+    return this;
+  }
+
+  addToEnd(val) {
+    const newNode = new Node(val);
+    if (this.length === 0) {
+      this.head = newNode;
+      this.tail = newNode;
+    } else {
+      this.tail.next = newNode;
+      this.tail = newNode;
+    }
+    this.length++;
+    return this;
+  }
+
+  insertAtIdx(idx, val) {
+    if (idx < 0) return false;
+    if (idx === 0) return !!this.addToStart(val);
+    if (idx === this.length || idx >= this.length) return !!this.addToEnd(val);
     else {
       const newNode = new Node(val);
-      // Get the previous node.
-      const prevNode = this.get(idx-1);
-      // Get the original node at the target idx.
-      const originalNode = prevNode.next;
-      // Set the next property on prevNode to be newNode.
+      const prevNode = this.getByIdx(idx - 1);
+      const nodeAtIdx = prevNode.next;
       prevNode.next = newNode;
-      // Set the next property on newNode to be originalNode.
-      newNode.next = originalNode;
-      // Increment length.
+      newNode.next = nodeAtIdx;
       this.length++;
       return true;
     }
   }
-  
-  // Remove a node at a specific position in the linked list.
-  remove(idx) {
-    // If idx is invalid, return undefined.
-    if (idx < 0 || idx >= this.length) return undefined;
-    // If idx is 0, shift.
-    if (idx === 0) return this.shift();
-    // If idx is the last node, pop.
-    if (idx === this.length - 1) return this.pop();
-    // Else idx is somewhere in the middle.
-    else {
-      // Get the previous node. 
-      const prevNode = this.get(idx-1);
-      // Store removeTarget.
-      const removeTarget = prevNode.next;
-      // Set the next property on prevNode to be the next of the next node.
-      prevNode.next = removeTarget.next;
-      // Decrement length.
+
+  removeFromStart() {
+    if (this.length === 0) return undefined;
+    const target = this.head;
+    this.head = target.next;
+    target.next = null;
+    this.length--;
+    if (this.length === 0) this.tail = null;
+    return target;
+  }
+
+  removeFromEnd() {
+    if (this.length === 0) return undefined;
+    else if (this.length === 1) {
+      const target = this.tail;
+      this.head = null;
+      this.tail = null;
+      return target;
+    } else {
+      const target = this.tail;
+      const newTail = this.getByIdx(this.length - 2);
+      newTail.next = null;
+      this.tail = newTail;
       this.length--;
-      return removeTarget;
+      return target;
     }
   }
-  
+
+  removeByIdx(idx) {
+    if (idx < 0 || idx >= this.length) return undefined;
+    if (idx === 0) return this.removeFromStart();
+    else if (idx === this.length - 1) return this.removeFromEnd();
+    else {
+      const prevTargetNode = this.getByIdx(idx - 1);
+      const target = prevTargetNode.next;
+      prevTargetNode.next = target.next;
+      target.next = null;
+      this.length--;
+      return target;
+    }
+  }
+
+  removeById(valId) {
+    let prevNode;
+    let currNode = this.head;
+    while (currNode !== null) {
+      if (currNode.val.id === valId) {
+        if (currNode === this.head) return this.removeFromStart();
+        else if (currNode === this.tail) return this.removeFromEnd();
+        else {
+          prevNode.next = currNode.next;
+          currNode.next = null;
+          this.length--;
+          return currNode;
+        }
+      }
+      prevNode = currNode;
+      currNode = currNode.next;
+    }
+
+    return undefined;
+  }
+
   // Reverse the linked list in place.
   reverse() {
-    // Swap the head and tail.
     [this.head, this.tail] = [this.tail, this.head];
-    // Initialize currNode, prevNode, nextNode.
     let currNode = this.tail;
     let prevNode = null;
     let nextNode = null;
-    // Loop through the list.
     for (let i = 0; i < this.length; i++) {
-      // Preserve the reference to the nextNode before effectively reversing currNode's link direction.
       nextNode = currNode.next;
-      // Reverse the link direction.
       currNode.next = prevNode;
-      // Move on.
       prevNode = currNode;
       currNode = nextNode;
     }
     return this;
   }
-}
 
-// Rotate all the nodes in the linked list by num.
-rotate(num) {
-  // Process the integer num.
-  num = num % this.length;
-  if (num < 0) num = this.length + num;
-  // Edge Case
-  if (num === 0) return this;
-  else {
-    const newTail = this.get(num - 1);
-    const newHead = newTail.next;
-    newTail.next = null;
-    this.tail.next = this.head;
-    this.head = newHead;
-    this.tail = newTail;
-    return this;
+  // Rotate all the nodes in the linked list by num.
+  rotate(num) {
+    num = num % this.length;
+    if (num < 0) num = this.length + num;
+    if (num === 0) return this;
+    else {
+      const newTail = this.get(num - 1);
+      const newHead = newTail.next;
+      newTail.next = null;
+      this.tail.next = this.head;
+      this.head = newHead;
+      this.tail = newTail;
+      return this;
+    }
   }
-}
 
-// Return the kth to last node.
-kthToLast(k) {
-  let targetNode = this.head;
-  for (let i = 0; i < this.length - k; i++) {
-    targetNode = targetNode.next;
+  // Return the kth to last node.
+  kthToLast(k) {
+    let targetNode = this.head;
+    for (let i = 0; i < this.length - k; i++) {
+      targetNode = targetNode.next;
+    }
+    return targetNode;
   }
-  return targetNode;
-}
 
-// Check if linked list is a palindrome.
-isPalindrome() {
-  // Compute linked list values into a string.
-  let str = "";
-  let currNode = this.head;
-  while (currNode !== null) {
-    str += currNode.val;
-    curNode = currNode.next;
+  // Check if linked list is a palindrome.
+  isPalindrome() {
+    // Compute linked list values into a string.
+    let str = "";
+    let currNode = this.head;
+    while (currNode !== null) {
+      str += currNode.val;
+      currNode = currNode.next;
+    }
+
+    // Reverse str.
+    let reversed = "";
+    for (let i = str.length - 1; i >= 0; i--) {
+      reversed += str[i];
+    }
+
+    return str === reversed;
   }
-  
-  // Reverse str.
-  let reversed = "";
-  for (let i = str.length - 1; i >= 0; i--) {
-    reversed += str[i];
-  }
-  
-  return str === reversed;
 }
 ```
-
-
-
-
