@@ -2,12 +2,16 @@
 
 ## Table of Contents
 - [What is Abstract Data Type(ADT)?](#what-is-abstract-data-typeadt)
-- [JS Array ft. V8](#js-array-ft-v8)
+- [JS Array](#js-array)
   - [JS Typed Arrays](#js-typed-arrays)
-  - [ArrayBuffer](#arraybuffer)
+    - [Typed Array Architecture](#typed-array-architecture)
+      - [Buffer](#buffer)
+        - [ArrayBuffer](#arraybuffer)
+      - [View](#view)
+      - [Examples](#examples)
   - [How V8 Manages Array Memory Location](#how-v8-manages-array-memory-location)
     - [General Rule](#general-rule)
-    - [Testcases](#testcases)
+    - [Test Cases](#test-cases)
 
 ## What is Abstract Data Type(ADT)?
 > ...an abstract data type (ADT) is a mathematical model for data types. An abstract data type is defined by its behavior (semantics) from the point of view of a user, of the data, specifically in terms of possible values, possible operations on data of this type, and the behavior of these operations. This mathematical model contrasts with data structures, which are concrete representations of data, and are the point of view of an implementer, not a user. | Wikipedia
@@ -20,14 +24,69 @@
 
 ## JS Array
 ### JS Typed Arrays
-- blahblah
+> **JavaScript typed arrays** are array-like objects that provide a mechanism for reading and writing raw binary data in memory buffers. | MDN
 
-### ArrayBuffer
+- **In a JS typed array, each entry is raw binary value represented in a supported format (8-bit integers, 64-bit floating-point numbers, etc.).**
+- A typed array has some common array methods. However, it is *not an ordinary array*.
+  - `Array.isArray(typedArr); // false`
+- In cases such as manipulating audio/video, or dealing with WebSockets, we need to quickly and easily manipulate raw binary data in JS code.
+#### Typed Array Architecture
+- A typed array is implemented using two things: **buffers** and **views**.
+##### Buffer
+- A **buffer** is an object that represents a portion of memory that is set aside as a temporary holding place for data.
+- A buffer has no format or mechanism to access its contents.
+###### ArrayBuffer
 > The **`ArrayBuffer`** object is used to represent a generic, fixed-length raw binary data buffer. | MDN
 
 > It is an array of bytes, often referred to in other languages as a "byte array". You cannot directly manipulate the contents of an ArrayBuffer; instead, you create one of the typed array objects or a DataView object which represents the buffer in a specific format, and use that to read and write the contents of the buffer. | MDN
+##### View
+> A view provides a *context* - that is, a data type, starting offset, and number of elements - that turns the data into an actual typed array. | MDN
 
-- A **buffer** is a portion of memory that is set aside as a temporary holding place for data.
+- A view is needed to access the memory contained in a buffer.
+- Typed array views [here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Typed_arrays#typed_array_views).
+##### Examples
+###### Example 1
+- Creating an 8 byte buffer with an Int32Array view, with contents initialized to 0.
+```js
+const buffer = new ArrayBuffer(8);
+buffer.byteLength; // 8
+
+const view = new Int32Array(buffer); // Int32Array(2) [ 0, 0 ]
+```
+```
+DebugPrint: 0x21cb93d49469: [JSTypedArray]
+ ...
+ - elements: 0x21cb56d83269 <ByteArray[0]> [INT32ELEMENTS]
+ - embedder fields: 2
+ - buffer: 0x21cbba634149 <ArrayBuffer map = 0x21cbaed42601>
+ - byte_offset: 0
+ - byte_length: 8
+ - length: 2
+ ...
+ - elements: 0x21cb56d83269 <ByteArray[0]> {
+         0-1: 0
+ }
+```
+###### Example 2
+- Sharing the same data/buffer (8 byte array) with multiple views (16-bit integer view and 32-bit integer view).
+- The two arrays view the same data buffer but treat them in different formats.
+```js
+const buffer = new ArrayBuffer(8);
+
+const view1 = new Int16Array(buffer); // Int16Array(4) [ 0, 0, 0, 0 ]
+const view2 = new Int32Array(buffer); // Int32Array(2) [ 0, 0 ]
+
+view1[0] = 3;
+buffer; // <03 00 00 00 00 00 00 00> <-- hexadecimals
+view1; // [ 3, 0, 0, 0 ]
+view2; // [ 3, 0 ]
+
+view1[1] = 5;
+buffer; // <03 00 05 00 00 00 00 00> <-- hexadecimals
+view1; // [ 3, 5, 0, 0 ]
+view2; // [ 327683, 0 ]
+```
+
 ### How V8 Manages Array Memory Location
 - When more elements are added to the array beyond its internal size (buffer), V8 copies over the array to another memory address (reallocation) in order to accommodate more buffer.
   - `new_capacity = (old_capacity + 50%) + 16`
