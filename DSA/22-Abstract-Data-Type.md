@@ -30,6 +30,7 @@
 - A typed array has some common array methods. However, it is *not an ordinary array*.
   - `Array.isArray(typedArr); // false`
 - In cases such as manipulating audio/video, or dealing with WebSockets, we need to quickly and easily manipulate raw binary data in JS code.
+- Typed arrays are iterable. Therefore, they can be converted to ordinary arrays using the spread syntax or `Array.from()`.
 #### Typed Array Architecture
 - A typed array is implemented using two things: **buffers** and **views**.
 ##### Buffer
@@ -54,6 +55,26 @@ buffer.byteLength; // 8
 const view = new Int32Array(buffer); // Int32Array(2) [ 0, 0 ]
 ```
 ```
+> %DebugPrint(buffer)
+
+DebugPrint: 0x8f311fc5451: [JSArrayBuffer] in OldSpace
+ ...
+ - elements: 0x08f35e5c1329 <FixedArray[0]> [HOLEY_ELEMENTS]
+ - embedder fields: 2
+ - backing_store: 0x600000bec0f0
+ - byte_length: 8
+ - max_byte_length: 8
+ - detachable
+ - properties: 0x08f35e5c1329 <FixedArray[0]>
+ - All own properties (excluding elements): {}
+ - embedder fields = {
+    0, aligned pointer: 0x0
+    0, aligned pointer: 0x0
+ }
+```
+```
+> %DebugPrint(view)
+
 DebugPrint: 0x21cb93d49469: [JSTypedArray]
  ...
  - elements: 0x21cb56d83269 <ByteArray[0]> [INT32ELEMENTS]
@@ -77,14 +98,14 @@ const view1 = new Int16Array(buffer); // Int16Array(4) [ 0, 0, 0, 0 ]
 const view2 = new Int32Array(buffer); // Int32Array(2) [ 0, 0 ]
 
 view1[0] = 3;
-buffer; // <03 00 00 00 00 00 00 00> <-- hexadecimals
-view1; // [ 3, 0, 0, 0 ]
-view2; // [ 3, 0 ]
+buffer; // <03 00 00 00 00 00 00 00> <-- hex
+view1; // [ 3, 0, 0, 0 ] <-- Int16 Little-Endian (03 00 / 00 00 / 00 00 / 00 00)
+view2; // [ 3, 0 ] <-- Int32 Little-Endian (03 00 00 00 / 00 00 00 00)
 
 view1[1] = 5;
-buffer; // <03 00 05 00 00 00 00 00> <-- hexadecimals
-view1; // [ 3, 5, 0, 0 ]
-view2; // [ 327683, 0 ]
+buffer; // <03 00 05 00 00 00 00 00> <-- hex
+view1; // [ 3, 5, 0, 0 ] <-- Int16 Little-Endian (03 00 / 05 00 / 00 00 / 00 00)
+view2; // [ 327683, 0 ] <-- Int32 Little-Endian (03 00 05 00 / 00 00 00 00)
 ```
 
 ### How V8 Manages Array Memory Location
@@ -255,3 +276,4 @@ DebugPrint: 0xd800bab2001: [JSArray] in OldSpace
 [Abstract data type - Wikipedia](https://en.wikipedia.org/wiki/Abstract_data_type)  
 [JavaScript typed arrays - JavaScript | MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Typed_arrays)  
 [ArrayBuffer - JavaScript | MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer)  
+[Online Hex Converter - Bytes, Ints, Floats, Significance, Endians - SCADACore](https://www.scadacore.com/tools/programming-calculators/online-hex-converter/)  
