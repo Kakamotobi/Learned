@@ -5,9 +5,16 @@
 - [Computer Hardware](#computer-hardware)
   - [I/O Devices](#io-devices)
   - [Central Processing Unit(CPU)](#central-processing-unitcpu)
-    - [Machine Instruction Cycle](#machine-instruction-cycle)
     - [Parts of a CPU](#parts-of-a-cpu)
+      - [Control Unit](#control-unit)
+      - [Memory Unit](#memory-unit)
+        - [Registers](#registers)
+        - [Cache](#cache)
+      - [Arithmetic-Logic Unit](#arithmetic-logic-unit)
+      - [Wires/Bus](#wiresbus)
     - [CPU Architecture](#cpu-architecture)
+    - [Machine Instruction Cycle](#machine-instruction-cycle)
+    - [Instruction Pipelining](#instruction-pipelining)
   - [Memory](#memory)
     - [Memory Hierarchy](#memory-hierarchy)
     - [Memory Segments and Addresses](#memory-segments-and-addresses)
@@ -54,37 +61,70 @@
 - The **clock speed/rate** of a CPU is measured in GHz (billions of cycles per second).
 - **Instructions Per Cycle(IPC)** refers to the number of instructions that the CPU can complete per cycle.
   - Ex: CPU A with 2.4 GHz and 2 IPC is better than CPU B with 2.4 GHz and 1 IPC.
-#### Machine Instruction Cycle
-<p align="center">
-  <img src="https://github.com/Kakamotobi/Learned/blob/main/Computer%20Science/refImg/machine-instruction-cycle.png" alt="Machine Instruction Cycle" width="80%" /><br />
-  <em>This cycle is repeated billions of times per second.</em>
-</p>
 
-1. Fetch
-    - A program is essentially a set of instructions stored in the **RAM**.
-    - The CPU has registers to temporarily store the address in memory that it wants to interact with.
-    - The **Program Counter** starts at 0 and copies that address to the **Memory Address Register**.
-    - The **Control Unit** sends out a signal to copy the data from that address to the **Instruction Register**, effectively fetching the set of instructions.
-2. Decode
-    - The Control Unit parses the actual bits/instructions.
-      - OptCode - instruction (Ex: add, subtract).
-      - Operand - address in memory to perform that operation on.
-    - The decoded information is passed as electrical signals to the relevant parts of the CPU.
-3. Execute
-    - The **Arithmetic Logic Unit(ALU)** performs math on the data.
-4. Store
-    - The result is stored in memory to change the state of the program.
 #### Parts of a CPU
+- A CPU is comprised of a **Control Unit**, **Memory Unit**, and an **Arithmetic-Logic Unit**.
+
 <p align="center">
   <img src="https://github.com/Kakamotobi/Learned/blob/main/Computer%20Science/refImg/CPU.png" alt="CPU" width="60%" />
 </p>
 
-##### Processor Register
-- A small amount of fast storage to store data necessary for calculations.
 ##### Control Unit
-- Responsible for controlling the order of execution of commands.
-##### Combinational Logic
-- Handles arithmetic and logical operations.
+> The control unit (CU) is a component of a computer's central processing unit (CPU) that directs the operation of the processor. | Wikipedia
+
+- The control unit is responsible for controlling the order of execution of commands and uses **control signals** to direct how the memory, ALU, and I/O devices should respond to the instructions that the processor received.
+##### Memory Unit
+- The CPU's memory unit is comprised of several **registers** and **cache**.
+- This is not the same as main memory, which is outside the CPU.
+###### Registers
+- **Registers** are quickly and directly accessible temporary memory in the CPU (fastest memory in a computer) where data is stored in bits/byte code.
+- Some registers include: accumulator register, index register, stack pointer, program counter, memory address register, memory buffer register, command register, flag register, general-purpose registers.
+- **Program Counter(PC)**
+  - A register storing the address of the instruction being or to be executed.
+  - It automatically increments as instructions are executed.
+- **Memory Address Register(MAR)**
+  - A register temporarily storing the address of the instruction stored in the Program Counter *before being outputted to the memory bus*.
+- **Memory Buffer/Data Register(MBR)**
+  - A register storing data being transferred to and from main memory.
+  - It serves as a buffer between the CPU and main memory, *which is what allows the two to operate concurrently*.
+    - The processor accesses the data in the MBR, which allows the memory unit to start bringing next data from main memory to the MBR.
+- **Instruction Register(IR)**
+  - A register storing the instruction that was fetched from main memory to be executed now.
+  - It holds the instruction code (operation code) and the operands (data or addresses) needed for the instruction in byte code.
+  - Instructions are taken from the IR one at a time by the control unit for the processor to execute.
+- **Accumulator Register**
+  - A general-purpose register storing the result of ALU operations.
+  - It is used to hold results and pass arguments to functions.
+- **Stack Pointer**
+  - A register storing the address for the value that is at the top of the call stack.
+###### Cache
+- **Cache** memory (L1, L2 Cache) is memory intended to be used to reduce the average time that the Register needs to access data from main memory.
+  - Copies of frequently used data from main memory are stored.
+  - The closer the cache is to the CPU, the faster that it can be accessed.
+##### Arithmetic-Logic Unit
+- The CPU's ALU is responsible for performing arithmetic and logic operations.
+- It performs: addition, subtraction, multiplication, division, AND, OR, NOT.
+- It performs the required operation upon receiving the operation code and operands from the registers.
+##### Wires/Bus
+- The internal parts of a CPU is connected via physical wires.
+###### Address Bus
+- A group of wires or connections used for the purpose of transmitting (both storing and retrieving) the address of a specific location in main memory.
+  - i.e. the CPU uses the address bus to specify the target location in main memory.
+- The address bus' width indicates the maximum number of memory locations that can be accessed.
+  - Ex: 32-bit address bus simply means that the computer can access any one of 2^32 (4,294,967,296) number of different memory locations (about 4GB worth of memory addresses).
+- *Note*
+  - *The width of the address bus does not directly relate to the size of each memory location.*
+###### Data Bus
+- A group of wires or connections used for the purpose of transmitting data between the CPU, main memory, I/O device, etc.
+  - i.e. data is transmitted via the data bus to/from the memory location specified by the address bus.
+- The data bus' width indicates the maximum possible size (in bits) of a single memory access, which also means the maximum size of a single item in each memory location.
+  - i.e. how many bits maximum can be moved at a time.
+  - Ex: a data bus that is 8 bits wide means that a single memory access can be maximum 8 bits, and therefore, each memory location can hold an 8-bit value maximum (a single character or pixel).
+- Usually between 32 and 512 bits.
+###### Control Bus
+- A group of wires or signals used for the purpose of transmitting control signals (Ex: read, write, execute, transfer) or commands between the CPU, main memory, etc.
+  - i.e. pathway for control signals.
+  - Used by the control unit to coordinate actions.
 #### CPU Architecture
 ##### CPU/Processor
 - A computer may have one or more CPUs (**multiprocessing**).
@@ -112,6 +152,42 @@
   - Rather, a core can switch between processing different threads ***concurrently***. Therefore, it can efficiently switch over to another thread when the current thread is on a downtime (Ex: waiting for resources, cache, etc).
 - Threads share resources (Ex: computing units, caches) of the core that they belong to.
 - **Context Switching** refers to storing the state of a thread so that it can resume execution later from that state. This allows for multitasking.
+#### Machine Instruction Cycle
+<p align="center">
+  <img src="https://github.com/Kakamotobi/Learned/blob/main/Computer%20Science/refImg/machine-instruction-cycle.png" alt="Machine Instruction Cycle" width="80%" /><br />
+  <em>This cycle is repeated billions of times per second.</em>
+</p>
+
+1. **Fetch**
+    - The **control unit** looks at the **program counter** for the address to retrieve the next instruction/command from in the main memory. The retrieved instruction is stored in the **instruction register**.
+    - Explanation
+      - A program is essentially a set of instructions stored in the **RAM**.
+      - The CPU has **registers** to temporarily store the address in memory that it wants to interact with.
+      - The **Program Counter** starts at 0 and the address that it is pointing to is copied over to the **Instruction Register**, effectively fetching the instruction.
+2. **Decode**
+    - The **control unit** uses the **instruction decoder** to decode the command (from byte code to assembly) that is currently in the **instruction register** to figure out what to do.
+    - After decoding, the **control unit** sends out the decoded information through electrical signals to the relevant parts of the CPU.
+      - Ex: retrieve the operands (data or addresses) needed for executing the instruction from the corresponding registers.
+    - Explanation
+      - The **control unit** parses the actual instruction expressed in bits to figure out the **operation code** and any **operands**.
+      - This decoded information is then passed as electrical signals to the relevant parts of the CPU.
+3. **Execute**
+    - Depending on the instruction, the **control unit** sends signals to the **ALU** to perform an arithmetic operation OR sends signals to the **memory unit** to transfer data from/to main memory to/from a register.
+4. Store
+    - If needed, store the result in main memory (state of the program).
+#### Instruction Pipelining
+> Instruction pipelining is a technique of organising the instructions for execution in such a way that the execution of the current instruction is overlapped by the execution of its subsequent instruction. Instruction pipelining improves the performance of the processor by increasing its throughput i.e. number of instructions per unit time. | Binary Terms
+
+<p align="center">
+  <img src="https://binaryterms.com/wp-content/uploads/2021/03/Instruction-Pipelining.jpg" alt="Instruction Pipelining" width="80%" /><br/>
+  <em>Source: https://binaryterms.com/wp-content/uploads/2021/03/Instruction-Pipelining.jpg</em>
+</p>
+
+- IF - Instruction Fetch
+- ID - Instruction Decode
+- OF - Operand Fetch
+- IE - Instruction Execute
+- OS - Operand Store
 ### Memory
 #### Memory Hierarchy
 <p align="center">
@@ -358,15 +434,22 @@
 - If there are multiple bookmarks in a book, it is a multi-threaded process.
 
 ## Reference
-[Operating system for beginners || Operating system basics - YouTube](https://www.youtube.com/watch?v=6-mdtMKfEYM&ab_channel=Geek%27sLesson)  
-[Introductino to Operating System - YouTube](https://www.youtube.com/watch?v=vBURTt97EkA&list=PLBlnK6fEyqRiVhbXDGLXDk_OQAeuVcp2O&ab_channel=NesoAcademy)  
 [Central processing unit - Wikipedia](https://en.wikipedia.org/wiki/Central_processing_unit)  
+[Computer architecture - Wikipedia](https://en.wikipedia.org/wiki/Computer_architecture)  
+[Control unit - Wikipedia](https://en.wikipedia.org/wiki/Control_unit)  
+[Introduction of Control Unit and its Design - GeeksforGeeks](https://www.geeksforgeeks.org/introduction-of-control-unit-and-its-design/)  
 [Cache Memory in Computer Organization - GeeksforGeeks](https://www.geeksforgeeks.org/cache-memory-in-computer-organization/)  
-[Random Access Memory (RAM) and Read Only Memory (ROM) - GeeksforGeeks](https://www.geeksforgeeks.org/random-access-memory-ram-and-read-only-memory-rom/#:~:text=ROM%20is%20further%20classified%20into,PROM%2C%20EPROM%2C%20and%20EEPROM.)  
-[Page (computer memory) - Wikipedia](https://en.wikipedia.org/wiki/Page_(computer_memory))  
-[Virtual Address Space (Memory Management) - Win32 apps | Microsoft Docs](https://docs.microsoft.com/en-us/windows/win32/memory/virtual-address-space)  
-[CS 225 | Stack and Heap Memory](https://courses.engr.illinois.edu/cs225/sp2022/resources/stack-heap/)  
+[What is Instruction Pipelining? Introduction, Hazards and Advantages - Binary Terms](https://binaryterms.com/instruction-pipelining.html)  
+
 [Thread (computing) - Wikipedia](https://en.wikipedia.org/wiki/Thread_(computing))  
 [Multithreading and Multiprocessing in 10 Minutes | by Kay Jan Wong | Towards Data Science](https://towardsdatascience.com/multithreading-and-multiprocessing-in-10-minutes-20d9b3c6a867)  
 [How a CPU Works in 100 Seconds // Apple Silicon M1 vs Intel i9 - YouTube](https://www.youtube.com/watch?v=vqs_0W-MSB0&ab_channel=Fireship)  
 [Single Core vs Multi Core - Which is more important? A CPU primer. - YouTube](https://www.youtube.com/watch?v=D8ooMQG0T4k&ab_channel=ConstantGeekery)  
+
+[Random Access Memory (RAM) and Read Only Memory (ROM) - GeeksforGeeks](https://www.geeksforgeeks.org/random-access-memory-ram-and-read-only-memory-rom/#:~:text=ROM%20is%20further%20classified%20into,PROM%2C%20EPROM%2C%20and%20EEPROM.)  
+[Page (computer memory) - Wikipedia](https://en.wikipedia.org/wiki/Page_(computer_memory))  
+[Virtual Address Space (Memory Management) - Win32 apps | Microsoft Docs](https://docs.microsoft.com/en-us/windows/win32/memory/virtual-address-space)  
+[CS 225 | Stack and Heap Memory](https://courses.engr.illinois.edu/cs225/sp2022/resources/stack-heap/)  
+
+[Operating system for beginners || Operating system basics - YouTube](https://www.youtube.com/watch?v=6-mdtMKfEYM&ab_channel=Geek%27sLesson)  
+[Introduction to Operating System - YouTube](https://www.youtube.com/watch?v=vBURTt97EkA&list=PLBlnK6fEyqRiVhbXDGLXDk_OQAeuVcp2O&ab_channel=NesoAcademy)  
