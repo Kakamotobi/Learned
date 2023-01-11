@@ -7,11 +7,11 @@
   - [Central Processing Unit(CPU)](#central-processing-unitcpu)
     - [Parts of a CPU](#parts-of-a-cpu)
       - [Control Unit](#control-unit)
-      - [Memory Unit](#memory-unit)
-        - [Registers](#registers)
-        - [Cache](#cache)
+      - [Registers](#registers)
+      - [Cache](#cache)
+      - [Memory Controller](#memory-controller)
       - [Arithmetic-Logic Unit](#arithmetic-logic-unit)
-      - [Wires/Bus](#wiresbus)
+      - [Wires/Buses](#wiresbuses)
     - [CPU Architecture](#cpu-architecture)
     - [Machine Instruction Cycle](#machine-instruction-cycle)
     - [Instruction Pipelining](#instruction-pipelining)
@@ -63,7 +63,7 @@
   - Ex: CPU A with 2.4 GHz and 2 IPC is better than CPU B with 2.4 GHz and 1 IPC.
 
 #### Parts of a CPU
-- A CPU is comprised of a **Control Unit**, **Memory Unit**, and an **Arithmetic-Logic Unit**.
+- A CPU is comprised of a **Control Unit**, **Registers**, **Cache**, **Arithmetic-Logic Unit**, and **Wires/Buses** connecting them.
 
 <p align="center">
   <img src="https://github.com/Kakamotobi/Learned/blob/main/Computer%20Science/refImg/CPU.png" alt="CPU" width="60%" />
@@ -73,10 +73,7 @@
 > The control unit (CU) is a component of a computer's central processing unit (CPU) that directs the operation of the processor. | Wikipedia
 
 - The control unit is responsible for controlling the order of execution of commands and uses **control signals** to direct how the memory, ALU, and I/O devices should respond to the instructions that the processor received.
-##### Memory Unit
-- The CPU's memory unit is comprised of several **registers** and **cache**.
-- This is not the same as main memory, which is outside the CPU.
-###### Registers
+##### Registers
 - **Registers** are quickly and directly accessible temporary memory in the CPU (fastest memory in a computer) where data is stored in bits/byte code.
 - Some registers include: accumulator register, index register, stack pointer, program counter, memory address register, memory buffer register, command register, flag register, general-purpose registers.
 - **Program Counter(PC)**
@@ -97,34 +94,39 @@
   - It is used to hold results and pass arguments to functions.
 - **Stack Pointer**
   - A register storing the address for the value that is at the top of the call stack.
-###### Cache
+##### Cache
 - **Cache** memory (L1, L2 Cache) is memory intended to be used to reduce the average time that the Register needs to access data from main memory.
   - Copies of frequently used data from main memory are stored.
   - The closer the cache is to the CPU, the faster that it can be accessed.
+#### Memory Controller
+- The memory controller is responsible for managing communication (reading, writing, memory addressing, memory refresh) between the CPU and main memory.
+- It is usually integrated inside the CPU chip and connected to other components via the system bus.
 ##### Arithmetic-Logic Unit
 - The CPU's ALU is responsible for performing arithmetic and logic operations.
 - It performs: addition, subtraction, multiplication, division, AND, OR, NOT.
 - It performs the required operation upon receiving the operation code and operands from the registers.
-##### Wires/Bus
-- The internal parts of a CPU is connected via physical wires.
-###### Address Bus
-- A group of wires or connections used for the purpose of transmitting (both storing and retrieving) the address of a specific location in main memory.
-  - i.e. the CPU uses the address bus to specify the target location in main memory.
-- The address bus' width indicates the maximum number of memory locations that can be accessed.
+#### Wires/Buses
+- The different parts of a computer (including components of the CPU) are connected via physical wires called **buses**.
+##### System Bus
+- A group of wires or connections between the CPU, memory controller, main memory, and I/O devices.
+- It is the combination of: the **control bus**, **address bus**, and **data bus**.
+##### Control Bus
+- A group of wires for transmitting **control signals** to control the CPU's operation and other components of the computer.
+  - i.e. pathway used by the control unit to coordinate actions.
+##### Address Bus
+- A group of wires for specifying the address of the target data in main memory.
+  - i.e. serves as an indicator for where to store/retrieve the data to/from in main memory.
+- The address bus' width indicates the maximum number of memory locations that can be accessed (i.e. that it's aware of).
   - Ex: 32-bit address bus simply means that the computer can access any one of 2^32 (4,294,967,296) number of different memory locations (about 4GB worth of memory addresses).
 - *Note*
   - *The width of the address bus does not directly relate to the size of each memory location.*
-###### Data Bus
-- A group of wires or connections used for the purpose of transmitting data between the CPU, main memory, I/O device, etc.
-  - i.e. data is transmitted via the data bus to/from the memory location specified by the address bus.
-- The data bus' width indicates the maximum possible size (in bits) of a single memory access, which also means the maximum size of a single item in each memory location.
-  - i.e. how many bits maximum can be moved at a time.
+##### Data Bus
+- A group of wires for transferring data between the CPU, main memory, cache, I/O device, etc.
+  - i.e. data is transmitted via the data bus to/from the location specified by the address bus.
+- The data bus' width indicates the maximum possible size (in bits) of a single memory access, which also indicates the maximum size of a single item in each memory location.
+  - i.e. how many bits maximum can be transferred at a time.
   - Ex: a data bus that is 8 bits wide means that a single memory access can be maximum 8 bits, and therefore, each memory location can hold an 8-bit value maximum (a single character or pixel).
 - Usually between 32 and 512 bits.
-###### Control Bus
-- A group of wires or signals used for the purpose of transmitting control signals (Ex: read, write, execute, transfer) or commands between the CPU, main memory, etc.
-  - i.e. pathway for control signals.
-  - Used by the control unit to coordinate actions.
 #### CPU Architecture
 ##### CPU/Processor
 - A computer may have one or more CPUs (**multiprocessing**).
