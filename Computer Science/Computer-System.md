@@ -13,8 +13,15 @@
       - [Arithmetic-Logic Unit](#arithmetic-logic-unit)
       - [Wires/Buses](#wiresbuses)
     - [CPU Architecture](#cpu-architecture)
+    - [Instructions](#instructions)
     - [Machine Instruction Cycle](#machine-instruction-cycle)
     - [Instruction Pipelining](#instruction-pipelining)
+    - [CPU Performance](#cpu-performance)
+      - [Performance Metrics](#performance-metrics)
+        - [Clock](#clock)
+        - [Million Instructions per Second(MIPS)](#million-instructions-per-secondmips)
+        - [Response/Elapsed Time](#responseelapsed-time)
+      - [Considerations for CPU Performance](#considerations-for-cpu-performance)
   - [Memory](#memory)
     - [Memory Hierarchy](#memory-hierarchy)
     - [Memory Segments and Addresses](#memory-segments-and-addresses)
@@ -61,7 +68,6 @@
 - The **clock speed/rate** of a CPU is measured in GHz (billions of cycles per second).
 - **Instructions Per Cycle(IPC)** refers to the number of instructions that the CPU can complete per cycle.
   - Ex: CPU A with 2.4 GHz and 2 IPC is better than CPU B with 2.4 GHz and 1 IPC.
-
 #### Parts of a CPU
 - A CPU is comprised of a **Control Unit**, **Registers**, **Cache**, **Arithmetic-Logic Unit**, and **Wires/Buses** connecting them.
 
@@ -73,29 +79,32 @@
 > The control unit (CU) is a component of a computer's central processing unit (CPU) that directs the operation of the processor. | Wikipedia
 
 - The control unit is responsible for controlling the order of execution of commands and uses **control signals** to direct how the memory, ALU, and I/O devices should respond to the instructions that the processor received.
+  - i.e. it is the one operating the **machine instruction cycle**.
 ##### Registers
 - **Registers** are quickly and directly accessible temporary memory in the CPU (fastest memory in a computer) where data is stored in bits/byte code.
 - Some registers include: accumulator register, index register, stack pointer, program counter, memory address register, memory buffer register, command register, flag register, general-purpose registers.
-- **Program Counter(PC)**
-  - A register storing the address of the instruction being or to be executed.
-  - It automatically increments as instructions are executed.
-- **Memory Address Register(MAR)**
-  - A register temporarily storing the address of the instruction stored in the Program Counter *before being outputted to the memory bus*.
-- **Memory Buffer/Data Register(MBR)**
-  - A register storing data being transferred to and from main memory.
-  - It serves as a buffer between the CPU and main memory, *which is what allows the two to operate concurrently*.
-    - The processor accesses the data in the MBR, which allows the memory unit to start bringing next data from main memory to the MBR.
-- **Instruction Register(IR)**
-  - A register storing the instruction that was fetched from main memory to be executed now.
-  - It holds the instruction code (operation code) and the operands (data or addresses) needed for the instruction in byte code.
-  - Instructions are taken from the IR one at a time by the control unit for the processor to execute.
-- **Accumulator Register**
-  - A general-purpose register storing the result of ALU operations.
-  - It is used to hold results and pass arguments to functions.
-- **Stack Pointer**
-  - A register storing the address for the value that is at the top of the call stack.
-##### Cache
-- **Cache** memory (L1, L2 Cache) is memory intended to be used to reduce the average time that the Register needs to access data from main memory.
+###### Program Counter(PC)
+- A register storing the address of the instruction being or to be executed.
+- It automatically increments as instructions are executed.
+###### Memory Address Register(MAR)
+- A register temporarily storing the address of the instruction stored in the Program Counter _before being outputted to the memory bus_.
+###### Memory Buffer Register(MBR)
+- a.k.a. Memory Data Register(MDR)
+- A register storing data being transferred to and from main memory.
+- It serves as a buffer between the CPU and main memory, _which allows the two to operate concurrently_.
+  - The processor accesses the data in the MBR, which allows the memory unit to start bringing next data from main memory to the MBR.
+###### Instruction Register(IR)
+- a.k.a. Current Instruction Register(CIR)
+- A register storing the instruction that was fetched from main memory to be executed now.
+- It holds the instruction code (opcode) and the operands (data or addresses) needed for the instruction in binary code.
+- Instructions are taken from the IR one at a time by the control unit for the processor to execute.
+##### Accumulator Register(ACC)
+- A general-purpose register storing the result of ALU operations.
+- It is used to hold results and pass arguments to functions.
+##### Stack Pointer
+- A register storing the address for the value that is at the top of the call stack.
+#### Cache
+- **Cache** (L1, L2 Cache) is memory intended to be used to reduce the average time that the Register needs to access data from main memory.
   - Copies of frequently used data from main memory are stored.
   - The closer the cache is to the CPU, the faster that it can be accessed.
 #### Memory Controller
@@ -154,6 +163,20 @@
   - Rather, a core can switch between processing different threads ***concurrently***. Therefore, it can efficiently switch over to another thread when the current thread is on a downtime (Ex: waiting for resources, cache, etc).
 - Threads share resources (Ex: computing units, caches) of the core that they belong to.
 - **Context Switching** refers to storing the state of a thread so that it can resume execution later from that state. This allows for multitasking.
+#### Instructions
+- An instruction is a binary number that contains the operation code and operands required to complete the operation.
+  - Ex: `opCode operand1 operand2 operand3`
+- Some operations are: load, store, move, add, subtract, and, or.
+- Some operations like branch(B), and branch with link (BL) can jump to another command in another memory adderss (instead of continuing to the next in line in memory).
+  - This leads to **pipeline bubbling** where some CPU clocks have to discarded since the computations done in the bubble cannot be used.
+  - Therefore, it is ideal to reduce as much statements such as `if...else`.
+#### Instructions
+- An instruction is a binary number that contains the operation code and operands required to complete the operation.
+  - Ex: `opCode operand1 operand2 operand3`
+- Some operations are: load, store, move, add, subtract, and, or.
+- Some operations like branch(B), and branch with link (BL) can jump to another command in another memory adderss (instead of continuing to the next in line in memory).
+  - This leads to **pipeline bubbling** where some CPU clocks have to discarded since the computations done in the bubble cannot be used.
+  - Therefore, it is ideal to reduce as much statements such as `if...else`.
 #### Machine Instruction Cycle
 <p align="center">
   <img src="https://github.com/Kakamotobi/Learned/blob/main/Computer%20Science/refImg/machine-instruction-cycle.png" alt="Machine Instruction Cycle" width="80%" /><br />
@@ -180,9 +203,11 @@
 #### Instruction Pipelining
 > Instruction pipelining is a technique of organising the instructions for execution in such a way that the execution of the current instruction is overlapped by the execution of its subsequent instruction. Instruction pipelining improves the performance of the processor by increasing its throughput i.e. number of instructions per unit time. | Binary Terms
 
+- Allows operations to run concurrently.
+- There can be multiple pipelining in each core in a CPU.
+
 <p align="center">
   <img src="https://binaryterms.com/wp-content/uploads/2021/03/Instruction-Pipelining.jpg" alt="Instruction Pipelining" width="80%" /><br/>
-  <em>Source: https://binaryterms.com/wp-content/uploads/2021/03/Instruction-Pipelining.jpg</em>
 </p>
 
 - IF - Instruction Fetch
@@ -190,6 +215,42 @@
 - OF - Operand Fetch
 - IE - Instruction Execute
 - OS - Operand Store
+#### CPU Performance
+##### Performance Metrics
+###### Clock
+> The clock sends out a regular electrical pulse which synchronises (keeps in time) all the components. | BBC
+
+- A small cylinder-like component next to a mercury battery on the mainboard.
+- **Clock Speed**
+  - The number of times that the clock pulses (clock cycle) per second is the clock's speed in Hz.
+    - Ex: 3.6GHz means that the clock pulses 3,600,000,000 times per second.
+  - One **clock cycle** is roughly equivalent to one unit of work that the processor performs.
+    - Executing one command requires about 4 to 5 blocks.
+  - Therefore, the clock speed of a CPU is an indicator of how fast the CPU is able to process operations required for instructions.
+    - A 3.6GHz processor is able to compute approximately 13 billion more operations than a 2.3GHz processor.
+  - The memory and CPU have different clocks.
+    - Ex: a CPU may be 3.6GHz while the memory be 2.1GHz.
+###### Million Instructions per Second(MIPS)
+- The number of instructions that the processor executes per second.
+- Since different instructions take different amounts of time, MIPS is not absolute and is not a constant metric. It is merely a vague reference to the CPU's performance.
+- Different CPUs cannot be compared to each other based on MIPS.
+- *Note*
+  - 3.6GHz means the processor executes 36 billion operations (not instructions) per second.
+###### Response/Elapsed Time
+- The time it took from start to finish is never constant.
+- There are many variables that can affect the time (Ex: OS, I/O delay, other programs using the CPU).
+- CPU resources are used by not only the programs but also the OS at the same time.
+##### Considerations for CPU Performance
+- Reduce program size.
+- Improve Cycles Per Instruction(CPI) by minimizing bubbles.
+  - Avoid using lots of function calls, `if...else` statements.
+  - Write code so that the CPU can easily predict what operations it needs to do (Ex: keep `true` and only `false` at the end).
+- Lots of memory access means higher space complexity, which also means the CPU needs more time to go back and forth to the memory.
+- Maximizing speed results to less throughput.
+- Maximizing throughput results to slow speed.
+- Therefore, we need to consider what is more efficient for the demand.
+- **Amdahl's Law**
+  - Simply improving one component does not necessarily mean the whole thing can
 ### Memory
 #### Memory Hierarchy
 <p align="center">
@@ -447,6 +508,7 @@
 [Multithreading and Multiprocessing in 10 Minutes | by Kay Jan Wong | Towards Data Science](https://towardsdatascience.com/multithreading-and-multiprocessing-in-10-minutes-20d9b3c6a867)  
 [How a CPU Works in 100 Seconds // Apple Silicon M1 vs Intel i9 - YouTube](https://www.youtube.com/watch?v=vqs_0W-MSB0&ab_channel=Fireship)  
 [Single Core vs Multi Core - Which is more important? A CPU primer. - YouTube](https://www.youtube.com/watch?v=D8ooMQG0T4k&ab_channel=ConstantGeekery)  
+[Common CPU components - Architecture - Eduqas - GCSE Computer Science Revision - Eduqas - BBC Bitesize](https://www.bbc.co.uk/bitesize/guides/zhppfcw/revision/2)  
 
 [Random Access Memory (RAM) and Read Only Memory (ROM) - GeeksforGeeks](https://www.geeksforgeeks.org/random-access-memory-ram-and-read-only-memory-rom/#:~:text=ROM%20is%20further%20classified%20into,PROM%2C%20EPROM%2C%20and%20EEPROM.)  
 [Page (computer memory) - Wikipedia](https://en.wikipedia.org/wiki/Page_(computer_memory))  
