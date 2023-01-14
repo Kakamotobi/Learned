@@ -3,6 +3,7 @@
 ## Table of Contents
 - [Big Picture](#big-picture)
 - [Computer Hardware](#computer-hardware)
+  - [Motherboard](#motherboard)
   - [I/O Devices](#io-devices)
   - [Central Processing Unit(CPU)](#central-processing-unitcpu)
     - [Parts of a CPU](#parts-of-a-cpu)
@@ -24,8 +25,15 @@
       - [Considerations for CPU Performance](#considerations-for-cpu-performance)
   - [Memory](#memory)
     - [Memory Hierarchy](#memory-hierarchy)
-    - [Memory Segments and Addresses](#memory-segments-and-addresses)
-  - [Motherboard](#motherboard)
+    - [(Virtual) Memory Layout of a Program/Process](#virtual-memory-layout-of-a-programprocess)
+      - [Text Segment](#text-segment)
+      - [Data Segment](#data-segment)
+      - [Block Starting Symbol(BSS) Segment](#block-starting-symbolbss-segment)
+      - [Heap Segment](#heap-segment)
+        - [JS Heap Structure](#js-heap-structure)
+      - [Stack Segment](#stack-segment)
+        - [Stack Pointers](#stack-pointers)
+        - [How the Stack Segment Works](#how-the-stack-segment-works)
 - [System Programs and Application Programs](#system-programs-and-application-programs)
 - [Operating System](#operating-system)
   - [OS Structure](#os-structure)
@@ -47,6 +55,13 @@
   - The CPU and device controllers need access to the memory. They are loaded onto the main memory and can execute concurrently, competing for memory cycles.
     - Ex: typing while watching a video means concurrent execution is happening.
   - The memory controller ensures orderly access to the shared memory, effectively preventing lag in concurrent execution.
+### Motherboard
+- Handles the connection between the CPU and the Memory.
+  - A **bus** is a path on the motherboard that is used to transfer data between different parts of the motherboard.
+- It contains expansion slots where other things can be inserted to improve the computer without putting more load on the CPU.
+  - Ex: graphics card, sound card.
+- It also contains ports where outside sources can connect to the CPU (to get/give information).
+  - Ex: USB, SD card, ethernet, audio.
 ### I/O Devices
 - Input Ex: keyboard, mouse, microphone.
 - Output Ex: monitor, speaker.
@@ -296,74 +311,117 @@
   - Less expensive compared to primary memory devices.
 - **Remote Secondary Memory**
   - Cloud storage.
-#### Memory Segments and Addresses
+#### (Virtual) Memory Layout of a Program/Process
+- a.k.a. Virtual Address Space for a Process
+- **The memory layout of a process refers to the process-specific memory management on the virtual memory level (not the physical memory).**
+
 <p align="center">
   <img src="https://github.com/Kakamotobi/Learned/blob/main/Computer%20Science/refImg/memory-segments-and-addresses.png" alt="Process Memory Segments and Addresses" width="70%" />
 </p>
 
-- Each byte of memory is assigned an address (base 16 numbers by convention: 0x00000000 to 0xFFFFFFFF) in order to keep track of its location.
-- A memory address does not represent the actual physical location in memory.
+- When the OS loads a new process, it allocates a certain amount (about 2GB to 4GB nowadays) of main memory for that process.
+  - This memory may be in different locations across the physical main memory. However, the OS generates a **virtual memory space** for the process.
+  - This virtual memory space is divided into segments: **stack**, **heap**, **BSS**, **GVAR**, and **text**.
+- The address on the virtual memory ranges from 0x00000000 to 0xFFFFFFFF by convention.
+  - A memory address does not represent the actual physical location in memory.
   - Instead, the OS lists and maintains address mappings in a **page table** (a.k.a. process memory table), which the CPU uses to translate virtual addresses into their corresponding physical addresses on the RAM.
-  - The CPU translate the virtual address to a physical address each time a thread references an address.
-- ***Each process has its own Virtual Address Space (Code, Data, Stack, Heap) and the OS manages a separate page table for each process. Therefore, each process can only access its own memory.***
-  - If a process tries to use a part of the address space which is not mapped to actual RAM in the page table, the CPU triggers a hardware exception. Then the OS aborts the process with an error message called **page fault**.
-    - **Page:** a fixed-length contiguous block of virtual memory, described by a single entry in the page table.
-    - **Page Frame:** a fixed-length contiguous block of physical memory into which pages are mapped by the OS.
-##### Virtual Address Space
-- **The private set of virtual memory addresses for the particular process.**
-- The virtual address spaces of processes are stored in secondary memory (disk).
-  - Therefore, it can be larger than the physical memory.
-###### Code/Text
-- **The portion of memory for storing the code of the process to run.**
-  - i.e. the source code that we wrote compiled to machine language.
-- The CPU executes these codes one by one.
-- It is placed in lower memory address so that it is not overwritten by heap or stack.
-###### Data
-- **The portion of memory for storing global and static variables.**
-- Lifetime is tied to the program as memory is allocated once the process starts and deallocated once it ends.
-- **2 Types of Data**
-  - **Initialized Data**
-    - Global and static variables that are explicitly initialized with values.
-    - Variables can be changed but they can also be read-only.
-      - Ex: constants.
-  - **Uninitialized Data (Block Started by Symbol)**
-    - Global and static variables that are not initialized with any value.
-###### Heap
-- a.k.a. free storage.
-- **The portion of memory for storing everything else.**
-- Dynamic memory allocation that occurs during program execution by the programmer.
-  - Ex: `malloc`, `realloc`, `calloc`, `free` are functions used to manage heap memory in C.
-- *The process must explicitly request for allocation and deallocation of space using the system call.*
+  - The CPU translates the virtual address to a physical address each time a thread references an address.
+  - If a process tries to use a part of the address space which is not mapped to actual RAM in the page table, the CPU triggers a hardware exception. Then the OS aborts the process with an error message called page fault.
+    - Page: a fixed-length contiguous block of virtual memory, described by a single entry in the page table.
+    - Page Frame: a fixed-length contiguous block of physical memory into which pages are mapped by the OS.
+- The RAM keeps in store pages belonging to processes that are currently running.
+  - To free up RAM, the OS can **swap** out pages of a process to the HD.
+  - *Therefore, the total memory used by all processes can exceed the RAM capacity in the system.*
+  - Data is temporarily copied out to a HD, hence, those data are marked "swapped" in the page table.
+  - If the process tries to access an address in a swapped page, an exception is triggered and the OS will copy the swapped page back to RAM and update the page table before the process proceeds.
+  - *Swapping pages is relatively slow but it is better than not being able to continue due to lack of RAM.*
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/Computer%20Science/refImg/memory-layout-of-a-process.png" alt="Memory Layout of a Process" width="80%" />
+</p>
+
+##### Text Segment
+- **The portion of memory that contains the executable instructions (binary) of the program.**
+  - i.e. the source code that is compiled to machine code.
+- Once loaded, this portion usually remains unchanged.
+  - It is usually set to read-only/execute to prevent accidental modifications of the program's instructions.
+- The CPU executes these instructions one by one.
+- It is placed in lower memory address so that it is not overwritten by the heap or stack.
+##### Data Segment
+- **The portion of memory that contains explicitly initialized global and static variables.**
+  - i.e. if the initial value is a value other than 0.
+- Since these variables are susceptible to change, this portion is usually not read-only.
+- Example
+  ```js
+  const iAmAGlobalVariable = "hello";
+  ```
+##### Block Starting Symbol(BSS) Segment
+- **The portion of memory that contains uninitialized global and static variables.**
+  - i.e. if the initial value is 0 or not explicitly initialized in source code.
+- Example
+  ```js
+  let iAmGlobalVariable;
+  ```
+##### Heap Segment
+- **The portion of memory that is allocated dynamically to variables whose size can only be known at run time (cannot be determined at compile time).**
+  - i.e. store **reference types** (Ex: objects, arrays, functions) and data whose size is not fixed.
+  - It is managed through `malloc`, `new`, etc.
+- The process must explicitly request for allocation and deallocation of space in this segment using the system call.
   - The process specifies the size needed but the OS decides where to place it in the address space.
   - Heap chunks are not necessarily adjacent.
-    - Fragmentation of the memory space can be an issue here, as the size of heap chunks that the OS can allocate shrinks.
-- Deallocating unneeded heap memory is important to prevent **memory leaks**.
-  - Memory leak: the memory available to the program shrinks over time.
-- It is placed inbetween low and high memory addresses.
-###### Stack
-- **The portion of memory for storing local variables used by the process.**
-- When a function is called, its local variables are stored on the stack in a grouping called a **frame**, along with the size of the frame, and the return address (the address to jump back to when execution completes).
-  - A stack pointer points to the top of the stack to keep track of where to add subsequent frames.
-  - Another pointer, the stack boundary, points to the bottom of the stack to keep track of the size of the stack.
-  - If the stack pointer runs past the stack boundary, a hardware exception is triggered and the exception handler may increase the stack space by moving the stack boundary, or results a stack overflow.
-  - Notes
-    - There is no need to manually delete frames after use because they will be overwritten by subsequent frames as needed.
-    - The first frame is special because the program ends when the first function returns.
-- It is placed in a high memory address and grows downwards.
-##### RAM and Hard Drive
-- The RAM keeps in store pages belonging to processes that are currently running.
-- To free up RAM, the OS can swap out pages of a process to the HD.
-  - Therefore, the total memory used by all processes can exceed the RAM capacity in the system.
-  - Data is temporarily copied out to a HD, hence, those data are marked **"swapped"** in the page table.
-  - If the process tries to access an address in a swapped page, an exception is triggered and the OS will copy the swapped page back to RAM and update the page table before the process proceeds.
-  - Swapping pages is relatively slow but it is better than not being able to continue due to lack of RAM.
-### Motherboard
-- Handles the connection between the CPU and the Memory.
-  - A **bus** is a path on the motherboard that is used to transfer data between different parts of the motherboard.
-- It contains expansion slots where other things can be inserted to improve the computer without putting more load on the CPU.
-  - Ex: graphics card, sound card.
-- It also contains ports where outside sources can connect to the CPU (to get/give information).
-  - Ex: USB, SD card, ethernet, audio.
+- The stack pointer variable is often used to reference the address of memory space that was allocated to the heap segment since they both grow into the unused memory portion.
+###### JS Heap Structure
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/Computer%20Science/refImg/js-heap-structure.png" alt="JS Heap Structure" width="80%" />
+</p>
+
+##### Stack Segment
+- **The portion of memory that is allocated statically to stack frames.**
+  - A **stack frame** is the set of values that a function being called needs.
+    - These values include:
+      - Local variables declared in the function.
+        - _In JS, only primitive types are stored in the stack frame. Reference types are stored in the heap segment and the reference is stored in the stack frame._
+      - Arguments that were passed in to the function.
+      - The return address where the program should continue executing when the current function's execution completes.
+        - i.e. the address of the instruction immediately following the return of the current function call.
+  - _Details differ by implementation._
+###### Stack Pointers
+- The **stack pointer** tracks the stack to indicate where to add subsequent frames, which also indicates how much of the stack segment is being used right now.
+  - **Extended Stack Pointer(ESP)**
+    - a.k.a. Stack Pointer.
+    - The pointer(register) that always **indicates the top stack**.
+  - **Extended Base Pointer(EBP)**
+    - a.k.a. Frame Pointer.
+    - The pointer(register) that **indicates the base address for the current stack frame**.
+    - Offsets from EBP is used to access the data stored in the stack.
+    - When a new function is called, the EBP of the previous stack frame is pushed onto the stack first.
+      - This is so that when the new function returns, the EBP is reassigned to the previous stack frame's EBP.
+    - When the current stack frame is done executing, the values stored between the ESP and the EBP is popped off the stack.
+- **Extended Instruction Pointer(EIP)**
+  - The pointer(register) that **indicates the memory address for the next instruction to be executed**.
+  - In a stack frame, it essentially represents the **return address** (*in the Text/Code segment*) to which the execution should resume after the current function completes.
+###### How the Stack Segment Works
+1. **Prologue - a function is called**
+    - The function's **arguments** are pushed onto the stack.
+    - **The EIP's current value is pushed onto the stack as "Previous/Old EIP"** (a.k.a. return address, return instruction pointer).
+      - **The EIP is then updated to the address of the callee function** (the function that is being pushed onto the stack to be executed).
+    - **The EBP's current value is pushed onto the stack as "Previous/Old EBP"** (a.k.a. "saved frame pointer").
+      - **The EBP is then updated to the ESP's current value**, which is the start of the new stack frame.
+        - Previous EIP and Previous EBP are technically not in the new stack frame as per the new EBP points above it on the stack.
+      - EBP and ESP are pointing to the same place at this point.
+    - *Note*
+      - *All while anything is pushed onto the stack, ESP adjusts accordingly to always point to the top of the stack.*
+2. **The function executes**
+    - The function's **local variables** are pushed onto the stack.
+    - Variables that are **reference types** are stored in the **heap**.
+      - The reference itself is stored in the stack.
+3. **Epilogue - the function returns**
+    - The **ESP is updated to the EBP's current value**.
+    - The **top stack, which is currently the Previous EBP, is popped off**, and **EBP is updated to that value**.
+      - *When popped off, ESP is increased.*
+    - The **top stack, which is currently the Previous EIP, is popped off**, and **EIP is updated to that value**.
+    - At this point, **the top stack is currently the arguments are discarded by incrementing ESP**.
+      - *There is no need to manually delete contents of frames after use because they will be overwritten by subsequent frames as needed.*
 
 ## System Programs and Application Programs
 - System Programs: software that are used to directly give commands to the computer hardware.
@@ -511,7 +569,12 @@
 [Common CPU components - Architecture - Eduqas - GCSE Computer Science Revision - Eduqas - BBC Bitesize](https://www.bbc.co.uk/bitesize/guides/zhppfcw/revision/2)  
 
 [Random Access Memory (RAM) and Read Only Memory (ROM) - GeeksforGeeks](https://www.geeksforgeeks.org/random-access-memory-ram-and-read-only-memory-rom/#:~:text=ROM%20is%20further%20classified%20into,PROM%2C%20EPROM%2C%20and%20EEPROM.)  
-[Page (computer memory) - Wikipedia](https://en.wikipedia.org/wiki/Page_(computer_memory))  
+[In-Memory Layout of a Program (Process) « Gabriele Tolomei](https://gabrieletolomei.wordpress.com/miscellanea/operating-systems/in-memory-layout/)  
+[🚀 Demystifying memory management in modern programming languages | Technorage](https://deepu.tech/memory-management-in-programming/)  
+[Stack-based memory allocation - Wikipedia](https://en.wikipedia.org/wiki/Stack-based_memory_allocation)  
+[2. x86 Assembly and Call Stack - Computer Security](https://textbook.cs161.org/memory-safety/x86.html)  
+[Writing a Function in Assembly: Intel x86 Att Assembly Stack Part 1](https://www.youtube.com/watch?v=5iQkR69H_1M&ab_channel=YoungSlothLearning)  
+[(PDF) Extending a Light-weight Runtime System by Dynamic Instrumentation for Performance Evaluation](https://www.researchgate.net/publication/220826900_Extending_a_Light-weight_Runtime_System_by_Dynamic_Instrumentation_for_Performance_Evaluation)  
 [Virtual Address Space (Memory Management) - Win32 apps | Microsoft Docs](https://docs.microsoft.com/en-us/windows/win32/memory/virtual-address-space)  
 [CS 225 | Stack and Heap Memory](https://courses.engr.illinois.edu/cs225/sp2022/resources/stack-heap/)  
 
