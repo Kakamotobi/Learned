@@ -116,6 +116,17 @@
     - Use multiple CPUs to accomplish computational work.
     - Two or more individual systems are coupled together.
     - Can be structured symmetrically or asymmetrically.
+- **Word**
+  - A **Word** is the fixed unit of data that can be addressed and moved between the processor and memory.
+    - Ex: a 32-bit processor means the word is 32 bits. Therefore, it is capable of processing 4 bytes at a time from memory.
+    - Ex: a 64-bit processor means the word is 64 bits. Therefore, it is capable of processing 8 bytes at a time from memory.
+  - All incoming data to the processor that is smaller than the **word** is **padded** to match the word (to make it more feasible for the processor to handle).
+    - Ex: in a 32-bit processor, if an incoming data is less than 4 bytes, the data needs to be padded to 4 bytes first.
+  - *Note*
+    - A 64-bit processor means that it has 64-bit registers that hold memory addresses, and a 64-bit data bus to transfer data between the registers and main memory.
+      - If the data is larger than the data bus, it will have to be retrieved in more than one trip.
+    - Word is not necessarily the same as the register size.
+      - Ex: a register that has a size of 8 bytes could have a word of 4 bytes or 8 bytes.
 ### Core
 - A processing unit of the CPU.
 - A CPU may have one (**singlecore**) or more cores (**multicore**) that work in ***parallel***, each doing their own thing on their own thread(s).
