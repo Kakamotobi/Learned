@@ -213,28 +213,50 @@ btn.eventListener(() => {
   - The same sequence of actions will always produce the same result but, it relies on pure functions.
 ### Object-Oriented Programming (OOP)
 > A programming paradigm that relies on the concept of **classes** and **objects**.
+
 - **Structures a program into simple, reusable pieces of code (usually classes), which are used to create individual instances of objects.**
-- Objects are used to represent things.
-- Data used are mutable data.
-  - Data (held as attributes in objects) are manipulated using methods given to the object.
-- Can hide data through encapsulation.
-- Fundamental elements: objects and methods.
+  - The properties on the objects are manipulated using the methods given to the object.
 - It is an *imperative* type of programming style.
+- OOP came to rise amidst ADT and Object-orientation advancing.
+  - ADT focused on type abstraction.
+    - It supports creating instances of a type.
+  - Object-orientation focused on data.
+    - It supports inheritance and polymorphism.
+#### Building Blocks of OOP
+##### Class
+- A template/blueprint for creating objects.
+- The common properties/methods of a class are loaded to heap memory.
+##### Instance
+- The individual instantiation/realization of a class that is created at runtime.
+- An instance is loaded to heap memory with only properties specific to it.
+- Several instances together is called a collection.
+##### Object
+- The term "object" in this case refers to the grouping of an instance and its class.
+  - i.e. the pairing of the instance and the class.
+  - Ex: if instanceA and instanceB are instances of classC, instanceA and classC are one object, and instanceB and classC are another.
+##### Property
+- Properties are member variables and attributes describing the state of an object.
+##### Method
+- Methods are member functions that represent the behaviors of an object.
 #### The 4 Pillars of OOP
 ##### Encapsulation
 > ... the packing of data and functions into one component (ex: a class) and then controlling access to that component to make a “blackbox” out of the object. | MDN
-- i.e., bundling related variables and methods that operate on them into an object.
-- Reduce complexity and increase reusability.
+
+- OOP bundles/encapsulates relatable variables and methods that operate on them into an object.
+- This reduces complexity and increases reusability.
 ##### Abstraction
 > ... a way to reduce complexity and allow efficient design and implementation in complex software systems. It hides the technical complexity of systems behind simpler APIs. | MDN
-- Simpler interface since the complexity is less exposed.
-- Reduce the impact of change.
+
+- OOP provides a simpler interface for the user since the complexity of a class is less exposed.
+- This reduces the impact of change.
   - Any change within will not leak to the outside.
 ##### Inheritance
 > Data abstraction can be carried up several levels, that is, classes can have superclasses and subclasses. | MDN
-- Inheritance helps eliminate redundant code.
-- Start with a larger base class and have child classes inherit all its functionality and overwrite/extend it with whatever custom behaviors they need.
-- Inheritance can be great in the right situation but it's good to avoid deeply nested classes as it can become very hard to debug.
+
+- A child class extending from a base/parent class inherits all of the parent's functionality and is able to overwrite or extend it with custom behaviors it needs.
+- This helps eliminate redundant code.
+- _Note_
+  - Be careful of deeply nested classes as it can become very difficult to debug (too much abstraction!).
 ###### Example
 ```ts
 class Human {
@@ -263,32 +285,33 @@ superman.superpower(); // Clark Kent beams light off his eyes!
 superman.sayHello(); // Hello, I'm Clark Kent.
 ```
 ###### Composition
-- Inheritance and Composition can be used as an alternative to each other for code reusability.
-- Composition Breaks apart the interfaces and logic into small pieces then builds up larger functions or objects by combining these pieces together.
+- Composition breaks apart the interfaces and logic into small pieces, and then builds up larger functions or objects by combining these pieces together.
+  - *cf. inheritence and composition are alternatives to each other for code reusability.*
 - There are multiple ways to implement composition.
   - Mixin Pattern - concatenate objects together.
     - The idea is to decouple your properties or behaviors into objects or functions that return objects. Then merge all these objects together into a final function that does everything that we need it to.
     - Basically, a certain type of multiple inheritance.
     ```js
-    const hasName = (name) => {
+    const getName = (name) => {
       return { name };
-    }
-    
+    };
+
     const canSayHello = (name) => {
       return {
         sayHello: () => `Hello, I'm ${name}.`;
       }
     }
-    
+
+    // use normal function declaration to preserver `this`.
     const Human = function(name) {
       return {
-        ...hasname(name),
+        ...getName(name),
         ...canSayHello(name)
       }
     }
-    
-    const tom = Human("Tom");
-    console.log(tom.sayHello()); // Hello, I'm Tom.
+
+    const kakamotobi = Human("Kakamotobi"); // { name: "Kakamotobi", sayHello: () => "Hello, I'm Kakamotobi." }
+    console.log(kakamotobi.sayHello()); // Hello, I'm Kakamotobi.
     ```
     - The mixin pattern can be powerful but in its current form we lose all of the ergonomics of Class-based OOP.
       - TypeScript allows us to use mixins in a Class-based format.
@@ -334,36 +357,46 @@ superman.sayHello(); // Hello, I'm Clark Kent.
     console.log(superman.superpower()); // HERO Super Man
     ```
 ##### Polymorphism
-> the presentation of one interface for multiple data types. In the case of OOP, by making the class responsible for its code as well as its own data, polymorphism can be achieved in that each class has its own function that (once called) berhaves properly for any object. | MDN
+> the presentation of one interface for multiple data types. | MDN
+
+> In the case of OOP, by making the class responsible for its code as well as its own data, polymorphism can be achieved in that each class has its own function that (once called) behaves properly for any object. | MDN
+
 - Polymorphism = many forms.
+- A superclass acts as a single interface that works for all subclasses of any data type.
+  - i.e. the practice of designing objects to share behaviors and to be able to override shared behaviors with specific ones.
+  - Ex: integers and floats are polymorphic since they have the same behaviors (Ex: add, subtract) despite having being different types.
 - Allows us to get rid of long if and elses or switch and case statements.
 #### Example
-- The Emoji Class encapsulates all the logic for how an emoji should work.
+- You do not have to specify that `Dog` needs to speak like a dog, and `Cat` needs to speak like a dog, and `Cow` needs to speak like a cow. Simply call the `.speak()` method and the dog or cat or cow will do that.
 ```ts
-class Emoji {
-  private _prev;
+class Animal {
+  constructor() {}
 
-  constructor(private _icon) {}
-  
-  get icon() {
-    return this._icon;
-  }
-  
-  get prev() {
-    return this._prev;
-  }
-  
-  change(newVal) {
-    this._prev = this._icon;
-    this._icon = newVal;
+  speak() {
+    console.log("This will be overriden by the method in a subclass.");
   }
 }
 
-const emoji = new Emoji("🌞");
-console.log(emoji.icon, emoji.prev); // 🌞 undefined
-emoji.change("🥶");
-emoji.change("😡");
-console.log(emoji.icon, emoji.prev); // 😡 🥶
+class Dog extends Animal {
+  // ...
+  speak() {
+    console.log("woof");
+  }
+}
+
+class Cat extends Animal {
+  // ...
+  speak() {
+    console.log("meow");
+  }
+}
+
+class Cow extends Animal {
+  // ...
+  speak() {
+    console.log("moo");
+  }
+}
 ```
 ### Reference
 [Difference between Functional Programming and Object-oriented Programming - GeeksforGeeks](https://www.geeksforgeeks.org/difference-between-functional-programming-and-object-oriented-programming/)  
