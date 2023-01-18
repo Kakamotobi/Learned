@@ -94,3 +94,44 @@ const isValid = (s) => {
   return stack.length === 0;
 }
 ```
+
+## 14. Longest Common Prefix
+### Solution 1
+- Check each index of each string in `strs`.
+```js
+// TC: O(m*n), SC: O(1)
+// m - strs[0].length
+// n - strs.length
+
+const longestCommonPrefix = (strs) => {
+  let lcp = "";
+  let char;
+  for (let i = 0; i < strs[0].length; i++) {
+    char = strs[0][i];
+    if (strs.every((str) => str[i] === char)) {
+      lcp += char;
+    } else {
+      break;
+    }
+  }
+  return lcp;
+};
+```
+### Solution 2
+- Use the first string as the prefix to check on the rest of the strings.
+  - Keep reducing the prefix from the back by one.
+```js
+// TC: O(m*n), SC: O(1)
+// This is still O(m*n) because `indexOf` has to go through a whole string.
+
+const longestCommonPrefix = (strs) => {
+  let prefix = strs[0];
+  for (let str of strs) {
+    while (str.indexOf(prefix) !== 0) {
+      prefix = prefix.substring(0, prefix.length - 1);
+      if (prefix === "") return "";
+    }
+  }
+  return prefix;
+};
+```
