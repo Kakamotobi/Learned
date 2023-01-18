@@ -132,14 +132,12 @@
 - Scripts are read and executed.
 
 ## Popular Web Browsers
-| Browser               | Rendering Engine | JS Engine/Interpreter |
-| --------------------- | ---------------- | --------------------- |
-| **Chrome**            | Blink            | V8                    |
-| **Edge**              | EdgeHTML         | Chakra                |
-| **Firefox**           | Gecko            | SpiderMonkey          |
-| **Safari**            | WebKit           | JavaScriptCore        |
-| **Opera**             | Blink            | V8                    |
-| **Internet Explorer** | Trident          | Chakra                |
+| Browser                                         | Rendering Engine         | JS Engine/Interpreter |
+| ----------------------------------------------- | ------------------------ | --------------------- |
+| **Chrome/Chromium** (Edge, Brave, Whale, Opera) | Blink                    | V8                    |
+| **Firefox/Mozilla**                             | Gecko, Servo             | SpiderMonkey          |
+| **Safari/Webkit**                               | WebKit                   | JavaScriptCore        |
+| **IE/Old Edge**                                 | Trident(~IE11), EdgeHTML | Chakra                |
 
 ## Reference
 [Browser - MDN](https://developer.mozilla.org/en-US/docs/Glossary/Browser)  
