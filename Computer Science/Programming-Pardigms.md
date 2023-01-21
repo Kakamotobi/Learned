@@ -212,7 +212,7 @@ btn.eventListener(() => {
   - Action Objects are passed in to the Reducers to indicate what state needs to be changed and to what value it should be changed to.
   - The same sequence of actions will always produce the same result but, it relies on pure functions.
 ### Object-Oriented Programming (OOP)
-> A programming paradigm that relies on the concept of **classes** and **objects**.
+> Object-oriented programming (OOP) is a programming paradigm based on the concept of "objects", which can contain data and code. The data is in the form of fields (often known as attributes or properties), and the code is in the form of procedures (often known as methods). | Wikipedia
 
 - **Structures a program into simple, reusable pieces of code (usually classes), which are used to create individual instances of objects.**
   - The properties on the objects are manipulated using the methods given to the object.
@@ -222,6 +222,7 @@ btn.eventListener(() => {
     - It supports creating instances of a type.
   - Object-orientation focused on data.
     - It supports inheritance and polymorphism.
+- The gist of OOP is to not do "do this for this type, do that for that type".
 #### Building Blocks of OOP
 ##### Class
 - A template/blueprint for creating objects.
@@ -398,6 +399,27 @@ class Cow extends Animal {
   }
 }
 ```
+#### Object Instances and Reference
+```js
+const personA = new Person();
+const personB = new Person();
+```
+##### What's happening here?
+- The shared properties/methods of class `Person` is loaded onto the heap memory.
+- Two instances of `Person` are created. Hence, these instances (containing only properties that are specific to itself) is loaded onto the heap memory. When needed, the instances refer to their prototype (the class) to invoke inherited behaviors.
+- This "grouping" of an instance and its class is an object.
+- The variables `personA` and `personB` are pointers to those objects.
+##### Explained in Terms of Memory
+- Pointer variables are loaded onto the stack.
+- Instances (and Classes) are loaded onto the heap memory.
+- Ex: the pointer variable personA is loaded onto memory. It points to the personA instance on heap memory, which references its class Person that is also loaded onto heap memory.
+#### Some Tips on Implementing OOP
+- All methods relating to private members should be on the same class.
+  - Resist from passing on an object's variable to another object to use.
+  - Instead, keep an object's variables private and define methods for those variables in that object.
+  - i.e. the higher object should not bring a lower object's values to process. The higher object should try to invoke the lower object's methods.
+  - Ex: if a ChessPiece object has a Position object pertaining to it, the ChessPiece object should invoke functionalities defined in the Position object instead of bringing the position value and doing the calculation itself.
+- The lower the object, the more likely that it should be more independent.
 ### Reference
 [Difference between Functional Programming and Object-oriented Programming - GeeksforGeeks](https://www.geeksforgeeks.org/difference-between-functional-programming-and-object-oriented-programming/)  
 [Functional Programming VS Object Oriented Programming - Medium](https://medium.com/@shaistha24/functional-programming-vs-object-oriented-programming-oop-which-is-better-82172e53a526)  
