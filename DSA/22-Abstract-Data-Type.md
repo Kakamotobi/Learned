@@ -45,6 +45,7 @@
   - Therefore, an array can be implemented to be contiguous or not contiguous in memory as long as an array item can be accessed through its index.
 
 ## JS Array
+- JS arrays are resizable and can contain different data types.
 ### JS Typed Arrays
 > **JavaScript typed arrays** are array-like objects that provide a mechanism for reading and writing raw binary data in memory buffers. | MDN
 
