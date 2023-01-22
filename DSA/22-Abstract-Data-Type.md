@@ -1,7 +1,10 @@
 # Abstract Data Type
 
 ## Table of Contents
-- [What is Abstract Data Type(ADT)?](#what-is-abstract-data-typeadt)
+- [What is an Abstract Data Type(ADT)?](#what-is-an-abstract-data-typeadt)
+  - [Some ADTs](#some-adts)
+- [List](#list)
+- [Array](#array)
 - [JS Array](#js-array)
   - [JS Typed Arrays](#js-typed-arrays)
     - [Typed Array Architecture](#typed-array-architecture)
@@ -13,7 +16,7 @@
     - [General Rule](#general-rule)
     - [Test Cases](#test-cases)
 
-## What is Abstract Data Type(ADT)?
+## What is an Abstract Data Type(ADT)?
 > ...an abstract data type (ADT) is a mathematical model for data types. An abstract data type is defined by its behavior (semantics) from the point of view of a user, of the data, specifically in terms of possible values, possible operations on data of this type, and the behavior of these operations. This mathematical model contrasts with data structures, which are concrete representations of data, and are the point of view of an implementer, not a user. | Wikipedia
 
 > Abstract data types are purely theoretical entities, used (among other things) to simplify the description of abstract algorithms, to classify and evaluate data structures, and to formally describe the type systems of programming languages. However, an ADT may be implemented by specific data types or data structures, in many ways and in many programming languages; or described in a formal specification language. | Wikipedia
@@ -21,6 +24,25 @@
 - Data types are defined abstractly, and the internals of the "how" can be implemented in different ways. 
 - **However, each implementation of the same data type must provide the same interface**.
 - For example, in general, an Array requires to provide a time complexity of O(1) for random access using indices. This does not enforce that Arrays must be stored contiguously in memory. Therefore, different languages and/or engines are free to implement this O(1) random access using indices in any way. Some may decide to store the items contiguously in a fixed array internally, and others may decide to use a dictionary internally instead. It doesn't matter as long as the interface is the same.
+### Some ADTs
+- List
+- Stack
+- Queue
+
+## List
+> ...a **list** or **sequence** is an abstract data type that represents a finite number of ordered values, where the same value may occur more than once. | Wikipedia
+
+- A list is simply a sequential ADT that supports adding/inserting, reassigning, deleting, searching of items.
+- Lists are usually implemented as linked lists or arrays.
+- *Note*
+  - The word "list" is used to refer to concrete data structures (Ex: linked lists, arrays) that are used to implement other common abstract data types.
+
+## Array
+> ...an **array** is a data structure consisting of a collection of elements (values or variables), each identified by at least one array index or key. | Wikipedia
+
+- An array is simply a data structure that requires random access to be O(1) through the use of indices.
+  - *It is NOT the definition of an array to being stored contiguously in memory.*
+  - Therefore, an array can be implemented to be contiguous or not contiguous in memory as long as an array item can be accessed through its index.
 
 ## JS Array
 ### JS Typed Arrays
@@ -274,6 +296,8 @@ DebugPrint: 0xd800bab2001: [JSArray] in OldSpace
 
 ## Reference
 [Abstract data type - Wikipedia](https://en.wikipedia.org/wiki/Abstract_data_type)  
+[List (abstract data type) - Wikipedia](https://en.wikipedia.org/wiki/List_(abstract_data_type))  
+[Array (data structure) - Wikipedia](https://en.wikipedia.org/wiki/Array_(data_structure))  
 [JavaScript typed arrays - JavaScript | MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Typed_arrays)  
 [ArrayBuffer - JavaScript | MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer)  
 [Online Hex Converter - Bytes, Ints, Floats, Significance, Endians - SCADACore](https://www.scadacore.com/tools/programming-calculators/online-hex-converter/)  
