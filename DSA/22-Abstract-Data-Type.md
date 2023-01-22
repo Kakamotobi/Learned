@@ -24,6 +24,7 @@
 - Data types are defined abstractly, and the internals of the "how" can be implemented in different ways. 
 - **However, each implementation of the same data type must provide the same interface**.
 - For example, in general, an Array requires to provide a time complexity of O(1) for random access using indices. This does not enforce that Arrays must be stored contiguously in memory. Therefore, different languages and/or engines are free to implement this O(1) random access using indices in any way. Some may decide to store the items contiguously in a fixed array internally, and others may decide to use a dictionary internally instead. It doesn't matter as long as the interface is the same.
+- cf. a *concrete data type* is a specific implementation of a data type.
 ### Some ADTs
 - List
 - Stack
@@ -36,6 +37,10 @@
 - Lists are usually implemented as linked lists or arrays.
 - *Note*
   - The word "list" is used to refer to concrete data structures (Ex: linked lists, arrays) that are used to implement other common abstract data types.
+### Types of Lists
+- Ordered List
+- Unordered List
+- Indexed List
 
 ## Array
 > ...an **array** is a data structure consisting of a collection of elements (values or variables), each identified by at least one array index or key. | Wikipedia
@@ -297,8 +302,10 @@ DebugPrint: 0xd800bab2001: [JSArray] in OldSpace
 
 ## Reference
 [Abstract data type - Wikipedia](https://en.wikipedia.org/wiki/Abstract_data_type)  
+[What is Abstract Data Type? | Baeldung on Computer Science](https://www.baeldung.com/cs/adt)  
 [List (abstract data type) - Wikipedia](https://en.wikipedia.org/wiki/List_(abstract_data_type))  
 [Array (data structure) - Wikipedia](https://en.wikipedia.org/wiki/Array_(data_structure))  
+[Array - JavaScript | MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)  
 [JavaScript typed arrays - JavaScript | MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Typed_arrays)  
 [ArrayBuffer - JavaScript | MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer)  
 [Online Hex Converter - Bytes, Ints, Floats, Significance, Endians - SCADACore](https://www.scadacore.com/tools/programming-calculators/online-hex-converter/)  
