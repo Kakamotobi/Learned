@@ -3,8 +3,8 @@
 ## Table of Contents
 - [What is an Abstract Data Type(ADT)?](#what-is-an-abstract-data-typeadt)
   - [Some ADTs](#some-adts)
-- [List](#list)
-- [Array](#array)
+- [List ADT](#list-adt)
+- [Array ADT](#array-adt)
 - [JS Array](#js-array)
   - [JS Typed Arrays](#js-typed-arrays)
     - [Typed Array Architecture](#typed-array-architecture)
@@ -26,11 +26,17 @@
 - For example, in general, an Array requires to provide a time complexity of O(1) for random access using indices. This does not enforce that Arrays must be stored contiguously in memory. Therefore, different languages and/or engines are free to implement this O(1) random access using indices in any way. Some may decide to store the items contiguously in a fixed array internally, and others may decide to use a dictionary internally instead. It doesn't matter as long as the interface is the same.
 - cf. a *concrete data type* is a specific implementation of a data type.
 ### Some ADTs
-- List
-- Stack
-- Queue
+| **Abstract Data Type** | **a.k.a.**           | **Concrete Data Type Used** |
+|------------------------|----------------------|-----------------------------|
+| List                   | Sequence             | Array, Linked List          |
+| Stack                  | FILO/LIFO            | Array, Linked List          |
+| Queue                  | FIFO/LILO            | Array, Linked List          |
+| Double-ended Queue     | Dequeue              | Array, Doubly-Linked List   |
+| Priority Queue         | Heap                 | Heap                        |
+| Associative Array      | Dictionary, Hash Map | Hash Table                  |
+| Set                    |                      | Hash Table, Red-Black Tree  |
 
-## List
+## List ADT
 > ...a **list** or **sequence** is an abstract data type that represents a finite number of ordered values, where the same value may occur more than once. | Wikipedia
 
 - A list is simply a sequential ADT that supports adding/inserting, reassigning, deleting, searching of items.
@@ -42,12 +48,13 @@
 - Unordered List
 - Indexed List
 
-## Array
+## Array ADT
 > ...an **array** is a data structure consisting of a collection of elements (values or variables), each identified by at least one array index or key. | Wikipedia
 
-- An array is simply a data structure that requires random access to be O(1) through the use of indices.
+- An array (ADT) is simply a data structure that stores and retrieves items using indices.
   - *It is NOT the definition of an array to being stored contiguously in memory.*
   - Therefore, an array can be implemented to be contiguous or not contiguous in memory as long as an array item can be accessed through its index.
+- An array (ADT) is usually implemented by the Array (data structure).
 
 ## JS Array
 - JS arrays are resizable and can contain different data types.
@@ -302,8 +309,10 @@ DebugPrint: 0xd800bab2001: [JSArray] in OldSpace
 
 ## Reference
 [Abstract data type - Wikipedia](https://en.wikipedia.org/wiki/Abstract_data_type)  
+[Abstract Data Types | Brilliant Math & Science Wiki](https://brilliant.org/wiki/abstract-data-types/)  
 [What is Abstract Data Type? | Baeldung on Computer Science](https://www.baeldung.com/cs/adt)  
 [List (abstract data type) - Wikipedia](https://en.wikipedia.org/wiki/List_(abstract_data_type))  
+[#SideNotes — Array — Abstract Data Type & Data Structure | by Lucas Magnum | Medium](https://lucasmagnum.medium.com/sidenotes-array-abstract-data-type-data-structure-b154140c8305#:~:text=The%20Array%20(ADT)%20have%20one,array%20that%20the%20value%20occupies.)  
 [Array (data structure) - Wikipedia](https://en.wikipedia.org/wiki/Array_(data_structure))  
 [Array - JavaScript | MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)  
 [JavaScript typed arrays - JavaScript | MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Typed_arrays)  
