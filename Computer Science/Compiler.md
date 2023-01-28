@@ -116,6 +116,7 @@
 
 ## Reference
 [Phases of Compiler with Example: Compilation Process & Steps](https://www.guru99.com/compiler-design-phases-of-compiler.html)  
+[Compiler vs Interpreter – Difference Between Them - Guru99](https://www.guru99.com/difference-compiler-vs-interpreter.html)  
 [Language Processors: Assembler, Compiler and Interpreter](https://www.geeksforgeeks.org/language-processors-assembler-compiler-and-interpreter/)  
 [How do computers read code? - YouTube](https://www.youtube.com/watch?v=QXjU9qTsYCc&ab_channel=FrameofEssence)  
 [COMPILER| INTERPRETER |Difference between Interpreter and Compiler| Interpreter vs Compiler Animated](https://www.youtube.com/watch?v=e4ax90XmUBc)  
