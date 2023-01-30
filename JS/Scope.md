@@ -180,6 +180,7 @@ outer();
 
 ## Reference
 [Closures - MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures)  
+[Closure (computer programming) - Wikipedia](<https://en.wikipedia.org/wiki/Closure_(computer_programming)>)  
 [Master the JavaScript Interview: What is a Closure? | by Eric Elliott | JavaScript Scene | Medium](https://medium.com/javascript-scene/master-the-javascript-interview-what-is-a-closure-b2f0d2152b36)  
 [I never understood JavaScript closures](https://medium.com/dailyjs/i-never-understood-javascript-closures-9663703368e8)  
 [Is lexical scope the same definition as closure in JavaScript? If not, what are the differences in meaning and example? - Quora](https://www.quora.com/Is-lexical-scope-the-same-definition-as-closure-in-JavaScript-If-not-what-are-the-differences-in-meaning-and-example)  
