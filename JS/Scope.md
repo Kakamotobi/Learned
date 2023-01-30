@@ -8,6 +8,11 @@
 - [Block Scope](#block-scope)
 - [Lexical Scope (a.k.a. Static Scope)](#lexical-scope-aka-static-scope)
 	- [Closure](#closure)
+		- [How/Where is it Used?](#howwhere-is-it-used)
+		- [Closure in JS](#closure-in-js)
+			- [Closure Examples](#closure-examples)
+			- [Non Closure Examples](#non-closure-examples)
+			- [Closure and `for` loops](#closure-and-for-loops)
 - [Module Scope](#module-scope)
 
 ## Function Scope
@@ -53,68 +58,105 @@
 ### Closure
 > A closure is the combination of a function bundled together (enclosed) with references to its surrounding state (the lexical environment within which that function was declared). In other words, a closure gives you access to an outer function’s scope from an inner function. In JavaScript, closures are created every time a function is created, at function creation time. | MDN
 
+> In programming languages, a **closure**, also **lexical closure** or **function closure**, is a technique for implementing lexically scoped name binding in a language with first-class functions. Operationally, a closure is a record storing a function together with an environment. The environment is a mapping associating each free variable of the function (variables that are used locally, but defined in an enclosing scope) with the value or reference to which the name was bound when the closure was created. Unlike a plain function, a closure allows the function to access those captured variables through the closure's copies of their values or references, even when the function is invoked outside their scope. | Wikipedia
+
 - **Closure is the idea of storing the "free variables" along with the function, so that those variables can be resolved when the function is invoked.**
-	- Variables include those in the function itself, those in its lexical environment, and global variables.
+	- The range of "free variables" depends on the language.
 	- Therefore, deeply nested functions could deter performance and use a lot of memory.
-- Functions in JavaScript form closures.
-  - When a new function is declared and assigned to a variable, the function definition is stored, *as well as a **closure***.
+#### How/Where is it Used?
+- When a new function is declared and assigned to a variable, the function definition is stored, *as well as a **closure***.
   - ***The closure contains all the variables that are in scope at the time of creation of the function.***
-- **Closures control what is and isn't in scope in a particular function.**
-- **You can use a closure by exposing it.**
-	- For example, return the inner function from the parent function or pass it to another function.
-	- The inner function will still access the outer function's scope, even after the outer function has returned.
-	- Example
-		```js
-		// Closure
-		
-		function outer() {
-			const name = "Tom";
+- Closures are frequently used with callbacks (Ex: for event handlers in JS).
+#### Closure in JS
+- **In JS, the variables captured in a closure includes those in the function itself, those in its lexical environment, and global variables (although technically not enclosed in the closure).**
+  - i.e. the whole scope chain.
+##### Closure Examples
+###### Example 1
+- For `test`, which is a reference to `outer()`, its instance of `inner()` still holds a reference to its lexical environment (the `name` variable) - closure. Therefore, `test` still works as expected.
+- Henceforth changes to the closure will remain.
+	```js
+	const name = "Jerry";
 
-			function inner() {
-				alert(name);
-			}
+	function outer() {
+		const name = "Tom";
 
-			return inner; // `inner` is a closure (it will still have a reference to the `name` variable from its lexical environment).
+		function inner() {
+			alert(name);
 		}
 
-		const test = outer(); // `test` is a closure (`inner`).
-		test(); // alerts "Tom" because the variable `name` is included in the closure.
-		```
-		```js
-		// NOT a closure
-		
-		function outer() {
-			const name = "Tom";
-			
-			inner(); // `inner()` is merely a function that is declared and called in `outer()`.
-			
-			function inner() {
-				alert(name);
-			}
-		}
-		
-		outer();
-		```
-#### Example
-```js
-const name = "Jerry";
-
-function outer() {
-	const name = "Tom";
-	
-	function inner() {
-		alert(name);
+		return inner; // `inner` is a closure (it will still have a reference to the `name` variable from its lexical environment).
 	}
-	
-	return inner;
+
+	const test = outer(); // The function `inner` is returned with the variable `name` set to `"Tom"`.
+	test(); // Calling this returned function will alert with `"Tom"` and not `"Jerry"` because of closures.
+	```
+###### Example 2
+- Despite being deeply nested, `funcD` has access to the variable `n` that is three levels up its scope. It also has access the global variables.
+	```js
+	function funcA() {
+		// closure created!
+		let n = 0;
+		return function funcB() {
+			return function funcC() {
+				return function funcD() {
+					// closure created
+					n++;
+					return n;
+				};
+			};
+		};
+	}
+
+	// `test` is essentially a bundle of the function definition of `funcD` and its closure.
+	const test = funcA()()();
+	test(); // 1
+	test(); // 2
+	```
+	- cf. other languages may limit the closure to provide access to only the immediate enclosing scope. This means that they cannot access variables that are further up the scope chain.
+###### Example 3
+```js
+let x = 1;
+
+function f(a) {
+  return a + x; // x = 1
 }
 
-const myFunc = outer(); // The function `inner` is returned with the variable `name` set to `"Tom"`.
-myFunc(); // Calling this returned function will alert with `"Tom"` and not `"Jerry"` because of closures.
+function g() {
+  let x = 2;
+  return f(x); // x = 2 because the closer scope has precedence
+}
+
+g(); // 3
 ```
-- For `myFunc`, which is a reference to `outer()`, its instance of `inner()` still holds a reference to its lexical environment (the `name` variable) - closure. Therefore, `myFunc` still works as expected.
-- Henceforth changes to the closure will remain.
-#### Closure and `for` loops
+##### Non Closure Examples
+###### Example 1
+- Global variables are not local variables that are enclosed in a function. Therefore, `funcA` is not a closure.
+  ```js
+  let n = 5;
+
+  function funcA(x, y) {
+    return x + y + n;
+  }
+
+  funcA(2, 3); // 10
+  ```
+###### Example 2
+- A closure is a function that has access to variables in its outer scope, _even after the outer function has returned_.
+- Once `outer` is returned, `inner` does not have access to variables in `outer`. Therefore, `inner` is not a closure.
+  ```js
+  function outer() {
+    const name = "Tom";
+
+    inner(); // `inner()` is merely a function that is declared and called in `outer()`.
+
+    function inner() {
+      alert(name);
+    }
+  }
+
+  outer();
+  ```
+##### Closure and `for` loops
 - A function in a `for` loop that uses `var` looks for `i` in the scope above it first, which is the function `outer`.
 - The functions are stacked in the call stack and when the `for` loop reaches the end, they are executed one by one from the top.
 	- At this point, `i` is `3`. Therefore, `3` is printed for all calls.
