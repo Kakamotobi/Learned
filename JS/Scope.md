@@ -63,6 +63,7 @@
 - **Closure is the idea of storing the "free variables" along with the function, so that those variables can be resolved when the function is invoked.**
 	- The range of "free variables" depends on the language.
 	- Therefore, deeply nested functions could deter performance and use a lot of memory.
+- [**Relationship with Lambda**](https://github.com/Kakamotobi/Learned/blob/main/Computer%20Science/Lambda-Calculus.md#relationship-with-closure)
 #### How/Where is it Used?
 - When a new function is declared and assigned to a variable, the function definition is stored, *as well as a **closure***.
   - ***The closure contains all the variables that are in scope at the time of creation of the function.***
