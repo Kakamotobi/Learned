@@ -88,6 +88,14 @@ bar.name // "baz"
 
 ## Higher Order Functions
 - **A function that takes a function as an argument OR returns a function.**
+### What is the Point of Higher Order Functions?
+- The point is to abstract operations to allow greater flexibility, modularity, and code reusability.
+- Common Use Cases
+  - Function Composition
+    - Multiple functions are combined into a new function to perform complex operations.
+  - Map and Filter Operations
+  - Callback Functions
+  - Creating Closures
 ### Taking a Function as an Argument
 - JavaScript has built-in higher order functions that take functions as arguments.
 - For example, `Array.prototype.map()`, `Array.prototype.filter()` calls the received function on each element and returns a new array.
