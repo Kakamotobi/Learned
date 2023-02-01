@@ -282,6 +282,7 @@
 ## Reference
 [Computer memory - Wikipedia](https://en.wikipedia.org/wiki/Computer_memory)  
 [Random Access Memory (RAM) and Read Only Memory (ROM) - GeeksforGeeks](https://www.geeksforgeeks.org/random-access-memory-ram-and-read-only-memory-rom/#:~:text=ROM%20is%20further%20classified%20into,PROM%2C%20EPROM%2C%20and%20EEPROM.)  
+[What is flash storage? | IBM](https://www.ibm.com/topics/flash-storage)  
 
 [Virtual Memory, Paging, and Swapping « Gabriele Tolomei](https://gabrieletolomei.wordpress.com/miscellanea/operating-systems/virtual-memory-paging-and-swapping/)  
 [In-Memory Layout of a Program (Process) « Gabriele Tolomei](https://gabrieletolomei.wordpress.com/miscellanea/operating-systems/in-memory-layout/)  
