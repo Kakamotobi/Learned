@@ -176,5 +176,6 @@ console.log(sun(" tomorrow"); // 🌞 tomorrow
 [FunctionLength - Martin Fowler](https://martinfowler.com/bliki/FunctionLength.html)  
 [Function - MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions)  
 [JavaScript - 함수 선언문, 함수 표현식 그리고 화살표 함수 비교](https://velog.io/@bigbrothershin/%EC%98%A4%EB%8A%98-%EA%B3%B5%EB%B6%80%ED%95%A0-%EA%B2%832020.1.30)  
+[Higher Order Functions (Composing Software) | by Eric Elliott | JavaScript Scene | Medium](https://medium.com/javascript-scene/higher-order-functions-composing-software-5365cf2cbe99)  
 [Higher Order Functions in JavaScript – Beginner's Guide](https://www.freecodecamp.org/news/higher-order-functions-in-javascript/)  
 [Object Oriented vs Functional Programming with TypeScript - YouTube](https://www.youtube.com/watch?v=fsVL_xrYO0w&ab_channel=Fireship)  
