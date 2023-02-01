@@ -1,4 +1,4 @@
-## Functional Programming (FP)
+# Functional Programming (FP)
 
 ## Table of Contents
 - [What is Functional Programming(FP)?](#what-is-functional-programmingfp)
