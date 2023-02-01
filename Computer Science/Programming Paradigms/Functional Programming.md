@@ -8,6 +8,7 @@
   - [Avoiding Shared State](#avoiding-shared-state)
   - [Immutable Data](#immutable-data)
 - [Currying](#currying)
+- [Partial Application](#partial-application)
 - [Pros and Cons of FP](#pros-and-cons-of-fp)
 
 ## What is Functional Programming(FP)?
@@ -146,8 +147,15 @@
 ## Currying
 > ...currying is the technique of translating the evaluation of a function that takes multiple arguments into evaluating a sequence of functions, each with a single argument. | Wikipedia
 
-- The idea of Currying is to take a function that takes multiple arguments and break it down into a sequence/chain of functions that each take only one argument.
+- **The idea of Currying is to take a function that takes multiple arguments and break it down into a sequence/chain of functions that each take only one argument.**
   - i.e. curried functions take multiple arguments one at a time and return a new function for each argument.
+### What Problem is Currying Trying to Solve?
+- To allow creating more specialized functions from an existing function. Thereby, reusing code in new contexts.
+  - i.e. ***curried functions essentially return containers (functions) that all share the same interface.***
+    - Instead of dealing with the values inside of containers, currying is about dealing with containers, which allows the creation of generic functions that act as the common interface.
+- The most common use case for currying is **function composition**.
+  - Function Composition is when the return value of one function is passed into another function as an argument.
+  - Ex: `c(x) = f(g(x))`.
 ### Example
 ```js
 // Ordinary function
@@ -168,6 +176,21 @@ triple(5); // 15
 const quadruple = multiply(4);
 quadruple(5); // 20
 ```
+### Relationship with Partial Application
+- A curried function partially applies one argument at a time.
+- A curried function does not have to invoke an application right away.
+  - Example
+    ```js
+    const double = multiply(2);
+    doSomething().then(() => double(5));
+    ```
+
+## Partial Application
+> The process of applying a function to some of its arguments. The partially applied function gets returned for later use. | Eric Elliott
+
+- Here, **Application** refers to applying a function to its arguments.
+- **The idea of Partial Application is a function receiving a function with multiple parameters and returning a function with fewer parameters.**
+  - i.e. some arguments of the "higher" function are fixed inside the returned function, and the remaining arguments are passed on to the returned function as arguments.
 
 ## Pros and Cons of FP
 ### Pros
@@ -195,3 +218,5 @@ quadruple(5); // 20
 [Master the JavaScript Interview: What is Functional Programming? | by Eric Elliott | JavaScript Scene | Medium](https://medium.com/javascript-scene/master-the-javascript-interview-what-is-functional-programming-7f218c68b3a0)  
 [Currying - Wikipedia](https://en.wikipedia.org/wiki/Currying)  
 [javascript - What is 'Currying'? - Stack Overflow](https://stackoverflow.com/questions/36314/what-is-currying)  
+[Curry or Partial Application?. The Difference Between
+Partial… | by Eric Elliott | JavaScript Scene | Medium](https://medium.com/javascript-scene/curry-or-partial-application-8150044c78b8)  
