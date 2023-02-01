@@ -7,6 +7,7 @@
   - [Avoiding Side Effects](#avoiding-side-effects)
   - [Avoiding Shared State](#avoiding-shared-state)
   - [Immutable Data](#immutable-data)
+- [Currying](#currying)
 - [Pros and Cons of FP](#pros-and-cons-of-fp)
 
 ## What is Functional Programming(FP)?
@@ -142,6 +143,32 @@
     console.log(original); // [1, 2, 3]
     ```
 
+## Currying
+> ...currying is the technique of translating the evaluation of a function that takes multiple arguments into evaluating a sequence of functions, each with a single argument. | Wikipedia
+
+- The idea of Currying is to take a function that takes multiple arguments and break it down into a sequence/chain of functions that each take only one argument.
+  - i.e. curried functions take multiple arguments one at a time and return a new function for each argument.
+### Example
+```js
+// Ordinary function
+
+const multiply = (x, y) => x * y;
+multiply(3, 2); // 6
+```
+```js
+// Curried function
+
+const multiply = (x) => (y) => x * y;
+multiply(3)(2);
+
+const double = multiply(2);
+double(5); // 10
+const triple = multiply(3);
+triple(5); // 15
+const quadruple = multiply(4);
+quadruple(5); // 20
+```
+
 ## Pros and Cons of FP
 ### Pros
 - Code Clarity
@@ -166,3 +193,5 @@
 [Functional Programming VS Object Oriented Programming - Medium](https://medium.com/@shaistha24/functional-programming-vs-object-oriented-programming-oop-which-is-better-82172e53a526)  
 [Master the JavaScript Interview: What is a Pure Function? | by Eric Elliott | JavaScript Scene | Medium](https://medium.com/javascript-scene/master-the-javascript-interview-what-is-a-pure-function-d1c076bec976)  
 [Master the JavaScript Interview: What is Functional Programming? | by Eric Elliott | JavaScript Scene | Medium](https://medium.com/javascript-scene/master-the-javascript-interview-what-is-functional-programming-7f218c68b3a0)  
+[Currying - Wikipedia](https://en.wikipedia.org/wiki/Currying)  
+[javascript - What is 'Currying'? - Stack Overflow](https://stackoverflow.com/questions/36314/what-is-currying)  
