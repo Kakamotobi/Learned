@@ -7,6 +7,8 @@
   - [Avoiding Side Effects](#avoiding-side-effects)
   - [Avoiding Shared State](#avoiding-shared-state)
   - [Immutable Data](#immutable-data)
+- [Function Composition](#function-composition)
+  - [Pipe](#pipe)
 - [Currying](#currying)
 - [Partial Application](#partial-application)
 - [Pros and Cons of FP](#pros-and-cons-of-fp)
@@ -144,6 +146,42 @@
     console.log(original); // [1, 2, 3]
     ```
 
+## Function Composition
+> ...**function composition** is an operation  ∘  that takes two functions _f_ and _g_, and produces a function _h = g ∘ f_ such that _h(x) = g(f(x))_. | Wikipedia
+
+- Function Composition refers to combining two or more functions to form a new function.
+  - i.e. one function is applied to the result of another function.
+  - i.e. the output of one function becomes the input to another function.
+  - Ex: `g(f(x))` is a composition of the two functions `g` and `f`. This composition is a new function that maps an input to `g(f(x))`.
+- Functional Programming is all about Function Composition.
+### Function Composition and Currying
+- Currying can be used to enable function composition.
+- Since currying is converting a function with multiple arguments into a sequence of functions with single arguments, the intermediate result of each function is passed on to the next function, which is function composition.
+- Ex: `curriedFunc(a)(b)(c)`
+  - In this function, `curriedFunc(a)` should return a function or closure that accepts the parameter `b`, which then accepts parameter `c`.
+### Pipe
+- Pipe is a form of function composition that allows chaining functions together, whereby the output of the preceding function becomes the input for the next function.
+  - i.e. composing multiple simple and reusable functions together to result a more complex function that is clear and readable.
+- Data flows in one direction only.
+#### Example
+- Instead of:
+  ```js
+  let res = minus3(double(add5(0))); // 7
+  ```
+- Use a pipe:
+  ```js
+  const pipe = (...fns) => initVal => {
+    return fns.reduce((res, fn) => {
+      return fn(res);
+    }, initVal);
+  };
+  
+  let res = pipe(add5, double, minus3)(0); // 7
+  ```
+  - This `pipe` function is curried so that `initVal` can be passed on to the inner function.
+    - The function that is returned from `pipe` is a closure as it can access the variables `fns`, which are in `pipe`.
+  - The functions `fns` should be pure functions.
+
 ## Currying
 > ...currying is the technique of translating the evaluation of a function that takes multiple arguments into evaluating a sequence of functions, each with a single argument. | Wikipedia
 
@@ -220,6 +258,8 @@ quadruple(5); // 20
 [Functional Programming VS Object Oriented Programming - Medium](https://medium.com/@shaistha24/functional-programming-vs-object-oriented-programming-oop-which-is-better-82172e53a526)  
 [Master the JavaScript Interview: What is a Pure Function? | by Eric Elliott | JavaScript Scene | Medium](https://medium.com/javascript-scene/master-the-javascript-interview-what-is-a-pure-function-d1c076bec976)  
 [Master the JavaScript Interview: What is Functional Programming? | by Eric Elliott | JavaScript Scene | Medium](https://medium.com/javascript-scene/master-the-javascript-interview-what-is-functional-programming-7f218c68b3a0)  
+[Function composition - Wikipedia](https://en.wikipedia.org/wiki/Function_composition)  
+[함수형 프로그래밍 — Pipe. 파이프란 무엇이고 어떻게 사용하는가? | by Moon | 오늘의 프로그래밍 | Medium](https://medium.com/%EC%98%A4%EB%8A%98%EC%9D%98-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D/%ED%95%A8%EC%88%98%ED%98%95-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-pipe-c80dc7b389de)  
 [Currying - Wikipedia](https://en.wikipedia.org/wiki/Currying)  
 [javascript - What is 'Currying'? - Stack Overflow](https://stackoverflow.com/questions/36314/what-is-currying)  
 [Curry or Partial Application?. The Difference Between
