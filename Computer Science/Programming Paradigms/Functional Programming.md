@@ -7,8 +7,12 @@
   - [Avoiding Side Effects](#avoiding-side-effects)
   - [Avoiding Shared State](#avoiding-shared-state)
   - [Immutable Data](#immutable-data)
+- [Function (mathematical)](#function-mathematical)
 - [Function Composition](#function-composition)
+  - [Function Composition and Currying](#function-composition-and-currying)
+  - [Chaining](#chaining)
   - [Pipe](#pipe)
+  - [Higher Order Function](#higher-order-function)
 - [Currying](#currying)
 - [Partial Application](#partial-application)
 - [Pros and Cons of FP](#pros-and-cons-of-fp)
@@ -146,8 +150,30 @@
     console.log(original); // [1, 2, 3]
     ```
 
+## Function (mathematical)
+### Traditional Function
+- A function is like a vending machine.
+- *f(x) = y*
+  - *x* is essentially a set of inputs.
+  - *y* is essentially a set of outputs.
+  - By definition, each unique element in *x* always maps to a unique element in *y*.
+    - *i.e. no input or output is left hanging since each and every input is mapped to a single corresponding output. This means no input maps to more than one output, and vice versa.*
+    - Ex: *y = x \* 2* never outputs two *y*s.
+- *f(x,y) = x + y*
+  - Function with multiple arguments.
+  - These multiple arguments is combined to be considered as one set.
+### Expanded Function
+- *f(x) = y<sub>1</sub> | y<sub>2</sub> | y<sub>3</sub>*
+  - Function that has multiple outputs for a given input.
+  - Example
+    - *f(x) = x<sup>2</sup>*
+      - *f(2) = 4 = y*
+      - *f(-2) = 4 = y*
+    - The inverse of the above function would mean that there are two different outputs (*2* and *-2*) for a single input (4).
+      - *sqrt(4) = ±2*
+
 ## Function Composition
-> ...**function composition** is an operation  ∘  that takes two functions _f_ and _g_, and produces a function _h = g ∘ f_ such that _h(x) = g(f(x))_. | Wikipedia
+> ...**function composition** is an operation (*⚬*) that takes two functions *f* and *g*, and produces a function *h = g ⚬ f* such that *h(x) = g(f(x))*. | Wikipedia
 
 - Function Composition refers to combining two or more functions to form a new function.
   - i.e. one function is applied to the result of another function.
@@ -159,8 +185,15 @@
 - Since currying is converting a function with multiple arguments into a sequence of functions with single arguments, the intermediate result of each function is passed on to the next function, which is function composition.
 - Ex: `curriedFunc(a)(b)(c)`
   - In this function, `curriedFunc(a)` should return a function or closure that accepts the parameter `b`, which then accepts parameter `c`.
+### Chaining
+```js
+const res = [2,1,3]
+  .sort((a,b) => a - b)
+  .map((x) => x * 2)
+  .filter((x) => x === 2);
+```
 ### Pipe
-- Pipe is a form of function composition that allows chaining functions together, whereby the output of the preceding function becomes the input for the next function.
+- **Pipe is a form of function composition that allows chaining functions together, whereby the output of the preceding function becomes the input for the next function.**
   - i.e. composing multiple simple and reusable functions together to result a more complex function that is clear and readable.
 - Data flows in one direction only.
 #### Example
@@ -181,6 +214,104 @@
   - This `pipe` function is curried so that `initVal` can be passed on to the inner function.
     - The function that is returned from `pipe` is a closure as it can access the variables `fns`, which are in `pipe`.
   - The functions `fns` should be pure functions.
+### Higher Order Function
+- **A Higher Order Function is a form of function composition where a function takes a function as an argument OR returns a function.**
+- Example
+  ```js
+  const hof = (fn1, fn2) => (x) => fn1(fn2(x));
+  ```
+#### What is the Point of Higher Order Functions?
+- The point is to abstract operations to allow greater flexibility, modularity, and code reusability.
+- Common Use Cases
+  - Function Composition
+    - Multiple functions are combined into a new function to perform complex operations.
+  - Map and Filter Operations
+  - Callback Functions
+  - Creating Closures
+#### Taking a Function as an Argument
+- JavaScript has built-in higher order functions that take functions as arguments.
+- For example, `Array.prototype.map()`, `Array.prototype.filter()` calls the received function on each element and returns a new array.
+##### Example
+```js
+let nums = [1, 2, 3];
+
+const double = (arr) => {
+  const doubled = [];
+  for (let el of arr) {
+    doubled.push(el * 2);
+  }
+  return doubled;
+}
+
+console.log(double(nums)); // [2, 4, 6]
+console.log(nums); // [1, 2, 3]
+
+// OR
+
+nums.map(el => el * 2);
+```
+#### Returning a Function
+- Higher Order Functions can serve as "function factories" that "distribute" functions.
+- Useful for when you want to start with some base functionality and then extend it with some dynamic data.
+##### Examples
+###### Example 1
+```js
+const calculate = (operation) => {
+  switch (operation) {
+    case "ADD":
+      return function (a, b) {
+        return a + b;
+      };
+    case "SUBTRACT":
+      return function (a, b) {
+        return a - b;
+      };
+    case "MULTIPLY":
+      return function (a, b) {
+        return a * b;
+      }
+    case "DIVIDE":
+      return function (a, b) {
+        return a / b;
+      }
+  }
+}
+
+const addition = calculate("ADD");
+addition(3, 5); // 8
+
+// OR
+calculate("ADD")(3, 5); // 8
+```
+- Invoking `calculate("ADD")` returns an anonymous function under the case `"ADD"`, which we store in `addition`.
+- Now, we can invoke the return function by calling `addition()` with the required arguments. 
+###### Example 2
+- Assume we need to append strings with emojis.
+```js
+// This base function can be used to compose more complex functions.
+const appendEmoji = (fixed) => {
+  return (dynamic) => fixed + dynamic; // The inner function takes both arguments and adds them together.
+}
+
+// Use the base function to create more specialized functions that point to a specific emoji.
+const rain = appendEmoji("🌧");
+const sun = appendEmoji("🌞");
+
+console.log(rain(" today"); // 🌧 today
+console.log(sun(" tomorrow"); // 🌞 tomorrow
+```
+- This code does not rely on any shared state.
+
+
+
+
+
+
+
+
+
+
+
 
 ## Currying
 > ...currying is the technique of translating the evaluation of a function that takes multiple arguments into evaluating a sequence of functions, each with a single argument. | Wikipedia
@@ -260,6 +391,8 @@ quadruple(5); // 20
 [Master the JavaScript Interview: What is Functional Programming? | by Eric Elliott | JavaScript Scene | Medium](https://medium.com/javascript-scene/master-the-javascript-interview-what-is-functional-programming-7f218c68b3a0)  
 [Function composition - Wikipedia](https://en.wikipedia.org/wiki/Function_composition)  
 [함수형 프로그래밍 — Pipe. 파이프란 무엇이고 어떻게 사용하는가? | by Moon | 오늘의 프로그래밍 | Medium](https://medium.com/%EC%98%A4%EB%8A%98%EC%9D%98-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D/%ED%95%A8%EC%88%98%ED%98%95-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-pipe-c80dc7b389de)  
+[Higher Order Functions (Composing Software) | by Eric Elliott | JavaScript Scene | Medium](https://medium.com/javascript-scene/higher-order-functions-composing-software-5365cf2cbe99)  
+[Higher Order Functions in JavaScript – Beginner's Guide](https://www.freecodecamp.org/news/higher-order-functions-in-javascript/)  
 [Currying - Wikipedia](https://en.wikipedia.org/wiki/Currying)  
 [javascript - What is 'Currying'? - Stack Overflow](https://stackoverflow.com/questions/36314/what-is-currying)  
 [Curry or Partial Application?. The Difference Between
