@@ -5,7 +5,6 @@
 - [Function Declaration vs. Function Expression](#function-declaration-vs-function-expression)
 - [Arrow Functions](#arrow-functions)
 - [Immediately Invoked Function Expressions (IIFE)](#immediately-invoked-function-expressions-iife)
-- [Higher Order Functions](#higher-order-functions)
 
 ## What is a Function?
 > Generally speaking, a function is a "subprogram" that can be _called_ by code external (or internal, in the case of recursion) to the function. Like the program itself, a function is composed of a sequence of statements called the function body. Values can be passed to a function as parameters, and the function will return a value. | MDN
@@ -86,96 +85,9 @@ bar.name // "baz"
 - A function is created at the same time it is called.
 - Example: `(function() => {}))` or `(() => {})()`
 
-## Higher Order Functions
-- **A function that takes a function as an argument OR returns a function.**
-### What is the Point of Higher Order Functions?
-- The point is to abstract operations to allow greater flexibility, modularity, and code reusability.
-- Common Use Cases
-  - Function Composition
-    - Multiple functions are combined into a new function to perform complex operations.
-  - Map and Filter Operations
-  - Callback Functions
-  - Creating Closures
-### Taking a Function as an Argument
-- JavaScript has built-in higher order functions that take functions as arguments.
-- For example, `Array.prototype.map()`, `Array.prototype.filter()` calls the received function on each element and returns a new array.
-#### Example
-```js
-let nums = [1, 2, 3];
-
-const double = (arr) => {
-  const doubled = [];
-  for (let el of arr) {
-    doubled.push(el * 2);
-  }
-  return doubled;
-}
-
-console.log(double(nums)); // [2, 4, 6]
-console.log(nums); // [1, 2, 3]
-
-// OR
-
-nums.map(el => el * 2);
-```
-### Returning a Function
-- Higher Order Functions can serve as "function factories" that "distribute" functions.
-- Useful for when you want to start with some base functionality and then extend it with some dynamic data.
-#### Examples
-##### Example 1
-```js
-const calculate = (operation) => {
-  switch (operation) {
-    case "ADD":
-      return function (a, b) {
-        return a + b;
-      };
-    case "SUBTRACT":
-      return function (a, b) {
-        return a - b;
-      };
-    case "MULTIPLY":
-      return function (a, b) {
-        return a * b;
-      }
-    case "DIVIDE":
-      return function (a, b) {
-        return a / b;
-      }
-  }
-}
-
-const addition = calculate("ADD");
-addition(3, 5); // 8
-
-// OR
-calculate("ADD")(3, 5); // 8
-```
-- Invoking `calculate("ADD")` returns an anonymous function under the case `"ADD"`, which we store in `addition`.
-- Now, we can invoke the return function by calling `addition()` with the required arguments. 
-##### Example 2
-- Assume we need to append strings with emojis.
-```js
-// This base function can be used to compose more complex functions.
-const appendEmoji = (fixed) => {
-  return (dynamic) => fixed + dynamic; // The inner function takes both arguments and adds them together.
-}
-
-// Use the base function to create more specialized functions that point to a specific emoji.
-const rain = appendEmoji("🌧");
-const sun = appendEmoji("🌞");
-
-console.log(rain(" today"); // 🌧 today
-console.log(sun(" tomorrow"); // 🌞 tomorrow
-```
-- This code does not rely on any shared state.
-
 ## Reference
 [Functions - JavaScript | MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions)  
 [design - What is the ideal length of a method for you? - Software Engineering Stack Exchange](https://softwareengineering.stackexchange.com/questions/133404/what-is-the-ideal-length-of-a-method-for-you)  
 [FunctionLength - Martin Fowler](https://martinfowler.com/bliki/FunctionLength.html)  
 [Function - MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions)  
 [JavaScript - 함수 선언문, 함수 표현식 그리고 화살표 함수 비교](https://velog.io/@bigbrothershin/%EC%98%A4%EB%8A%98-%EA%B3%B5%EB%B6%80%ED%95%A0-%EA%B2%832020.1.30)  
-[Higher Order Functions (Composing Software) | by Eric Elliott | JavaScript Scene | Medium](https://medium.com/javascript-scene/higher-order-functions-composing-software-5365cf2cbe99)  
-[Higher Order Functions in JavaScript – Beginner's Guide](https://www.freecodecamp.org/news/higher-order-functions-in-javascript/)  
-[Object Oriented vs Functional Programming with TypeScript - YouTube](https://www.youtube.com/watch?v=fsVL_xrYO0w&ab_channel=Fireship)  
