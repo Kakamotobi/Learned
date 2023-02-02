@@ -176,6 +176,10 @@ triple(5); // 15
 const quadruple = multiply(4);
 quadruple(5); // 20
 ```
+- The function `multiply` is *partially applied* to the argument `x`.
+  - "Partially applied" because `x` is fixed in the inner function to be returned.
+- `multiply` is the curried function with a single parameter `x` that returns a new function with a single parameter `y`.
+- `multiply(x)` returns a partially applied version of the `multiply` function that is waiting for argument `y`.
 ### Relationship with Partial Application
 - A curried function partially applies one argument at a time.
 - A curried function does not have to invoke an application right away.
