@@ -15,6 +15,7 @@
   - [Higher Order Function](#higher-order-function)
 - [Currying](#currying)
 - [Partial Application](#partial-application)
+- [Lazy Evaluation](#lazy-evaluation)
 - [Category Theory and Monad](#category-theory-and-monad)
   - [What is Category Theory?](#what-is-category-theory)
   - [Category Theory in the Context of Programming](#category-theory-in-the-context-of-programming)
@@ -308,17 +309,6 @@ console.log(sun(" tomorrow"); // 🌞 tomorrow
 ```
 - This code does not rely on any shared state.
 
-
-
-
-
-
-
-
-
-
-
-
 ## Currying
 > ...currying is the technique of translating the evaluation of a function that takes multiple arguments into evaluating a sequence of functions, each with a single argument. | Wikipedia
 
@@ -370,6 +360,29 @@ quadruple(5); // 20
 - Here, **Application** refers to applying a function to its arguments.
 - **The idea of Partial Application is a function receiving a function with multiple parameters and returning a function with fewer parameters.**
   - i.e. some arguments of the "higher" function are fixed inside the returned function, and the remaining arguments are passed on to the returned function as arguments.
+
+## Lazy Evaluation
+- **Lazy Evaluation** refers to delaying evaluation of an operation until it is actually needed.
+  - i.e. a function executes its statement and evaluates the needed values as they are needed.
+  - Example
+    ```js
+    // The arguments `supplier1` and `supplier2` are not evaluated until needed (Ex: `supplier1.get()`).
+    // So, if `supplier1.get()` evaluates to false, `supplier2.get()` is never evaluated.
+    const lazyFunc = (supplier1, supplier2) => {
+      return supplier1.get() && supplier2.get() ? "success" : "failure";
+    };
+    ```
+- cf. **Eager Evaluation**
+  - Refers to evaluating an operation as soon as it is encountered.
+    - i.e. a function first evaluates its arguments and then executes its statement.
+  - The larger the data that is being passed on, the more memory is used.
+  - Example
+    ```js
+    // The arguments `res1` and `res2` are evaluated first before running the statement.
+    const eagerFunc = (res1, res2) => {
+      return res1 && res2 ? "success" : "failure";
+    };
+    ```
 
 ## Category Theory and Monad
 ### What is Category Theory?
@@ -524,6 +537,7 @@ class Monad {
 [javascript - What is 'Currying'? - Stack Overflow](https://stackoverflow.com/questions/36314/what-is-currying)  
 [Curry or Partial Application?. The Difference Between
 Partial… | by Eric Elliott | JavaScript Scene | Medium](https://medium.com/javascript-scene/curry-or-partial-application-8150044c78b8)  
+[Eager vs Lazy Evaluation - tutorialspoint](https://www.tutorialspoint.com/functional_programming_with_java/functional_programming_with_java_evaluation.htm)  
 [Monads in JavaScript - Stack Overflow](https://stackoverflow.com/questions/11871065/monads-in-javascript)  
 [What is a monad? (Design Pattern) - YouTube](https://www.youtube.com/watch?v=VgA4wCaxp-Q&ab_channel=AByteofCode)  
 [Understanding Monads With JavaScript - igstan.ro](http://igstan.ro/posts/2011-05-02-understanding-monads-with-javascript.html)  
