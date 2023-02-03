@@ -15,6 +15,12 @@
   - [Higher Order Function](#higher-order-function)
 - [Currying](#currying)
 - [Partial Application](#partial-application)
+- [Category Theory and Monad](#category-theory-and-monad)
+  - [What is Category Theory?](#what-is-category-theory)
+  - [Category Theory in the Context of Programming](#category-theory-in-the-context-of-programming)
+  - [What is a Monad?](#what-is-a-monad)
+    - [Monad in the Context of Programming](#monad-in-the-context-of-programming)
+  - [What is the Point of Monads?](#what-is-the-point-of-monads)
 - [Pros and Cons of FP](#pros-and-cons-of-fp)
 
 ## What is Functional Programming(FP)?
@@ -365,6 +371,127 @@ quadruple(5); // 20
 - **The idea of Partial Application is a function receiving a function with multiple parameters and returning a function with fewer parameters.**
   - i.e. some arguments of the "higher" function are fixed inside the returned function, and the remaining arguments are passed on to the returned function as arguments.
 
+## Category Theory and Monad
+### What is Category Theory?
+- A general mathematical theory of how different structures are related to one another.
+- _Category Theory is about defining categories and ways to morph one category to another._
+
+<p align="center">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Commutative_diagram_for_morphism.svg/200px-Commutative_diagram_for_morphism.svg.png" alt="Category Theory" width="30%"/>
+</p>
+
+- _X_, _Y_, _Z_ represent **categories**.
+- _f_, _g_, _g_ ∘ _f_ represent **functors**.
+  - A **Functor** is a structure-preserving mapping between categories.
+    - The term "functor" was introduced to distinguish itself from other functions.
+    - Examples
+      - The value has changed but the input and output of the function is the same.
+        ```js
+        [1, 2, 3].map((x) => x * 2); // [2,4,6]
+        ```
+        ```
+        Type Array --> Function --> Type Array
+        ```
+      - If the input and output are immutable and the function is pure, it is possible to chain.
+        ```js
+        [1, 2, 3]
+          .map(double) // [2,4,6]
+          .map(double) // [4,8,12]
+          .map(double); // [8,16,24]
+        ```
+        ```
+        Input --> Pure Function --> Output --> Pure Function --> Output --> Pure Function --> Output
+        ```
+  - A **Morphism** is a structure-preserving mapping between objects of the same type in a category.
+### Category Theory in the Context of Programming
+- In the context of Programming, "category" is equivalent to "type".
+- **A functor in functional programming is essentially a mapping function that converts an instance of Type _X_ to Type _Y_.**
+### What is a Monad?
+- a.k.a. endofunctor.
+- **A Monad is a Functor that outputs the same category as before.**
+  - In the context of Functional Programming, a Monadic operator is an operator or function that changes the value but maintains the same type as before.
+    - The term "monadic operator" is used because this process is similar to a monad.
+    - A Monadic Type wraps the value in its type and hence, allows the value to be handled as that type.
+      - Ex: `Maybe` in Haskell and `Optional` in Swift are Monadic types.
+#### Intro
+- The building block of a functional program is a function.
+  - Each function is simply a mapping between the input parameter's type and that of the output.
+    - `func: TypeA -> TypeB`
+- How are we going to compose a whole program/application based on this building block?
+  - One answer is Monads.
+#### Monad in the Context of Programming
+- **Monad is a design pattern in which pipeline implementation details are abstracted by wrapping a value in a type.**
+  - i.e. a Monad is a wrapper around a value that adds additional behavior or operations to that value. It provides a way to chain these operations together in a sequence (Ex: through binding), and abstracts the implementation details.
+  - Monads are object instances. Therefore, they can store some data (Ex: value, history, etc.).
+  - Analogy: a smart box that does stuff to its contents for us.
+- _Monad is used in order to **guarantee some stability in terms of types**._
+  - When an input is mapped to an output, the mapping has to be to the same type.
+    - i.e. when the same type as the input is returned, it is considered stable.
+  - Therefore, even if the result is `null` or `undefined`, the same type should be outputted.
+- Haskell provides a `Maybe` Monad that can be used along with a bind operator (`>>=`), which removes the `.bind()` clutter.
+##### [Example](https://www.youtube.com/watch?v=VgA4wCaxp-Q&ab_channel=AByteofCode) - Maybe Monad
+- Trying to get the age of the first friend of the user "Kakamotobi".
+  ```js
+  let username = "Kakamotobi";
+  let userObj = database.fetch(username);
+  if (userObj !== null) {
+    let userFriends = userObject.friends;
+    if (userFriends !== null) {
+      let firstFriendObj = userFriends[0];
+      if (firstFriendObj !== null) {
+        let firstFriendAge = firstFriendObj.age;
+      }
+    }
+  }
+  ```
+  - Any one of these operations could fail (Ex: database failure, `userFriends` is empty, etc.). To handle this, you would need a lot of failure checking with numerous `if` statements, which makes the code verbose, hard to read, and focused more on implementation details rather than the actual objective.
+- Create a `Maybe` class that is simply composed of two things: a value, and a binding method.
+
+  ```js
+  class Maybe {
+    constructor(val) {
+      this.val = val;
+    }
+
+    // Simply apply `fn` to `this.val` and return a new instance of Maybe with the newly computed value.
+    bind(fn) {
+      if (this.val === null) return this;
+      val = fn(this.val);
+      return new Maybe(val);
+    }
+  }
+  ```
+  ```js
+  let firstFriendAge = new Maybe("Kakamotobi")
+    .bind(database.fetch) // a new `Maybe` with `this.val` set to the result of DB fetch.
+    .bind((userObj) => userObj.friends) // a new `Maybe` with `this.val` set to the friends list.
+    .bind((userFriends) => userFriends[0]) // a new `Maybe` with `this.val` set to the first friend in the list.
+    .bind((firstFriend) => firstFriend.age); // a new `Maybe` with `this.val` set to the first friend's age.
+  ```
+  - At this point, the only location where a function is being called is in the definition of the `bind` function. Changes only need to be made in here.
+##### Example - Monad Class
+```js
+class Monad {
+  constructor(val, log = null) {
+    this.val = val;
+    // Log that keeps track of every step of the pipeline.
+    // This simulates a sort of mutable state, but still only using immutable data.
+    this.log = log ?? [];
+  }
+
+  apply(fn) {
+    val = fn(this.val);
+    return Monad(val, [...this.log, val]);
+  }
+}
+```
+#### What is the Point of Monads?
+- Monads provide a uniform framework for thinking about programming with effects.
+- Support pure programming.
+- Use of effects is explicit in types (Ex: `Maybe` explicitly indicates what kind of side effects that the program could have).
+- Writing functions that work for any effect (effect polymorphism).
+  - Ex: to run a sequence of effects one after the other, you could write a generic function that receives a sequence of effects of any type and run them.
+
 ## Pros and Cons of FP
 ### Pros
 - Code Clarity
@@ -397,3 +524,6 @@ quadruple(5); // 20
 [javascript - What is 'Currying'? - Stack Overflow](https://stackoverflow.com/questions/36314/what-is-currying)  
 [Curry or Partial Application?. The Difference Between
 Partial… | by Eric Elliott | JavaScript Scene | Medium](https://medium.com/javascript-scene/curry-or-partial-application-8150044c78b8)  
+[Monads in JavaScript - Stack Overflow](https://stackoverflow.com/questions/11871065/monads-in-javascript)  
+[What is a monad? (Design Pattern) - YouTube](https://www.youtube.com/watch?v=VgA4wCaxp-Q&ab_channel=AByteofCode)  
+[Understanding Monads With JavaScript - igstan.ro](http://igstan.ro/posts/2011-05-02-understanding-monads-with-javascript.html)  
