@@ -504,6 +504,11 @@ class Monad {
 - Use of effects is explicit in types (Ex: `Maybe` explicitly indicates what kind of side effects that the program could have).
 - Writing functions that work for any effect (effect polymorphism).
   - Ex: to run a sequence of effects one after the other, you could write a generic function that receives a sequence of effects of any type and run them.
+- Handling immutable state.
+  - Not having any mutable state means that residual state will have to be threaded around.
+  - This residual state needs to be handled for errors, which requires verbose code.
+  - This verbosity can be abstracted by using monads.
+  - In effect, it helps achieve the benefits of FP.
 
 ## Pros and Cons of FP
 ### Pros
