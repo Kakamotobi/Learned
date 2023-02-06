@@ -1,6 +1,7 @@
 # Process Management
 
 ## Table of Contents
+- [Big Picture](#big-picture)
 - [Program](#program)
 - [Process](#process)
   - [What is a Process?](#what-is-a-process)
@@ -10,7 +11,7 @@
     - [Types of Process Schedulers](#types-of-process-schedulers)
       - [Long-Term Scheduler](#long-term-scheduler)
       - [Short-Term Scheduler](#short-term-scheduler)
-      - [Mid-Term Scheduler](#mid-term-scheduler)
+      - [Medium-Term Scheduler](#medium-term-scheduler)
     - [Scheduling Disciplines](#scheduling-disciplines)
       - [Earliest Deadline First(EDF) Scheduling](#earliest-deadline-firstedf-scheduling)
       - [Priority Scheduling](#priority-scheduling)
@@ -18,6 +19,12 @@
       - [Shortest Job First(SJF) Scheduling](#shortest-job-firstsjf-scheduling)
       - [Round-Robin Scheduling](#round-robin-scheduling)
     - [Process Context Switching](#process-context-switching)
+- [Thread](#thread)
+  - [What is a Thread?](#what-is-a-thread)
+  - [Single-Threaded vs Multi-Threaded](#single-threaded-vs-multi-threaded)
+  - [Thread Control Block(TCB)](#thread-control-blocktcb)
+  - [Thread Scheduling](#thread-scheduling)
+    - [Thread Context Switching](#thread-context-switching)
 
 ## Big Picture
 <p align="center">
@@ -174,8 +181,60 @@
   - Repeat.
 - Process switching is costly since it involves switching all the process resources (different memory address space) including memory addresses, page tables, kernel resources, processor caches, etc.
 
-## Reference
+## Thread
+### What is a Thread?
+- **A thread is the unit of execution within a process that consists of a program counter, registers, and a stack.**
+  - i.e. a unit of CPU utilization.
+- Each thread is assigned its own task in a process.
+  - Example - VSCode
+    - A thread may process the code that the user is typing.
+    - Another thread may check for syntax errors.
+    - Another thread may be keeping the live server up.
+    - Another thread may be working on auto saving.
+- A CPU makes you think that it is capable of doing multiple computation at the same time. However, that is not true. The CPU goes back and forth, spending a bit of time on each computation/process. It is able to go back and forth between processes because it has an execution context (threads) for each computation.
+### Single-Threaded vs Multi-Threaded
+<p align="center">
+  <img src="https://www.cs.uic.edu/~jbell/CourseNotes/OperatingSystems/images/Chapter4/4_01_ThreadDiagram.jpg" alt="Single vs Multi-threaded Process" width="80%"/>
+</p>
 
+- **Process and Thread Analogy**
+  - A book is a process. A bookmark is a thread.
+  - If there is only one bookmark in the book, it is a single-threaded process.
+  - If there are multiple bookmarks in the book, it is a multi-threaded process.
+- **Single-Threaded**
+  - A process that has one thread.
+  - Ex: if the thread is rendering the page, it will not be able to download a file.
+  - A single-threaded process can only run on one CPU (even if running on a multiprocessor).
+- **Multi-Threaded**
+  - A process that has multiple threads that run _concurrently_.
+    - *Concurrently means that a single thread will be executing at a time but the processor goes back and forth so quickly that it seems that threads can run simultaneously.*
+    - Ex: one thread could be responsible for rendering the page, and another thread could be responsible for downloading a file.
+  - Each thread has its own set of registers(incl. program counter), and stack. However, they share the same code, data, and open files.
+    - Since they share the resources of the process that they belong to, threads can work quickly. However, when one thread collapses, the rest of the threads collapse as well.
+  - **Benefits of Multi-threading**
+    - Responsiveness
+      - May allow a program to continue running even if a part of it is lagging or blocked.
+    - Resource sharing
+      - Threads share the memory and the resources (code, data, files) of the process that they belong to.
+        - i.e. within the same address space.
+      - Therefore is efficient.
+  - cf. [**Multiprocessing**](https://github.com/Kakamotobi/Learned/blob/main/Computer%20Science/Computer%20System/CPU.md#cpuprocessor).
+### Thread Control Block(TCB)
+- **A TCB is a data structure that the OS uses to store all the information related to a particular thread.**
+  - When a thread is created, the OS creates a TCB for that thread in the _kernel memory space_.
+- TCB is generally composed of:
+  - Thread ID
+  - Thread State
+  - Register Values used by the Thread
+    - Program Counter
+    - Stack Pointer
+  - PCB Pointer for the Process
+### Thread Scheduling
+- Threads also need managing as they are created and removed as needed.
+#### Thread Context Switching
+- Thread switching is efficient and cheaper than process switching because only resources such as register and stack pointers have to be switched.
+
+## Reference
 [Operating Systems: Processes - UIC](https://www.cs.uic.edu/~jbell/CourseNotes/OperatingSystems/3_Processes.html)  
 [Differences Between Program Vs Process Vs Threads](https://javaconceptoftheday.com/differences-between-program-vs-process-vs-threads/)  
 [Job vs. Task vs. Process | Baeldung on Computer Science](https://www.baeldung.com/cs/job-vs-task-vs-process)  
@@ -187,3 +246,7 @@
 [FCFS Scheduling Algorithm: What is, Example Program](https://www.guru99.com/fcfs-scheduling.html)  
 [Shortest Job First (SJF): Preemptive, Non-Preemptive Example](https://www.guru99.com/shortest-job-first-sjf-scheduling.html)  
 [Round Robin Scheduling Algorithm with Example](https://www.guru99.com/round-robin-scheduling-example.html)  
+
+[Operating Systems: Threads - UIC](https://www.cs.uic.edu/~jbell/CourseNotes/OperatingSystems/4_Threads.html)  
+[Thread control block - Wikipedia](https://en.wikipedia.org/wiki/Thread_control_block)  
+[Difference between Thread Context Switch and Process Context Switch - GeeksforGeeks](https://www.geeksforgeeks.org/difference-between-thread-context-switch-and-process-context-switch/)  
