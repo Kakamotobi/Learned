@@ -7,6 +7,7 @@
 - [Removing Duplicate Objects in an Array](#removing-duplicate-objects-in-an-array)
 - [Replacing All Occurrences of a Substring in a String](#replacing-all-occurrences-of-a-substring-in-a-string)
 - [Combinations and Permutations](#combinations-and-permutations)
+- [Generate Random Numbers without Repetition ft. Fisher-Yates Algorithm](#generate-random-numbers-without-repetition-ft-fisher-yates-algorithm)
 
 ## Remainder/Modulo (%) Operator
 > Returns the remainder left over when one operand is divided by a second operand. It always takes the sign of the dividend.
@@ -245,3 +246,23 @@ getPermutations([1,2,3]); // ["123","132","213","231","312","321"]
 ```
 
 ---
+
+## Generate Random Numbers without Repetition ft. Fisher-Yates Algorithm
+```js
+const shuffleNums = (from, to) => {
+  const nums = Array(to - from + 1)
+    .fill(from)
+    .map((x, idx) => x + idx);
+
+  let i = nums.length - 1;
+  let j = 0;
+
+  while (i > 0) {
+    j = Math.floor(Math.random() * (i + 1));
+    [nums[j], nums[i]] = [nums[i], nums[j]];
+    i--;
+  }
+
+  return nums;
+};
+```
