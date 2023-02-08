@@ -1,10 +1,13 @@
 # Backtracking Medium
 
 ## Table of Contents
-- [Letter Combinations of a Phone Number](#letter-combinations-of-a-phone-number)
+- [17. Letter Combinations of a Phone Number](#17-letter-combinations-of-a-phone-number)
 
-## [Letter Combinations of a Phone Number](https://leetcode.com/problems/letter-combinations-of-a-phone-number/)
+## [17. Letter Combinations of a Phone Number](https://leetcode.com/problems/letter-combinations-of-a-phone-number/)
 ```js
+// TC: O(n * 4^n), SC: O(n)
+  // n - digits.length
+
 const letterCombinations = (digits) => {
   const res = [];
 
