@@ -16,11 +16,12 @@
 > JavaScript is a prototype-based, multi-paradigm, single-threaded, dynamic language, supporting object-oriented, imperative, and declarative (e.g. functional programming) styles. | MDN
 - **[Prototype-based](https://github.com/Kakamotobi/Learned/blob/main/JS/Prototypes-Classes-OOP/Prototypes-Classes-OOP.md)**
 - **Single-threaded**
-  - At any given point in time, JavaScript runs one line of code.
-  - i.e. only one thing happens at a time.
+  - There is only one thread (worker) available. Therefore, at any given point in time, JavaScript runs one line of code.
+    - i.e. only one thing happens at a time.
+  - *Since JS is single-threaded, it is synchronous in nature.*
 - **Synchronous**
-  - Tasks are executed sequentially (one by one).
-  - i.e., if one task takes 5s, the following code will have to wait their turn for 5s.
+  - Tasks are executed sequentially (start and complete execution one by one).
+    - Ex: if one task takes 5s to complete execution, the following code will have to wait their turn for 5s.
   - Nothing happens until the response gets back (blocking, a.k.a. beach ball).
   - **[Asynchronous JavaScript](https://github.com/Kakamotobi/Learned/blob/main/JS/Asynchronous/Async.md)**
     - *JavaScript is only asynchronous in that it can hand off certain tasks to the browser (AJAX, etc.) to handle while it synchronously runs through the script.*
