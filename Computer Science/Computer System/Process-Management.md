@@ -19,6 +19,12 @@
       - [Shortest Job First(SJF) Scheduling](#shortest-job-firstsjf-scheduling)
       - [Round-Robin Scheduling](#round-robin-scheduling)
     - [Process Context Switching](#process-context-switching)
+  - [Inter Process Communication(IPC)](#inter-process-communicationipc)
+    - [IPC Approaches](#ipc-approaches)
+      - [Message Passing](#message-passing)
+      - [Shared Memory](#shared-memory)
+    - [Process Synchronization](#process-synchronization)
+      - [Critical Section Problem](#critical-section-problem)
 - [Thread](#thread)
   - [What is a Thread?](#what-is-a-thread)
   - [Single-Threaded vs Multi-Threaded](#single-threaded-vs-multi-threaded)
@@ -180,6 +186,70 @@
     - Process B's context is restored and resumes executing from where it left off.
   - Repeat.
 - Process switching is costly since it involves switching all the process resources (different memory address space) including memory addresses, page tables, kernel resources, processor caches, etc.
+### Inter Process Communication(IPC)
+- Processes are usually prevented from having access to other processes' data. However, cooperating processes need to work together.
+- **IPC is a mechanism provided by the OS to allow processes to share data and synchronize their actions.**
+#### IPC Approaches
+- There are two large categories of IPC approaches: **message passing** and **shared memory**.
+
+<p align="center">
+  <img src="https://beingintelligent.com/wp-content/uploads/2022/04/Shared-Memory-and-Message-Passing-System.jpg" alt="Shared Memory vs Message Passing" width="80%"/>
+</p>
+
+##### Message Passing
+- Message Passing is when a process copies the data into a data structure (Ex: buffer), and makes a system call to the kernel to send that data to a particular process.
+- Pros and Cons
+  - Requires two system calls per data exchange (one to read, one to write).
+  - Requires the data to be copied twice (once to the kernel memory, once to the receiving process).
+  - _Synchronization_ handling is not necessary since all exchanges go through the kernel.
+###### Pipes
+- A single pipe is a _half-duplex_ method where data is sent as a stream of bytes.
+  - _NOTE: it is not unidirectional._
+- Full-duplex can be achieved by using an additional pipe.
+###### Message Queue
+- The kernel manages a queue of the requests sent by processes to send data to another process.
+- Processes have to have a common key to access the message queue.
+- Each item in the message queue has an ID or type so that processes can find the correct message intended for them.
+- System Calls
+  - `ftok()` &rarr; `msgget()` &rarr; `msgsnd()` &rarr; `msgrcv()` &rarr; `msgctl()`
+###### (IPC) Socket
+- Channel-based communication between processes that are on the same physical machine (host).
+  - cf. Network Sockets are between different hosts, which requires a network protocol.
+- IPC Sockets are based within the kernel and uses a local file as a socket address.
+- IPC Socket Flow
+  - A process creates a socket with a specified socket domain, type, and protocol (defaults to one that supports the socket type).
+    - The socket handle (descriptor) is returned.
+  - Bind a unique address/path to the socket for other processes to identify it.
+    - A named socket is added to the local file.
+  - A client process sends a connection request to the server process' socket.
+  - Data is sent
+###### Signal
+- A Signal is an asynchronous notification that a process sends to another process about a pre-defined event, and no data is sent.
+- A limited form of IPC.
+##### Shared Memory
+- Shared Memory is when a process sets up a portion of their virtual memory to be used for IPC, and makes a system call to the kernel to inform it of that portion of memory. From there on, cooperating processes can read/write data from/to each other's portion of memory dedicated for IPC (without having to make system calls).
+- Pros and Cons
+  - Significant overhead in initial set up of memory portions dedicated for IPC since kernel has to link the different processes'shared regions.
+  - _Synchronization_ issues need to be handled (timing needs to be controlled).
+###### Memory-mapped File
+- A byte-for-byte mapping of a portion of memory to a file.
+- Can be an actual file on physical disk, a device, a shared memory object, etc.
+- Processes can read and write directly to each other's memory-mapped file.
+#### Process Synchronization
+- Process Synchronization refers to coordinating the execution of processes in an appropriate order.
+- Process Synchronization is an issue that resides in the _Shared Memory IPC approaches_ since race conditions an occur.
+  - A **race condition** is when multiple processes access the same memory or execute the same code at the same time. This results to inconsistent data and errors.
+##### Critical Section Problem
+- **A Critical Section refers to a code segment of a process where processes can access shared resources.**
+- It contains common variables that processes can use.
+- We need to prevent race condition in this Critical Section by coordinating processes accordingly.
+###### Solution Requirements
+- **Mutual Exclusion**
+  - If a process is executing inside a critical section, no other process should be able to execute in the critical section.
+- **Progress**
+  - If the critical section is not being occupied, any process trying to enter it should not be stopped from doing so.
+- **Bounded Waiting**
+  - If the critical section is already occupied, a process outside of the critical section should not have to wait indefinitely.
 
 ## Thread
 ### What is a Thread?
@@ -246,6 +316,12 @@
 [FCFS Scheduling Algorithm: What is, Example Program](https://www.guru99.com/fcfs-scheduling.html)  
 [Shortest Job First (SJF): Preemptive, Non-Preemptive Example](https://www.guru99.com/shortest-job-first-sjf-scheduling.html)  
 [Round Robin Scheduling Algorithm with Example](https://www.guru99.com/round-robin-scheduling-example.html)  
+[3.2. IPC Models - Computer Systems Fundamentals](https://w3.cs.jmu.edu/kirkpams/OpenCSF/Books/csf/html/IPCModels.html)  
+[Difference Between Shared Memory and Message Passing System - Being Intelligent](https://beingintelligent.com/difference-between-shared-memory-and-message-passing-process-communication.html)  
+[Difference between Simplex, Half duplex and Full Duplex Transmission Modes - GeeksforGeeks](https://www.geeksforgeeks.org/difference-between-simplex-half-duplex-and-full-duplex-transmission-modes/)  
+[IPC:Sockets](https://users.cs.cf.ac.uk/dave/C/node28.html)  
+[Memory-Mapped Files | Microsoft Learn](https://learn.microsoft.com/en-us/dotnet/standard/io/memory-mapped-files)  
+[Critical Section Problem in OS (Operating System) - javatpoint](https://www.javatpoint.com/os-critical-section-problem)  
 
 [Operating Systems: Threads - UIC](https://www.cs.uic.edu/~jbell/CourseNotes/OperatingSystems/4_Threads.html)  
 [Thread control block - Wikipedia](https://en.wikipedia.org/wiki/Thread_control_block)  
