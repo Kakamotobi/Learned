@@ -143,7 +143,7 @@
 - Each thread has its own call stack.
   - Therefore, single-threaded languages have one call stack.
   - Whereas, multi-threaded languages have multiple call stacks.
-#### Event Loop
+#### [Event Loop](https://github.com/Kakamotobi/Learned/blob/main/JS/Asynchronous/Async.md#the-event-loop)
 - **Responsible for executing the code, collecting and processing events, and executing queued sub-tasks.**
 - A mechanism on the browser, not the JavaScript engine.
 - It's job is to manage the call stack and callback queue.
