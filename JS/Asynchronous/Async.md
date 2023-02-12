@@ -3,7 +3,15 @@
 ## Table of Contents
 - [Prerequisites](#prerequisites)
 - [Working Around Synchronous JS](#working-around-synchronous-js)
-  - [Browser APIs](#browser-apis)
+  - [Async in JS Example](#async-in-js-example)
+  - [Some Browser APIs](#some-browser-apis)
+  - [The Event Loop](#the-event-loop)
+    - [Node.js & libuv Library](#nodejs--libuv-library)
+      - ["Blocking" in Node.js](#blocking-in-nodejs)
+      - [libuv Library](#libuv-library)
+      - [Phases of the Event Loop](#phases-of-the-event-loop)
+      - [`process.nextTick(callback)`](#processnexttickcallback)
+      - [Event Emitter](#event-emitter)
 - [Dealing with Asynchronous Data](#dealing-with-asynchronous-data)
   - [Option 1 - Callbacks](#option-1---callbacks)
   - [Option 2 - Promises](#option-2---promises)
@@ -18,11 +26,25 @@
 
 ## Prerequisites
 - [Single-threaded and Synchronous](https://github.com/Kakamotobi/Learned/blob/main/JS/JavaScript.md#about-javascript)
-- [Call Stack](https://github.com/Kakamotobi/Learned/blob/main/JS/JavaScript.md#call-stack)
+- [JavaScript Runtime Environment](https://github.com/Kakamotobi/Learned/blob/main/JS/JavaScript.md#javascript-runtime-environment)
 
-## [Working Around Synchronous JS](https://github.com/Kakamotobi/Learned/edit/main/JS/JavaScript.md#javascript-runtime-environment)
-- *JS is only asynchronous in that it can hand off certain tasks to the browser, AJAX, etc. to handle while it synchronously runs through the script.*
-
+## [Working Around Synchronous JS](https://github.com/Kakamotobi/Learned/blob/main/JS/JavaScript.md#javascript-runtime-environment)
+- _JS is is **single-threaded** and **synchronous** by default._
+  - i.e. JS code cannot create new threads and run in parallel.
+- _JS is only **asynchronous** in that it can hand off certain tasks to the Browser/Runtime(Ex: Node.js) APIs while it synchronously runs through the script._
+  - i.e. JS offloads async operations to the system kernel.
+  - JS can perform these async operations through the use of an [**Event Loop**](https://github.com/Kakamotobi/Learned/main/JS/Asynchronous/Async.md#the-event-loop).
+    - On the Web, browsers provide the event loop.
+    - Node uses the libuv library for the event loop.
+    - **_Note:_** _the event loop is not an inherent part of the JS engine. Iti s a component of the runtime environment._
+      - i.e. the libuv library is just another dependency of Node.js as is V8.
+- Since the main thread is responsible for rendering views, JS is designed to be non-blocking.
+- And since JS is synchronous and makes use of an event loop for asynchronous operations, JS is constrained to use **callbacks**.
+  - As functions, to manage state when using callbacks, there are two options:
+    - Pass in variables directly to the function.
+    - Retrieve a variable from a cache, session, file, DB, network, etc.
+  - This is also why [**closures**](https://github.com/Kakamotobi/Learned/blob/main/JS/Scope.md#closure) play an important role.
+### Async in JS Example
 - What happens if something takes a long time?
   - For example, when making requests to servers, it can take some time to get the data but we don't want our program/website to stall and wait for the response. We want to keep executing our script.
   - Example
@@ -32,9 +54,9 @@
     input.value = ""; // reset form input
     ```
 - For processes that take a long time, we pass a callback function, which will be executed at the appropriate time after the time has passed.
-  - The callback function that has been passed in is what we want the browser to remind JS of.
-    - Ex: “Hey browser, set this timer for me and when you’re done, give me this callback back.”
-    - Hence, JS is not hung up on what that callback function does, until the browser returns it to JS.
+  - **_The callback function that has been passed in is what we want the browser to remind JS of._**
+    - Ex: “Hey browser, set this timer for me and **when you’re done, give me this callback back.**”
+    - Hence, JS is not hung up on the async operation, until the browser returns the callback to JS.
     - This is why callbacks are used frequently (for things that require asynchronous functions, which take time).
   - Example
     ```js
@@ -44,19 +66,13 @@
     }, 3000);
     console.log("I print second!");
     ```
-  - This is possible because the browser does the work.
-### Browser APIs
-- The browser is capable of doing things that take time or JS is incapable of doing.
-  - Ex: JS is not the one setting a timer for `setTimeout()`, JS is not the one sending a request to an API. The browser handles it.
-- They handle certain tasks in the background (ex: making a request).
-#### Flow Example
-- JS runs through the script (synchronously).
-- When JS encounters a Web API function, it passes it on to the browser (asynchronous bit).
-  - “Hey browser, remind me to put this code back into my call stack after 3s.”
-- In the meantime, JS continues to run through the script (synchronously).
-- The browser finishes the given task (placing and checking a timer).
-  - “Hey JS, 3s are over. I’m leaving this code in the callback queue for you to take and put in your callstack asap.”
-- The browser returns the callback to the stack and JS continues to run through the script (synchronously).
+    - JS runs through the script (synchronously).
+    - When JS encounters `setTimeout`, it passes it on to the browser (asynchronous bit) along with the callback.
+      - “Hey browser, remind me to put this callback back into my call stack after 3s.”
+    - In the meantime, JS continues to run through the script (synchronously).
+    - The browser finishes the given task (placing and checking a timer).
+      - “Hey JS, 3s are over. I’m leaving this code in the callback queue for you to take and put in your callstack asap.”
+    - The browser returns the callback to the stack and JS continues to run through the script (synchronously).
 ### Some Browser APIs
 - **`setTimeout()`**
   - Sets a timer which executes a function or specified code once the timer expires.
@@ -67,6 +83,101 @@
   - Cancels interval set by `setInterval`.
   - Syntax: `clearInterval(IntervalID)`
 - More on APIs [here](../Web-APIs.md).
+### The Event Loop
+- **The event loop continuously checks the queues for any new messages, and executes the corresponding event handlers for each message.**
+- It is called the "event loop" because it usually runs forever.
+- The event loop itself is _single-threaded_ and operates _synchronously_.
+- As a single-threaded language, concurrency in JS refers to the event loop executing JS callbacks after completing other work.
+- Unlike event loops of other programming languages, the event loop for JS does not allow the creation of additional threads to handle concurrent work.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/JS/refImg/js-runtime-environment.png" alt="JS Runtime Environment" width="80%"/>
+</p>
+
+#### Node.js & libuv Library
+<p align="center">
+  <img src="https://nexocode.com/images/event-loop-nodejs-architecture1.webp" alt="Node.js Architecture" width="80%"/>
+</p>
+
+##### "Blocking" in Node.js
+- "Blocking" refers to when the Node.js process has to wait for a non-JS operation (Ex: I/O) to complete; since the Event Loop cannot continue executing JS.
+  - cf. poor performing code in JS is not referred to as "blocking".
+- Blocking operations include the synchronous methods in the Node.js standard library that use libuv, and some native modules.
+- The Node.js standard library provides **non-blocking asynchronous** and **blocking synchronous** versions of all I/O methods that accept callbacks.
+##### libuv Library
+> libuv enforces an **asynchronous**, **event-driven** style of programming. Its core job is to provide an event loop and callback based notifications of I/O and other activities. libuv offers core utilities like timers, non-blocking networking support, asynchronous file system access, child processes and more. | libuv
+##### Phases of the Event Loop
+- **_Each phase has a queue of callbacks that it needs to execute._**
+- The event loop moves to the next phase if the the queue has been exhausted or the callback limit is reached.
+- Once the event loop runs through, if there aren't any async I/Os or timers that are waiting, Node.js stops the event loop.
+  - **Async I/O** refers to the program's interaction with the system disk (i.e. reading/writing files) or network operations.
+- **Flow**
+  - Node.js starts up.
+    - The event loop is initialized.
+  - It starts going through the input script.
+  - Events are added to the queues accordingly.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/JS/refImg/phases-of-event-loop.png" alt="Phases of the Event Loop" width="80%"/>
+</p>
+
+- **Timers**
+  - Execute callbacks of `setTimeout()` and `setInterval()`.
+- **Pending Callbacks**
+  - Execute callbacks related to I/O.
+  - Ex: callback for when a file reading is done.
+  - Ex: callback for when network operation is done.
+- **Idle, Prepare**
+  - Only used internally.
+- **Poll**
+  - Retrieve new I/O events, and tries to execute their callbacks immediately. If not, the event is registered as a pending callback.
+  - Therefore, it decides when the next I/O polling will be and process events in the polling queue.
+  - This is kind of like the entry point.
+- **Check**
+  - Execute callbacks of `setImmediate()`.
+- **Close Callbacks**
+  - Close as in "ending", not distance.
+  - Ex: `socket.on("close", ...)`
+##### `process.nextTick(callback)`
+- When the Event Loop goes around once, it is called a **tick**.
+- **The JS engine invokes the callback at the end of the current operation (before the next tick starts).**
+- _Therefore, it tells the JS engine to process this callback as soon as the current function ends; and not queue it._
+  - i.e. it is a way to ensure that this callback is executed before the next event loop iteration.
+  - cf. in `setTimeout(callback)`, the callback is executed at the end of the next tick (not before the next tick starts like `process.nextTick()`).
+- Example
+  ```js
+  console.log("I print first");
+  
+  setTimeout(() => console.log("I print fourth"));
+  
+  setImmediate(() => console.log("I print third"));
+  
+  process.nextTick(() => console.log("I print second"));
+  ```
+##### Event Emitter
+- Node.js' events module offers the `EventEmitter` class, which can be used to handle events.
+###### Example
+```js
+import EventEmitter from "events";
+
+const eventEmitter = new EventEmitter();
+
+// The `on` method registers a callback to be executed when a particular event ("something") is triggered.
+const cb = (arg1, arg2) => console.log("something");
+eventEmitter.on("something", cb);
+
+// The `emit` method triggers an event (the "something" event).
+eventEmitter.emit("something", "argument1", "argument2");
+
+// The `once` method registers an event listener that activates just once.
+eventEmitter.once("blah", () => console.log("I only activate once"));
+
+// The `removeListener()`/`off()` method removes the specified listener from the specified event.
+eventEmitter.removeListener("something", cb);
+
+// The `removeAllListeners()` method removes all listeners from the specified event.
+eventEmitter.removeAllListeners("blah");
+```
 
 ## Dealing with Asynchronous Data
 ### Option 1 - Callbacks
@@ -77,15 +188,15 @@
 ```js
 // THE CALLBACK VERSION
 
-const fakeRequestCallback = (url, success, failure) => {
+const fakeRequestCallback = (url, successCB, failureCB) => {
   const delay = Math.floor(Math.random() * 4500) + 500;
   setTimeout(() => {
     if (delay > 4000) {
       // message is passed to the failure callback if it is executed.
-      failure("Connection Timeout :(");
+      failureCB("Connection Timeout :(");
     } else {
       // message is passed to the success callback if it is executed.
-      success(`Here is your fake data from ${url}`);
+      successCB(`Here is your fake data from ${url}`);
     }
   }, delay);
 };
@@ -278,7 +389,7 @@ fakeRequestPromise("yelp.com/api/coffee/page1")
 - **`.catch()`** can be reduced to one for all.
 ### Option 3 - Async/Await Functions
 - A function that is declared with the **`async`** keyword, and permits the **`await`** keyword to be used in it.
-- *The two keywords enable asynchronous, promise-based behavior to be written in a cleaner style (don't have to explicitly configure promise chains).*
+- *The two keywords enable asynchronous, **promise-based** behavior to be written in a cleaner style (don't have to explicitly configure promise chains).*
 #### Keywords
 - **`async`**
   - Always return a promise.
@@ -306,6 +417,29 @@ fakeRequestPromise("yelp.com/api/coffee/page1")
 - **`await`**
   - Used to wait for a `Promise` to be fulfilled.
   - **Pauses the execution of the function, waiting for a `Promise` to be fulfilled, after which the response/returned value can be extracted from, before continuing on.**
+  - Code noted by the `await` keyword is a blocking operation.
+  - Example
+    ```js
+    const getJoke = async () => {
+      const data = (await fetch("https://v2.jokeapi.dev/joke/Any?safe-mode").json();
+      return data;
+    };
+    
+    const main = async () => {
+      console.log("before");
+      console.log(await getJoke());
+      console.log("after");
+    };
+    
+    main();
+    console.log("end");
+    ```
+    ```zsh
+    before
+    end <-- JS continues executing the script
+    // data ... <-- data was fetched from the API
+    after <-- this was blocked by the API fetch
+    ```
 - **`return`**
   - If the function `return`s a value, the `Promise` will be fulfilled with that value.
 - **`throw`**
@@ -675,6 +809,14 @@ btn.addEventListener("click", addNewJoke2);
 ```
 
 ## Reference
+[Asynchronous flow control - Node.js](https://nodejs.dev/en/learn/asynchronous-flow-control/)  
+[JavaScript Asynchronous Programming and Callbacks - Node.js](https://nodejs.dev/en/learn/javascript-asynchronous-programming-and-callbacks/)  
+[JavaScript Engine and the Event Loop](https://www.epineda.net/javascript-engine-and-the-event-loop/)  
+[A Visual Explanation of JavaScript Event Loop](https://www.javascripttutorial.net/javascript-event-loop/)  
+[Behind Node.js - The Event Loop](https://nexocode.com/blog/posts/behind-nodejs-event-loop/)  
+[The Node.js Event Loop, Timers, and process.nextTick() | Node.js](https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick/)  
+[Basics of libuv - libuv documentation](https://docs.libuv.org/en/v1.x/guide/basics.html)  
+
 [Asynchronous JavaScript | MDN](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous)  
 [What is an API? (Application Programming Interface) | MuleSoft](https://www.mulesoft.com/resources/api/what-is-an-api#:~:text=API%20is%20the%20acronym%20for,you're%20using%20an%20API.)  
 [Using the Fetch API - Web APIs | MDN](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch)  
