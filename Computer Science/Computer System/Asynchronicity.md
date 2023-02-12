@@ -87,6 +87,7 @@
 - The control of execution and "result" (indicating that it doesn't have a result yet) are returned at the same time.
 ### Asynchronous
 - **Concurrent execution of tasks.**
+  - i.e. other things can happen independently of the main program flow.
 - The order of execution is indeterminate.
   - i.e. the caller does not actively care whether the callee has finished executing or not.
   - Hence, the need for some sort of queue.
