@@ -94,6 +94,11 @@
   <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/JS/refImg/js-runtime-environment.png" alt="JS Runtime Environment" width="80%"/>
 </p>
 
+#### Event Loop Flow
+- Code is added to the call stack.
+- If code is synchronous, it will execute and immediately return. If code is asynchronous, it will offload it to the browser or libuv API.
+- When the browser or libuv is done, it will send the event (primarily a callback) to the event queue.
+- If the call stack is empty, the event loop takes the first callback in the event queue and puts it in the call stack.
 #### Node.js & libuv Library
 <p align="center">
   <img src="https://nexocode.com/images/event-loop-nodejs-architecture1.webp" alt="Node.js Architecture" width="80%"/>
@@ -817,6 +822,7 @@ btn.addEventListener("click", addNewJoke2);
 [The Node.js Event Loop, Timers, and process.nextTick() | Node.js](https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick/)  
 [Basics of libuv - libuv documentation](https://docs.libuv.org/en/v1.x/guide/basics.html)  
 
+[JavaScript Event Loop: How it Works and Why it Matters in 5 Minutes - YouTube](https://www.youtube.com/watch?v=lqLSNG_79lI&ab_channel=JamesQQuick)  
 [Asynchronous JavaScript | MDN](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous)  
 [What is an API? (Application Programming Interface) | MuleSoft](https://www.mulesoft.com/resources/api/what-is-an-api#:~:text=API%20is%20the%20acronym%20for,you're%20using%20an%20API.)  
 [Using the Fetch API - Web APIs | MDN](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch)  
