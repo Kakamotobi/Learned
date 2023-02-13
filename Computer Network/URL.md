@@ -10,7 +10,7 @@ A URL is essentially an address for a particular resource on a particular server
   - The protocol that the browser must use to request the resource.
   - Usually HTTP or HTTPS.
 - **Authority**
-  - **Domain Name**
+  - [**Domain Name**](https://github.com/Kakamotobi/Learned/blob/main/Computer%20Network/DNS.md#dns-hierarchy)
     - The web server that is being requested.
     - Consists of the subdomain (if any), second-level domain, and top-level domain separated by periods.
     - Preceded by "://".
