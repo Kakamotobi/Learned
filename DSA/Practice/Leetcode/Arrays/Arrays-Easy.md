@@ -1,6 +1,17 @@
 # Arrays - Easy
 
-## 1. Two Sum
+## Table of Contents
+- [1. Two Sum](#1-two-sum)
+- [121. Best Time to Buy and Sell Stock](#121-best-time-to-buy-and-sell-stock)
+- [1913. Maximum Product Difference Between Two Pairs](#1913-maximum-product-difference-between-two-pairs)
+- [1588. Sum of All Odd Length Subarrays](#1588-sum-of-all-odd-length-subarrays)
+- [88. Merge Sorted Array](#88-merge-sorted-array)
+- [278. First Bad Version](278-first-bad-version)
+- [53. Maximum Subarray](#53-maximum-subarray)
+- [1876. Substrings of Size Three with Distinct Characters](#1876-substrings-of-size-three-with-distinct-characters)
+- [169. Majority Element](#169-majority-element)
+
+## [1. Two Sum](https://leetcode.com/problems/two-sum/)
 - Input: array of integer `nums`, and integer `target`.
 - Output: return the indices of the two numbers that add up to target.
 - Constraints
@@ -24,7 +35,7 @@ const twoSum = (nums, target) => {
 }
 ```
 
-## 121. Best Time to Buy and Sell Stock
+## [121. Best Time to Buy and Sell Stock](https://leetcode.com/problems/best-time-to-buy-and-sell-stock/)
 - Input: array `prices` where `prices[i]` is the price of a given stock on the `i`th day.
 - Output: return the maximum profit that can be achieved (buy low, sell high). Return `0` if no profit can be achieved.
 ### Example
@@ -49,7 +60,7 @@ const maxProfit = (prices) => {
 }
 ```
 
-## 1913. Maximum Product Difference Between Two Pairs
+## [1913. Maximum Product Difference Between Two Pairs](https://leetcode.com/problems/maximum-product-difference-between-two-pairs/)
 - Input: array of integers called nums.
 - Output: largest product difference between pairs `(nums[w], nums[x])` and `(nums[y], nums[z])`.
 ### Solution 1
@@ -111,7 +122,7 @@ const maxProductDifference = (nums) => {
 }
 ```
 
-## 1588. Sum of All Odd Length Subarrays
+## [1588. Sum of All Odd Length Subarrays](https://leetcode.com/problems/sum-of-all-odd-length-subarrays/)
 - Input: an array of positive integers.
 - Output: the sum of all possible odd-length subarrays.
 ### Solution - Sliding Window
@@ -149,7 +160,7 @@ const sumOddLengthSubarrays = function(arr) {
 };
 ```
 
-## 88. Merge Sorted Array
+## [88. Merge Sorted Array](https://leetcode.com/problems/merge-sorted-array/)
 - Input: two integer arrays `nums1` and `nums2`, each in non-decreasing order. Two integers `m` and `n` representing the number of elements in `nums1` and `nums2` respectively.
   - `nums1` is accommodated to have length of `m + n`. `m` elements are `nums1`'s numbers and `n` elements are set to `0`.
   - `nums2` has a length of `n`.
@@ -229,7 +240,7 @@ const merge = (nums1, m, nums2, n) => {
 }
 ```
 
-## 278. First Bad Version
+## [278. First Bad Version](https://leetcode.com/problems/first-bad-version/)
 - Input
   - Function called `isBadVersion` that determines whether a version is bad or not.
     - *Every version after the first bad version are bad.*
@@ -261,7 +272,7 @@ const solution = function(isBadVersion) {
 }
 ```
 
-## 53. Maximum Subarray
+## [53. Maximum Subarray](https://leetcode.com/problems/maximum-subarray/)
 - Input: integer array `nums`.
 - Output: find the contiguous subarray (containing at least one number) which has the largest sum and return its sum.
 - Constraints
@@ -292,7 +303,7 @@ const maxSubArray = (nums) => {
 }
 ```
 
-## 1876. Substrings of Size Three with Distinct Characters
+## [1876. Substrings of Size Three with Distinct Characters](https://leetcode.com/problems/substrings-of-size-three-with-distinct-characters/)
 - Input: a string `s`.
 - Output: return the number of substrings of length three in `s` that have no repeated characters.
 - Constraints
@@ -325,5 +336,53 @@ const isGoodSubstring = (str) => {
     if (freqMap[char] > 1) return false;
   }
   return true;
+}
+```
+
+## [169. Majority Element](https://leetcode.com/problems/majority-element/)
+### Solution 1
+```js
+// TC: O(n), SC: O(n)
+
+const majorityElement = (nums) => {
+  const maj = Math.ceil(nums.length / 2);
+  
+  const obj = {};
+  
+  for (let num of nums) {
+    obj[num] = ++obj[num] || 1;
+    if (obj[num] === maj) return num;
+  }
+};
+```
+### Solution 2
+- Use a variable to keep track of the number that is potentially the majority.
+- Use another variable to keep track of that number's count.
+- Switch to another number when the number's count becomes 0.
+  - This means there were equal amounts of numbers until this point. So simply disregard previous numbers and start fresh.
+- There is always a majority number. Therefore, "the last number standing" will be the majority number.
+```js
+// TC: O(n), SC: O(1)
+
+const majorityElement = (nums) => {
+  const maj = Math.ceil(nums.length / 2);
+
+  // how do I accumulate data without using an auxiliary data structure?
+  // There's always going to be only two different numbers.
+  let temp = nums[0];
+  let count = 0;
+
+  for (let num of nums) {
+    if (count === 0) {
+      temp = num;
+      count = 1;
+    } else if (num === temp) {
+      count++;
+    } else {
+      count--;
+    }
+  }
+
+  return temp;
 }
 ```
