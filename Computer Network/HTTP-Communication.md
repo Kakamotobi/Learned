@@ -1,6 +1,11 @@
 # HTTP Communication
 - An HTTP communication consists of two parts: the HTTP Request sent by the client and the HTTP Repsonse sent by the server.
 
+## Table of Contents
+- [HTTP Request](#http-request)
+- [HTTP Response](#http-response)
+- [HTTP Timings](#http-timings)
+
 ## HTTP Request
 - An HTTP Request consists of three elements: a request line, headers, and a body (if needed).
 ### Request Line
@@ -66,9 +71,49 @@
   - Consist of a multipart body, in which each body contains a different bit of information.
   - These are rare to find.
 
+## HTTP Timings
+<p align="center">
+  <img src="https://blog-assets.risingstack.com/2017/09/http-timing-nodejs.png" alt="HTTP Timings" width="80%" />
+</p>
+
+```js
+const timings = {
+  // use process.hrtime() as it's not a subject of clock drift
+  startAt: process.hrtime(),
+  dnsLookupAt: undefined,
+  tcpConnectionAt: undefined,
+  tlsHandshakeAt: undefined,
+  firstByteAt: undefined,
+  endAt: undefined
+}
+
+const req = http.request({ ... }, (res) => {
+  res.once('readable', () => {
+    timings.firstByteAt = process.hrtime();
+  })
+  res.on('data', (chunk) => { responseBody += chunk });
+  res.on('end', () => {
+    timings.endAt = process.hrtime();
+  });
+});
+
+req.on('socket', (socket) => {
+  socket.on('lookup', () => {
+    timings.dnsLookupAt = process.hrtime();
+  });
+  socket.on('connect', () => {
+    timings.tcpConnectionAt = process.hrtime();
+  });
+  socket.on('secureConnect', () => {
+    timings.tlsHandshakeAt = process.hrtime();
+  });
+});
+```
+
 ## Reference
 [HTTP requests - IBM Documentation](https://www.ibm.com/docs/en/cics-ts/5.3?topic=protocol-http-requests)  
 [HTTP responses - IBM Documentation](https://www.ibm.com/docs/en/cics-ts/5.3?topic=protocol-http-responses)  
 [HTTP Messages - HTTP | MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Messages)  
 [HTTP headers - HTTP | MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers)  
 [Chunked transfer encoding - Wikipedia](https://en.wikipedia.org/wiki/Chunked_transfer_encoding)  
+[Understanding & Measuring HTTP Timings with Node.js - RisingStack Engineering](https://blog.risingstack.com/measuring-http-timings-node-js/)  
