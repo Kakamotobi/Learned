@@ -355,7 +355,7 @@ const majorityElement = (nums) => {
   }
 };
 ```
-### Solution 2
+### Solution 2 - Boyer-Moore Algorithm
 - Use a variable to keep track of the number that is potentially the majority.
 - Use another variable to keep track of that number's count.
 - Switch to another number when the number's count becomes 0.
