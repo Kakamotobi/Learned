@@ -59,6 +59,9 @@
 - **Single Resources Body**
   - That consists of a single file, defined by two headers: `Content-Type` and `Content-Length`.
   - That consists of a single file, encoded by chunks with `Transfer-Encoding` set to `chunked`.
+    - a.k.a. **Chunked Transfer Encoding**
+    - The response body is not wholy stored as a part of the response because it may be very large (affects program memory).
+    - Therefore, instead, a stream of chunks of data (sequence of bytes) is sent.
 - **Multiple-Resource Body**
   - Consist of a multipart body, in which each body contains a different bit of information.
   - These are rare to find.
