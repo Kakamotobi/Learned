@@ -71,3 +71,4 @@
 [HTTP responses - IBM Documentation](https://www.ibm.com/docs/en/cics-ts/5.3?topic=protocol-http-responses)  
 [HTTP Messages - HTTP | MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Messages)  
 [HTTP headers - HTTP | MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers)  
+[Chunked transfer encoding - Wikipedia](https://en.wikipedia.org/wiki/Chunked_transfer_encoding)  
