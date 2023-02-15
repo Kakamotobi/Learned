@@ -2,8 +2,15 @@
 
 ## Table of Contents
 - [Data Types](#data-types)
+  - [Value Type (Primitive Values)](#value-type-primitive-values)
+  - [Reference Types (Objects)](#reference-types-objects)
 - [Immutability](#immutability)
+  - [Immutable Data Types](#immutable-data-types)
+  - [Mutable Data Types](#mutable-data-types)
 - [Variable Assignment](#variable-assignment)
+  - [`const`](#const)
+  - [`let`](#let)
+  - [`var`](#var)
 
 ## Data Types
 - Every variable that is created, is stored in the JavaScript Engine's memory.
