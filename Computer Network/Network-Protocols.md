@@ -1,69 +1,201 @@
 # Network Protocols
 
 ## Table of Contents
+- [Brief History of Networks](#brief-history-of-networks)
 - [What are Network Protocols?](#what-are-network-protocols)
-- [Types of Network Protocols](#types-of-network-protocols)
-- [TCP vs UDP vs IP vs TCP/IP](#tcp-vs-udp-vs-ip-vs-tcpip)
+  - [Types of Network Protocols](#types-of-network-protocols)
+- [Open Systems Interconnection(OSI) Model](#open-systems-interconnectionosi-model)
+- [TCP vs UDP](#tcp-vs-udp)
+  - [Transmission Control Protocol(TCP)](#transmission-control-protocoltcp)
+    - [TCP 3-Way Handshake](#tcp-3-way-handshake)
+    - [TCP Termination](#tcp-termination)
+    - [TCP Header](#tcp-header)
+  - [User Datagram Protocol(UDP)](#user-datagram-protocoludp)
+    - [UDP Header](#udp-header)
 - [Transport Layer Security(TLS)](#transport-layer-securitytls)
 - [HTTP vs HTTPS](#http-vs-https)
 - [Protocol Suites](#protocol-suites)
+  - [TCP/IP Suite](#tcpip-suite)
+    - [Internet Protocol(IP)](#internet-protocolip)
+  - [Regular, non-encrypted HTTP](#regular-non-encrypted-http)
+  - [Encrypted HTTP(HTTPS)](#encrypted-httphttps)
 - [Secure Shell(SSH)](#secure-shellssh)
+
+## Brief History of Networks
+- From a very high level view point, every network is comprised of a transmitting end, receiving end, and some sort of link between the two.
+- Computer Networks essentially developed from Telephone Networks (1920s).
+### Public Switched Telephone Network(PSTN)
+- Telephone Networks started off as a _landline network_ where nodes (communication endpoints) were directly connected via wire.
+- It involves **circuit switching** where two networks nodes have to first establish a **_dedicated communications channel (circuit)_** going through the network in order to communicate.
+  - The channel remains dedicated until the communication session (telephone call) ends.
+
+    <p align="center">
+      <img src="https://cdn.comparitech.com/wp-content/uploads/2019/03/Circuit-Switching-1024x427.jpg" alt="Circuit Switching" width="80%"/>
+    </p>
+
+### Computer Network (Internet)
+- It involves **packet switching** where two network nodes communicate by sending/receiving packets on an existing connection.
+  - i.e. data is transmitted in packets that go through the different nodes in the network to arrive at the targetted network node (without dedicated circuits).
+
+  <p align="center">
+    <img src="https://learningcontent.cisco.com/images/Fig3_SegmentRouting.png" alt="Packet Switching" width="80%"/>
+  </p>
 
 ## What are Network Protocols?
 > A network protocol is an accepted set of rules that govern data communication between different devices in the network. It determines what is being communicated, how it is being communicated, and when it is being communicated. It permits connected devices to communicate with each other, irrespective of internal and structural differences. | GeeksforGeeks
 
-## Types of Network Protocols
+### Types of Network Protocols
 - There are largely three major categories.
-### Communication
+#### Communication
 - Network communication protocols formally describe the rules and format by which data is transferred over the network.
 - They handle syntax, semantics, error detection, synchronization and authentication.
 - Ex: HTTP, TCP/IP.
-### Management
+#### Management
 - Network management protocols help define procedures and policies used to monitor, manage and maintain your computer network, and help communicate these needs across the network to ensure stable communication and optimal performance across the board.
 - Ex: ICMP, SNMP, FTP.
-### Security
+#### Security
 - Network security protocols secure the data in transit over the network.
 - They also determine how the network secures data from unauthorized extraction attemptions.
 - They primarily depend on encryption to secure data.
 - Ex: HTTPS, SSL, TLS.
 
-## TCP vs UDP vs IP vs TCP/IP
-### Transmission Control Protocol (TCP)
-- TCP is a transport layer protocol.
-- It provides a reliable virtual-circuit connection between applications before data transmission begins.
-  - i.e. a session is established before data transmission.
-- Data is received in the order that it was sent in.
-- Data is treated as a stream of bytes.
-#### TCP 3-Way Handshake
-- The communication between the client and the server concerning the parameters of the connection before TLS handshake and transmitting data such as HTTP requests.
-- The three messages are: SYN, SYN + ACK, ACK.
-  - SYN: Synchronize sequence numbers.
-  - ACK: Acknowledgement
-##### The Process
+## Open Systems Interconnection(OSI) Model
+- The OSI model _attempts_ to represent the abstract layers of communication between computing systems.
+
 <p align="center">
-  <img src="https://github.com/Kakamotobi/Learned/blob/main/Computer%20Network/refImg/tcp.png" alt="TCP Illustration" width="80%" />
+  <img src="https://www.tech-faq.com/wp-content/uploads/2009/01/osimodel.png" alt="OSI Model" width="50%" />
 </p>
 
-1) The client sends a SYN packet to the server.
-2) The server receives the SYN packet from the client. Then, creates a connection and responds by sending a SYN + ACK to the client.
-3) The client receives the SYN + ACK. Then, sends an ACK to the server. Now, the TCP socket connection between the client and server is established.
-### User Datagram Protocol (UDP)
-- UDP is an alternative transport layer protocol.
-- It provides an unreliable datagram connection between applications before data transmission begins.
-- Data is transmitted link by link and there is no end-to-end connection.
-  - i.e. does not establish a session.
-  - When a computer sends data, it does not care whether the data is received at the other end (hence called a "fire and forget" protocol).
-- There is no guarantee of successful data transmission.
-  - With less overhead of guaranteeing successful data transmission, UDP is faster than TCP.
-- Data can be lost, duplicated and can arrive out of order.
-### Internet Protocol (IP)
-- IP is a network layer protocol.
-- It provides a datagram service between applications, which supports both TCP and UDP.
-- IP is used to identify different computers on the network by signing each computer a unique IP address.
-### TCP/IP
-- TCP/IP simply refers to a large family of protocols. TCP and IP are the two most important protocols among them; hence, named TCP/IP.
+- **Application**
+  - The Application Layer involves high-level protocols for human-computer interaction.
+    - i.e. the actual message being sent.
+  - Browsers rely on this layer to initiate communication.
+  - Ex: HTTP/HTTPS, SMTP.
+  - Data Unit: data
+- **Presentation**
+  - The Presentation Layer is responsible for:
+    - Translating incoming data to a format that the receiver can understand.
+    - Encrypting/Decrypting the data.
+    - Compressing data, which was received from the Application Layer, before passing it on to the Session Layer.
+  - Data Unit: data
+- **Session**
+  - The Session Layer is responsible for establishing and maintaining sessions and ports for continuous transmissions between the two network nodes.
+  - Data Unit: data
+- **Transport**
+  - The Transport Layer is responsible for actually transmitting the data segments between endpoints on the network.
+    - These may be connection-oriented or connectionless.
+  - Ex: TCP, UDP.
+  - Data Unit: segment or datagram.
+- **Network**
+  - The Network Layer is responsible for deciding the actual path on the network that the data will pass through.
+  - Ex: IP.
+  - Data Unit: packet
+- **Data Link**
+  - The Data Link Layer is responsible for the node-to-node transmission of data.
+  - Data Unit: frame
+- **Physical**
+  - The Physical Layer is responsible for the transmission of raw bit streams over the physical connection between devices (cables/wires).
+  - Data Unit: bit
+
+## TCP vs UDP
+- TCP and UDP are different transport layer protocols.
+- _These protocols are the first protocol that a client and server establish before actually transmitting data._
+### Transmission Control Protocol(TCP)
+- **TCP is a connection-oriented protocol that first establishes a reliable virtual-circuit connection between two applications before starting data transmission.**
+  - i.e. end-to-end connection.
+- In TCP, data is sent as a stream of bytes, where they are received in the order that they were sent in.
+- TCP is useful for web browsing, email, file transfer, etc.
+#### TCP 3-Way Handshake
+- TCP: before anything, the client and server first "discuss" the parameters of the connection.
+- This is done through the use of three messages: SYN, SYN + ACK, ACK.
+  - SYN: Synchronized sequence numbers.
+  - ACK: Acknowledgement
+
 <p align="center">
-  <img src="https://github.com/Kakamotobi/Learned/blob/main/Computer%20Network/refImg/tcpip.png" alt="TCP/IP Illustration" width="80%" />
+  <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/Computer%20Network/refImg/tcp-handshake.png" alt="TCP 3-Way Handshake" width="80%" />
+</p>
+
+1. The client sends a SYN(n) packet to the server.
+2. The server receives the client's SYN(n) packet and then sends SYN(k) and ACK(n+1) packets to the client.
+   - _The client receives the ACK(n+1) packet and confirms that the server was indeed the recipient of its SYN(n) packet._
+3. The client sends an ACK(k+1) packet to the server.
+   - _The server receives the ACK(k+1) packet and confirms that the client was indeed the recipient of its SYN(k) packet._
+   - The TCP socket connection is established.
+#### TCP Termination
+- a.k.a. **TCP 4-Way Handshake**
+- When terminating a TCP connection, a 4-way handshake is used.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/Computer%20Network/refImg/tcp-termination.png" alt="TCP Connection Termination" width="80%" />
+</p>
+
+1. The client sends a FIN(f) packet to the server.
+2. The server receives the client's FIN(f) packet and then sends an ACK(f+1) packet to the client.
+   - _The client receives the ACK(f+1) packet and confirms that the server was indeed the recipient of its FIN(f) packet._
+3. The server then continues to send a FIN(j) packet to the client.
+   - _The server waits for the application to be ready to close and then sends the FIN packet._
+4. The client receives the server's FIN(j) packet and then sends an ACK(j+1) packet to the server.
+   - _The server receives the ACK(j+1) packet and confirms that the client was indeed the recipient of its FIN(j) packet._
+   - The TCP connection is successfully terminated.
+#### TCP Header
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/Computer%20Network/refImg/tcp-header.png" alt="TCP Header" width="80%" />
+</p>
+
+- **Source Port**
+  - The port number of the sender (Ex: client).
+- **Destination Port**
+  - The port number of the receiver (Ex: server).
+- **Sequence Number**
+  - Indicates how much data is sent during the TCP session.
+  - The initial sequence number (SYN) is a random 32-bit value.
+- **Acknowledgement Number**
+  - The ACK packet is a 32-bit field value that is the SYN packet incremented by 1.
+  - The receiver sends this back to the sender in order to get the next TCP segment.
+- **Header Length**
+  - a.k.a. **Data Offset(DO)**
+  - The _data offset_ field, which indicates the length of the TCP header, which in turn reveals where the actual data begins.
+- **Reserved**
+  - Unused bits that are always set to 0.
+- **Flags**
+  - URG
+    - Indicates whether the Urgent Pointer field is filled or not.
+    - i.e. indicating whether the data should be prioritized over other data or not.
+  - ACK
+    - Indicates whether the Acknowledgement Number field is filled or not.
+  - PSH
+    - Indicates that the buffered data should be "pushed" to the OS asap.
+    - i.e. if the PSH flag is `1`, it means there is no more connected segments.
+  - RST
+    - Indicates that the connection should be reset.
+    - i.e. the connection should be terminated right away, usually due to some unrecoverable errors.
+  - SYN
+    - Indicates to synchronize the sequence numbers.
+    - Only the first packet sent from each end should have this flag on.
+  - FIN
+    - Used to end the connection.
+    - Since TCP is full duplex, both parties have to use this flag to end the connection.
+- **Window**
+  - Specifies the number of bytes that can be transmitted at once.
+  - The receiver uses this to inform the sender that it
+- **Checksum**
+  - Used to check for any errors in the TCP header and payload.
+- **Urgent Pointer**
+  - Indicates the offset from the Sequence Number for the last urgent data byte.
+- **Options**
+  - An optional field to specify any additional information.
+### User Datagram Protocol(UDP)
+- a.k.a. "fire and forget" protocol.
+- **UDP is a connectionless protocol, based on unreliable datagrams, that does not establish any connection between two applications before starting data transmission.**
+  - _Datagram_ is a transfer unit (consisting header and payload sections) for connectionless communication services within a network that uses packet-switching.
+- Data is transmitted link by link (no end-to-end connection).
+  - i.e. it does not establish a session.
+  - i.e. the transmitting computer simply sends the data but does not make sure the data is received by the receiving computer.
+- There is no guarantee that the data is successfully transmitted (data can be lost, duplicated, arrive out of order). Therefore, UDP is faster than TCP.
+- UDP is useful for broadcasting, video streaming, multiplayer games, etc.
+#### UDP Header
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/Computer%20Network/refImg/udp-header.png" alt="UDP Header" width="80%" />
 </p>
 
 ## Transport Layer Security(TLS)
@@ -109,14 +241,27 @@
 - Fix: serve all the content as HTTPS instead of HTTP (http:// --> https://).
 
 ## Protocol Suites
-### Example 1 - regular, non-encrypted HTTP
+### TCP/IP Suite
+- "TCP/IP" simply refers to a large family/set of protocols.
+  - It is called so simply because TCP and IP are the two most important protocols in this set of protocols.
+- In the TCP/IP model, the Application, Presentation, Session Layers are integrated as a single layer as "Application Layer".
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/Computer%20Network/refImg/tcpip.png" alt="TCP/IP Illustration" width="80%" />
+</p>
+
+#### Internet Protocol(IP)
+- IP is a network layer protocol.
+- It provides a datagram service between applications, which supports both TCP and UDP.
+- IP is used to identify different computers on the network by signing each computer a unique IP address.
+### Regular, non-encrypted HTTP
 | Layer               | Protocol |
 | ------------------- | -------- |
 | Application         | HTTP     |
 | Transport           | TCP/UDP  |
 | Internet or Network | IP       |
 | Link or Data Link   | Ethernet |
-### Example 2 - HTTPS
+### Encrypted HTTP(HTTPS)
 <table>
   <thead>
     <tr>
@@ -157,13 +302,23 @@
   <img src="https://www.ssh.com/hubfs/Imported_Blog_Media/SSH_simplified_protocol_diagram-2.png" alt="SSH Key-based Authentication" width="80%" />
 </p>
 
-
-
-
 ## Reference
+[Telephone network](https://en.wikipedia.org/wiki/Telephone_network)  
+[Introduction to Segment Routing - Cisco](https://learningnetwork.cisco.com/s/blogs/a0D3i000002SKP6EAO/introduction-to-segment-routing)  
+
 [Types of Network Protocols and Their Uses - GeeksforGeeks](https://www.geeksforgeeks.org/types-of-network-protocols-and-their-uses/)  
-[TCP/IP TCP, UDP, and IP protocols - IBM Documentation](https://www.ibm.com/docs/en/zos/2.2.0?topic=internets-tcpip-tcp-udp-ip-protocols)  
+
+[OSI model - Wikipedia](https://en.wikipedia.org/wiki/OSI_model)  
+[What is the OSI Model? | Cloudfarez](https://www.cloudflare.com/learning/ddos/glossary/open-systems-interconnection-model-osi/)  
+[The OSI Model – What It Is; Why It Matters; Why It Doesn’t Matter. - Tech-FAQ](https://www.tech-faq.com/osi-model.html)  
+
+[Transmission Control Protocol - Wikipedia](https://en.wikipedia.org/wiki/Transmission_Control_Protocol)  
 [TCP 3-Way Handshake Process - GeeksforGeeks](https://www.geeksforgeeks.org/tcp-3-way-handshake-process/)  
+[Why TCP Connect Termination Need 4-Way-Handshake? - GeeksforGeeks](https://www.geeksforgeeks.org/why-tcp-connect-termination-need-4-way-handshake/)  
+[User Datagram Protocol](https://en.wikipedia.org/wiki/User_Datagram_Protocol)  
+[Datagram - Wikipedia](https://en.wikipedia.org/wiki/Datagram)  
+[TCP/IP TCP, UDP, and IP protocols - IBM Documentation](https://www.ibm.com/docs/en/zos/2.2.0?topic=internets-tcpip-tcp-udp-ip-protocols)  
+
 [Mixed content - Web security | MDN](https://developer.mozilla.org/en-US/docs/Web/Security/Mixed_content)  
 [Transport Layer Security - Wikipedia](https://en.wikipedia.org/wiki/Transport_Layer_Security)  
 [An overview of the SSL or TLS handshake - IBM Documentation](https://www.ibm.com/docs/en/ibm-mq/7.5?topic=ssl-overview-tls-handshake)  
