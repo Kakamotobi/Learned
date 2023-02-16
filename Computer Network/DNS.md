@@ -6,6 +6,8 @@
   - [What is a Domain Name?](#what-is-a-domain-name)
 - [DNS Hierarchy](#dns-hierarchy)
 - [DNS Query](#dns-query)
+  - [DNS Query Process](#dns-query-process)
+  - [Types of Queries](#types-of-queries)
 
 ## What is DNS?
 - **The DNS is a hierarchical naming system for computers, or any resource participating on the Internet.**
@@ -14,7 +16,7 @@
 - **Domain is an area of control or a sphere of knowledge, whether narrowly or broadly defined, identified by a name.**
 ### What is a Domain Name?
 - A domain name represents an entity's position within the structure of the DNS hierarchy.
-- A domain name is essentially all the domains in the path from the local domain to the root, separated by periods.
+- A domain name is essentially all the domains in the path from the local domain to the root domain, separated by periods.
 
 ## DNS Hierarchy
 - Each node on the DNS tree represents a domain.
@@ -29,14 +31,15 @@
   - An empty string, which all Fully Qualified Domain Names(FQDNs) end with.
     - Ex: "www.google.com" is "www.google.com." where there is an empty string after the last period.
   - However, this is not required to be explicit and is usually not included.
-- **Top-Level Domains**
-  - These are domains categorized into types of organizations that use them.
+- **Top-Level Domain**
+  - Domain categorized into one of different types of organizations.
   - Ex: "com" for commercial organizations, "edu" for educational organizations.
-- **Second-Level Domains**
-  - These are individual organizations.
+- **Second-Level Domain**
+  - Domain representing individual organizations.
   - Ex: "google", "skku".
-- **Subdomains**
-  - The parent domain can be further divided into subdomains.
+- **Subdomain**
+  - Subset domain of the second-level domain.
+    - i.e. the parent domain can be further divided into subdomains.
   - Ex: "www", "mail", "docs", "drive", etc for google.
 
 ## DNS Query
