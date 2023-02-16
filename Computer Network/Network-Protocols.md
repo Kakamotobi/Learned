@@ -5,14 +5,16 @@
 - [What are Network Protocols?](#what-are-network-protocols)
   - [Types of Network Protocols](#types-of-network-protocols)
 - [Open Systems Interconnection(OSI) Model](#open-systems-interconnectionosi-model)
-- [TCP vs UDP](#tcp-vs-udp)
+- [TCP vs UDP vs QUIC](#tcp-vs-udp-vs-quic)
   - [Transmission Control Protocol(TCP)](#transmission-control-protocoltcp)
     - [TCP 3-Way Handshake](#tcp-3-way-handshake)
     - [TCP Termination](#tcp-termination)
     - [TCP Header](#tcp-header)
   - [User Datagram Protocol(UDP)](#user-datagram-protocoludp)
     - [UDP Header](#udp-header)
+  - [QUIC](#quic)
 - [Transport Layer Security(TLS)](#transport-layer-securitytls)
+  - [TLS Handshake](#tls-handshake)
 - [HTTP vs HTTPS](#http-vs-https)
 - [Protocol Suites](#protocol-suites)
   - [TCP/IP Suite](#tcpip-suite)
@@ -97,8 +99,8 @@
   - The Physical Layer is responsible for the transmission of raw bit streams over the physical connection between devices (cables/wires).
   - Data Unit: bit
 
-## TCP vs UDP
-- TCP and UDP are different transport layer protocols.
+## TCP vs UDP vs QUIC
+- TCP, UDP, and QUIC are different transport layer protocols.
 - _These protocols are the first protocol that a client and server establish before actually transmitting data._
 ### Transmission Control Protocol(TCP)
 - **TCP is a connection-oriented protocol that first establishes a reliable virtual-circuit connection between two applications before starting data transmission.**
@@ -197,6 +199,23 @@
 <p align="center">
   <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/Computer%20Network/refImg/udp-header.png" alt="UDP Header" width="80%" />
 </p>
+
+### QUIC
+- QUIC is a combination of TCP and UDP features, and hence result to lower latency and quicker loads.
+- QUIC improves performance of by establishing several multiplexed connections between the two endpoints using UDP.
+- QUIC packets are encapsulated on top of UDP datagrams; meaning that QUIC streams are delivered independently.
+  - Therefore, one lost packet does not affect the others.
+#### QUIC Connection
+- _QUIC combines the **TCP 3-Way Handshake** and the **TLS1.3 Handshake**._
+  - i.e. the transport and crypto protocols are combined into one, which allows for the connection to be established in just one round trip.
+
+<p align="center">
+  <img src="https://blog.cloudflare.com/content/images/2018/07/http-request-over-quic@2x.png" alt="QUIC Handshake" width="60%" />
+</p>
+
+1) The client sends a connection request (QUIC Initial, Client Hello) to the server.
+2) The server sends a connection response (QUIC Initial, Server Hello) to the client.
+3) The client sends a confirmation (Client Finished) to the server.
 
 ## Transport Layer Security(TLS)
 > The TLS protocol aims primarily to provide cryptography, including privacy (confidentiality), integrity, and authenticity through the use of certificates, between two or more communicating computer applications. | Wikipedia
@@ -318,6 +337,8 @@
 [User Datagram Protocol](https://en.wikipedia.org/wiki/User_Datagram_Protocol)  
 [Datagram - Wikipedia](https://en.wikipedia.org/wiki/Datagram)  
 [TCP/IP TCP, UDP, and IP protocols - IBM Documentation](https://www.ibm.com/docs/en/zos/2.2.0?topic=internets-tcpip-tcp-udp-ip-protocols)  
+[Modernizing the internet with HTTP/3 and QUIC | Fastly](https://www.fastly.com/blog/modernizing-the-internet-with-http3-and-quic)  
+[HTTP 3 Explained - YouTube](https://www.youtube.com/watch?v=ai8cf0hZ9cQ&ab_channel=High-PerformanceProgramming)  
 
 [Mixed content - Web security | MDN](https://developer.mozilla.org/en-US/docs/Web/Security/Mixed_content)  
 [Transport Layer Security - Wikipedia](https://en.wikipedia.org/wiki/Transport_Layer_Security)  
@@ -326,4 +347,5 @@
 [TLS 1.2 and TLS 1.3 Handshake Walkthrough | by Carson | Medium](https://cabulous.medium.com/tls-1-2-andtls-1-3-handshake-walkthrough-4cfd0a798164)  
 [security - Difference between HTTPS and SSL - Stack Overflow](https://stackoverflow.com/questions/6093430/difference-between-https-and-ssl)  
 [HTTP vs HTTPS](https://seopressor.com/blog/http-vs-https/)  
+
 [What is SSH (Secure Shell)? | SSH Academy](https://www.ssh.com/academy/ssh)  
