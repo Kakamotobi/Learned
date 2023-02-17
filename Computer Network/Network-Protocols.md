@@ -29,6 +29,7 @@
   - [Regular, non-encrypted HTTP](#regular-non-encrypted-http)
   - [Encrypted HTTP(HTTPS)](#encrypted-httphttps)
 - [Secure Shell(SSH)](#secure-shellssh)
+- [Some CLI Network Commands](#some-cli-network-commands)
 
 ## Brief History of Networks
 - From a very high level view point, every network is comprised of a transmitting end, receiving end, and some sort of link between the two.
@@ -373,6 +374,20 @@
 <p align="center">
   <img src="https://www.ssh.com/hubfs/Imported_Blog_Media/SSH_simplified_protocol_diagram-2.png" alt="SSH Key-based Authentication" width="80%" />
 </p>
+
+# Some CLI Network Commands
+- `$ ping`
+- `$ ifconfig`
+- `$ whois <IP Address or URL>`
+- `$ curl <IP Address or URL>`
+- `$ nslookup <Domain Name>`
+- `$ traceroute <IP Address or URL>`
+- `$ telnet <host>`
+  - Telnet is not a secure protocol. Use SSH instead.
+- `$ netstat -a`
+  - Shows the state of all currently existing sockets.
+- `$ netstat -s`
+  - Shows the statistics of each protocol (Ex: `tcp`, `udp`, `ip`, etc.).
 
 ## Reference
 [Telephone network](https://en.wikipedia.org/wiki/Telephone_network)  
