@@ -20,6 +20,7 @@
       - [(Stream) Socket API](#stream-socket-api)
     - [Datagram Sockets (for UDP)](#datagram-sockets-for-udp)
     - [Raw Sockets](#raw-sockets)
+- [Ports](#ports)
 - [Transport Layer Security(TLS)](#transport-layer-securitytls)
   - [TLS Handshake](#tls-handshake)
 - [HTTP vs HTTPS](#http-vs-https)
@@ -240,7 +241,6 @@
 - Before HTTP communication is allowed, a TCP connection between the client and server must first be established. When establishing this TCP connection, **sockets** are used.
 - **A socket is an interface (software endpoint) that the OS provides for users to read/write from one endpoint to another endpoint over a network.**
   - _A Socket is identified by an **IP Address** and a **Port Number**, which together form a unique network address/endpoint._
-    - _A **Port Number** identifies a specific process/application on the computer that is communicating over the network._
   - Each socket has a unique name called a **socket descriptor**.
 
 <p align="center">
@@ -270,6 +270,19 @@
 > A datagram socket supports a bidirectional flow of messages. A process on a datagram socket can receive messages in a different order from the sending sequence. A process on a datagram socket can receive duplicate messages. Record boundaries in the data are preserved. The socket type is `SOCK_DGRAM`. | Oracle
 #### Raw Sockets
 > Raw sockets provide access to ICMP. These sockets are normally datagram oriented, although their exact characteristics are dependent on the interface provided by the protocol. Raw sockets are not for most applications. Raw sockets are provided to support the development of new communication protocols, or for access to more esoteric facilities of an existing protocol. Only superuser processes can use raw sockets. The socket type is `SOCK_RAW`. | Oracle
+
+## Ports
+- **A Port Number identifies a specific process/application on the computer that is communicating over the network.**
+- Ports make it easy to distinguish between the different kinds of traffic (Ex: email, webpage) that come through the same Internet connection.
+- cf. IP Address
+  - An IP Address represents a specific device. Whereas, a Port Number represents a specific process/service/application within the device.
+- There are 65,535 possible number of ports.
+### Some Port Number Standards
+- **20**, **21:** FTP
+- **22:** SSH
+- **53:** DNS
+- **80:** HTTP
+- **443:** HTTPS
 
 ## Transport Layer Security(TLS)
 > The TLS protocol aims primarily to provide cryptography, including privacy (confidentiality), integrity, and authenticity through the use of certificates, between two or more communicating computer applications. | Wikipedia
@@ -413,6 +426,8 @@
 [What Is a Socket? (The Java™ Tutorials > Custom Networking > All About Sockets)](https://docs.oracle.com/javase/tutorial/networking/sockets/definition.html)  
 [What is a computer port? | Ports in networking | Cloudflare](https://www.cloudflare.com/learning/network-layer/what-is-a-computer-port/)  
 [Socket Types (Programming Interfaces Guide) | Oracle](https://docs.oracle.com/cd/E19683-01/816-5042/sockets-4/index.html)  
+
+[What is a computer port? | Ports in networking | Cloudflare](https://www.cloudflare.com/learning/network-layer/what-is-a-computer-port/)  
 
 [Mixed content - Web security | MDN](https://developer.mozilla.org/en-US/docs/Web/Security/Mixed_content)  
 [Transport Layer Security - Wikipedia](https://en.wikipedia.org/wiki/Transport_Layer_Security)  
