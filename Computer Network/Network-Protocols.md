@@ -251,7 +251,7 @@
 
 ### Types of Sockets
 #### Stream Sockets (for TCP)
-> A steram socket provides a bidirectional, reliable, sequenced, and unduplicated flow of data with no record boundaries. After the connection has been established, data can be read from and written to these sockets as a byte stream. The socket type is `SOCK_STREAM` | Oracle
+> A stream socket provides a bidirectional, reliable, sequenced, and unduplicated flow of data with no record boundaries. After the connection has been established, data can be read from and written to these sockets as a byte stream. The socket type is `SOCK_STREAM` | Oracle
 ##### (Stream) Socket API
 - Most programming languages provide a socket interface.
   - Ex: `net` library in Node.js.
@@ -392,6 +392,12 @@
 [TCP/IP TCP, UDP, and IP protocols - IBM Documentation](https://www.ibm.com/docs/en/zos/2.2.0?topic=internets-tcpip-tcp-udp-ip-protocols)  
 [Modernizing the internet with HTTP/3 and QUIC | Fastly](https://www.fastly.com/blog/modernizing-the-internet-with-http3-and-quic)  
 [HTTP 3 Explained - YouTube](https://www.youtube.com/watch?v=ai8cf0hZ9cQ&ab_channel=High-PerformanceProgramming)  
+
+[Basic introduction to HTTP requests with TCP Sockets in NodeJs | Aditya Thebe](https://www.adityathebe.com/raw-http-request-with-sockets-nodejs/)  
+[What is a socket? - IBM Documentation](https://www.ibm.com/docs/en/zos/2.3.0?topic=services-what-is-socket)  
+[What Is a Socket? (The Java™ Tutorials > Custom Networking > All About Sockets)](https://docs.oracle.com/javase/tutorial/networking/sockets/definition.html)  
+[What is a computer port? | Ports in networking | Cloudflare](https://www.cloudflare.com/learning/network-layer/what-is-a-computer-port/)  
+[Socket Types (Programming Interfaces Guide) | Oracle](https://docs.oracle.com/cd/E19683-01/816-5042/sockets-4/index.html)  
 
 [Mixed content - Web security | MDN](https://developer.mozilla.org/en-US/docs/Web/Security/Mixed_content)  
 [Transport Layer Security - Wikipedia](https://en.wikipedia.org/wiki/Transport_Layer_Security)  
