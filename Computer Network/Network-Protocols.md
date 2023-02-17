@@ -13,6 +13,13 @@
   - [User Datagram Protocol(UDP)](#user-datagram-protocoludp)
     - [UDP Header](#udp-header)
   - [QUIC](#quic)
+  - [Transport Layer Protocols in relation to the Evolution of HTTP](#transport-layer-protocols-in-relation-to-the-evolution-of-http)
+- [Sockets](#sockets)
+  - [Types of Sockets](#types-of-sockets)
+    - [Stream Sockets (for TCP)](#stream-sockets-for-tcp)
+      - [(Stream) Socket API](#stream-socket-api)
+    - [Datagram Sockets (for UDP)](#datagram-sockets-for-udp)
+    - [Raw Sockets](#raw-sockets)
 - [Transport Layer Security(TLS)](#transport-layer-securitytls)
   - [TLS Handshake](#tls-handshake)
 - [HTTP vs HTTPS](#http-vs-https)
@@ -63,6 +70,8 @@
 
 ## Open Systems Interconnection(OSI) Model
 - The OSI model _attempts_ to represent the abstract layers of communication between computing systems.
+- Higher layers have gone through the lower layers.
+  - i.e. lower layers are not aware of what happens in higher layers.
 
 <p align="center">
   <img src="https://www.tech-faq.com/wp-content/uploads/2009/01/osimodel.png" alt="OSI Model" width="50%" />
@@ -81,7 +90,7 @@
     - Compressing data, which was received from the Application Layer, before passing it on to the Session Layer.
   - Data Unit: data
 - **Session**
-  - The Session Layer is responsible for establishing and maintaining sessions and ports for continuous transmissions between the two network nodes.
+  - The Session Layer is responsible for establishing and maintaining _sessions_ and _ports_ for continuous transmissions between the two network nodes.
   - Data Unit: data
 - **Transport**
   - The Transport Layer is responsible for actually transmitting the data segments between endpoints on the network.
@@ -216,6 +225,50 @@
 1) The client sends a connection request (QUIC Initial, Client Hello) to the server.
 2) The server sends a connection response (QUIC Initial, Server Hello) to the client.
 3) The client sends a confirmation (Client Finished) to the server.
+
+### Transport Layer Protocols in relation to the Evolution of HTTP
+- In HTTP 1.1, each single request and response cycle requires a separate TCP connection.
+  - Therefore, 3 client requests (Ex: script.js, styles.css, image.png) require 3 TCP connections with the server.
+- As **HTTP/2** was standardized in 2015, it became possible to complete multiple request/response cycles in a single TCP connection.
+  - Therefore, 3 client requests require only 1 TCP connection with the server.
+  - However, as the TCP approach still requires some overhead, it becomes inefficient for HTTP requests requiring frequent connection.
+- In an attempt to mitigate overhead in the TCP approach, **HTTP/3** was standardized in 2022.
+  - HTTP/3 is uses a multiplexed transport layer called **QUIC**, which is built on **UDP**.
+
+## Sockets
+- Before HTTP communication is allowed, a TCP connection between the client and server must first be established. When establishing this TCP connection, **sockets** are used.
+- **A socket is an interface (software endpoint) that the OS provides for users to read/write from one endpoint to another endpoint over a network.**
+  - _A Socket is identified by an **IP Address** and a **Port Number**, which together form a unique network address/endpoint._
+    - _A **Port Number** identifies a specific process/application on the computer that is communicating over the network._
+  - Each socket has a unique name called a **socket descriptor**.
+
+<p align="center">
+  <img src="https://docs.oracle.com/javase/tutorial/figures/networking/5connect.gif" alt="Socket Connection Request" width="50%" />
+</p>
+<p align="center">
+  <img src="https://docs.oracle.com/javase/tutorial/figures/networking/6connect.gif" alt="Socket Connection Response" width="50%" />
+</p>
+
+### Types of Sockets
+#### Stream Sockets (for TCP)
+> A steram socket provides a bidirectional, reliable, sequenced, and unduplicated flow of data with no record boundaries. After the connection has been established, data can be read from and written to these sockets as a byte stream. The socket type is `SOCK_STREAM` | Oracle
+##### (Stream) Socket API
+- Most programming languages provide a socket interface.
+  - Ex: `net` library in Node.js.
+- All HTTP libraries (Ex: Fetch API, Axios) are based on sockets. Therefore, we can get resources using the sockets API.
+  - Ex: `$ curl www.google.com`, `http.get()` are all based on sockets.
+- All we need are: the target server's IP address and Port number, and our IP address and Port number (taken care of by the OS).
+- Flow Example
+  1. Create a socket (client).
+  2. Connect this socket to an IP and Port.
+  3. Send a request over that socket-to-socket connection.
+     - This data can be anything (Ex: simple text (HTTP message, etc.), media file).
+     - If sending an HTTP message, follow the standard and structure (request line, headers, meta information, body).
+  4. Receive the response.
+#### Datagram Sockets (for UDP)
+> A datagram socket supports a bidirectional flow of messages. A process on a datagram socket can receive messages in a different order from the sending sequence. A process on a datagram socket can receive duplicate messages. Record boundaries in the data are preserved. The socket type is `SOCK_DGRAM`. | Oracle
+#### Raw Sockets
+> Raw sockets provide access to ICMP. These sockets are normally datagram oriented, although their exact characteristics are dependent on the interface provided by the protocol. Raw sockets are not for most applications. Raw sockets are provided to support the development of new communication protocols, or for access to more esoteric facilities of an existing protocol. Only superuser processes can use raw sockets. The socket type is `SOCK_RAW`. | Oracle
 
 ## Transport Layer Security(TLS)
 > The TLS protocol aims primarily to provide cryptography, including privacy (confidentiality), integrity, and authenticity through the use of certificates, between two or more communicating computer applications. | Wikipedia
