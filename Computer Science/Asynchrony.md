@@ -1,7 +1,9 @@
-# Asynchronicity
+# Asynchrony
 
 ## Table of Contents
 - [Background](#background)
+  - [Evolution of Microprocessors[(#evolution-of-microprocessors)
+  - [Evolution of Programming in relation to the Evolution of Microprocessors)
 - [Sequential vs Concurrent vs Parallel](#sequential-vs-concurrent-vs-parallel)
 - [Blocking vs Non-Blocking](#blocking-vs-non-blocking)
   - [Blocking](#blocking)
@@ -17,28 +19,34 @@
   - [Blocking Async](#blocking-async)
 
 ## Background
+### Evolution of Microprocessors
 <p align="center">
   <img src="https://raw.githubusercontent.com/karlrupp/microprocessor-trend-data/master/50yrs/50-years-processor-trend.png" alt="50 Years of Microprocessor Trend" width="80%" /><br/>
   <em>50 Years of Microprocessor Trend</em><br/>
   <em>https://github.com/karlrupp/microprocessor-trend-data</em>
 </p>
 
-- By nature, all (hardware) electronics operate _synchronously_.
-  - Ex: a computer operations in accordance to the clock (rising/falling edge).
-- This applies to software programs as well.
-  - When funcA calls funcB internally, funcA has to wait for funcB to resolve before continuing to the next line of code. &larr; **_Synchronous and Blocking_** | **_start of multiprocess era_**
-- **Problem:** But this means that when a large function is executing, code behind it will have to wait a long time for their turn.
-  - Instead of waiting, why not separate these and allow funcA to continue?
+- Before the mid 2000s, computers were all _single core_ systems.
+- From the mid 2000s, computers began to be implement _multi core_ systems.
+- Since the 2010s, there became lots of devices.
+  - The frequency graph begins to flatten out because the faster the frequency, the more heat is emitted (since its based on electricity).
+  - We can begin to see hardware limits.
+### Evolution of Programming in relation to the Evolution of Microprocessors
+- By nature, all (hardware) electronics and software programs operate _synchronously_.
+  - Ex: a computer operates in accordance to the CPU clock cycle (rising/falling edge).
+  - Ex: when funcA calls funcB internally, funcA has to wait for funcB to resolve before continuing to the next line of code. &larr; **_Synchronous and Blocking_** | **_start of multiprocess era_**
+- **Problem:** But this means that when a large function is executing, code after it will have to wait a long time for their turn to execute.
+  - Instead of having to wait (blocked), why not separate these and allow funcA to continue?
     - funcA encounters funcB and delagates it (Ex: to another thread) while continuing through the rest of its code. &larr; **_Non-Blocking_**
-- **Problem:** But funcA will have to keep checking on whether funcB is resolved or not.
-  - Instead of having to continuously check on funcB, why not completely delegate it (Ex: to another thread)?
+- **Problem:** But this means funcA will have to keep checking (while executing its own code) on whether funcB is resolved or not.
+  - Instead of having to continuously check on funcB, why not completely delegate it and forget about it until later?
     - funcA encounters funcB, delegates it and forgets about it. funcA goes on about executing. When funcB resolves, it is placed in a callback queue to be retrieved by funcA when funcA is ready. &larr; **_Asynchronous ft. callbacks/closure_** | **_start of multithreading era_**
   - The use of multiple threads greatly improved performance (since thread-switching is cheaper than process-switching).
 - **Problem:** Infinite number of threads does not mean better task/time efficiency. There is a point where thread-switching becomes a problem where there are too many idle threads (economies of scale).
   - Instead of creating a thread for every single thing, have a certain amount and work with those.
-- **Problem:** Is the program thread safe?
+- **Problem:** Is the program thread-safe?
   - Multithreading is prone to race condition.
-    - Ex: working with global variables.
+    - Ex: when working with global variables.
   - Instead developers in most cases should not personally make threads. Rather, focus on a smaller unit (closure/callback) and the OS will manage the threads, queuing etc.
 - **Problem:** Callback Hell
   - The use of asynchronous callbacks can lead to deeply nested callbacks.
@@ -50,49 +58,35 @@
 - **Parallel:** executing multiple tasks at once.
 
 ## Blocking vs Non-Blocking
-- 제어의 관점.
-- “Does the callee immediately return? Effectively returning control of execution to the caller?”
-- "Who has the control of execution and when is it returned?"
+- 제어권의 관점.
+- **"Who has the control of execution and when is the control of execution returned?"**
+  - i.e. “Does the callee immediately return? Effectively returning control of execution to the caller(non-blocking)?”
 ### Blocking
-- The caller's control of execution is passed to the callee. Therefore it has to wait for the callee to finish executing first.
-  - i.e. the callee keeps hold of the caller’s control of execution. The callee returns the caller's control of execution along with its result.
+- The caller's control of execution is passed to the callee. Therefore the caller has to wait for the callee to finish executing first.
+  - i.e. the callee keeps hold of the caller’s control of execution. The callee returns the caller's control of execution along with its resolved result.
 ### Non-Blocking
 - The caller's control of execution is passed to the callee. But the callee immediately returns the control of execution along with a "result" indicating that it is not ready to return the actual result yet.
-  - i.e. the caller keeps hold of its control of execution. The callee may have returned its result along with it or is yet to return its result.
-### Example - when funcA calls funcB
-- **Blocking:** funcA has no control of execution over itself. It has to wait for funcB to finish executing.
-- **Non-Blocking:** funcA has control of execution over itself. It does not have to wait for funcB to finish executing.
-
-## Blocking vs Non-Blocking
-- 제어의 관점.
-- “Does the callee immediately return? Effectively returning control of execution to the caller?”
-- "Who has the control of execution and when is it returned?"
-### Blocking
-- The caller's control of execution is passed to the callee. Therefore it has to wait for the callee to finish executing first.
-  - i.e. the callee keeps hold of the caller’s control of execution. The callee returns the caller's control of execution along with its result.
-### Non-Blocking
-- The caller's control of execution is passed to the callee. But the callee immediately returns the control of execution along with a "result" indicating that it is not ready to return the actual result yet.
-  - i.e. the caller keeps hold of its control of execution. The callee may have returned its result along with it or is yet to return its result.
+  - i.e. the caller keeps hold of its control of execution. The callee may have returned the resolved result along with it or is yet to return the resolved result.
 ### Example - when funcA calls funcB
 - **Blocking:** funcA has no control of execution over itself. It has to wait for funcB to finish executing.
 - **Non-Blocking:** funcA has control of execution over itself. It does not have to wait for funcB to finish executing.
 
 ## Synchronous vs Asynchronous
 - 제어권/결과 반환 시점의 관점 (기다리고 말고를 떠나서).
-- "Are the control of execution and result returned at the same time or not?"
+- **"Are the control of execution and resolved result returned at the same time or not?"**
 ### Synchronous
 - **Sequential execution of tasks.**
 - The order of execution is predetermined.
   - i.e. the caller personally checks/receives the callee’s finished execution.
-- The control of execution and "result" (indicating that it doesn't have a result yet) are returned at the same time.
+- The control of execution and resolved result are returned at the same time.
 ### Asynchronous
 - **Concurrent execution of tasks.**
   - i.e. other things can happen independently of the main program flow.
 - The order of execution is indeterminate.
   - i.e. the caller does not actively care whether the callee has finished executing or not.
   - Hence, the need for some sort of queue.
-- The control of execution is returned first. The result is returned later indirectly (callback queue).
-- _**In relation to events, asynchronous programming is a way to deal with events independently of the main program flow.**_
+- **_The control of execution is returned first. The resolved result is returned later indirectly (callback queue)._**
+- _In relation to events, asynchronous programming is a way to deal with events independently of the main program flow._
 - Example
   - `setTimeout` is encountered (top stack of the call stack).
   - `setTimeout` is taken from the call stack and sent to its corresponding browser API.
