@@ -25,25 +25,26 @@
 - [Reference](#reference)
 
 ## Prerequisites
-- [Single-threaded and Synchronous](https://github.com/Kakamotobi/Learned/blob/main/JS/JavaScript.md#about-javascript)
+- [Asynchronous Programming](https://github.com/Kakamotobi/Learned/blob/main/Computer%20Science/Asynchrony.md)
+- [JS is Single-threaded and Synchronous](https://github.com/Kakamotobi/Learned/blob/main/JS/JavaScript.md#about-javascript)
 - [JavaScript Runtime Environment](https://github.com/Kakamotobi/Learned/blob/main/JS/JavaScript.md#javascript-runtime-environment)
 
 ## [Working Around Synchronous JS](https://github.com/Kakamotobi/Learned/blob/main/JS/JavaScript.md#javascript-runtime-environment)
 - _JS is is **single-threaded** and **synchronous** by default._
-  - i.e. JS code cannot create new threads and run in parallel.
+  - i.e. JS cannot create new threads and cannot run in parallel.
 - _JS is only **asynchronous** in that it can hand off certain tasks to the Browser/Runtime(Ex: Node.js) APIs while it synchronously runs through the script._
   - i.e. JS offloads async operations to the system kernel.
   - JS can perform these async operations through the use of an [**Event Loop**](https://github.com/Kakamotobi/Learned/main/JS/Asynchronous/Async.md#the-event-loop).
     - On the Web, browsers provide the event loop.
     - Node uses the libuv library for the event loop.
-    - **_Note:_** _the event loop is not an inherent part of the JS engine. Iti s a component of the runtime environment._
+    - **_Note:_** _the event loop is not an inherent part of the JS engine. It is a component of the runtime environment._
       - i.e. the libuv library is just another dependency of Node.js as is V8.
 - Since the main thread is responsible for rendering views, JS is designed to be non-blocking.
 - And since JS is synchronous and makes use of an event loop for asynchronous operations, JS is constrained to use **callbacks**.
-  - As functions, to manage state when using callbacks, there are two options:
+  - Since callbacks are functions, there are two options to manage state:
     - Pass in variables directly to the function.
     - Retrieve a variable from a cache, session, file, DB, network, etc.
-  - This is also why [**closures**](https://github.com/Kakamotobi/Learned/blob/main/JS/Scope.md#closure) play an important role.
+  - This is why [**closures**](https://github.com/Kakamotobi/Learned/blob/main/JS/Scope.md#closure) play an important role in async operations in JS.
 ### Async in JS Example
 - What happens if something takes a long time?
   - For example, when making requests to servers, it can take some time to get the data but we don't want our program/website to stall and wait for the response. We want to keep executing our script.
@@ -62,7 +63,7 @@
     ```js
     console.log("I print first!");
     setTimeout(() => {
-      console.log("I print after 3s");
+      console.log("I print after approx. 3s");
     }, 3000);
     console.log("I print second!");
     ```
@@ -99,6 +100,15 @@
 - If code is synchronous, it will execute and immediately return. If code is asynchronous, it will offload it to the browser or libuv API.
 - When the browser or libuv is done, it will send the event (primarily a callback) to the event queue.
 - If the call stack is empty, the event loop takes the first callback in the event queue and puts it in the call stack.
+- Example
+  ```js
+  const startTime = Date.now();
+  setTimeout(() => console.log(`I was placed in the callback queue after 2000ms, but I executed after ${Date.now() - startTime}ms.`), 2000);
+  while (Date.now() - startTime < 5000) {}
+  ```
+  ```
+  I was placed in the callback queue after 2000ms, but I executed after 5000ms.
+  ```
 #### Node.js & libuv Library
 <p align="center">
   <img src="https://nexocode.com/images/event-loop-nodejs-architecture1.webp" alt="Node.js Architecture" width="80%"/>
@@ -389,7 +399,7 @@ fakeRequestPromise("yelp.com/api/coffee/page1")
     console.log(err);
   });
 ```
-- Avoid nesting multiple initial functions by returning a promise from within the callback in order to chain **`.then()`**.
+- **Avoid nesting multiple initial functions by returning a promise from within the callback in order to chain `.then()`**.
 - **`data`** in **`.then()`** refers to the response/returned value from the fulfilled `Promise`.
 - **`.catch()`** can be reduced to one for all.
 ### Option 3 - Async/Await Functions
@@ -421,8 +431,8 @@ fakeRequestPromise("yelp.com/api/coffee/page1")
     ```
 - **`await`**
   - Used to wait for a `Promise` to be fulfilled.
-  - **Pauses the execution of the function, waiting for a `Promise` to be fulfilled, after which the response/returned value can be extracted from, before continuing on.**
-  - Code noted by the `await` keyword is a blocking operation.
+  - **Pauses the execution of the async function that it is inside of, waiting for a `Promise` to be fulfilled, after which the response/returned value can be extracted from, before continuing on.**
+  - Code noted by the `await` keyword is a **blocking operation**.
   - Example
     ```js
     const getJoke = async () => {
@@ -651,7 +661,7 @@ async function makeTwoRequests() {
   - The downside is that it could take some time depending on how large the steram is.
 - **Caveat 2:**
   > The Promise returned form fetch() won’t reject on HTTP error status even if the response is an HTTP 404 or 500. Instead, it will resolve normally (with ok status set to false), and it will only reject on network failure or if anything prevented the request from completing. | MDN
-  - Therefore, `.catch()` won’t run just because the server responded with something that’s not a status `ok` because we still got a repsonse.
+  - Therefore, `.catch()` won’t run just because the server responded with something that’s not a status `ok` because we still got a response.
     - `.then()` runs whenever a response is received; whether it is the response we wanted or not.
     - `fetch()` will only return a rejected promise if our internet is not working, the request can’t be made at all, or if we just don’t get a response.
 - `Promise.resolve()`
