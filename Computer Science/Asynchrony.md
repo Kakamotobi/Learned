@@ -2,8 +2,8 @@
 
 ## Table of Contents
 - [Background](#background)
-  - [Evolution of Microprocessors[(#evolution-of-microprocessors)
-  - [Evolution of Programming in relation to the Evolution of Microprocessors)
+  - [Evolution of Microprocessors](#evolution-of-microprocessors)
+  - [Evolution of Programming in relation to the Evolution of Microprocessors](#evolution-of-programming-in-relation-to-the-evolution-of-microprocessors)
 - [Sequential vs Concurrent vs Parallel](#sequential-vs-concurrent-vs-parallel)
 - [Blocking vs Non-Blocking](#blocking-vs-non-blocking)
   - [Blocking](#blocking)
@@ -59,6 +59,8 @@
 
 ## Blocking vs Non-Blocking
 - 제어권의 관점.
+  - Blocking: 제어권 쥐고 있기.
+  - Non-Blocking: 제어권 바로 돌려주기.
 - **"Who has the control of execution and when is the control of execution returned?"**
   - i.e. “Does the callee immediately return? Effectively returning control of execution to the caller(non-blocking)?”
 ### Blocking
@@ -73,6 +75,8 @@
 
 ## Synchronous vs Asynchronous
 - 제어권/결과 반환 시점의 관점 (기다리고 말고를 떠나서).
+  - Sync: 제어권 & 결과 동시 반환.
+  - Async: 제어권 & 결과 따로 반환.
 - **"Are the control of execution and resolved result returned at the same time or not?"**
 ### Synchronous
 - **Sequential execution of tasks.**
@@ -85,7 +89,7 @@
 - The order of execution is indeterminate.
   - i.e. the caller does not actively care whether the callee has finished executing or not.
   - Hence, the need for some sort of queue.
-- **_The control of execution is returned first. The resolved result is returned later indirectly (callback queue)._**
+- **_The control of execution is returned first. The resolved result is returned later indirectly (through the use of a callback queue)._**
 - _In relation to events, asynchronous programming is a way to deal with events independently of the main program flow._
 - Example
   - `setTimeout` is encountered (top stack of the call stack).
@@ -93,19 +97,20 @@
   - When the API is done, it sends it to the event queue.
   - When the main flow is ready, it receives the resolved `setTimeout` from the event queue.
 ### Example - when funcA calls funcB
-- **Sync:** func A has to wait for func B to finish first before resuming execution.
-  - i.e. func A waits for func B’s result.
-- **Async:** func A does not have to wait for func B to finish first before resuming execution.
-  - i.e. func A continues executing and later, when possible, receives func B’s result.
+- **Sync:** funcA has to wait for funcB to finish first before resuming execution.
+  - i.e. funcA waits for funcB’s result and it can't proceed to execute since the control of execution will be returned along with the resolved result.
+- **Async:** funcA does not have to wait for funcB to finish first before resuming execution.
+  - i.e. funcA continues executing and later, when possible, receives funcB’s result.
 ### Thread(s) and Sync/Async
 <p align="center">
   <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/Computer%20Science/refImg/threads-and-sync-async.png" alt="Thread(s) and Sync/Async" width="100%" />
 </p>
+
 #### Async vs Multithreading
 - Async is about concurrent execution of _tasks_ without having to block the main thread of execution.
   - Async can be either multithreaded or singlethreaded.
 - Multithreading simply refers to concurrent executions of _threads_.
-  - It is not concerned with synchronity/asynchronity.
+  - It is not concerned with synchrony/asynchrony.
 
 ## Blocking/Non-Blocking vs Sync/Async
 - Sync/Async is an abstract concept. Therefore, it can sometimes be the same as Blocking/Non-Blocking.
@@ -115,20 +120,21 @@
   <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/Computer%20Science/refImg/blocking-sync.png" alt="Blocking Sync" width="60%"/>
 </p>
 
-- The callee keeps hold of the caller's control of execution (blocking), and the caller waits to see the callee resolve (sync).
+- The callee keeps hold of the caller's control of execution (blocking), and the caller pauses until the callee returns the control of execution along with the resolved result (sync).
 - Ex: waiting on user input, fetching from database.
 ### Non-Blocking Sync
 <p align="center">
   <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/Computer%20Science/refImg/non-blocking-sync.png" alt="Non-Blocking Async" width="60%"/>
 </p>
 
-- The callee immediately returns the caller's control of execution (non-blocking), and while resuming execution, the caller periodically checks if the callee is resolved (sync).
+- The callee immediately returns the caller's control of execution (non-blocking), and while resuming execution, the caller periodically has to check if the callee is resolved (sync).
+- _This approach does not really take advantage of being "non-blocking" since the caller has to keep pausing and resuming to check for the callee's resolved result._
 ### Non-Blocking Async
 <p align="center">
   <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/Computer%20Science/refImg/non-blocking-async.png" alt="Non-Blocking Async" width="60%"/>
 </p>
 
-- The caller immediately returns the caller's control of execution (non-blocking), and while resuming execution, the caller does not check to see if the callee is resolved (async). Rather, the caller retrieves the resolved callback from the callback queue.
+- The callee immediately returns the caller's control of execution (non-blocking), and while resuming execution, the caller does not check to see if the callee is resolved (async). Rather, the caller retrieves the callback from the callback queue when it is ready (to execute that callback).
 ### Blocking Async
 <p align="center">
   <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/Computer%20Science/refImg/blocking-async.png" alt="Blocking Async" width="60%"/>
