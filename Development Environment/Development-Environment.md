@@ -10,6 +10,7 @@
         - [Key Fingerprint](#key-fingerprint)
         - [First Time Connecting to SSH Host](#first-time-connecting-to-ssh-host)
         - [SSH Fingerprint Mismatch](#ssh-fingerprint-mismatch)
+    - [Ubuntu Configurations](#ubuntu-configurations)
 - [Remote Development over SSH using VSCode](#remote-development-over-ssh-using-vscode)
 
 ## What is a Development Environment?
@@ -119,6 +120,53 @@
   Host key for [localhost]:2223 has changed and you have requested strict checking.
   Host key verification failed.
   ```
+#### Ubuntu Configurations
+- **Setting Ubuntu Root Password.**
+  - _Note: root is different from the account that you created when installing Ubuntu._
+  - Set password for root.
+    ```zsh
+    $ sudo passwd
+    ```
+  - Login as root.
+    ```zsh
+    $ su
+    ```
+    ```zsh
+    $ whoami
+    ```
+- **Add User Account(s) with Regular Account Privileges.**
+  - These accounts will be used instead of root for most purposes.
+  ```zsh
+  # adduser <new username>
+  ```
+- **Grant Privileges to User(s).**
+  - i.e. add user to the `sudo` group.
+  - Users can now use the `sudo` command before to run them with superuser privileges.
+  ```zsh
+  # usermod -aG sudo <username>
+  ```
+- **Set Up a Basic Firewall.**
+  - The UFW firewall can be used to make sure that connections are limited to only certain services.
+  - Check application profiles that are currently registered with UFW.
+    ```zsh
+    # ufw app list
+    ```
+  - Allow OpenSSH since we need to use SSH to connect to this remote server.
+    ```zsh
+    # ufw allow OpenSSH
+    ```
+  - Enable firewall
+    ```zsh
+    # ufw enable
+    ```
+  - Check firewall status to confirm that the firewall is allowing SSH connections.
+    ```zsh
+    # ufw status
+    ```
+- **Configure SSH Access for New Users*.*
+  ```zsh
+  ssh <username>@<server ip address>
+  ```
 
 ## Remote Development over SSH using VSCode
 - Editting and debugging on a remote machine from local using VSCode.
@@ -148,5 +196,6 @@
 [How to SSH Into a VirtualBox Ubuntu Server](https://www.makeuseof.com/how-to-ssh-into-virtualbox-ubuntu/)  
 [How To Use SSH to Connect to a Remote Server | DigitalOcean](https://www.digitalocean.com/community/tutorials/how-to-use-ssh-to-connect-to-a-remote-server)  
 [What is a SSH key fingerprint and how is it generated? - Super User](https://superuser.com/questions/421997/what-is-a-ssh-key-fingerprint-and-how-is-it-generated)  
+[Initial Server Setup with Ubuntu 20.04 | DigitalOcean](https://www.digitalocean.com/community/tutorials/initial-server-setup-with-ubuntu-20-04)  
 [Connect over SSH with Visual Studio Code](https://code.visualstudio.com/docs/remote/ssh-tutorial)  
 [Developing on Remote Machines using SSH and Visual Studio Code](https://code.visualstudio.com/docs/remote/ssh)  
