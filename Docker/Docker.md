@@ -3,6 +3,7 @@
 ## Table of Contents
 - [What is Docker?](#what-is-docker)
   - [Docker vs Virtual Machine](#docker-vs-virtual-machine)
+    - [Virtualization vs Containerization](#virtualization-vs-containerization)
   - [Docker Image](#docker-image)
   - [Docker Container](#docker-container)
   - [Docker daemon](#docker-daemon)
@@ -33,6 +34,11 @@
   - cf. containers do not emulate hardware and instead, run a process as though it is in an isolated environment.
     - Therefore, a container is merely another process in the host OS. The container does not run on top of Docker. It runs at the same level as other processes in the host OS.
 - Docker provides all the functionality and benefits of VMs, including application isolation, cost-effective scalability, and disposability.
+#### Virtualization vs Containerization
+<p align="center">
+  <img src="https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fbucketeer-e05bbc84-baa3-437e-9518-adb32be77984.s3.amazonaws.com%2Fpublic%2Fimages%2F14409324-6525-49f9-85b5-ea416d4efffb_2556x1383.jpeg" alt="Virtualization vs Containerization" width="100%" />
+</p>
+
 ### Docker Image
 > A Docker container image is a lightweight, standalone, executable package of software that includes everything needed to run an application: code, runtime, system tools, system libraries and settings. | Docker
 
@@ -145,6 +151,7 @@
 ## Reference
 [What is a Container? | Docker](https://www.docker.com/resources/what-container/)  
 [What is Docker? | IBM](https://www.ibm.com/topics/docker)  
+[What are the differences between Virtualization (VMware) and Containerization (Docker)?](https://blog.bytebytego.com/p/what-are-the-differences-between)  
 [컨테이너 기초 - chroot를 사용한 프로세스의 루트 디렉터리 격리 | 44BITS](https://www.44bits.io/ko/post/change-root-directory-by-using-chroot)  
 [How to Use Docker for Your MySQL Database - Earthly Blog](https://earthly.dev/blog/docker-mysql/#:~:text=With%20Docker%2C%20you%20can%20run,your%20database%20from%20your%20code.)  
 [Docker를 사용하여 MySQL 설치하고 접속하기 | PoiemaWeb](https://poiemaweb.com/docker-mysql)  
