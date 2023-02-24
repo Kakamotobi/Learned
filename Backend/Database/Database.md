@@ -8,6 +8,10 @@
   - [Relational Database](#relational-database)
   - [Non-Relational Database](#non-relational-database)
   - [Object-Oriented Database Management Systems(OODBMS)](#object-oriented-database-management-systemsoodbms)
+- [Database Connection](#database-connection)
+  - [Process of Establishing a DB Connection](#process-of-establishing-a-db-connection)
+  - [Database Connection Pool(DBCP)](#database-connection-pooldbcp)
+- [Database Index](#database-index)
 
 ## What is a Database?
 > A database is an organized collection of structured information, or data, typically stored electronically in a computer system. A database is usually controlled by a database management system (DBMS). Together, the data and the DBMS, along with the applications that are associated with them, are referred to as a database system, often shortened to just database. | Oracle
@@ -87,8 +91,38 @@
 - OODBMS is intended to work well with object-oriented programming.
 - DB Ex: MongoDB Realm.
 
+## Database Connection
+- In order for an application server to consume a DB, we need to set a connection between the two.
+  - The connection usually uses TCP/IP.
+### Process of Establishing a DB Connection
+- The application code in the Application Server uses the DB Connector, which contacts the DB Driver in the DBMS, to check for a connection to the DB.
+- The DB Connector attempts to connect with the DB over TCP/IP.
+- The DB Connector verifies its credentials (ID, PW) and a DB Session is established.
+- The DB establishes a connection.
+- The DB Driver generates a connection object and returns it to the DB Client.
+### Database Connection Pool(DBCP)
+- Since generating a connection takes time, some DBMS engines use a **DBCP**.
+- **DBCP is a way to reduce opening/closing connections through the use of a "pool" of open connections that consumers can use.**
+  - A number of connections are generated beforehand to avoid all the overhead mentioned above in establishing a single connection.
+
+<p align="center">
+  <img src="https://d2908q01vomqb2.cloudfront.net/887309d048beef83ad3eabf2a79a64a389ab1c9f/2021/07/13/DBBLOG-1606_img1.png" alt="Database Connection Pool" width="80%"/>
+</p>
+
+## Database Index
+- **A DB Index, likewise in books, is a data structure that is used to improve the speed of data retrieval operations in a DB.**
+- An index is based on one or more columns of a table, and includes a "key"/direct link to the original row.
+- _Upon receiving a query, the DB engine checks the index first instead of searching the whole table._
+  - i.e. without an index to quickly locate the data, the DB engine will have to search every row in the whole table for every query.
+- Example
+  - There is a `users` table containing a user's id, name, email, and location.
+  - If the users are frequently filtered by location, we can create an index on the `"location"` column of the `users` table.
+    - This index contains a copy of the `"location"` values and a pointer to its corresponding row in the table.
+
 ## Reference
 [What Is a Database | Oracle](https://www.oracle.com/database/what-is-database/)  
 [History of DBMS - GeeksforGeeks](https://www.geeksforgeeks.org/history-of-dbms/)  
 [The history of databases - ThinkAutomation](https://www.thinkautomation.com/histories/the-history-of-databases/#:~:text=The%201960s%20%E2%80%93%20beginnings&text=Charles%20Bachman%20designed%20the%20first,Integrated%20Data%20Store%2C%20or%20IDS.)  
 [Types of Databases | MongoDB](https://www.mongodb.com/databases/types)  
+[Implement Oracle Database Resident Connection Pool with Amazon RDS for Oracle | AWS Database Blog](https://d2908q01vomqb2.cloudfront.net/887309d048beef83ad3eabf2a79a64a389ab1c9f/2021/07/13/DBBLOG-1606_img1.png)  
+[Database index - Wikipedia](https://en.wikipedia.org/wiki/Database_index)  
