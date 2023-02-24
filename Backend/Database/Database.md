@@ -111,9 +111,11 @@
 
 ## Database Index
 - **A DB Index, likewise in books, is a data structure that is used to improve the speed of data retrieval operations in a DB.**
-- An index is based on one or more columns of a table, and includes a "key"/direct link to the original row.
+  - _An index is based on one or more columns of a table, and contains a copy of the data and a pointer to its corresponding row in the table._
+  - An index always stays sorted.
 - _Upon receiving a query, the DB engine checks the index first instead of searching the whole table._
   - i.e. without an index to quickly locate the data, the DB engine will have to search every row in the whole table for every query.
+- It is a good idea to index columns that are frequently queried.
 - Example
   - There is a `users` table containing a user's id, name, email, and location.
   - If the users are frequently filtered by location, we can create an index on the `"location"` column of the `users` table.
