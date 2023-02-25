@@ -6,8 +6,12 @@
 - [JavaScript Engine](#javascript-engine)
 - [JavaScript Runtime Environment](#javascript-runtime-environment)
   - [Runtime](#runtime)
-  - [How JavaScript is single-threaded, yet, is non-blocking, asynchronous, and concurrent](how-javascript-is-single-threaded-yet-is-non-blocking-asynchronous-and-concurrent)
+  - [How JavaScript is single-threaded, yet, is non-blocking, asynchronous, and concurrent](#how-javascript-is-single-threaded-yet-is-non-blocking-asynchronous-and-concurrent)
   - [Optimization Insights](#optimization-insights)
+- [Node.js Worker Thread Module](#nodejs-worker-thread-module)
+  - [Structure](#structure)
+  - [How Workers Run in Parallel](#how-workers-run-in-parallel)
+  - [Example](#example)
 
 ## About JavaScript
 > JavaScript (JS) is a lightweight, interpreted, or just-in-time compiled programming language with first-class functions. | MDN
@@ -199,6 +203,166 @@
   - Ex: scroll animations don't take up the call stack a lot but can flood the callback queue.
   - Possible solution: debouncing.
 
+## Node.js Worker Thread Module
+- Worker Threads exist in Node.js.
+- cf. Web Workers exist in browsers.
+
+<p align="center">
+  <img src="https://images.ctfassets.net/hspc7zpa5cvq/20h5efXHT4bQbuf44mdq2H/a40944191d031217a9169b17a8ef35d6/worker-diagram_2x__1_.jpg" alt="Node.js Worker Threads" width="80%"/>
+</p>
+
+- **This module allow us to use multiple threads to execute JS in parallel.**
+  - The main thread (the application's event loop) can stay undisrupted while other threads execute other tasks.
+  - Each thread has a dedicated event loop.
+- Prior to this module, in order to involve additional CPUs or keep CPU intensive code from blocking the event loop, we had to use multiple processes.
+### Structure
+<p align="center">
+  <img src="https://www.simplilearn.com/ice9/free_resources_article_thumb/Node.jsWorker.png" alt="Parent/Child Worker" width="80%"/>
+</p>
+
+- The main thread or parent thread delegates code to be executed to a worker thread.
+  - A parent/child workers can communicate through a message channel.
+  - A worker is independent of other workers.
+### How Workers Run in Parallel
+- _V8 allows the create of isolated V8 runtime instances, where each instance has a dedicated heap memory and micro-task queue._
+  - i.e. each worker is essentiailly an instance of Node.js.
+  - This allows each worker to execute its JS code completely separate from other workers. However, this is also why workers cannot quickly access each other's heap memory.
+- When there are worker threads, it means that there are multiple Node instances that are running in the same process in a Node application.
+### Example
+- **Setup**
+
+  ```js
+  import WT from "node:worker_threads";
+
+  const worker = new WT.Worker(
+    `
+    const { parentPort } = require('worker_threads');
+    parentPort.once('message',
+        message => parentPort.postMessage({ pong: message }));
+    `,
+    { eval: true }
+  );
+  ```
+
+  ```
+  { pong: 'ping' }
+  ```
+- **The Module**
+  ```js
+  console.log(WT);
+  ```
+
+  ```
+  {
+    isMainThread: true,
+    MessagePort: [Function: MessagePort],
+    MessageChannel: [Function: MessageChannel],
+    markAsUntransferable: [Function: markAsUntransferable],
+    moveMessagePortToContext: [Function: moveMessagePortToContext],
+    receiveMessageOnPort: [Function: receiveMessageOnPort],
+    resourceLimits: {},
+    threadId: 0,
+    SHARE_ENV: Symbol(nodejs.worker_threads.SHARE_ENV),
+    Worker: [class Worker extends EventEmitter],
+    parentPort: null,
+    workerData: null,
+    BroadcastChannel: [class BroadcastChannel extends EventTarget],
+    setEnvironmentData: [Function: setEnvironmentData],
+    getEnvironmentData: [Function: getEnvironmentData]
+  }
+  ```
+- **A Worker Thread**
+  ```js
+  console.log(worker);
+  ```
+
+  ```
+  Worker {
+    _events: [Object: null prototype] {
+      newListener: [Function (anonymous)],
+      removeListener: [Function (anonymous)]
+    },
+    _eventsCount: 2,
+    _maxListeners: undefined,
+    performance: { eventLoopUtilization: [Function: bound eventLoopUtilization] },
+    [Symbol(kCapture)]: false,
+    [Symbol(kHandle)]: Worker {
+      messagePort: MessagePort [EventTarget] {
+        active: true,
+        refed: false,
+        [Symbol(kEvents)]: [SafeMap [Map]],
+        [Symbol(events.maxEventTargetListeners)]: 10,
+        [Symbol(events.maxEventTargetListenersWarned)]: false,
+        [Symbol(kNewListener)]: [Function (anonymous)],
+        [Symbol(kRemoveListener)]: [Function (anonymous)],
+        [Symbol(nodejs.internal.kCurrentlyReceivingPorts)]: undefined,
+        [Symbol(kWaitingStreams)]: 0
+      },
+      threadId: 1,
+      onexit: [Function (anonymous)]
+    },
+    [Symbol(kPort)]: MessagePort [EventTarget] {
+      active: true,
+      refed: false,
+      [Symbol(kEvents)]: SafeMap(3) [Map] {
+        'newListener' => [Object],
+        'removeListener' => [Object],
+        'message' => [Object]
+      },
+      [Symbol(events.maxEventTargetListeners)]: 10,
+      [Symbol(events.maxEventTargetListenersWarned)]: false,
+      [Symbol(kNewListener)]: [Function (anonymous)],
+      [Symbol(kRemoveListener)]: [Function (anonymous)],
+      [Symbol(nodejs.internal.kCurrentlyReceivingPorts)]: undefined,
+      [Symbol(kWaitingStreams)]: 0
+    },
+    [Symbol(kParentSideStdio)]: {
+      stdin: null,
+      stdout: ReadableWorkerStdio {
+        _readableState: [ReadableState],
+        _events: [Object: null prototype],
+        _eventsCount: 2,
+        _maxListeners: undefined,
+        [Symbol(kCapture)]: false,
+        [Symbol(kPort)]: [MessagePort [EventTarget]],
+        [Symbol(kName)]: 'stdout',
+        [Symbol(kIncrementsPortRef)]: false,
+        [Symbol(kStartedReading)]: false
+      },
+      stderr: ReadableWorkerStdio {
+        _readableState: [ReadableState],
+        _events: [Object: null prototype],
+        _eventsCount: 2,
+        _maxListeners: undefined,
+        [Symbol(kCapture)]: false,
+        [Symbol(kPort)]: [MessagePort [EventTarget]],
+        [Symbol(kName)]: 'stderr',
+        [Symbol(kIncrementsPortRef)]: false,
+        [Symbol(kStartedReading)]: false
+      }
+    },
+    [Symbol(kPublicPort)]: MessagePort [EventTarget] {
+      active: true,
+      refed: false,
+      [Symbol(kEvents)]: SafeMap(4) [Map] {
+        'newListener' => [Object],
+        'removeListener' => [Object],
+        'message' => [Object],
+        'messageerror' => [Object]
+      },
+      [Symbol(events.maxEventTargetListeners)]: 10,
+      [Symbol(events.maxEventTargetListenersWarned)]: false,
+      [Symbol(kNewListener)]: [Function (anonymous)],
+      [Symbol(kRemoveListener)]: [Function (anonymous)],
+      [Symbol(nodejs.internal.kCurrentlyReceivingPorts)]: undefined
+    },
+    [Symbol(kNewListener)]: [Function (anonymous)],
+    [Symbol(kRemoveListener)]: [Function (anonymous)],
+    [Symbol(kLoopStartTime)]: -1,
+    [Symbol(kIsOnline)]: false
+  }
+  ```
+
 ## Reference
 [JavaScript | MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript)  
 [Introduction to JavaScript Runtime Environments](https://www.codecademy.com/articles/introduction-to-javascript-runtime-environments)  
@@ -211,3 +375,7 @@
 [Call stack - MDN Web Docs Glossary](https://developer.mozilla.org/en-US/docs/Glossary/Call_stack)  
 [The event loop - JavaScript | MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop)  
 [What is the difference between Microtask Queue and Callback Queue in asynchronous JavaScript ? - GeeksforGeeks](https://www.geeksforgeeks.org/what-is-the-difference-between-microtask-queue-and-callback-queue-in-asynchronous-javascript/)  
+[Worker threads | Node.js v19.6.0 Documentation](https://nodejs.org/api/worker_threads.html)  
+[javascript - What's the difference between Web Workers and Worker Threads? - Stack Overflow](https://stackoverflow.com/questions/60268604/whats-the-difference-between-web-workers-and-worker-threads)  
+[Learn all about Nodejs Worker Threads with Examples | Simplilearn](https://www.simplilearn.com/tutorials/nodejs-tutorial/nodejs-worker-threads)  
+[Understanding Worker Threads in Node.js - NodeSource](https://nodesource.com/blog/worker-threads-nodejs/)  
