@@ -1,4 +1,4 @@
-# Bit
+# Bit and Binary
 
 ## Table of Contents
 - [What is it?](#what-is-it)
@@ -6,7 +6,10 @@
 - [Units of Memory Measurement](#units-of-memory-measurement)
 - [Data Speed Measurement](#data-speed-measurement)
 - [Character Encoding](#character-encoding)
-- [Types of Character Encoding Standards](#types-of-character-encoding-standards)
+  - [Character Encoding Standards](#character-encoding-standards)
+    - [ASCII](#ascii)
+    - [Unicode](#unicode)
+    - [Base64](#base64)
 - [Bitwise Operation](#bitwise-operation)
   - [Binary Math](#binary-math)
   - [Bitwise Operators](#bitwise-operators)
@@ -60,19 +63,27 @@
 ## Character Encoding
 - Character encoding is the process of mapping each character from a set of characters to a byte(s) in a computer, which allows them to be stored, transmitted and transformed.
   - Therefore, for example, if you press a character on the keyboard, the system's character encoding maps the character to its specific bytes in computer memory and then reads the bytes back into the character to display it.
-
-## Types of Character Encoding Standards
+### Character Encoding Standards
 - All characters, strings and code are ultimately binaries.
 - "Code" is just a way to express numbers, which need to be uniform for everyone to be on the same page.
 - ASCII and Unicode are simply standards for stating what binary combination corresponds to what string/character.
+#### ASCII
 - **ASCII** is the American standard for character encoding, which includes the alphabet and some special characters. These encodings are mostly universal.
   - It initially used 7 bits to represent 128 characters.
   - It then added 1 more bit (8 bits total) to represent 256 characters.
+#### Unicode
 - **Unicode** is the international standard that was introduced to accommodate languages and characters of the rest of the world, which has been expanding.
   - Unicode includes emojis. Although, each platform's corresponding UI may differ from that of another.
   - Most platforms and programming languages support unicode.
   - Unicode Encoding Formats: UTF-8, UTF-16, UTF-32.
 - [More on ASCII and Unicode here](https://github.com/Kakamotobi/Learned/blob/main/Computer%20Science/Basics.md#ascii-and-unicode)
+#### Base64
+> Base64 is a group of similar binary-to-text encoding schemes that represent binary data in an ASCII string format by translating it into a radix-64 representation. | MDN
+
+- Base64 is commonly used to send non-textual data through text-based systems (Ex: attaching an image file in an email), and across the Web.
+- A single Base64 digit can encode 6 bits of data (hence, 64 different values).
+  - cf. a hex digit can encode 4 bits of data (hence, 16 different values).
+  - Different implementations have different characters mapped to each base64 digit.
 
 ## Bitwise Operation
 - Bitwise operations refer to working with individual bits.
@@ -279,6 +290,8 @@
   - Intel usually uses Big-Endian.
 
 ## Reference
+[Binary-to-text encoding - Wikipedia](https://en.wikipedia.org/wiki/Binary-to-text_encoding)  
+[Base64 - MDN Web Docs Glossary: Definitions of Web-related terms | MDN](https://developer.mozilla.org/en-US/docs/Glossary/Base64)  
 [Algorithms: Bit Manipulation - YouTube](https://www.youtube.com/watch?v=NLKQEOgBAnw)  
 [Algorithms 101: the basics of Bit Manipulation explained](https://www.educative.io/blog/bit-manipulation-algorithm)  
 [JavaScript Bitwise Operators (with Examples)](https://www.programiz.com/javascript/bitwise-operators)  
