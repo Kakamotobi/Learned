@@ -8,17 +8,40 @@
 - [What is Git?](#what-is-git)
   - [How/Where to Get Git](#howwhere-to-get-git)
   - [Git Workflow](#git-workflow)
-  - [Git Configs](#git-configs)
+  - [Git Configurations](#git-configurations)
   - [Frequently Used Git Commands](#frequently-used-git-commands)
 - [Git Objects](#git-objects)
 - [Git Branches](#git-branches)
+  - [Creating a New Branch](#creating-a-new-branch)
+  - [Switching Branches](#switching-branches)
+  - [Renaming Branches](#renaming-branches)
+  - [Tracking Branches](#tracking-branches)
+  - [Pulling and Pushing Branches](#pulling-and-pushing-branches)
+  - [Deleting Branches](#deleting-branches)
+  - [Merging Branches](#merging-branches)
+  - [Rebasing Branches](#rebasing-branches)
+  - [Comparing Branches](#comparing-branches)
 - [Git Remote](#git-remote)
+  - [Remote Tracking Branch](#remote-tracking-branch)
+  - [Upstream](#upstream)
 - [Git Clone and Git Fork](#git-clone-and-git-fork)
+  - [Git Clone](#git-clone)
+  - [Git Fork](#git-fork)
 - [Pull Request](#pull-request)
+  - [How it Works](#how-it-works)
+  - [Workflow - only local and origin](#workflow---only-local-and-origin)
+  - [Important Notes](#important-notes)
 - [Merge Conflicts](#merge-conflicts)
 - [Git Stash](#git-stash)
 - [Undoing Changes and Time Travelling](#undoing-changes-and-time-travelling)
+  - [Moving Back and Forth in Time](#moving-back-and-forth-in-time)
+  - [Discard Current Changes / Unmodify Files](#discard-current-changes--unmodify-files)
+  - [Undoing Commits](#undoing-commits)
+    - [Applying Undone Commits on Local to Remote](#applying-undone-commits-on-local-to-remote)
 - [Git Collaboration Workflows](#git-collaboration-workflows)
+  - [Centralized Workflow](#centralized-workflow)
+  - [Feature Branch Workflow](#feature-branch-workflow)
+  - [Fork & Clone Workflow](#fork--clone-workflow)
 - [Reference](#reference)
 
 ## What is a Version Control System (VCS)?
@@ -103,7 +126,7 @@
   <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/Version%20Control%20System/refImg/git-remote-flow.png" alt="Git Remote Flow" width="80%" />
 </p>
 
-### Git Configs
+### Git Configurations
 - **`git config --list`**
   - Check all configurations for Git.
 - **`git config --global core.editor "code --wait"`**
@@ -184,7 +207,7 @@
 - **`git checkout <commitId>`**
   - Overwrites your current working directory with the specified snapshot (commit) of your repo from history and make that your new working-set which you can stage and commit as you wish.
   - Example
-    ```
+    ```zsh
     git log // find the commit id you want.
     git checkout <commitId> . // the "." refers to the current directory.
     git commit -m "Restoring old source code" // make a new commit with the restored one.
@@ -232,7 +255,6 @@
 - `git hash-object <filename>`
   - Creates a unique object ID with the filename as the "key", and the actual file as the value.
 
-
 ## Git Branches
 > A branch represents an independent line of development. Branches serve as an abstraction for the edit/stage/commit process. You can think of them as a way to request a brand new working directory, staging area, and project history.
 
@@ -245,15 +267,15 @@
 - **Local vs Remote Branches**
   - Most of the times we are working with the local branches as we are mostly working on our local machines.
 ### Working with Branches
-#### Creating New Branches
+#### Creating a New Branch
 - **`git branch <new-branch-name>`**
-  -  Git will start the new branch based on the currently checked out revision (the situation that I was to this point).
-  -  **`git branch <new-branch-name> <revision-hash-of-a-particular-commit>`**
-    -  Starts the branch on the specified revision.
+  - Git will start the new branch based on the currently checked out revision (the situation that I was to this point).
+  - **`git branch <new-branch-name> <revision-hash-of-a-particular-commit>`**
+    - Starts a branch on the specified revision.
 - **`git switch -c <new-branch-name>`**
-  - Creates the new branch and switches to it.
+  - Creates a new branch and switches to it.
 - **`git checkout -b <new-branch-name>`**
-  - Creates the new branch and switches to it.
+  - Creates a new branch and switches to it.
 #### Switching Branches
 - **`git switch <other-branch-name>`**
   - Switch to another branch.
@@ -265,10 +287,6 @@
   - Rename the HEAD branch.
 - **`git branch -m <old-name> <new-name>`**
   - Renaming a non-HEAD branch.
-#### Publishing Branches
-- **`git push -u origin <branch-name>`**
-  - Upload local branch to the remote repository.
-  - `-u` set upstream for git pull/status.
 #### Tracking Branches
 - Connecting local and remote branches with each other.
   - Ex: you're trying to join in on a remote branch that someone else is working on.
@@ -279,20 +297,17 @@
   - If a local branch name to use is not specified, Git automatically uses the name of the remote branch for the local.
 #### Pulling and Pushing Branches
 - Synchronizing your local and remote branches.
-- Process Ex:
-  - Push local branch to remote repository.
-  - In GitHub, accept the pull request and merge to main branch.
-  - In GitHub, delete branch.
-  - In local, pull main branch.
-  - In local, delete branch.
+- **`git push <remote-name> <branch-name>`**
+  - Upload local branch to the remote repository.
+  - **`-u`** or **`--set-upstream`**
+    - Sets the default remote branch for your current local branch to publish to.
+    - Henceforth, `git push` defaults to pushing to that remote branch.
+    - Ex: `git push -u origin feature/navbar`.
+      - Push up the current HEAD branch to the feature/navbar branch on origin.
+    - If the branch is only on local yet, use this command to upload the branch to GitHub and simultaneously set that remote branch as the up stream for this branch.
 - **`git pull`**
   - Download new commits from the remote.
   - Ex: `git pull origin main`
-- **`git push --set-upstream <remote-name> <branch-name>`**
-  - Or `git push -u <remote-name> <branch-name>`.
-  - Ex: `git push -u origin master`.
-    - Push up the current branch to the master branch on origin.
-  - If the branch is only on local yet, use this command to upload the branch to GitHub and simultaneously set that remote branch as the up stream for this branch.
 - **`git branch -v`**
   - Shows any discrepancies in commits between local and remote.
   - Ex: ahead 1, behind 2
@@ -302,22 +317,22 @@
   - *Cannot delete the HEAD branch! So switch to another branch, then delete.*
 - **`git push <remote-name> --delete <branch-name>`**
   - Delete a branch in the remote repository.
-  - *Might also make sense to delete other branches that are tracking that remote branch!*
+  - _Might also make sense to delete other branches that are tracking that remote branch!_
 #### Merging Branches
 - Integrating changes (bringing new commits) from another branch *into* your current local HEAD branch.
 - **2 Step Process**
   - **`git switch <branch-name>`**
     - Switch to the branch that you want to receive the changes.
   - **`git merge <source-branch>`**
-    - Execute the `merge` command with the name of the branch that contains the desired changes.
-    - This adds the commits made (up to that point) in the branch to the HEAD.
+    - Adds the `<source-branch>`'s commits into the HEAD branch.
       - *It does not mean that the branch and the HEAD are now in sync. They are still separate branches.*
-- Merging creates a merge commit (the "melting point").
+- _Merging creates a merge commit (the "melting point")._
 - Merging branches can often lead to [merge conflicts](https://github.com/Kakamotobi/Learned/main/Version%20Control%20System/Version-Control-System.md#merge-conflicts).
 - *Note*
   - When using `git merge`, if you merge the master branch into your 'feature' branch in order to keep on track with other changes to the master branch, you will create a merge commit on your 'feature' branch.
     - If the master branch is very active, your 'feature' branch will have to have lots of merge commits, resulting to a messy branch history.
     - That goes the same for your colleagues. Therefore, when everyone merges back to the master branch, the master branch will have a bunch of non-informative merge commits.
+    - Therefore, it may be better to use `rebase` instead.
 #### Rebasing Branches
 - **`git rebase <branch-name>`**
   - An alternative way to integrate changes (cf. `git merge`) from the specified branch *into* your current local HEAD branch.
@@ -329,13 +344,13 @@
       - All the work is still there, but the history has been re-written.
       - Rebasing rewrites history by re-creating commits for each of the original 'feature' branch commits.
       - Therefore, the 'feature' branch now contains all of the commits from master since it has a new base at the tip of the master branch.
-  - Rebasing can lead to merge conflicts.
+  - Rebasing can lead to [merge conflicts](https://github.com/Kakamotobi/Learned/main/Version%20Control%20System/Version-Control-System.md#merge-conflicts).
     - Resolve the conflict.
-    - Then stage file(s) with `git add` and continue rebasing with `git rebase --continue`.
+    - Then, stage file(s) with `git add` and continue rebasing with `git rebase --continue`.
 ##### When Not to Rebase
 - Never rebase commits that have already been shared with others.
-  - If your collaborators have the changes you have made on their machine because if you rebase, the same changes will have different commits. This makes it difficult to reconcile the alternate histories.
-    - Since you rebased, they will have commits that do not exist in yours, and vice versa.
+  - If your collaborators have the changes you have made on their machine, if you rebase, the same changes will have different commits. This makes it difficult to reconcile the alternate histories.
+    - i.e. since you rebased, they will have commits that do not exist in yours, and vice versa.
 #### Comparing Branches
 - Checking which commits are in branch-B, but not in branch-A.
 - **`git log [<branch-A>..<branch-B>]`**
@@ -348,7 +363,7 @@
 - A **remote** is a duplicate instance of the repository that lives on a remote server.
 - A single repository can have multiple remotes.
   - Ex: GitHub, Heroku, AWS, etc.
-- `git remote`
+- **`git remote`**
   - Lists all the remotes associated with the local repository.
   - `git remote -v`
     - Reveals the particular URLs of each remote.
@@ -364,6 +379,19 @@
   - View the remote branchs that your local repository knows about.
 - You can checkout remote branch pointers, which results a detatched HEAD.
   - Ex: `git checkout origin/master`.
+### Upstream
+- An **Upstream** refers to the default remote branch of the current local branch.
+- Ways that an Upstream can be set for a Branch.
+  - **`git push -u <remote-name> <branch-name>`**
+    - Set the upstream as you push a newly created local branch to remote.
+    - Ex: `git push -u origin feature/navbar`
+  - **`git branch --set-upstream-to=<remote-name/branch-name>`**
+    - If `<branch-name>` is already on remote repo.
+- **`git remote add <remote-name> <upstream-repo-url>`**
+  - Registering a new remote repo to your local Git repository.
+  - i.e. setting up an alias `<remote-name>` to `git push` to and `git pull` from.
+  - Ex: `git remote add upstream https://github.com/some-upstream-repo.git`
+  - Ex: `git remote add origin https://github.com/some-remote-repo.git`
 
 ## Git Clone and Git Fork
 - The difference comes down to how much control a developer has over a given repository.
@@ -375,7 +403,7 @@
     - However, your local repository knows about them as information about them is downloaded.
       - `git branch -r` reveals them.
     - *Simply do `git switch <branch-name>` to create a new local branch from the remote branch of the same name.*
-      - Ex: if remote has a branch called 'chickens' (but it is not on local), `git switch chickens` will make a local 'chickens' branch and set it up to track the remote branch origin/chickens.
+      - Ex: if remote has a branch called "chickens" (but it is not on local), `git switch chickens` will make a local "chickens" branch and set it up to track the remote branch "origin/chickens".
       - You can also do `git checkout --track <remote-name>/<branch-name>`.
 - Changes can be made to this cloned version in local.
 - Only designated contributors are allowed to push back to repository on origin.
@@ -385,15 +413,23 @@
 - Anyone can fork any repository on GitHub.
   - There is no Git command for forking (use GitHub).
 - The repository is completely copied to your own GitHub as a separate entity to the original.
+  - There is an option to include/exclude all branches aside from main.
 - Check [collaboration workflow](https://github.com/Kakamotobi/Learned/main/Version%20Control%20System/Version-Control-System.md#fork--clone-workflow).
 
 ## Pull Request
-- **The request that your changes be pulled in and merged to a particular branch.**
+- **A request that your changes in a branch be pulled in and merged to a particular branch.**
 - Instead of everyone merging to the master branch at free will, pull requests act as a mechanism to intermediate changes ready to be integrated to the master branch.
   - They help facilitate discussion and feedback on the specified commits.
 - Pull requests on a given branch can be approved or rejected.
 - The master branch can be protected by making pull requests mandatory for it.
-#### Workflow
+### How it Works
+- **`<Base Repository>:<Base Ref> <- <Head Repository>:<Head Ref>`**
+  - Request to merge the head ref/branch on head repository into the base ref/branch on base repository.
+  - `Base Repository` - the upstream repository.
+  - `Base Ref` - the branch you wish to merge into.
+  - `Head Repository` - the source repository.
+  - `Head Ref` - the branch with the changes that you wish to merge to upstream.
+### Workflow - only local and origin
 - You have done some work locally on a feature branch.
 - You commit your changes and then push the feature branch to origin (GitHub).
 - Then, open a pull request using the feature branch that you just pushed up to origin.
@@ -403,7 +439,7 @@
 - Wait for the PR to be approved and merged by the reviewer (in charge of merging).
 - If more changes need to be made, simply add more commits to your feature branch and push it to origin again.
   - The PR will update automatically to reflect your changes.
-##### Important Notes
+### Important Notes
 - *By the time your PR is accepted, there may be a newer version of the master branch. Therefore, your changes may not work on the newer version of master.*
   - Take one of two options to get your feature branch up to date:
     - `git merge master`: applies any new changes from the master branch on top of your work.
@@ -525,23 +561,31 @@
 - Developers make changes and push to their own forks efore making pull requests to the "main" repo.
 - This method allows for us to contribute to a project that we do not own.
 #### Flow
-- Fork a repository on GitHub.
-- Clone the forked repository to local.
-  - Ex: `git clone <forked-repo-git-url>`.
-- Add another remote pointing to the original project repository (not the fork in your repository).
-  - Often named "upstream" or "original".
-  - *This is so that you can pull new changes from it (since your fork repository does not have those new changes made in the original repository).*
-  - Ex: `git remote add upstream <original-repo-git-url>`.
-- Make changes and commit them.
-- Push to the repository on origin (your forked repository. Not the original repository that was forked from).
-  - Ex: `git push origin main`.
-- Make a pull request from your forked repository (on origin) to the original repository.
-  - On GitHub, go to your forked repository and click "New pull request" and then "Create pull request".
-  - This sends a message to the original repository asking them to "pull" the changes that has been made.
-  - The receiver (original repository) will see the pull request and can decide whether or not to accept the changes made and "Merge pull request".
-- If your pull request is accepted, pull down the (your) changes from the original repository (upstream remote) to your local machine.
-  - Ex: `git pull upstream main`.
-- Make more commits, and push to forked repository (origin remote), and repeat the PR process.
+1) Fork a repository on GitHub.
+2) Clone the forked repository to local.
+    - Ex: `git clone <forked-repo-git-url>`.
+3) Add another remote pointing to the original project repository (not the fork in your repository).
+    - Often named "upstream" or "original".
+    - *This is so that you can pull new changes from it (since your fork repository will not have those new changes made in the original repository).*
+    - Ex: `git remote add upstream <original-repo-git-url>`.
+4) Make changes and commit them.
+    - Ex: create new branch `git branch feature/navbar` in local.
+5) Push the working branch to the repository on origin (your forked repository. Not the original repository that was forked from).
+    - Ex: `git push origin feature/navbar`.
+6) Make a **pull request** from your forked repository (on origin) to the original repository.
+    - On GitHub, go to your forked repository and click "New pull request" and then "Create pull request".
+      - Ex: `upstream:landing-page <- forked-repo:feature/navbar`
+    - This sends a message to the original repository asking them to "pull" the changes that have been made.
+    - The receiver (original repository) will see the pull request and can decide whether or not to accept the changes made and "Merge pull request".
+6) If your pull request requires changes and is not accepted yet, leave the pull request open and keep pushing commits to the working branch.
+7) If your pull request is accepted, synchronize the original repository and local by pulling down the (your) approved changes on the original repository (upstream remote) to your local machine.
+    - Ex: `git fetch upstream landing-page` and `git rebase upstream/landing-page`.
+    - Ex: `git pull upstream landing-page`.
+8) Push to the repository on origin (your forked repository. Not the original repository that was forked from).
+    - Ex: `git push origin landing-page`.
+9) If your pull request was accepted, it is now safe to delete the branch that you've been working on in local (and the corresponding branch in origin).
+    - Ex: `git branch -d feature/navbar`
+10) Make more commits, and push to forked repository (origin remote), and repeat the PR process (starting from step 4).
 
 ## Reference
 [Git - Book](https://git-scm.com/book/en/v2)  
