@@ -10,6 +10,7 @@
   - [Git Workflow](#git-workflow)
   - [Git Configs](#git-configs)
   - [Frequently Used Git Commands](#frequently-used-git-commands)
+- [Git Objects](#git-objects)
 - [Git Branches](#git-branches)
 - [Git Remote](#git-remote)
 - [Git Clone and Git Fork](#git-clone-and-git-fork)
@@ -93,9 +94,10 @@
 - Use **`git commit -m "message"`** to save the file(s) to the .git Directory.
 ##### 3) .git Directory (Repository)
 > The Git directory is where Git stores the metadata and object database for your project. This is the most important part of Git, and it is what is copied when you clone a repository from another computer.
-- The directory/respository that contains the version history.
-- Use **`git checkout fileName`** to return to any previous version.
+- **The directory/respository that contains the version history.**
+- Use **`git checkout <filename>`** to return to any previous version.
 - Use **`git push origin <branch>`** to push to GitHub.
+- The `.git/objects/` path contains the files that have been hashed.
 #### Git and Remote Flow
 <p align="center">
   <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/Version%20Control%20System/refImg/git-remote-flow.png" alt="Git Remote Flow" width="80%" />
@@ -105,11 +107,11 @@
 - **`git config --list`**
   - Check all configurations for Git.
 - **`git config --global core.editor "code --wait"`**
-- **`git config --global user.name "Your Name"`**
-- **`git config --global user.email "email@email.com`**
+- **`git config --global user.name "<Your Name>"`**
+- **`git config --global user.email "<Your Email>"`**
 - **`git config --global core.autocrlf input`**
   - For mac.
-- **`git config --global alias.<abbrv> <commandName>`**
+- **`git config --global alias.<Abbrv> <Command Name>`**
   - Change the specific command name to the designated abbreviation.
   - Ex: `git config --global alias.st status`
 ### Frequently Used Git Commands
@@ -124,6 +126,12 @@
   - Downloads a Git repository from the Internet with the latest snapshot of the repository to your working directory on your computer.
   - By default, the contents will be stored in a folder with the same name as the repository from the URL.
     - *The URL is called the **remote origin**.*
+- **`git rm <filename>`**
+  - Remove a file(s) from the working tree and from the index.
+  - `git rm --cached <filename>`
+    - Unstage and remove paths only from the index, and leave the working tree files untouched.
+- **`git mv <source> <destination>`**
+  - Rename or move a file, symlink or directory.
 - **`git status`**
   - Check the Git status of files.
     - Ex: what files have been modified.
@@ -181,11 +189,13 @@
     git checkout <commitId> . // the "." refers to the current directory.
     git commit -m "Restoring old source code" // make a new commit with the restored one.
     ```
-- **`git show-ref`**
-  - List the references in the local repository.
+- **`git show [<commit>]`**
+  - Show object(s) representing commits and meta data.
+  - `git show-ref`
+    - List the references in the local repository.
 - **`git fetch <remote-name> <branch-name>`**
-  - Download changes from a remote repository. However, those changes will not be automatically integrated into the working directory.
-  - It is a way of fetching and accessing the latest changes to the repository on your machine BUT without having to actually merge them into our working files.
+  - Download all changes from a remote repository. However, those changes will not be automatically integrated into the working directory.
+  - _It is a way of fetching and accessing the latest changes to the repository on your machine BUT without having to actually merge them into our working files._
   - "Go and get the latest information from GitHub. But don't mess up my working directory."
   - Ex: `git fetch origin` will fetch all changes (incl. new branches that have been created) from the origin remote repository.
   - Ex: `git fetch origin master` will fetch all changes from the master branch on the origin remote repository.
@@ -195,14 +205,14 @@
     - `git fetch origin master` will fetch those changes.
       - ***This updates the `origin/master` remote tracking pointer but your master branch on local is untouched.***
     - `git checkout origin/master` to see them.
-- **`git merge <other-branch-name>`**
-  - `git merge` updates your current branch with whatever changes are on the remote tracking branch.
-  - Takes all the commits existing on the `other-branch-name` branch and integrate them ***into*** your current branch.
+- **`git merge <source-branch-name>`**
+  - `git merge` updates your current branch with whatever changes are on the specified source branch.
+  - Takes all the commits existing on the `source-branch` branch and integrate them ***into*** your current branch.
   - Since this uses whatever branch data that is stored locally at the moment, run `git fetch` first to download the latest information before merging.
-  - Ex: if another developer added some commits to the `master` branch of `origin`, checkout the `master` branch in local, download their changes using `git fetch` and effectively update the `master` branch in local. Then, `git merge origin/master` to merge the origin/master branch into your current branch.
-    - `origin/master` means the `origin/master` checkpoint in local. This notation is used to differentiate branches of the same name (Ex: `master`) located in different places (Ex: your own branches vs. origin's branches).
+  - Ex: if another developer added some commits to the `master` branch of `origin`, checkout the `master` branch in local, download their changes using `git fetch` and effectively update the `master` branch in local. Then, checkout the target branch in local, and `git merge origin/master` to merge the origin/master branch into your current branch.
+    - _`origin/master` refers to the `origin/master` checkpoint in local. This notation is used to differentiate branches of the same name (Ex: `master`) located in different places (Ex: your own branches vs. origin's branches)._
 - **`git pull <remote-name> <branch-name>`**
-  - Download changes from a remote repository. And update our HEAD branch with whatever changes are retrieved from the remote.
+  - Download changes from a remote repository. And update your HEAD branch with whatever changes are retrieved from the remote.
   - "Go and get the latest information from GitHub. And immediately update my local repository with those changes.
   - `git pull` = `git fetch` + `git merge`.
   - ***The current HEAD branch is where the changes will be pulled down to.***
@@ -216,6 +226,13 @@
     - `git pull origin master` will pull changes from the `master` branch on the `origin` remote and merge that to the local HEAD branch.
     - `git pull origin/master` will pull changes from the `origin/master` tracking branch on **local** and merge that to the local HEAD branch.
 
+## Git Objects
+- Git is based on a key-value data store.
+  - i.e. any content can inserted into a git respository. This content will be hashed as a unique key that can be used later to retrieve the content.
+- `git hash-object <filename>`
+  - Creates a unique object ID with the filename as the "key", and the actual file as the value.
+
+
 ## Git Branches
 > A branch represents an independent line of development. Branches serve as an abstraction for the edit/stage/commit process. You can think of them as a way to request a brand new working directory, staging area, and project history.
 
@@ -227,7 +244,6 @@
   - The single currently "active" or "checked out" branch.
 - **Local vs Remote Branches**
   - Most of the times we are working with the local branches as we are mostly working on our local machines.
-
 ### Working with Branches
 #### Creating New Branches
 - **`git branch <new-branch-name>`**
@@ -292,7 +308,7 @@
 - **2 Step Process**
   - **`git switch <branch-name>`**
     - Switch to the branch that you want to receive the changes.
-  - **`git merge <branch-name>`**
+  - **`git merge <source-branch>`**
     - Execute the `merge` command with the name of the branch that contains the desired changes.
     - This adds the commits made (up to that point) in the branch to the HEAD.
       - *It does not mean that the branch and the HEAD are now in sync. They are still separate branches.*
@@ -322,9 +338,11 @@
     - Since you rebased, they will have commits that do not exist in yours, and vice versa.
 #### Comparing Branches
 - Checking which commits are in branch-B, but not in branch-A.
-- **`git log <branch-A>..<branch-B>`**
+- **`git log [<branch-A>..<branch-B>]`**
   - Ex: `git log main..feature/uploader`
   - Ex: `git log origin/main..main`
+  - `git log --follow <file>`
+    - Check the commits of this file.
 
 ## Git Remote
 - A **remote** is a duplicate instance of the repository that lives on a remote server.
@@ -467,9 +485,9 @@
   - `git restore --staged <file-name>`
     - Unstage files.
 ### Undoing Commits
-- **`git reset <commit-hash>`**
+- **`git reset <commit-hash | file>`**
   - Reset the repository back to a specific commit, but with the the changes still in the working directory.
-  - All proceeding commits are removed.
+  - All commits that proceed the specific commit are removed.
     - The branch pointer is moved backwards, eliminating the commits as if they never occured in the first place.
   - `git reset --hard <commit-hash>`
     - Resets the repository (HEAD) back to a specific commit and removes the actual changes in the files.
@@ -527,6 +545,7 @@
 
 ## Reference
 [Git - Book](https://git-scm.com/book/en/v2)  
+[Git - Reference](https://git-scm.com/docs)  
 [깃, 깃허브 제대로 배우기 - YouTube](https://www.youtube.com/watch?v=Z9dvM7qgN9s&ab_channel=%EB%93%9C%EB%A6%BC%EC%BD%94%EB%94%A9by%EC%97%98%EB%A6%AC)  
 [Git Branches Tutorial](https://www.youtube.com/watch?v=e2IbNHi4uCI&ab_channel=freeCodeCamp.org)  
 [The Ultimate GitHub Collaboration Guide | by Jonathan Mines](https://medium.com/@jonathanmines/the-ultimate-github-collaboration-guide-df816e98fb67)  
