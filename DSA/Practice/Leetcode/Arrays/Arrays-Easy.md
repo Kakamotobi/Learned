@@ -10,6 +10,7 @@
 - [53. Maximum Subarray](#53-maximum-subarray)
 - [1876. Substrings of Size Three with Distinct Characters](#1876-substrings-of-size-three-with-distinct-characters)
 - [169. Majority Element](#169-majority-element)
+- [26. Remove Duplicates from Sorted Array](#26-remove-duplicates-from-sorted-array)
 
 ## [1. Two Sum](https://leetcode.com/problems/two-sum/)
 - Input: array of integer `nums`, and integer `target`.
@@ -384,5 +385,27 @@ const majorityElement = (nums) => {
   }
 
   return temp;
+}
+```
+
+## [26. Remove Duplicates from Sorted Array](https://leetcode.com/problems/remove-duplicates-from-sorted-array/description/)
+### Solution
+```js
+// TC: O(n), SC: O(1)
+
+const removeDuplicates = (nums) => {
+  let i = 0;
+  let j = 0;
+  
+  while (i < nums.length - 1) {
+    if (nums[j] === nums[i]) j++;
+    else {
+      nums.splice(i + 1, j - i - 1);
+      i++;
+      j = i + 1;
+    }
+  }
+  
+  return nums.length;
 }
 ```
