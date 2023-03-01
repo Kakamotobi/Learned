@@ -5,12 +5,13 @@
 - [What is a Version Control System (VCS)?](#what-is-a-version-control-system-vcs)
   - [What is a Distributed Version Control System (DVCS)?](#what-is-a-distributed-version-control-system-dvcs)
 - [What is GitHub?](#what-is-github)
-  - [Setting Up Git and GitHub](#setting-up-git-and-github)
 - [What is Git?](#what-is-git)
-  - [How/Where to Get Git](#howwhere-to-get-git)
-  - [Git Workflow](#git-workflow)
-  - [Git Configurations](#git-configurations)
-  - [Frequently Used Git Commands](#frequently-used-git-commands)
+  - [Git Installation](#git-installation)
+  - [The Three States of a File](#the-three-states-of-a-file)
+  - [The Three Main Sections of a Git Repository](#the-three-main-sections-of-a-git-repository)
+    - [The Relationship between the Three Sections](#the-relationship-between-the-three-sections)
+- [Git Configurations](#git-configurations)
+- [Frequently Used Git Commands](#frequently-used-git-commands)
 - [Git Objects](#git-objects)
 - [Git Branches](#git-branches)
   - [Creating a New Branch](#creating-a-new-branch)
@@ -56,87 +57,82 @@
 ## What is a Version Control System (VCS)?
 > Version control is a system that records changes to a file or set of files over time so that you can recall specific versions later.
 ### What is a Distributed Version Control System (DVCS)?
-> A system that fully mirrors the repository, including its full history.  
+> ...**distributed version control** (also known as **distributed revision control**) is a form of version control in which the complete codebase, including its full history, is mirrored on every developer's computer. | Wikipedia
+
 - Every clone is really a full backup of all the data.  
 - Can have several remote repositories they can work with, so that we can collaborate with different groups of people in different ways simultaneously within the same project.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/Version%20Control%20System/refImg/dvcs.png" alt="DVCS" width="60%" height="650px" />
+  <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/Version%20Control%20System/refImg/dvcs.png" alt="DVCS" width="60%" height="630px" />
 </p>
 
 ## What is GitHub?
-- Online service that provides Internet hosting for software development and version control using Git.
-### Setting Up Git and GitHub
-1. Create a new repository on GitHub
-2. Make sure Git is tracking your project.
-  - `cd` to your project directory.
-  - `git status` to check if git is already initialized.
-  - If not, `git init`.
-  - Then, go through the process of adding and committing your project to the .git Directory.
-3. Connect your local repository to your newly created repository on GitHub.
-  - `git remote add origin <copied github repository link>`
-    - Copy the repository link ending in ".git" (the web address that your local folder will use to push its contents to the remote folder on GitHub).
-  - `git push origin <branch>`
-    - Now, push your branch to GitHub.
+- An online service that provides Internet hosting for software development and version control using Git.
+- It is a platform for managing remote repositories.
+  - `git remote add <remote-name> <github-repo-link>` sets the web address (alised as `remote-name`) of the remote repository on GitHub that your local repository will keep track of.
 
 ## What is Git?
 - **Git is a distributed version control system.**
-  - Git takes a snapshot of the whole directory rather than only the changes.
-    - For every commit, Git takes a snapshot of what all the files look like at that moment and stores a reference to that snapshot.
+  - Git takes a snapshot of the whole directory rather than of only the changes.
+    - For every commit, git takes a snapshot of what all the files look like at that moment and stores a reference to that snapshot.
     - If files have not changed, Git doesn’t store the file again. It stores just a link to the previous identical file that it has already stored.
   - Data is treated like a series/stream of snapshots of a miniature filesystem.
-- **Git stores each file and directory based on the hash of its contents.**
-  - Git is able to quickly determine if any changes have been made by comparing the hash value (not the entire file).
-- Git helps determine *what* change has been made, *who* made that change, and *why*.
+- **Git stores each file and directory based on the _hash_ of its contents.**
+  - Git is able to quickly determine if any changes have been made by comparing hash values (not the entire file).
+- Git helps determine *what* change has been made, *who* made that change, and *why*.  
+- Everything in Git is checksummed before it is stored and is then referred to by that checksum.
+  - The mechanism that Git uses for this checksumming is called a SHA-1 hash (a 40-character string composed of hexadecimal characters).
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/Version%20Control%20System/refImg/git-check-ins-overtime.png" alt="Git Checkins Over Time" width="80%" />
 </p>
-  
-- Everything in Git is checksummed before it is stored and is then referred to by that checksum.
-  - The mechanism that Git uses for this checksumming is called a SHA-1 hash (a 40-character string composed of hexadecimal characters).
-- .gitignore includes files that we don't want Git to track and don't want to upload to GitHub.
-### How/Where to Get Git
+
+### Git Installation
 - Many systems have Git installed by default.
 - However, it can be downloaded [here](https://git-scm.com/downloads).
-### Git Workflow
-1) You modify files in your working tree.
-
-2) You selectively stage just those changes you want to be part of your next commit, which adds only those changes to the staging area.
-
-3) You do a commit, which takes the files as they are in the staging area and stores that snapshot permanently to your Git directory.
-### The Three States
-- The three main states that our files can reside in.
-
+### The Three States of a File
+- The three main states that our files can reside in are: **modified**, **staged**, and **committed**.
+- **Modified**
+  - Changes have been made to the file but it has not been commited yet.
+- **Staged**
+  - The modified file has been marked as ready to be included in your next commit snapshot.
+- **Committed**
+  - The staged file has been included in the snapshot in your local database.
+### The Three Main Sections of a Git Repository
 <p align="center">
   <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/Version%20Control%20System/refImg/three-main-states.png" alt="Three Main States" width="80%" />
 </p>
 
 #### 1) Working Directory
-> The working tree is a single checkout of one version of the project. These files are pulled out of the compressed database in the Git directory and placed on disk for you to use or modify.
-- Use **`git add <file(s)>`** to move file(s) to the Staging Area.
+> The working tree is a single checkout of one version of the project. These files are pulled out of the compressed database in the Git directory and placed on disk for you to use or modify. | Git
+
 - **Untracked**
   - New files that Git doesn't know about or existing files where Git has newly been initialized.
 - **Tracked**
   - **Unmodified**
     - Unchanged from the previous version.
   - **Modified**
-    - Only files that have changes made to them are moved to the Staging Area.
+    - Only files that have changes made to them can be moved to the Staging Area.
+- It contains the files that you are currently working on, including any changes that have been made to them.
+  - i.e. the files and folders that you can see on your computer.
+- Use **`git add <file(s)>`** to move the modified file(s) to the Staging Area.
 #### 2) Staging Area
-> The staging area is a file, generally contained in your Git directory, that stores information about what will go into your next commit.
-- Files that are ready to be saved in the version history.
-- Use **`git commit -m "message"`** to save the file(s) to the .git Directory.
+> The staging area is a file, generally contained in your Git directory, that stores information about what will go into your next commit. | Git
+
+- (Staged) Files that are ready to be snapshot.
+- Use **`git commit`** to save the file(s) to the .git Directory.
 #### 3) .git Directory (Repository)
-> The Git directory is where Git stores the metadata and object database for your project. This is the most important part of Git, and it is what is copied when you clone a repository from another computer.
+> The Git directory is where Git stores the metadata and object database for your project. This is the most important part of Git, and it is what is copied when you clone a repository from another computer. | Git
+
 - **The directory/respository that contains the version history.**
-- _This is the "local" directory._
-  - The files and folder on your computer is not the local directory.
-  - The contents of your current HEAD branch is what you see on your finder window.
-    - i.e. switching branches will show different files/folders, which is possible through this ".git" directory.
+- _This is the "local" repository that contains all the snapshots._
+  - The files and folders on your computer do not represent the local repository.
+  - The HEAD branch refers to the currently checked out branch (in the .git directory).
+    - i.e. switching branches shows different files/folders, which is possible through this ".git" directory.
 - The ".git/objects/" path contains the files that have been hashed.
-#### Relationship between The Three States
+#### The Relationship between the Three Sections
 - **When a new change is made.**
-  - Working Directory !== Staging Area
+  - (Working Directory !== Staging Area) && (Working Directory !== HEAD)
   - Staging Area === HEAD (at .git Repository)
 - **When a new change is staged.**
   - Working Directory === Staging Area
@@ -148,7 +144,7 @@
   <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/Version%20Control%20System/refImg/git-remote-flow.png" alt="Git Remote Flow" width="80%" />
 </p>
 
-### Git Configurations
+## Git Configurations
 - **`git config --list`**
   - Check all configurations for Git.
 - **`git config --global core.editor "code --wait"`**
@@ -159,7 +155,8 @@
 - **`git config --global alias.<Abbrv> <Command Name>`**
   - Change the specific command name to the designated abbreviation.
   - Ex: `git config --global alias.st status`
-### Frequently Used Git Commands
+
+## Frequently Used Git Commands
 - **`code .`**
   - Opens the current directory in my designated text editor.
 - **`git init`**
@@ -633,6 +630,7 @@
 
 ## Reference
 [File system - Wikipedia](https://en.wikipedia.org/wiki/File_system)  
+[Distributed version control - Wikipedia](https://en.wikipedia.org/wiki/Distributed_version_control)  
 [Git - Book](https://git-scm.com/book/en/v2)  
 [Git - Reference](https://git-scm.com/docs)  
 [깃, 깃허브 제대로 배우기 - YouTube](https://www.youtube.com/watch?v=Z9dvM7qgN9s&ab_channel=%EB%93%9C%EB%A6%BC%EC%BD%94%EB%94%A9by%EC%97%98%EB%A6%AC)  
