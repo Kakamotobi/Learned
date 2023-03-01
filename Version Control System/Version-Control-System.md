@@ -1,6 +1,7 @@
 # Version Control System
 
 ## Table of Contents
+- [File System](#file-system)
 - [What is a Version Control System (VCS)?](#what-is-a-version-control-system-vcs)
   - [What is a Distributed Version Control System (DVCS)?](#what-is-a-distributed-version-control-system-dvcs)
 - [What is GitHub?](#what-is-github)
@@ -44,6 +45,14 @@
   - [Fork & Clone Workflow](#fork--clone-workflow)
 - [Reference](#reference)
 
+## File System
+> In computing, a **file system** or **filesystem** (often abbreviated to **fs**) is a method and data structure that the operating system uses to control how data is stored and retrieved. | Wikipedia
+
+- A filesystem is needed to avoid storing everything as one large body of data, which means we cannot _determine where one data piece of data starts and stops_.
+- Through the file system, every data is separated and given a name, which makes it possible to identify that data/file.
+- File Systems are used in HDs, SSDs, etc.
+- RAM uses a temporary file system (since it is volatile memory).
+
 ## What is a Version Control System (VCS)?
 > Version control is a system that records changes to a file or set of files over time so that you can recall specific versions later.
 ### What is a Distributed Version Control System (DVCS)?
@@ -71,12 +80,14 @@
     - Now, push your branch to GitHub.
 
 ## What is Git?
-- Git is a distributed version control system.
+- **Git is a distributed version control system.**
+  - Git takes a snapshot of the whole directory rather than only the changes.
+    - For every commit, Git takes a snapshot of what all the files look like at that moment and stores a reference to that snapshot.
+    - If files have not changed, Git doesn’t store the file again. It stores just a link to the previous identical file that it has already stored.
+  - Data is treated like a series/stream of snapshots of a miniature filesystem.
+- **Git stores each file and directory based on the hash of its contents.**
+  - Git is able to quickly determine if any changes have been made by comparing the hash value (not the entire file).
 - Git helps determine *what* change has been made, *who* made that change, and *why*.
-- Data is treated like a series of snapshots of a miniature filesystem.
-  - *Stream of snapshots.*
-- For every commit, Git takes a snapshot of what all the files look like at that moment and stores a reference to that snapshot.  
-- If files have not changed, Git doesn’t store the file again. It stores just a link to the previous identical file that it has already stored.
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/Version%20Control%20System/refImg/git-check-ins-overtime.png" alt="Git Checkins Over Time" width="80%" />
@@ -94,14 +105,14 @@
 2) You selectively stage just those changes you want to be part of your next commit, which adds only those changes to the staging area.
 
 3) You do a commit, which takes the files as they are in the staging area and stores that snapshot permanently to your Git directory.
-#### The Three States
+### The Three States
 - The three main states that our files can reside in.
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/Version%20Control%20System/refImg/three-main-states.png" alt="Three Main States" width="80%" />
 </p>
 
-##### 1) Working Directory
+#### 1) Working Directory
 > The working tree is a single checkout of one version of the project. These files are pulled out of the compressed database in the Git directory and placed on disk for you to use or modify.
 - Use **`git add <file(s)>`** to move file(s) to the Staging Area.
 - **Untracked**
@@ -111,16 +122,27 @@
     - Unchanged from the previous version.
   - **Modified**
     - Only files that have changes made to them are moved to the Staging Area.
-##### 2) Staging Area
+#### 2) Staging Area
 > The staging area is a file, generally contained in your Git directory, that stores information about what will go into your next commit.
 - Files that are ready to be saved in the version history.
 - Use **`git commit -m "message"`** to save the file(s) to the .git Directory.
-##### 3) .git Directory (Repository)
+#### 3) .git Directory (Repository)
 > The Git directory is where Git stores the metadata and object database for your project. This is the most important part of Git, and it is what is copied when you clone a repository from another computer.
 - **The directory/respository that contains the version history.**
-- Use **`git checkout <filename>`** to return to any previous version.
-- Use **`git push origin <branch>`** to push to GitHub.
-- The `.git/objects/` path contains the files that have been hashed.
+- _This is the "local" directory._
+  - The files and folder on your computer is not the local directory.
+  - The contents of your current HEAD branch is what you see on your finder window.
+    - i.e. switching branches will show different files/folders, which is possible through this ".git" directory.
+- The ".git/objects/" path contains the files that have been hashed.
+#### Relationship between The Three States
+- **When a new change is made.**
+  - Working Directory !== Staging Area
+  - Staging Area === HEAD (at .git Repository)
+- **When a new change is staged.**
+  - Working Directory === Staging Area
+  - (HEAD !== Working Directory) && (HEAD !== Staging Area)
+- **When a new commit is made.**
+  - Working Directory === Staging Area === HEAD
 #### Git and Remote Flow
 <p align="center">
   <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/Version%20Control%20System/refImg/git-remote-flow.png" alt="Git Remote Flow" width="80%" />
@@ -254,13 +276,26 @@
   - i.e. any content can inserted into a git respository. This content will be hashed as a unique key that can be used later to retrieve the content.
 - `git hash-object <filename>`
   - Creates a unique object ID with the filename as the "key", and the actual file as the value.
+- A **commit object** contains:
+  - a commit message.
+  - the author.
+  - the parent commit.
+  - the tree (containing its ancestors).
+    - `blob` types that represent files.
+
+<p align="center">
+  <img src="https://git-scm.com/book/en/v2/images/data-model-1.png" alt="Git tree and blob example" width="60%" />
+</p>
 
 ## Git Branches
 > A branch represents an independent line of development. Branches serve as an abstraction for the edit/stage/commit process. You can think of them as a way to request a brand new working directory, staging area, and project history.
 
 > A pointer to a snapshot of your changes. When you want to add a new feature or fix a bug-no matter how big or how small-you spawn a new branch to encapsulate your changes. This makes it harder for unstable code to getm erged into the main code base, and it gives you the change to clean up your future's history before merging it into the main branch.
 
-- *Leave the main branch to always be in deployable state.*
+- **A branch is a pointer/reference to a specific commit.**
+  - Generating a new branch is simply making a new variable that references the specified commit.
+  - Therefore, there is no store/memory overhead in making branches.
+  - _Switching branches is merely moving HEAD to another pointer, and changes the local to the specified pointer's contents._
 ### Core Concepts
 - **The "HEAD" Branch**
   - The single currently "active" or "checked out" branch.
@@ -295,6 +330,8 @@
   - Ex: `git branch --track feature/login origin/feature/login`
 - **`git checkout --track origin<base-branch>`**
   - If a local branch name to use is not specified, Git automatically uses the name of the remote branch for the local.
+- **`git branch -vv`**
+  - Show all tracking branches (configured for `git pull`).
 #### Pulling and Pushing Branches
 - Synchronizing your local and remote branches.
 - **`git push <remote-name> <branch-name>`**
@@ -336,6 +373,11 @@
 #### Rebasing Branches
 - **`git rebase <branch-name>`**
   - An alternative way to integrate changes (cf. `git merge`) from the specified branch *into* your current local HEAD branch.
+  - A copy of the commit that the HEAD is pointing to is made (to which the HEAD moves to), and `<branch-name>` becomes the base/parent branch
+    - Ex: `git switch feature/navbar`, `git rebase main`.
+    - Make sure to update the `<branch-name>` pointer as well.
+      - Ex: `git switch main`, `git rebase feature/navbar`
+  - The commit that `<branch-name>` was pointing to still exists after rebasing.
   - There is no separate merge commit that will be created. So, development history appears to have happened in a straight line.
   - Ex: `git rebase master` on the 'feature' branch.
   - Example
@@ -358,6 +400,8 @@
   - Ex: `git log origin/main..main`
   - `git log --follow <file>`
     - Check the commits of this file.
+  - `git log --graph`
+    - Shows a graphic overview of the git tree.
 
 ## Git Remote
 - A **remote** is a duplicate instance of the repository that lives on a remote server.
@@ -588,6 +632,7 @@
 10) Make more commits, and push to forked repository (origin remote), and repeat the PR process (starting from step 4).
 
 ## Reference
+[File system - Wikipedia](https://en.wikipedia.org/wiki/File_system)  
 [Git - Book](https://git-scm.com/book/en/v2)  
 [Git - Reference](https://git-scm.com/docs)  
 [깃, 깃허브 제대로 배우기 - YouTube](https://www.youtube.com/watch?v=Z9dvM7qgN9s&ab_channel=%EB%93%9C%EB%A6%BC%EC%BD%94%EB%94%A9by%EC%97%98%EB%A6%AC)  
