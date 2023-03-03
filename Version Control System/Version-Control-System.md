@@ -10,19 +10,28 @@
   - [The Three States of a File](#the-three-states-of-a-file)
   - [The Three Main Sections of a Git Repository](#the-three-main-sections-of-a-git-repository)
     - [The Relationship between the Three Sections](#the-relationship-between-the-three-sections)
-- [Git Configurations](#git-configurations)
-- [Frequently Used Git Commands](#frequently-used-git-commands)
 - [Git Objects](#git-objects)
+- [Git Configurations](#git-configurations)
+- [Git Stash](#git-stash)
+- [Undoing Changes/Commits and Time Travelling](#undoing-changescommits-and-time-travelling)
+  - [Moving Back and Forth in Time (Detached Head)](#moving-back-and-forth-in-time-detached-head)
+  - [Discard Current Changes / Unmodify Files](#discard-current-changes--unmodify-files)
+  - [Undoing Commits](#undoing-commits)
+    - [Applying Undone Commits on Local to Remote](#applying-undone-commits-on-local-to-remote)
 - [Git Branches](#git-branches)
-  - [Creating a New Branch](#creating-a-new-branch)
-  - [Switching Branches](#switching-branches)
-  - [Renaming Branches](#renaming-branches)
-  - [Tracking Branches](#tracking-branches)
-  - [Pulling and Pushing Branches](#pulling-and-pushing-branches)
-  - [Deleting Branches](#deleting-branches)
-  - [Merging Branches](#merging-branches)
-  - [Rebasing Branches](#rebasing-branches)
-  - [Comparing Branches](#comparing-branches)
+  - [Core Concepts](#core-concepts)
+  - [Branch Commands](#branch-commands)
+    - [Creating a New Branch](#creating-a-new-branch)
+    - [Switching Branches](#switching-branches)
+    - [Renaming Branches](#renaming-branches)
+    - [Tracking Branches](#tracking-branches)
+    - [Pushing and Pulling Branches](#pushing-and-pulling-branches)
+    - [Deleting Branches](#deleting-branches)
+    - [Combining Branches](#combining-branches)
+      - [Merging Branches](#merging-branches)
+      - [Rebasing Branches](#rebasing-branches)
+        - [When Not to Rebase](#when-not-to-rebase)
+    - [Comparing Branches](#comparing-branches)
 - [Git Remote](#git-remote)
   - [Remote Tracking Branch](#remote-tracking-branch)
   - [Upstream](#upstream)
@@ -34,16 +43,11 @@
   - [Workflow - only local and origin](#workflow---only-local-and-origin)
   - [Important Notes](#important-notes)
 - [Merge Conflicts](#merge-conflicts)
-- [Git Stash](#git-stash)
-- [Undoing Changes and Time Travelling](#undoing-changes-and-time-travelling)
-  - [Moving Back and Forth in Time](#moving-back-and-forth-in-time)
-  - [Discard Current Changes / Unmodify Files](#discard-current-changes--unmodify-files)
-  - [Undoing Commits](#undoing-commits)
-    - [Applying Undone Commits on Local to Remote](#applying-undone-commits-on-local-to-remote)
 - [Git Collaboration Workflows](#git-collaboration-workflows)
   - [Centralized Workflow](#centralized-workflow)
   - [Feature Branch Workflow](#feature-branch-workflow)
   - [Fork & Clone Workflow](#fork--clone-workflow)
+- [Frequently Used Git Commands](#frequently-used-git-commands)
 - [Reference](#reference)
 
 ## File System
@@ -136,7 +140,7 @@
   - Staging Area === HEAD (at .git Repository)
 - **When a new change is staged.**
   - Working Directory === Staging Area
-  - (HEAD !== Working Directory) && (HEAD !== Staging Area)
+  - (Working Directory !== HEAD) && (Staging Area !== HEAD)
 - **When a new commit is made.**
   - Working Directory === Staging Area === HEAD
 #### Git and Remote Flow
@@ -144,133 +148,9 @@
   <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/Version%20Control%20System/refImg/git-remote-flow.png" alt="Git Remote Flow" width="80%" />
 </p>
 
-## Git Configurations
-- **`git config --list`**
-  - Check all configurations for Git.
-- **`git config --global core.editor "code --wait"`**
-- **`git config --global user.name "<Your Name>"`**
-- **`git config --global user.email "<Your Email>"`**
-- **`git config --global core.autocrlf input`**
-  - For mac.
-- **`git config --global alias.<Abbrv> <Command Name>`**
-  - Change the specific command name to the designated abbreviation.
-  - Ex: `git config --global alias.st status`
-
-## Frequently Used Git Commands
-- **`code .`**
-  - Opens the current directory in my designated text editor.
-- **`git init`**
-  - Initialize Git, effectively creating a hidden .git folder (this is where all of Git's internal tracking data is stored in) inside your repository.
-  - `ls -al` and `open .git` to see information on the Git.
-  - `rm -rf` will remove Git from your project.
-- **`git clone <url>`**
-  - Clone an existing Git repository.
-  - Downloads a Git repository from the Internet with the latest snapshot of the repository to your working directory on your computer.
-  - By default, the contents will be stored in a folder with the same name as the repository from the URL.
-    - *The URL is called the **remote origin**.*
-- **`git rm <filename>`**
-  - Remove a file(s) from the working tree and from the index.
-  - `git rm --cached <filename>`
-    - Unstage and remove paths only from the index, and leave the working tree files untouched.
-- **`git mv <source> <destination>`**
-  - Rename or move a file, symlink or directory.
-- **`git status`**
-  - Check the Git status of files.
-    - Ex: what files have been modified.
-- **`git diff`**
-  - Prints a list of the changes in the working directory that are ***not staged*** for the next commit.
-  - It is a good way to double-check before committing.
-  - `git diff HEAD`
-    - List all changes in the working directory since the last commit.
-  - `git diff --staged` or `git diff --cached`
-    - List all the changes that will be included in the commit if you run `git commit` right now.
-  - `git diff HEAD <filename>`, `git diff --staged <filename>`
-    - List all changes in the specific file.
-  - `git diff <branch-name> <other-branch-name>`
-    - Prints the differences between two branches.
-  - Output Example
-    ```zsh
-    diff --git a/main.txt b/main.txt # Compared files (a being the file before changes, b being the file after changes)
-    index 72d1d6a..f2c8117 100644 # File meta data
-    --- a/main.txt # Indicate changes
-    +++ b/main.txt # Indicate changes
-    @@ -3,4 +3, 5 @@ orange # Chunks that were modified (incl. some unchanged lines before and after)
-    yellow
-    green
-    blue
-    -purple # From file a
-    +indigo # From file b
-    +violet # From file b
-    ```
-- **`git add <file(s)>`**
-  - Move file(s) to the Staging Area from the Working Directory (after modification).
-  - `git add --all` moves all files including untracked ones.
-- **`git commit`**
-  - Record changes to the repository.
-  - A commit is a type of checkpoint called a "revision", and is a hash of numbers and letters.
-  - Ex: `git commit -m "Fix bug."`
-- **`git push <remote-name> <branch-name>`**
-  - Updates remote refs using local refs, while sending objects necessary to complete the given refs.
-  - i.e., update remote repo with changes made in local repo.
-  - Ex: `git push origin main` pushes changes to the main branch on the remote origin.
-  - Alternatively, **`git push <remote-name> HEAD`** can be used.
-    - `HEAD` refers to the latest commit on your current branch.
-- **`git branch`**
-  - Check existing branches and check what branch you're in.
-- **`git branch <new-branch-name>`**
-  - Create a new branch by the name provided.
-- **`git checkout <existing-branch-name>`**
-  - Switch branches or restore working tree files.
-  - `git checkout -b <new-branch-name>`
-    - Creates a new branch and checks it out in one go.
-- **`git checkout <commitId>`**
-  - Overwrites your current working directory with the specified snapshot (commit) of your repo from history and make that your new working-set which you can stage and commit as you wish.
-  - Example
-    ```zsh
-    git log // find the commit id you want.
-    git checkout <commitId> . // the "." refers to the current directory.
-    git commit -m "Restoring old source code" // make a new commit with the restored one.
-    ```
-- **`git show [<commit>]`**
-  - Show object(s) representing commits and meta data.
-  - `git show-ref`
-    - List the references in the local repository.
-- **`git fetch <remote-name> <branch-name>`**
-  - Download all changes from a remote repository. However, those changes will not be automatically integrated into the working directory.
-  - _It is a way of fetching and accessing the latest changes to the repository on your machine BUT without having to actually merge them into our working files._
-  - "Go and get the latest information from GitHub. But don't mess up my working directory."
-  - Ex: `git fetch origin` will fetch all changes (incl. new branches that have been created) from the origin remote repository.
-  - Ex: `git fetch origin master` will fetch all changes from the master branch on the origin remote repository.
-  - Example
-    - You made changes to the master branch on local.
-    - But the remote repository has changed because other people have pushed up changes to the master branch.
-    - `git fetch origin master` will fetch those changes.
-      - ***This updates the `origin/master` remote tracking pointer but your master branch on local is untouched.***
-    - `git checkout origin/master` to see them.
-- **`git merge <source-branch-name>`**
-  - `git merge` updates your current branch with whatever changes are on the specified source branch.
-  - Takes all the commits existing on the `source-branch` branch and integrate them ***into*** your current branch.
-  - Since this uses whatever branch data that is stored locally at the moment, run `git fetch` first to download the latest information before merging.
-  - Ex: if another developer added some commits to the `master` branch of `origin`, checkout the `master` branch in local, download their changes using `git fetch` and effectively update the `master` branch in local. Then, checkout the target branch in local, and `git merge origin/master` to merge the origin/master branch into your current branch.
-    - _`origin/master` refers to the `origin/master` checkpoint in local. This notation is used to differentiate branches of the same name (Ex: `master`) located in different places (Ex: your own branches vs. origin's branches)._
-- **`git pull <remote-name> <branch-name>`**
-  - Download changes from a remote repository. And update your HEAD branch with whatever changes are retrieved from the remote.
-  - "Go and get the latest information from GitHub. And immediately update my local repository with those changes.
-  - `git pull` = `git fetch` + `git merge`.
-  - ***The current HEAD branch is where the changes will be pulled down to.***
-    - Ex: if on the master branch, `git pull origin master` will fetch the latest information from the origin's master branch and merge those changes into the master branch on local.
-  - `git pull` defaults to remote being 'origin' and branch being the tracking connection that is configured for your current branch.
-    - Ex: `git pull` on master branch on local will pull from origin/master.
-    - Ex: `git pull` on 'chickens' branch on local will pull from origin/chickens.
-  - *Make sure to do this (update your repo with the latest version) before pushing to GitHub or creating a new branch to work on.*
-  - Pulls can result in merge conflicts.
-  - `git pull origin master` vs `git pull origin/master`
-    - `git pull origin master` will pull changes from the `master` branch on the `origin` remote and merge that to the local HEAD branch.
-    - `git pull origin/master` will pull changes from the `origin/master` tracking branch on **local** and merge that to the local HEAD branch.
-
 ## Git Objects
 - Git is based on a key-value data store.
-  - i.e. any content can inserted into a git respository. This content will be hashed as a unique key that can be used later to retrieve the content.
+  - i.e. any content can be inserted into a git respository. This content will be hashed as a unique key that can be used later to retrieve the content.
 - `git hash-object <filename>`
   - Creates a unique object ID with the filename as the "key", and the actual file as the value.
 - A **commit object** contains:
@@ -284,12 +164,96 @@
   <img src="https://git-scm.com/book/en/v2/images/data-model-1.png" alt="Git tree and blob example" width="60%" />
 </p>
 
+## Git Configurations
+- **`git config --list`**
+  - Check all configurations for Git.
+- **`git config --global core.editor "code --wait"`**
+  - Set VSCode as default editor.
+- **`git config --global user.name "<Your Name>"`**
+- **`git config --global user.email "<Your Email>"`**
+- **`git config --global core.autocrlf input`**
+  - For mac.
+- **`git config --global alias.<Abbrv> <Command Name>`**
+  - Change the specific command name to the designated abbreviation.
+  - Ex: `git config --global alias.st status`
+
+## Git Stash
+- Stash uncommitted changes so that we can return to them later, without having to make unncesseary commits.
+- Stashes are kept in a stack of stashes.
+- **`git stash`**
+  - Takes all uncommitted changes (staged and unstaged) and stash them, reverting the changes in your working copy.
+  - We don't see the stashed changes but they are still available.
+- **`git stash pop`**
+  - Removes the most recently stashed changes in your stash and reapply them to your working copy.
+- Use Cases
+  - When you do not want to make a commit yet.
+  - When you do not want the changes from another branch to come with you to another branch.
+- Example
+  - Master is unchanged and you created and switched to a new branch.
+  - You made changes to the new branch (no commits yet).
+  - Then you try to switch to the master branch (to check something, need to quickly edit a minor typo, etc.).
+    - If there are no conflicts between the two branches,
+      - The changes that were made in the new branch will come along and show up in the master branch.
+      - If you had committed the changes in the new branch, and then switched back to the master branch, the changes will not come along.
+    - If there are conflicts between the two branches,
+      - You will get an error saying "Your local changes to the following files would be overwritten by checkout".
+      - Therefore, you need to commit your changes or stash them before you switch branches.
+
+## Undoing Changes/Commits and Time Travelling
+### Moving Back and Forth in Time (Detached Head)
+- **`git checkout <id-of-previous-commit>`**
+  - HEAD moves to that particular commit (detatched HEAD).
+- **`git checkout HEAD~1`**
+  - HEAD moves back by 1 commit.
+- **`git switch <branch-name>`**
+  - Comes out of detatched HEAD state.
+- **`git switch -`**
+  - HEAD moves to whatever branch it was last.
+### Discard Current Changes / Unmodify Files
+- **`git checkout HEAD <file-name>`** or **`git checkout -- <file-name>`**
+  - Reverts the file back to it's last committed version.
+- **`git restore <file-name>`**
+  - Restore the file to the contents in the HEAD.
+  - _This command is not "undoable". Uncommited changes will be lost._
+  - `git restore --source <source-name> <file-name>`
+    - Restore the file to that particular commit.
+    - The default source is HEAD.
+      - The source can be a commit hash or HEAD~.
+    - Ex: `git restore --source HEAD~1 app.js`.
+  - This does not time travel or detatch the HEAD. You are still on the last commit (tip of the master branch). But the file has been modified.
+    - `git restore <file-name>` to go back to the HEAD (the most recent commit).
+  - `git restore --staged <file-name>`
+    - Unstage files.
+### Undoing Commits
+- **`git reset <commit-hash | file>`**
+  - Reset the repository back to a specific commit, but with the the changes still in the working directory.
+  - All commits that proceed the specific commit are removed.
+    - The branch pointer is moved backwards, eliminating the commits as if they never occured in the first place.
+  - `git reset --hard <commit-hash>`
+    - Resets the repository (HEAD) back to a specific commit and removes the actual changes in the files.
+    - Any changes (in tracked files) that were made after the specific commit is destroyed and removed from the local directory.
+    - Any untracked files are simply deleted.
+  - `git reset --soft <commit-hash>`
+    - Resets the repository (HEAD) back to a specific commit and keeps the changes in the files.
+    - Changes that were made after the specific commit are kept as "changes to be committed".
+  - ***If you want to reverse commits that you have not shared with others, use reset.***
+- **`git revert <commit-hash>`**
+  - Creates a brand new commit which reverses/undos the changes from the specified commit.
+  - The proceeding commits of the specified commit are not removed (keeps them in record) but the changes are gone.
+  - Reverting can cause conflicts.
+  - ***If you want to reverse some commits that other people already have on their machines, use revert.***
+#### Applying Undone Commits on Local to Remote
+- **`git push origin -f`**
+  - Force push the current branch on local to the corresponding branch on origin.
+- **`git push origin +HEAD`**
+  - Force a non-fastword(`+`) push so that the top commit on origin is the parent of the current top commit.
+
 ## Git Branches
-> A branch represents an independent line of development. Branches serve as an abstraction for the edit/stage/commit process. You can think of them as a way to request a brand new working directory, staging area, and project history.
+> A branch represents an independent line of development. Branches serve as an abstraction for the edit/stage/commit process. You can think of them as a way to request a brand new working directory, staging area, and project history. | Atlassian
 
-> A pointer to a snapshot of your changes. When you want to add a new feature or fix a bug-no matter how big or how small-you spawn a new branch to encapsulate your changes. This makes it harder for unstable code to getm erged into the main code base, and it gives you the change to clean up your future's history before merging it into the main branch.
+> A pointer to a snapshot of your changes. When you want to add a new feature or fix a bug-no matter how big or how small-you spawn a new branch to encapsulate your changes. This makes it harder for unstable code to get merged into the main code base, and it gives you the change to clean up your future's history before merging it into the main branch. | Atlassian
 
-- **A branch is a pointer/reference to a specific commit.**
+- **A branch is essentially a pointer/reference to a specific commit.**
   - Generating a new branch is simply making a new variable that references the specified commit.
   - Therefore, there is no store/memory overhead in making branches.
   - _Switching branches is merely moving HEAD to another pointer, and changes the local to the specified pointer's contents._
@@ -297,8 +261,8 @@
 - **The "HEAD" Branch**
   - The single currently "active" or "checked out" branch.
 - **Local vs Remote Branches**
-  - Most of the times we are working with the local branches as we are mostly working on our local machines.
-### Working with Branches
+  - Most of the times we are working with the Local Branches as we are mostly working on our local machines.
+### Branch Commands
 #### Creating a New Branch
 - **`git branch <new-branch-name>`**
   - Git will start the new branch based on the currently checked out revision (the situation that I was to this point).
@@ -329,7 +293,7 @@
   - If a local branch name to use is not specified, Git automatically uses the name of the remote branch for the local.
 - **`git branch -vv`**
   - Show all tracking branches (configured for `git pull`).
-#### Pulling and Pushing Branches
+#### Pushing and Pulling Branches
 - Synchronizing your local and remote branches.
 - **`git push <remote-name> <branch-name>`**
   - Upload local branch to the remote repository.
@@ -352,41 +316,45 @@
 - **`git push <remote-name> --delete <branch-name>`**
   - Delete a branch in the remote repository.
   - _Might also make sense to delete other branches that are tracking that remote branch!_
-#### Merging Branches
+#### Combining Branches
+##### Merging Branches
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/Version%20Control%20System/refImg/git-merge.png" alt="Git Merge" width="60%"/>
+</p>
+
 - Integrating changes (bringing new commits) from another branch *into* your current local HEAD branch.
-- **2 Step Process**
-  - **`git switch <branch-name>`**
-    - Switch to the branch that you want to receive the changes.
-  - **`git merge <source-branch>`**
-    - Adds the `<source-branch>`'s commits into the HEAD branch.
-      - *It does not mean that the branch and the HEAD are now in sync. They are still separate branches.*
 - _Merging creates a merge commit (the "melting point")._
 - Merging branches can often lead to [merge conflicts](https://github.com/Kakamotobi/Learned/main/Version%20Control%20System/Version-Control-System.md#merge-conflicts).
-- *Note*
-  - When using `git merge`, if you merge the master branch into your 'feature' branch in order to keep on track with other changes to the master branch, you will create a merge commit on your 'feature' branch.
-    - If the master branch is very active, your 'feature' branch will have to have lots of merge commits, resulting to a messy branch history.
+- **2 Step Process**
+  - **`git switch <branch-name>`**
+    - Switch to the branch that you want to _receive_ the changes.
+  - **`git merge <source-branch>`**
+    - Add the `<source-branch>`'s commits into the HEAD branch.
+      - _It does not mean that the branch and the HEAD are now in sync. They are still separate branches._
+      - Ex: if `feature/navbar` points to `C5`, and `main` points to `C6`, `git merge feature/navbar` means `main` points to `C7` (the merge commit) and `feature/navbar` remains pointing to `C5`.
+- _Note_
+  - When using `git merge`, if you merge the `main` branch into your `feature` branch in order to keep on track with other changes to the `main` branch, you will create a merge commit on your `feature` branch.
+    - If the `main` branch is very active, your `feature` branch will end up with lots of merge commits, resulting to a messy branch history.
     - That goes the same for your colleagues. Therefore, when everyone merges back to the master branch, the master branch will have a bunch of non-informative merge commits.
     - Therefore, it may be better to use `rebase` instead.
-#### Rebasing Branches
-- **`git rebase <branch-name>`**
-  - An alternative way to integrate changes (cf. `git merge`) from the specified branch *into* your current local HEAD branch.
-  - A copy of the commit that the HEAD is pointing to is made (to which the HEAD moves to), and `<branch-name>` becomes the base/parent branch
-    - Ex: `git switch feature/navbar`, `git rebase main`.
-    - Make sure to update the `<branch-name>` pointer as well.
-      - Ex: `git switch main`, `git rebase feature/navbar`
-  - The commit that `<branch-name>` was pointing to still exists after rebasing.
+##### Rebasing Branches
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/Version%20Control%20System/refImg/git-rebase.png" alt="Git Merge" width="60%"/>
+</p>
+
+- An alternative way to integrate changes (cf. `git merge`) from the specified branch _into_ your HEAD branch.
+- **`git rebase <base-branch-name>`**
+  - The HEAD's current commit (and its history) is copied. These copied commits are added to the `<base-branch-name>` so that the `<base-branch-name>` becomes the base/parent branch. 
+    - _At this point, the HEAD points to the latest copied commit, and the `<base-branch-name>` branch remains pointing to the same commit (behind the HEAD)._
+    - Ex: `git switch feature/navbar`, then `git rebase main`.
+    - Make sure to update the `<base-branch-name>` pointer as well to the latest commit.
+      - Ex: `git switch main`, then `git rebase feature/navbar`.
+  - The commit that HEAD was previously pointing to still exists after rebasing.
   - There is no separate merge commit that will be created. So, development history appears to have happened in a straight line.
-  - Ex: `git rebase master` on the 'feature' branch.
-  - Example
-    - Rebase the 'feature' branch onto the master branch.
-      - This moves the entire 'feature' branch so that it *begins* at the tip of the master branch.
-      - All the work is still there, but the history has been re-written.
-      - Rebasing rewrites history by re-creating commits for each of the original 'feature' branch commits.
-      - Therefore, the 'feature' branch now contains all of the commits from master since it has a new base at the tip of the master branch.
   - Rebasing can lead to [merge conflicts](https://github.com/Kakamotobi/Learned/main/Version%20Control%20System/Version-Control-System.md#merge-conflicts).
     - Resolve the conflict.
     - Then, stage file(s) with `git add` and continue rebasing with `git rebase --continue`.
-##### When Not to Rebase
+###### When Not to Rebase
 - Never rebase commits that have already been shared with others.
   - If your collaborators have the changes you have made on their machine, if you rebase, the same changes will have different commits. This makes it difficult to reconcile the alternate histories.
     - i.e. since you rebased, they will have commits that do not exist in yours, and vice versa.
@@ -514,77 +482,6 @@
       console.log("Hello, world!");
       ```
 
-## Git Stash
-- Stash uncommitted changes so that we can return to them later, without having to make unncesseary commits.
-- Stashes are kept in a stack of stashes.
-- **`git stash`**
-  - Takes all uncommitted changes (staged and unstaged) and stash them, reverting the changes in your working copy.
-  - We don't see the stashed changes but they are still available.
-- **`git stash pop`**
-  - Removes the most recently stashed changes in your stash and reapply them to your working copy.
-- Use Cases
-  - When you do not want to make a commit yet.
-  - When you do not want the changes from another branch to come with you to another branch.
-- Example
-  - Master is unchanged and you created and switched to a new branch.
-  - You made changes to the new branch (no commits yet).
-  - Then you try to switch to the master branch (to check something, need to quickly edit a minor typo, etc.).
-    - If there are no conflicts between the two branches,
-      - The changes that were made in the new branch will come along and show up in the master branch.
-      - If you had committed the changes in the new branch, and then switched back to the master branch, the changes will not come along.
-    - If there are conflicts between the two branches,
-      - You will get an error saying "Your local changes to the following files would be overwritten by checkout".
-      - Therefore, you need to commit your changes or stash them before you switch branches.
-
-## Undoing Changes and Time Travelling
-### Moving Back and Forth in Time
-- **`git checkout <id-of-previous-commit>`**
-  - HEAD moves to that particular commit (detatched HEAD).
-- **`git checkout HEAD~1`**
-  - HEAD moves back by 1 commit.
-- **`git switch <branch-name>`**
-  - Comes out of detatched HEAD state.
-- **`git switch -`**
-  - HEAD moves to whatever branch it was last.
-### Discard Current Changes / Unmodify Files
-- **`git checkout HEAD <file-name>`** or **`git checkout -- <file-name>`**
-  - Reverts the file back to it's last committed version.
-- **`git restore <file-name>`**
-  - Restore the file to the contents in the HEAD.
-  - This command is not "undoable". Uncommited changes will be lost.
-  - `git restore --source <source-name> <file-name>`
-    - Restore the file to that particular commit.
-    - The default source is HEAD.
-      - The source can be a commit hash or HEAD~.
-    - Ex: `git restore --source HEAD~1 app.js`.
-  - This does not time travel or detatch the HEAD. You are still on the last commit (tip of the master branch). But the file has been modified.
-    - `git restore <file-name>` to go back to the HEAD (the most recent commit).
-  - `git restore --staged <file-name>`
-    - Unstage files.
-### Undoing Commits
-- **`git reset <commit-hash | file>`**
-  - Reset the repository back to a specific commit, but with the the changes still in the working directory.
-  - All commits that proceed the specific commit are removed.
-    - The branch pointer is moved backwards, eliminating the commits as if they never occured in the first place.
-  - `git reset --hard <commit-hash>`
-    - Resets the repository (HEAD) back to a specific commit and removes the actual changes in the files.
-    - Any changes (in tracked files) that were made after the specific commit is destroyed and removed from the local directory.
-    - Any untracked files are simply deleted.
-  - `git reset --soft <commit-hash>`
-    - Resets the repository (HEAD) back to a specific commit and keeps the changes in the files.
-    - Changes that were made after the specific commit are kept as "changes to be committed".
-  - ***If you want to reverse commits that you have not shared with others, use reset.***
-- **`git revert <commit-hash>`**
-  - Creates a brand new commit which reverses/undos the changes from the specified commit.
-  - The proceeding commits of the specified commit are not removed (keeps them in record) but the changes are gone.
-  - Reverting can cause conflicts.
-  - ***If you want to reverse some commits that other people already have on their machines, use revert.***
-#### Applying Undone Commits on Local to Remote
-- **`git push origin -f`**
-  - Force push the current branch on local to the corresponding branch on origin.
-- **`git push origin +HEAD`**
-  - Force a non-fastword(`+`) push so that the top commit on origin is the parent of the current top commit.
-
 ## Git Collaboration Workflows
 ### Centralized Workflow
 - The most basic workflow where everyone works on the master branch.
@@ -628,11 +525,126 @@
     - Ex: `git branch -d feature/navbar`
 10) Make more commits, and push to forked repository (origin remote), and repeat the PR process (starting from step 4).
 
+
+## Frequently Used Git Commands
+- **`code .`**
+  - Opens the current directory in my designated text editor.
+- **`git init`**
+  - Initialize Git, effectively creating a hidden .git folder (this is where all of Git's internal tracking data is stored in) inside your repository.
+  - `ls -al` and `open .git` to see information on the Git.
+  - `rm -rf` will remove Git from your project.
+- **`git clone <url>`**
+  - Clone an existing Git repository.
+  - Downloads a Git repository from the Internet with the latest snapshot of the repository to your working directory on your computer.
+  - By default, the contents will be stored in a folder with the same name as the repository from the URL.
+    - *The URL is called the **remote origin**.*
+- **`git rm <filename>`**
+  - Remove a file(s) from the working tree and from the index.
+  - `git rm --cached <filename>`
+    - Unstage and remove paths only from the index, and leave the working tree files untouched.
+- **`git mv <source> <destination>`**
+  - Rename or move a file, symlink or directory.
+- **`git status`**
+  - Check the Git status of files.
+    - Ex: what files have been modified.
+- **`git diff`**
+  - Prints a list of the changes in the working directory that are ***not staged*** for the next commit.
+  - It is a good way to double-check before committing.
+  - `git diff HEAD`
+    - List all changes in the working directory since the last commit.
+  - `git diff --staged` or `git diff --cached`
+    - List all the changes that will be included in the commit if you run `git commit` right now.
+  - `git diff HEAD <filename>`, `git diff --staged <filename>`
+    - List all changes in the specific file.
+  - `git diff <branch-name> <other-branch-name>`
+    - Prints the differences between two branches.
+  - Output Example
+    ```zsh
+    diff --git a/main.txt b/main.txt # Compared files (a being the file before changes, b being the file after changes)
+    index 72d1d6a..f2c8117 100644 # File meta data
+    --- a/main.txt # Indicate changes
+    +++ b/main.txt # Indicate changes
+    @@ -3,4 +3, 5 @@ orange # Chunks that were modified (incl. some unchanged lines before and after)
+    yellow
+    green
+    blue
+    -purple # From file a
+    +indigo # From file b
+    +violet # From file b
+    ```
+- **`git add <file(s)>`**
+  - Move file(s) to the Staging Area from the Working Directory (after modification).
+  - `git add --all` moves all files including untracked ones.
+- **`git commit`**
+  - Record changes to the repository.
+  - A commit is a type of checkpoint called a "revision", and is a hash of numbers and letters.
+  - Ex: `git commit -m "Fix bug."`
+- **`git push <remote-name> <branch-name>`**
+  - Updates remote refs using local refs, while sending objects necessary to complete the given refs.
+  - i.e., update remote repo with changes made in local repo.
+  - Ex: `git push origin main` pushes changes to the main branch on the remote origin.
+  - Alternatively, **`git push <remote-name> HEAD`** can be used.
+    - `HEAD` refers to the latest commit on your current branch.
+- **`git branch`**
+  - Check existing branches and check what branch you're in.
+- **`git branch <new-branch-name>`**
+  - Create a new branch by the name provided.
+- **`git checkout <existing-branch-name>`**
+  - Switch branches or restore working tree files.
+  - `git checkout -b <new-branch-name>`
+    - Creates a new branch and checks it out in one go.
+- **`git checkout <commitId>`**
+  - Overwrites your current working directory with the specified snapshot (commit) of your repo from history and make that your new working-set which you can stage and commit as you wish.
+  - Example
+    ```zsh
+    git log // find the commit id you want.
+    git checkout <commitId> . // the "." refers to the current directory.
+    git commit -m "Restoring old source code" // make a new commit with the restored one.
+    ```
+- **`git show [<commit>]`**
+  - Show object(s) representing commits and meta data.
+  - `git show-ref`
+    - List the references in the local repository.
+- **`git fetch <remote-name> <branch-name>`**
+  - Download all changes from a remote repository. However, those changes will not be automatically integrated into the working directory.
+  - _It is a way of fetching and accessing the latest changes to the repository on your machine BUT without having to actually merge them into our working files._
+  - "Go and get the latest information from GitHub. But don't mess up my working directory."
+  - Ex: `git fetch origin` will fetch all changes (incl. new branches that have been created) from the origin remote repository.
+  - Ex: `git fetch origin master` will fetch all changes from the master branch on the origin remote repository.
+  - Example
+    - You made changes to the master branch on local.
+    - But the remote repository has changed because other people have pushed up changes to the master branch.
+    - `git fetch origin master` will fetch those changes.
+      - ***This updates the `origin/master` remote tracking pointer but your master branch on local is untouched.***
+    - `git checkout origin/master` to see them.
+- **`git merge <source-branch-name>`**
+  - `git merge` updates your current branch with whatever changes are on the specified source branch.
+  - Takes all the commits existing on the `source-branch` branch and integrate them ***into*** your current branch.
+  - Since this uses whatever branch data that is stored locally at the moment, run `git fetch` first to download the latest information before merging.
+  - Ex: if another developer added some commits to the `master` branch of `origin`, checkout the `master` branch in local, download their changes using `git fetch` and effectively update the `master` branch in local. Then, checkout the target branch in local, and `git merge origin/master` to merge the origin/master branch into your current branch.
+    - _`origin/master` refers to the `origin/master` checkpoint in local. This notation is used to differentiate branches of the same name (Ex: `master`) located in different places (Ex: your own branches vs. origin's branches)._
+- **`git pull <remote-name> <branch-name>`**
+  - Download changes from a remote repository. And update your HEAD branch with whatever changes are retrieved from the remote.
+  - "Go and get the latest information from GitHub. And immediately update my local repository with those changes.
+  - `git pull` = `git fetch` + `git merge`.
+  - ***The current HEAD branch is where the changes will be pulled down to.***
+    - Ex: if on the master branch, `git pull origin master` will fetch the latest information from the origin's master branch and merge those changes into the master branch on local.
+  - `git pull` defaults to remote being 'origin' and branch being the tracking connection that is configured for your current branch.
+    - Ex: `git pull` on master branch on local will pull from origin/master.
+    - Ex: `git pull` on 'chickens' branch on local will pull from origin/chickens.
+  - *Make sure to do this (update your repo with the latest version) before pushing to GitHub or creating a new branch to work on.*
+  - Pulls can result in merge conflicts.
+  - `git pull origin master` vs `git pull origin/master`
+    - `git pull origin master` will pull changes from the `master` branch on the `origin` remote and merge that to the local HEAD branch.
+    - `git pull origin/master` will pull changes from the `origin/master` tracking branch on **local** and merge that to the local HEAD branch.
+
+
 ## Reference
 [File system - Wikipedia](https://en.wikipedia.org/wiki/File_system)  
 [Distributed version control - Wikipedia](https://en.wikipedia.org/wiki/Distributed_version_control)  
 [Git - Book](https://git-scm.com/book/en/v2)  
 [Git - Reference](https://git-scm.com/docs)  
+[Git Branch | Atlassian Git Tutorial](https://www.atlassian.com/git/tutorials/using-branches)  
 [깃, 깃허브 제대로 배우기 - YouTube](https://www.youtube.com/watch?v=Z9dvM7qgN9s&ab_channel=%EB%93%9C%EB%A6%BC%EC%BD%94%EB%94%A9by%EC%97%98%EB%A6%AC)  
 [Git Branches Tutorial](https://www.youtube.com/watch?v=e2IbNHi4uCI&ab_channel=freeCodeCamp.org)  
 [The Ultimate GitHub Collaboration Guide | by Jonathan Mines](https://medium.com/@jonathanmines/the-ultimate-github-collaboration-guide-df816e98fb67)  
