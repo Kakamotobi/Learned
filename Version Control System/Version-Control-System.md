@@ -259,7 +259,21 @@
   - _Switching branches is merely moving HEAD to another pointer, and changes the local to the specified pointer's contents._
 ### Core Concepts
 - **The "HEAD" Branch**
-  - The single currently "active" or "checked out" branch.
+  - The single currently "active" or "checked out" commit.
+    - i.e. the commit that you are working on.
+  - **Detached HEAD**
+    - Detached HEAD refers to the HEAD pointing to a specific commit rather than a branch.
+    - Example
+      - `HEAD` &rarr; `main` &rarr; `commit-hash`
+      - `git checkout commit-hash`
+      - `HEAD` &rarr; `commit-hash` (Detached HEAD)
+- **Relative Refs**
+  - `^` - move one commit upwards at a time.
+    - i.e. parent commit of specified commit.
+    - Ex: `main^`, `main^^`
+  - `~<num>` - move `nums` number of commits upwards.
+    - Convenient to reassign a branch to a commit.
+      - Ex: `git branch -f main HEAD~3` moves the main branch three commits behind HEAD.
 - **Local vs Remote Branches**
   - Most of the times we are working with the Local Branches as we are mostly working on our local machines.
 ### Branch Commands
@@ -652,3 +666,4 @@
 [Understanding Git (part 2) - Contributing to a Team | HackerNoon](https://hackernoon.com/understanding-git-2-81feb12b8b26)  
 [Git Fork vs. Git Clone: What's the Difference? - YouTube](https://www.youtube.com/watch?v=6YQxkxw8nhE&ab_channel=EyeonTech)  
 [Git Detached Head: What Is It & How to Recover](https://www.cloudbees.com/blog/git-detached-head)  
+[Learn Git Branching](https://learngitbranching.js.org/)  
