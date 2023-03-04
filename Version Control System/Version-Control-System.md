@@ -120,20 +120,32 @@
 - It contains the files that you are currently working on, including any changes that have been made to them.
   - i.e. the files and folders that you can see on your computer.
 - Use **`git add <file(s)>`** to move the modified file(s) to the Staging Area.
+  - cf `git update-index --add <file(s)>` is a lower-level command that adds files to the index (staging area) even if they don't exist in the working directory.
 #### 2) Staging Area
 > The staging area is a file, generally contained in your Git directory, that stores information about what will go into your next commit. | Git
 
+- **a.k.a. the index.**
 - (Staged) Files that are ready to be snapshot.
 - Use **`git commit`** to save the file(s) to the .git Directory.
+  - Making a commit has two phases.
+    - `git write-tree`
+      - Take the current index state and create an object describing that entire index.
+      - i.e. all files and their contents are tied together and hashed to create a git directory object (essentially, the snapshot).
+    - `git commit-tree`
+      - Commit a tree into a commit object.
 #### 3) .git Directory (Repository)
 > The Git directory is where Git stores the metadata and object database for your project. This is the most important part of Git, and it is what is copied when you clone a repository from another computer. | Git
 
 - **The directory/respository that contains the version history.**
+- _The .git Directory contains all necessary things for a git repository including the HEAD, the index file, objects, refs, config, etc._
+  - The **HEAD file** that contains a specific reference (Ex: `refs/head/main`).
+  - The **index file** describes the current working tree.
+  - The **".git/objects/"** path contains the files that have been hashed.
+  - The **".git/refs/"** path contains references to objects.
 - _This is the "local" repository that contains all the snapshots._
   - The files and folders on your computer do not represent the local repository.
   - The HEAD branch refers to the currently checked out branch (in the .git directory).
     - i.e. switching branches shows different files/folders, which is possible through this ".git" directory.
-- The ".git/objects/" path contains the files that have been hashed.
 #### The Relationship between the Three Sections
 - **When a new change is made.**
   - (Working Directory !== Staging Area) && (Working Directory !== HEAD)
@@ -151,13 +163,22 @@
 ## Git Objects
 - Git is based on a key-value data store.
   - i.e. any content can be inserted into a git respository. This content will be hashed as a unique key that can be used later to retrieve the content.
+- Note
+  - An object is not the file itself. It is merely the contents of the file.
+  - Even if the file is changed later, that object remains the same, as objects are _immutable_.
 - `git hash-object <filename>`
   - Creates a unique object ID with the filename as the "key", and the actual file as the value.
+- `ls .git/objects/??/*`
+  - Check objects in the object database.
+- `git cat-file -t <object name(hash)>`
+  - Get the type of the specified object.
+- `git cat-file blob <object name(hash)>`
+  - See the contents of the specified object.
 - A **commit object** contains:
   - a commit message.
   - the author.
   - the parent commit.
-  - the tree (containing its ancestors).
+  - a tree object (containing its ancestors).
     - `blob` types that represent files.
 
 <p align="center">
@@ -562,7 +583,8 @@
   - Check the Git status of files.
     - Ex: what files have been modified.
 - **`git diff`**
-  - Prints a list of the changes in the working directory that are ***not staged*** for the next commit.
+  - Prints the difference between the current working tree and the record in the index.
+    - i.e. prints a list of the changes in the working directory that are ***not staged*** for the next commit.
   - It is a good way to double-check before committing.
   - `git diff HEAD`
     - List all changes in the working directory since the last commit.
@@ -652,12 +674,13 @@
     - `git pull origin master` will pull changes from the `master` branch on the `origin` remote and merge that to the local HEAD branch.
     - `git pull origin/master` will pull changes from the `origin/master` tracking branch on **local** and merge that to the local HEAD branch.
 
-
 ## Reference
 [File system - Wikipedia](https://en.wikipedia.org/wiki/File_system)  
 [Distributed version control - Wikipedia](https://en.wikipedia.org/wiki/Distributed_version_control)  
 [Git - Book](https://git-scm.com/book/en/v2)  
 [Git - Reference](https://git-scm.com/docs)  
+[gitcore-tutorial(7)](https://git.github.io/htmldocs/gitcore-tutorial.html)  
+[giteveryday(7)](https://git.github.io/htmldocs/giteveryday.html)  
 [Git Branch | Atlassian Git Tutorial](https://www.atlassian.com/git/tutorials/using-branches)  
 [깃, 깃허브 제대로 배우기 - YouTube](https://www.youtube.com/watch?v=Z9dvM7qgN9s&ab_channel=%EB%93%9C%EB%A6%BC%EC%BD%94%EB%94%A9by%EC%97%98%EB%A6%AC)  
 [Git Branches Tutorial](https://www.youtube.com/watch?v=e2IbNHi4uCI&ab_channel=freeCodeCamp.org)  
@@ -666,4 +689,5 @@
 [Understanding Git (part 2) - Contributing to a Team | HackerNoon](https://hackernoon.com/understanding-git-2-81feb12b8b26)  
 [Git Fork vs. Git Clone: What's the Difference? - YouTube](https://www.youtube.com/watch?v=6YQxkxw8nhE&ab_channel=EyeonTech)  
 [Git Detached Head: What Is It & How to Recover](https://www.cloudbees.com/blog/git-detached-head)  
+[git-cheat-sheet-education](https://education.github.com/git-cheat-sheet-education.pdf)  
 [Learn Git Branching](https://learngitbranching.js.org/)  
