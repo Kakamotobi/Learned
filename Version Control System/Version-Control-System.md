@@ -20,6 +20,9 @@
     - [Applying Undone Commits on Local to Remote](#applying-undone-commits-on-local-to-remote)
 - [Git Branches](#git-branches)
   - [Core Concepts](#core-concepts)
+    - [The "HEAD" Branch](#the-head-branch)
+    - [Relative Refs](#relative-refs)
+    - [Local Branches vs Remote Branches](#local-branches-vs-remote-branches)
   - [Branch Commands](#branch-commands)
     - [Creating a New Branch](#creating-a-new-branch)
     - [Switching Branches](#switching-branches)
@@ -279,24 +282,33 @@
   - Therefore, there is no store/memory overhead in making branches.
   - _Switching branches is merely moving HEAD to another pointer, and changes the local to the specified pointer's contents._
 ### Core Concepts
-- **The "HEAD" Branch**
-  - The single currently "active" or "checked out" commit.
-    - i.e. the commit that you are working on.
-  - **Detached HEAD**
-    - Detached HEAD refers to the HEAD pointing to a specific commit rather than a branch.
-    - Example
-      - `HEAD` &rarr; `main` &rarr; `commit-hash`
-      - `git checkout commit-hash`
-      - `HEAD` &rarr; `commit-hash` (Detached HEAD)
-- **Relative Refs**
-  - `^` - move one commit upwards at a time.
-    - i.e. parent commit of specified commit.
-    - Ex: `main^`, `main^^`
-  - `~<num>` - move `nums` number of commits upwards.
-    - Convenient to reassign a branch to a commit.
-      - Ex: `git branch -f main HEAD~3` moves the main branch three commits behind HEAD.
-- **Local vs Remote Branches**
-  - Most of the times we are working with the Local Branches as we are mostly working on our local machines.
+#### The "HEAD" Branch
+- The single currently "active" or "checked out" commit.
+  - i.e. the commit that you are working on.
+- **Detached HEAD**
+  - Detached HEAD refers to the HEAD pointing to a specific commit rather than a branch.
+  - Example
+    - `HEAD` &rarr; `main` &rarr; `commit-hash`
+    - `git checkout commit-hash`
+    - `HEAD` &rarr; `commit-hash` (Detached HEAD)
+#### Relative Refs
+- `^` - move one commit upwards at a time.
+  - i.e. parent commit of specified commit.
+  - Ex: `main^`, `main^^`
+- `~<num>` - move `nums` number of commits upwards.
+  - Convenient to reassign a branch to a commit.
+    - Ex: `git branch -f main HEAD~3` moves the main branch three commits behind HEAD.
+#### Local Branches vs Remote Branches
+- Most of the times we are working with the Local Branches as we are mostly working on our local machines.
+- **Remote Branch**
+  - Remote Branches reflect the state of Remote Repositories (at the point of your last "contact" with the remote repository).
+  - `<remote-name>/<branch-name>`
+    - Ex: `origin/main` is a remote branch in the .git directory in local that reflects the main branch of the remote repository called origin.
+  - Checking out a Remote Branch results to detached HEAD since you cannot work on these branches directly.
+    - A Remote Branch can only update when its remote updates.
+    - Ex: `git checkout origin/main`, then `git commit` does not update `origin/main`. Instead, it puts HEAD into detached state.
+  - `git fetch <remote-name> <branch-name>` updates a remote branch to reflect its corresponding branch in remote.
+  - _Note: Remote branches are on local repository, not on the remote repository._
 ### Branch Commands
 #### Creating a New Branch
 - **`git branch <new-branch-name>`**
@@ -318,6 +330,12 @@
   - Rename the HEAD branch.
 - **`git branch -m <old-name> <new-name>`**
   - Renaming a non-HEAD branch.
+#### Moving Branches
+- **`git branch -f <target-branch> <destination-commit>`**
+  - Move `<target-branch>` to `<destination-commit>`.
+- **`git reset <destination-commit>`**
+  - Moves the HEAD branch to `<destination-commit>`.
+  - _Only use this command to undo something._
 #### Tracking Branches
 - Connecting local and remote branches with each other.
   - Ex: you're trying to join in on a remote branch that someone else is working on.
@@ -328,6 +346,9 @@
   - If a local branch name to use is not specified, Git automatically uses the name of the remote branch for the local.
 - **`git branch -vv`**
   - Show all tracking branches (configured for `git pull`).
+- **`git branch -v`**
+  - Shows any discrepancies in commits between local and remote.
+  - Ex: ahead 1, behind 2.
 #### Pushing and Pulling Branches
 - Synchronizing your local and remote branches.
 - **`git push <remote-name> <branch-name>`**
@@ -341,9 +362,6 @@
 - **`git pull`**
   - Download new commits from the remote.
   - Ex: `git pull origin main`
-- **`git branch -v`**
-  - Shows any discrepancies in commits between local and remote.
-  - Ex: ahead 1, behind 2
 #### Deleting Branches
 - **`git branch -d <branch-name>`**
   - Delete a branch in your local repository. 
@@ -378,7 +396,7 @@
 </p>
 
 - An alternative way to integrate changes (cf. `git merge`) from the specified branch _into_ your HEAD branch.
-- **`git rebase <base-branch-name>`**
+- **`git rebase <base-branch-name> [<target-branch-name>]`**
   - The HEAD's current commit (and its history) is copied. These copied commits are added to the `<base-branch-name>` so that the `<base-branch-name>` becomes the base/parent branch. 
     - _At this point, the HEAD points to the latest copied commit, and the `<base-branch-name>` branch remains pointing to the same commit (behind the HEAD)._
     - Ex: `git switch feature/navbar`, then `git rebase main`.
@@ -405,6 +423,7 @@
 
 ## Git Remote
 - A **remote** is a duplicate instance of the repository that lives on a remote server.
+- Git remote is really about transferring data to and from a remote repository.
 - A single repository can have multiple remotes.
   - Ex: GitHub, Heroku, AWS, etc.
 - **`git remote`**
@@ -560,7 +579,6 @@
     - Ex: `git branch -d feature/navbar`
 10) Make more commits, and push to forked repository (origin remote), and repeat the PR process (starting from step 4).
 
-
 ## Frequently Used Git Commands
 - **`code .`**
   - Opens the current directory in my designated text editor.
@@ -642,9 +660,11 @@
   - `git show-ref`
     - List the references in the local repository.
 - **`git fetch <remote-name> <branch-name>`**
-  - Download all changes from a remote repository. However, those changes will not be automatically integrated into the working directory.
+  - Download all changes from a remote repository and update the remote branch (Ex: origin/main) in local.
+    - Those changes are not yet integrated into the working directory.
+    - i.e. synchronize your local representation of the remote repository with the actual remote repository.
   - _It is a way of fetching and accessing the latest changes to the repository on your machine BUT without having to actually merge them into our working files._
-  - "Go and get the latest information from GitHub. But don't mess up my working directory."
+    - "Go and get the latest information from GitHub. But don't modify my working directory."
   - Ex: `git fetch origin` will fetch all changes (incl. new branches that have been created) from the origin remote repository.
   - Ex: `git fetch origin master` will fetch all changes from the master branch on the origin remote repository.
   - Example
@@ -673,6 +693,9 @@
   - `git pull origin master` vs `git pull origin/master`
     - `git pull origin master` will pull changes from the `master` branch on the `origin` remote and merge that to the local HEAD branch.
     - `git pull origin/master` will pull changes from the `origin/master` tracking branch on **local** and merge that to the local HEAD branch.
+  - cf. **`git pull --rebase`**
+    - Fetch updates on the remote repository to the remote branch, and rebase (instead of merge) HEAD to the updated remote branch.
+    - A way to update your work to incorporate updates that have been made in the meantime to the remote repository.
 
 ## Reference
 [File system - Wikipedia](https://en.wikipedia.org/wiki/File_system)  
