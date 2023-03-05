@@ -323,3 +323,4 @@ console.log(deepCopy); // [1,2,3,4,6]
 ### Reference
 [Stream (computing) - Wikipedia](https://en.wikipedia.org/wiki/Stream_(computing))  
 [Using stdout, stdin, and stderr in Node.js - LogRocket Blog](https://blog.logrocket.com/using-stdout-stdin-stderr-node-js/)  
+[Streams API - Web APIs | MDN](https://developer.mozilla.org/en-US/docs/Web/API/Streams_API)  
