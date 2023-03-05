@@ -9,8 +9,9 @@
 - [Transpiler (Source-to-Source Compiler) and Polyfill](#transpiler-source-to-source-compiler-and-polyfill)
 - [Typing](#typing)
 - [ASCII and Unicode](#ascii-and-unicode)
-- [Base64 Encoding/Decoding](#bas64-encodingdecoding)
+- [Base64 Encoding/Decoding](#base64-encodingdecoding)
 - [Shallow vs. Deep Copy](#shallow-vs-deep-copy)
+- [Stream](#stream)
 
 ## Computer Basics
 ### Parts of Computer Hardware
@@ -289,3 +290,36 @@ console.log(deepCopy); // [1,2,3,4,6]
 [Difference between Shallow and Deep copy of a class - GeeksforGeeks](https://www.geeksforgeeks.org/difference-between-shallow-and-deep-copy-of-a-class/)  
 [Understanding Deep and Shallow Copy in Javascript](https://medium.com/@manjuladube/understanding-deep-and-shallow-copy-in-javascript-13438bad941c)  
 
+---
+
+## Stream
+> ...a **stream** is a sequence of data elements made available over time. | Wikipedia
+
+- Items are processed one at a time instead of in batches.
+- A stream may potentially have unlimited data.
+- Standard Input/Output/Error are streams that a program can use to communicate with its environment.
+- Examples
+  ```js
+  import { stdin, stdout } from "node:process";
+  
+  // Readable stream.
+  stdin.on("data", (data) => {
+    // ...
+    // Writable stream.
+    stdout.write(data);
+  });
+  ```
+  ```js
+  import * as readline from "node:readline/promises";
+  import { stdin, stdout } from "node:process";
+  
+  // Interface for connecting `stdin` to `stdout`.
+  const rl = readline.createInterface({ input: stdin, output: stdout });
+  
+  for await (const input of rl) {
+    // ...
+  }
+  ```
+### Reference
+[Stream (computing) - Wikipedia](https://en.wikipedia.org/wiki/Stream_(computing))  
+[Using stdout, stdin, and stderr in Node.js - LogRocket Blog](https://blog.logrocket.com/using-stdout-stdin-stderr-node-js/)  
