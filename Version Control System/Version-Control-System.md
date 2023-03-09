@@ -13,6 +13,7 @@
 - [Git Objects](#git-objects)
 - [Git Configurations](#git-configurations)
 - [Git Stash](#git-stash)
+- [Git Tag](#git-tag)
 - [Undoing Changes/Commits and Time Travelling](#undoing-changescommits-and-time-travelling)
   - [Moving Back and Forth in Time (Detached Head)](#moving-back-and-forth-in-time-detached-head)
   - [Discard Current Changes / Unmodify Files](#discard-current-changes--unmodify-files)
@@ -223,6 +224,16 @@
       - You will get an error saying "Your local changes to the following files would be overwritten by checkout".
       - Therefore, you need to commit your changes or stash them before you switch branches.
 
+## Git Tag
+- Mark certain commits as "milestones" that can be referenced like a branch.
+- _Tags never move despite further commits._
+- Checking out a tag results to detached HEAD since you cannot commit directly on the tag.
+- **`git tag <tag name> [<commit>]`**
+  - By default, tags the HEAD.
+  - `git describe <ref>`
+    - `<ref>` is anything that git can resolve into a commit.
+    - Outputs `<tag>_<num commits>_<hash>`.
+
 ## Undoing Changes/Commits and Time Travelling
 ### Moving Back and Forth in Time (Detached Head)
 - **`git checkout <id-of-previous-commit>`**
@@ -407,6 +418,13 @@
   - Rebasing can lead to [merge conflicts](https://github.com/Kakamotobi/Learned/main/Version%20Control%20System/Version-Control-System.md#merge-conflicts).
     - Resolve the conflict.
     - Then, stage file(s) with `git add` and continue rebasing with `git rebase --continue`.
+  - **`git rebase -i <base-branch-name> [<target-branch-name>]`**
+    - Shows which commits are about to be copied below the rebase target branch.
+    - Useful for when you are unsure which commits you want.
+    - Useful for reordering commits.
+    - cf. **`git cherry-pick <commit(s)>`**
+      - Copy the specified commit(s) and add onto the current HEAD.
+      - Useful for when you know which commits you want.
 ###### When Not to Rebase
 - Never rebase commits that have already been shared with others.
   - If your collaborators have the changes you have made on their machine, if you rebase, the same changes will have different commits. This makes it difficult to reconcile the alternate histories.
