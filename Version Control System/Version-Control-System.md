@@ -410,7 +410,7 @@
 - **`git rebase <base-branch-name> [<target-branch-name>]`**
   - The HEAD's current commit (and its history) is copied. These copied commits are added to the `<base-branch-name>` so that the `<base-branch-name>` becomes the base/parent branch. 
     - _At this point, the HEAD points to the latest copied commit, and the `<base-branch-name>` branch remains pointing to the same commit (behind the HEAD)._
-    - Ex: `git switch feature/navbar`, then `git rebase main`.
+      - Ex: `git switch feature/navbar`, then `git rebase main`.
     - Make sure to update the `<base-branch-name>` pointer as well to the latest commit.
       - Ex: `git switch main`, then `git rebase feature/navbar`.
   - The commit that HEAD was previously pointing to still exists after rebasing.
