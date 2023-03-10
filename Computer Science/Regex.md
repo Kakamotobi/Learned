@@ -5,6 +5,11 @@
 - [Flags](#flags)
 - [Metacharacters](#metacharacters)
 - [Assertions](#assertions)
+  - [Positive Look-Behind](#positive-look-behind)
+  - [Negative Look-Behind](#negative-look-behind)
+  - [Positive Look-Ahead](#positive-look-ahead)
+  - [Negative Look-Ahead](#negative-look-ahead)
+- [Non-Capturing Group (`(?:)`)](#non-capturing-group-)
 - [Regular Expression in JavaScript](#regular-expression-in-javascript)
 - [Examples](#examples)
 - [Reference](#reference)
@@ -64,6 +69,14 @@
 - Syntax: `/(?!)/g`
 - Ex: `/.(?!at)/g` will match any character that is not proceeded by `at`.
 
+## Non-Capturing Group (`(?:)`)
+- When you want to match a particular pattern but only to use it to match something else.
+  - i.e. you don't want that particular pattern to appear in the ultimate list of matches.
+- Ex: `/(?<=\d)(?=(?:\d{3})+$)/g`
+  - The `(?:)` in `(?:\d{3})` means match anything and a group of three digits but don't include the group of three digits.
+- Ex: `([0-9]+)(?:st|nd|rd|th)?`
+  - Match all numbers that are in the form of `1`, `2`, `3`, or `1st`, `2nd`, `3rd` but only ultimately match the numbers (don't include the characters `st`, `nd`, etc).
+
 ## Regular Expression in JavaScript
 ### Two Ways to Construct a RegEx
 #### Regular Expression Literal
@@ -95,4 +108,5 @@ const re = new RegExp("ab+c", "flags");
 ## Reference
 [Regular expressions - JavaScript | MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions)  
 [Learn Regular Expressions in 20 Minutes - YouTube](https://www.youtube.com/watch?v=rhzKDrUiJVk&ab_channel=WebDevSimplified)  
+[regex - What is a non-capturing group in regular expressions? - Stack Overflow](https://stackoverflow.com/questions/3512471/what-is-a-non-capturing-group-in-regular-expressions)  
 [RegExr: Learn, Build, & Test RegEx](https://regexr.com/)  
