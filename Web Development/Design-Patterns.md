@@ -16,6 +16,7 @@
 - [Behavioral Design Patterns](#behavioral-design-patterns)
   - [Iterator](#iterator)
   - [Observer](#observer)
+  - [Pub/Sub](#pubsub)
   - [Mediator](#mediator)
   - [State](#state)
 - [Architectural Design Patterns](#architectural-design-patterns)
@@ -259,7 +260,9 @@ reactive.name; // "Tracking: name" // "bomboclat"
 - All iterators should share the same interface, allowing compatibility with any type of collection or algorithm. If a special approach is needed, simply create a new iterator class instead of changing the collection.
 - Analogy: free roaming, virtual guide app, local tour guide, are all different ways (iterators) to tour an area (collection).
 ### Observer
-- **Define a subscription mechanism where observers are notified and updates in accordance when the object that they are observing changes.**
+- **Define a subscription mechanism where observers are notified (typically by calling a method on each observer) and updates in accordance when the object that they are observing changes.**
+  - _The observable maintains a list of its observers._
+  - _However, observers are not "aware" of the observable._
 - One to many dependency between objects.
   - Observers depend on an object to provide them data.
 - The main object should:
@@ -289,8 +292,24 @@ reactive.name; // "Tracking: name" // "bomboclat"
   magazine.next("Plant-based meat are not really plant-based.");
   magazine.next("The dangers of misinformation");
   ```
+### Pub/Sub
+- **Define a subscription mechanism where subscribers are notified through a topic/channel that the publisher publishes to.**
+  - _i.e. a publisher publishes to the topic/channel, and subscribers subscribe to that topic/channel._
+  - _Publishers and subscribers are unaware of each other._
+- Often used in distributed systems and message-oriented middleware.
+#### Example
+```js
+const subscriber = function(data) {
+    console.log('received event');
+};
+
+PubSub.on("some-event", subscriber); // register the subscriber on the `PubSub` object on the `"some-event"` channel.
+
+PubSub.publish("some-event", "data"); // the publisher publishes `"some-event"` through the `PubSub` object.
+```
 ### Mediator
 - **Define a mediator object that is interposed between objects that depend on each other, effectively organizing chaotic dependency relationships.**
+  - _i.e. a central hub that facilitates communication between different objects._
 - The objects cannot directly communicate with each other and the mediator is the only way for the objects to communicate.
 - Instead of many-to-many, implement full object status.
 - Analogy: traffic light, air traffic control tower.
