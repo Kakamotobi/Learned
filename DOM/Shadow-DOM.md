@@ -5,6 +5,8 @@
   - [Terminologies](#terminologies)
 - [Creating a Shadow DOM](#creating-a-shadow-dom)
 - [Shadow DOM and Web Components](#shadow-dom-and-web-components)
+  - [Example - Shadow DOM](#example---shadow-dom)
+  - [Example - Using `<template>`](#example---using-template)
 - [Styling Elements in the Shadow DOM](#styling-elements-in-the-shadow-dom)
 
 ## What is Shadow DOM?
@@ -56,12 +58,11 @@ document
 ## Shadow DOM and Web Components
 - The Shadow DOM API is included in the Web Components standard.
 - A Shadow DOM is often created for the custom element that you created.
-### Example
+### Example - Shadow DOM
 ```js
 class MyElement extends HTMLElement {
   constructor() {
     super();
-    
     const shadowRoot = this.attachShadow({ mode: "open" });
     shadowRoot.innerHTML = `
       <h1>Shadow DOM</h1>
@@ -92,6 +93,39 @@ document
       style
         color: blue
 ```
+### Example - Using `<template>`
+```js
+const template = document.createElement("template");
+template.innerHTML = `
+  <h1>Shadow DOM</h1>
+  <p>I am in the Shadow DOM</p>
+  <style>p { color: blue; }</style>
+`;
+
+class MyElement extends HTMLElement {
+  constructor() {
+    super();
+    const shadowRoot = this.attachShadow({ mode: "open" });
+    shadowRoot.append(template.content.cloneNode(true));
+  }
+}
+
+customElements.define("my-element", MyElement);
+````
+
+- **`<template>`**
+  > The `<template>` HTML element is a mechanism for holding HTML that is not to be rendered immediately when a page is loaded but may be instantiated subsequently during runtime using JavaScript. | MDN  
+- **HTMLTemplateElement.content**
+  > A read-only `DocumentFragment` which contains the DOM subtree representing the `<template>` element's template contents. | MDN  
+  - **`DocumentFragment`**
+    - An interface/node that represents a document object with no parent.
+      - i.e. a document fragment is not part of the document tree structure. Therefore, any changes made to a document fragment does not affect the document.
+    - A lightweight version of `Document`.
+- `Node.cloneNode()`
+  - Returns a copy of the `Node`.
+  > Cloning a node copies all of its attributes and their values, including intrinsic (inline) listeners. It does not copy event listeners added using addEventListener() or those assigned to element properties (e.g., node.onclick = someFunction) | MDN  
+  - cf. `Document.importNode()`
+  - Use to clone a `Node` or `DocumentFragment` from another document and later insert into the current document (by, for example, using `appendChild`).
 
 ## Styling Elements in the Shadow DOM
 - [Refer 1](https://stackoverflow.com/questions/61626493/slotted-css-selector-for-nested-children-in-shadowdom-slot)
@@ -104,3 +138,8 @@ document
 [Learn Web Components In 25 Minutes - YouTube](https://www.youtube.com/watch?v=2I7uX8m0Ta0&ab_channel=WebDevSimplified)  
 [Shadow DOM slots, composition](https://javascript.info/slots-composition)  
 [::slotted CSS selector for nested children in shadowDOM slot - Stack Overflow](https://stackoverflow.com/questions/61626493/slotted-css-selector-for-nested-children-in-shadowdom-slot)  
+[<template>: The Content Template element - HTML: HyperText Markup Language | MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/template)  
+[HTMLTemplateElement - Web APIs | MDN](https://developer.mozilla.org/en-US/docs/Web/API/HTMLTemplateElement)  
+[DocumentFragment - Web APIs | MDN](https://developer.mozilla.org/en-US/docs/Web/API/DocumentFragment)  
+[Node.cloneNode() - Web APIs | MDN](https://developer.mozilla.org/en-US/docs/Web/API/Node/cloneNode)  
+  
