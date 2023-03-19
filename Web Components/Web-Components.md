@@ -65,6 +65,16 @@
   - Runs when the custom element is moved to another document.
 - `attributeChangedCallback`
   - Runs when an attribute of the custom element is added, removed, or changed.
+  - Use the `observedAttributes` static getter to specify the attributes to observe and call `attributeChangedCallback` for.
+    ```js
+    static get observedAttributes() {
+      return [/* array of attribute names to monitor for changes */];
+    }
+    
+    attributeChangedCallback(name, oldValue, newValue) {
+      // called when one of attributes listed above is modified
+    }
+    ```
 
 ## Implementing a Web Component
 1. Use the `class` syntax to specify the component(custom element)'s functionality.
@@ -119,3 +129,4 @@ document
 [DocumentFragment - Web APIs | MDN](https://developer.mozilla.org/en-US/docs/Web/API/DocumentFragment)  
 [Why You Should Use Docment Fragments - Webtips](https://www.webtips.dev/document-fragments)  
 [Node.cloneNode() - Web APIs | MDN](https://developer.mozilla.org/en-US/docs/Web/API/Node/cloneNode)  
+[Custom elements](https://javascript.info/custom-elements)  
