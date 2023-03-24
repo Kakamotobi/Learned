@@ -427,7 +427,7 @@ app.get("/", (req, res) => {
 - **Controller**
   - The back-end (handle data through server routers and create HTML to present).
   - Requests usually meant a whole new page had to be built from the server.
-##### jQuery Era MVC
+##### jQuery Era MVC (MVP)
 - With the introduction of AJAX and increased role of the frontend, there became no need to build the page in the server.
 - At this point, the focus was on minimizing dependency between the Model and the View, hence, HTML and jQuery were managed separately.
 
@@ -455,7 +455,13 @@ app.get("/", (req, res) => {
     - There was no longer the need to manipulate the DOM, as it was taken care of by the framework.
       - The "C" in MVC was replaced by "VM" simply to indicate that you only need to handle the Model to update the View.
 - Instead of having multiple pages, it became possible to simply update parts of the page.
-- Other frameworks and libraries of similar MVVM architecture began to release: React, Vue, Angular2, Svelte, etc.
+- Other frameworks and libraries of _similar_ MVVM architecture began to be released: React, Vue, Angular2, Svelte, etc.
+  - _React Notes_
+    - React is not opinionated to a particular architecture.
+    - React is a _View_ library. Hence, React components represent the _View_ layer.
+    - The _ViewModel_ layer is essentially handled internally within the component itself since changes in the state triggers a re-render of the component.
+    - To implement a structure similar to a complete MVVM, React can be used with other libraries such as Redux. Redux becomes the _Model_ layer, as it manages the states of the application.
+      - Therefore, a very simple React application without using any complex React APIs or other libraries could be seen as "VVM" where V represents JSX and CSS, and VM represents component-related code for managing the state.
 
 <p align="center">
   <img src="https://github.com/Kakamotobi/Learned/blob/main/Web%20Development/refImg/MVVM.png" alt="MVVM Illustration" width="80%" />
@@ -548,6 +554,7 @@ app.get("/", (req, res) => {
 [프론트엔드에서 MV* 아케틱쳐란 무엇인가요?](https://velog.io/@teo/%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C%EC%97%90%EC%84%9C-MV-%EC%95%84%ED%82%A4%ED%85%8D%EC%B3%90%EB%9E%80-%EB%AC%B4%EC%97%87%EC%9D%B8%EA%B0%80%EC%9A%94)  
 [Do MVC like it’s 1979. How to build a good iOS architecture by… | by Bohdan Orlov | Bumble Tech | Medium](https://medium.com/bumble-tech/do-mvc-like-its-1979-da62304f6568)  
 [Elements of MVC in React. Let’s discover the original MVC pattern… | by Daniel Dughila | The Startup | Medium](https://medium.com/swlh/elements-of-mvc-in-react-9382de427c09#:~:text=React%20isn't%20an%20MVC,nothing%20to%20do%20with%20frameworks.)  
+[javascript - MVVM architectural pattern for a ReactJS application - Stack Overflow](https://stackoverflow.com/questions/51506440/mvvm-architectural-pattern-for-a-reactjs-application)  
 [Presentational and Container Components | by Dan Abramov | Medium](https://medium.com/@dan_abramov/smart-and-dumb-components-7ca2f9a7c7d0)  
 [In-Depth Overview | Flux](https://facebook.github.io/flux/docs/in-depth-overview/)  
 [react-redux.md](https://gist.github.com/rogerwschmidt/8739668f73edc79e1581b63266719257)  
