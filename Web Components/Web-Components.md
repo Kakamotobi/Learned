@@ -130,3 +130,5 @@ document
 [Why You Should Use Docment Fragments - Webtips](https://www.webtips.dev/document-fragments)  
 [Node.cloneNode() - Web APIs | MDN](https://developer.mozilla.org/en-US/docs/Web/API/Node/cloneNode)  
 [Custom elements](https://javascript.info/custom-elements)  
+[Open Web Components](https://open-wc.org/)  
+[Lit](https://lit.dev/)  
