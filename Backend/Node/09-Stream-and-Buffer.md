@@ -59,6 +59,7 @@ const buff2 = Buffer.from("hello world"); // buffer containing "hello world" in 
 
 ## Reference
 [Stream (computing) - Wikipedia](https://en.wikipedia.org/wiki/Stream_(computing))  
+[Stream | Node.js v18.15.0 Documentation](https://nodejs.org/dist/latest-v18.x/docs/api/stream.html#stream)  
 [Using stdout, stdin, and stderr in Node.js - LogRocket Blog](https://blog.logrocket.com/using-stdout-stdin-stderr-node-js/)  
 [Streams API - Web APIs | MDN](https://developer.mozilla.org/en-US/docs/Web/API/Streams_API)  
 [Buffer | Node.js v18.15.0 Documentation](https://nodejs.org/dist/latest-v18.x/docs/api/buffer.html#buffer)  
