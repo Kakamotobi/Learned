@@ -19,6 +19,7 @@
   - [Discard Current Changes / Unmodify Files](#discard-current-changes--unmodify-files)
   - [Undoing Commits](#undoing-commits)
     - [Applying Undone Commits on Local to Remote](#applying-undone-commits-on-local-to-remote)
+  - [Amending Previous Commit Messages](#amending-previous-commit-messages)
 - [Git Branches](#git-branches)
   - [Core Concepts](#core-concepts)
     - [The "HEAD" Branch](#the-head-branch)
@@ -282,6 +283,16 @@
   - Force push the current branch on local to the corresponding branch on origin.
 - **`git push origin +HEAD`**
   - Force a non-fastword(`+`) push so that the top commit on origin is the parent of the current top commit.
+### Amending Previous Commit Messages
+#### Amending the Most Recent Commit Message
+- **`git commit --amend`**
+  - Modify the most recent commit.
+  - It allows for us to combine currently staged changes with the previous commit, rather than creating a new commit.
+  - It opens your text editor, in which you can edit and save the commit message. Then, force push the branch to remote.
+#### Amending Older or Multiple Commit Messages
+- **`git rebase -i HEAD~n`**
+  - Displays a list of the `n` last commits on the current branch.
+  - It opens your text editor, in which you can edit and save the corresponding commit messages. Then, force push the branch to remote.
 
 ## Git Branches
 > A branch represents an independent line of development. Branches serve as an abstraction for the edit/stage/commit process. You can think of them as a way to request a brand new working directory, staging area, and project history. | Atlassian
@@ -722,6 +733,7 @@
 [Git - Reference](https://git-scm.com/docs)  
 [gitcore-tutorial(7)](https://git.github.io/htmldocs/gitcore-tutorial.html)  
 [giteveryday(7)](https://git.github.io/htmldocs/giteveryday.html)  
+[Changing a commit message - GitHub Docs](https://docs.github.com/en/pull-requests/committing-changes-to-your-project/creating-and-editing-commits/changing-a-commit-message)  
 [Git Branch | Atlassian Git Tutorial](https://www.atlassian.com/git/tutorials/using-branches)  
 [깃, 깃허브 제대로 배우기 - YouTube](https://www.youtube.com/watch?v=Z9dvM7qgN9s&ab_channel=%EB%93%9C%EB%A6%BC%EC%BD%94%EB%94%A9by%EC%97%98%EB%A6%AC)  
 [Git Branches Tutorial](https://www.youtube.com/watch?v=e2IbNHi4uCI&ab_channel=freeCodeCamp.org)  
