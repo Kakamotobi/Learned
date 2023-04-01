@@ -53,11 +53,10 @@ sync2 - 1
 sync2 - 2
 ```
 ### Output
-- The Event Loop did not retrieve a callback from the Callback Queue and push it onto the Call Stack.
-- This is because **the Global Execution Context is still on the Call Stack**.
-  - Therefore, the program will continue executing until the the last line.
-  - At this point, the Global Execution Context will be removed from the Call Stack, and the Event Loop will check the Callback Queue.
-  - i.e. all the synchronous code will be executed first before the the Event Loop begins to execute the (async) callbacks in the Callback Queue.
+- The Event Loop did not retrieve and push a callback from the Callback Queue onto the Call Stack.
+- This is because **the [Global Execution Context](https://github.com/Kakamotobi/Learned/blob/main/JS/JavaScript.md#execution-context) is still on the Call Stack**.
+  - Since the Call Stack is not empty, the program will continue executing until the the last line.
+  - At this point, the Global Execution Context will be removed from the Call Stack, and the Event Loop will then check the Callback Queue.
 ```
 sync1 - 0
 sync1 - 1
