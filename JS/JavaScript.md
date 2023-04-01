@@ -407,6 +407,7 @@
 [Memory Management - JavaScript | MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Memory_Management)  
 [Call stack - MDN Web Docs Glossary](https://developer.mozilla.org/en-US/docs/Glossary/Call_stack)  
 [Understanding Execution Context and Execution Stack in Javascript | by Sukhjinder Arora | Bits and Pieces](https://blog.bitsrc.io/understanding-execution-context-and-execution-stack-in-javascript-1c9ea8642dd0)  
+[Understanding JavaScript Execution Context By Examples](https://www.javascripttutorial.net/javascript-execution-context/)  
 [A Complete Guide for JavaScript Execution Context](https://www.atatus.com/blog/javascript-execution-context/)  
 [The event loop - JavaScript | MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop)  
 [What is the difference between Microtask Queue and Callback Queue in asynchronous JavaScript ? - GeeksforGeeks](https://www.geeksforgeeks.org/what-is-the-difference-between-microtask-queue-and-callback-queue-in-asynchronous-javascript/)  
