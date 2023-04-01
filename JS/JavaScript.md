@@ -5,7 +5,18 @@
 - [JavaScript History](#javascript-history)
 - [JavaScript Engine](#javascript-engine)
 - [JavaScript Runtime Environment](#javascript-runtime-environment)
-  - [Runtime](#runtime)
+  - ["Runtime"](#runtime)
+    - [The Process](#the-process)
+      - [JS Engine](#js-engine)
+        - [Memory Heap](#memory-heap)
+          - [Memory Management](#memory-management)
+        - [Call Stack](#call-stack)
+          - [Execution Context](#execution-context)
+      - [Event Loop](#event-loop)
+      - [Web APIs](#web-apis)
+      - [Queues](#queues)
+        - [Callback Queue/Task Queue](#callback-queuetask-queue)
+        - [Microtask Queue](#microtask-queue)
   - [How JavaScript is single-threaded, yet, is non-blocking, asynchronous, and concurrent](#how-javascript-is-single-threaded-yet-is-non-blocking-asynchronous-and-concurrent)
   - [Optimization Insights](#optimization-insights)
 - [Node.js Worker Thread Module](#nodejs-worker-thread-module)
@@ -141,12 +152,34 @@
     - Removed DOM elements
       - Even if the DOM element is removed, the memory is not reclaimed because it is still being referenced to in the event listener.
 ##### Call Stack
-- **The stack data structure where function execution contexts are placed when the function is called.**
+- a.k.a. **Execution Stack**.
+- **The stack data structure where _execution contexts_ of functions (and global) are placed when the functions are called.**
   - It is the mechanism that the JS engine uses to keep track of its place in a script and what's being executed.
-- Functions are popped off from the call stack when they return or if they are API calls, which are delegated to the **Web API container** (browser).
+- Functions (execution contexts) are popped off from the call stack when they return or if they are API calls, which are delegated to the **Web API container** (browser).
 - Each thread has its own call stack.
   - Therefore, single-threaded languages have one call stack.
   - Whereas, multi-threaded languages have multiple call stacks.
+###### Execution Context
+> ...an abstract concept of an environment where the Javascript code is evaluated and executed. Whenever any code is run in JavaScript, it’s run inside an execution context. | Bits and Pieces
+
+- An Execution Context contains information such as the function's arguments, local variables and its lexical environment (closure).
+  - Closures are created using information from the execution context of the outer function.
+- When a function finishes executing, its execution context is popped off from the call stack.
+- **Types of Execution Context**
+  - **Global Execution Context**
+    - The base execution context when the JS Engine starts going through a JS script.
+    - _Everything that is not nested inside any block (Ex: function) resides in the global execution context._
+    - The global execution context is popped off from the call stack when the JS engine reaches the end of the JS file.
+  - **Functional Execution Context**
+    - Whenever a function invocation is encountered, the JS Engine creates an execution context for that function and pushes it to the call stack.
+      - i.e. an execution context is created at the time of function invocation. Therefore, 
+  - **Eval Execution Context**
+    - The script executed inside an `eval()` function has its own execution context.
+- **Phases of an Execution Context**
+  - **Creation Phase**
+    - The `LexicalEnvironment` component is created.
+    - The `VariableEnvironment` component is created.
+  - **Execution Phase**
 #### [Event Loop](https://github.com/Kakamotobi/Learned/blob/main/JS/Asynchronous/Async.md#the-event-loop)
 - **Responsible for executing the code, collecting and processing events, and executing queued sub-tasks.**
 - A mechanism on the browser, not the JavaScript engine.
@@ -373,6 +406,8 @@
 [How Does JavaScript Really Work? (Part 2) | by Priyesh Patel | Bits and Pieces](https://blog.bitsrc.io/how-does-javascript-work-part-2-40cc15360bc)  
 [Memory Management - JavaScript | MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Memory_Management)  
 [Call stack - MDN Web Docs Glossary](https://developer.mozilla.org/en-US/docs/Glossary/Call_stack)  
+[Understanding Execution Context and Execution Stack in Javascript | by Sukhjinder Arora | Bits and Pieces](https://blog.bitsrc.io/understanding-execution-context-and-execution-stack-in-javascript-1c9ea8642dd0)  
+[A Complete Guide for JavaScript Execution Context](https://www.atatus.com/blog/javascript-execution-context/)  
 [The event loop - JavaScript | MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop)  
 [What is the difference between Microtask Queue and Callback Queue in asynchronous JavaScript ? - GeeksforGeeks](https://www.geeksforgeeks.org/what-is-the-difference-between-microtask-queue-and-callback-queue-in-asynchronous-javascript/)  
 [Worker threads | Node.js v19.6.0 Documentation](https://nodejs.org/api/worker_threads.html)  
