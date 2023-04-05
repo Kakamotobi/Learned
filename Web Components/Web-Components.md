@@ -21,7 +21,7 @@
     - Matches built-in elements and custom elements registered in `CustomElementRegistry`.
   - **`:host`**
     - Selects the Shadow Host of the Shadow DOM.
-    - i.e. select the custom element from inside its Shadow DOM.
+      - i.e. select the custom element from inside its Shadow DOM.
     - **`:host()`**
       - Selects the Shadow Host of the Shadow DOM only if the specified selector matches the Shadow Host.
       - Ex: `:host(.some-class-name)` selects the Shadow Host if it has a class name of `.some-class-name`.
