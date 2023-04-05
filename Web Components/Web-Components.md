@@ -28,6 +28,7 @@
     - **`:host-context()`**
       - Selects the Shadow Host of the Shadow DOM only if the specified selector matches the Shadow Host's ancestors.
       - i.e. the custom element or elements within the current element's Shadow DOM can apply different styles based on their position within the regular DOM or based on classes/attributes that are applied to ancestor elements.
+    - _NOTE: the custom element (host) has a `display` property of `inline` by default._
 #### [Shadow DOM](https://github.com/Kakamotobi/Learned/main/DOM/Shadow-DOM.md)
 > A set of JavaScript APIs for attaching an encapsulated "shadow" DOM tree to an element — which is rendered separately from the main document DOM — and controlling associated functionality. In this way, you can keep an element's features private, so they can be scripted and styled without the fear of collision with other parts of the document. | MDN  
 
