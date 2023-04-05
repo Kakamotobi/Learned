@@ -23,6 +23,9 @@
 ### Terminologies
 - **Shadow Host**
   - The ordinary node (in the "light" DOM) to which the Shadow DOM is added.
+    - _NOTE: the custom element itself and not the parent element._
+  - Styles that are applied to the host affect the outermost part of the web component.
+    - This includes slots or light DOM.
   - Not all elements can be a Shadow Host.
     - Ex: `<a>`, `<img>`.
 - **Shadow Tree**
@@ -32,6 +35,8 @@
 - **Shadow Root**
   - The root node of the Shadow Tree.
   - If the encapsulation mode (`mode`) is set to `open`, the Shadow Root can be accessed outside of the Shadow DOM.
+  - Styles that are applied to the root affect the internal structure of the web component.
+    - i.e. shadow DOM elements in the component's template.
 
 ## Creating a Shadow DOM
 ```js
