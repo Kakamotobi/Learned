@@ -122,6 +122,11 @@ customElements.define("my-element", MyElement);
 - [Refer 1](https://stackoverflow.com/questions/61626493/slotted-css-selector-for-nested-children-in-shadowdom-slot)
 - [Refer 2](https://css-tricks.com/styling-in-the-shadow-dom-with-css-shadow-parts/)
 - [Refer 3](https://blog.jiayihu.net/css-resets-in-shadow-dom/)
+- NOTE: a shadow DOM should not be attached to elements related to headings, tables, form, img, inline elements (Ex: `a`, `span`).
+  - The Shadow DOM can be attached to any HTML tag. However, attaching it to one of these elements may not make sense and lead to displacements (can affect styles).
+### Styling Slotted Elements in the Shadow DOM
+- When slotted elements are rendered, they are not included in the encapsulated Shadow DOM.
+  - Rather, they remain on the "outside" of the Shadow DOM on a sibling level.
 
 ## Reference
 [Understanding Shadow DOM in Web Components - Ultimate Courses](https://ultimatecourses.com/blog/understanding-shadow-dom-in-web-components)  
