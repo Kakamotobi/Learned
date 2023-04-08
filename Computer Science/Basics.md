@@ -3,6 +3,7 @@
 ## Table of Contents
 - [Computer Basics](#computer-basics)
 - [Programming vs Scripting vs Markup Language](#programming-vs-scripting-vs-markup-language)
+- [Abstract Syntax Tree(AST)](#abstract-syntax-treeast)
 - [Compiler vs Interpreter](#compiler-vs-interpreter)
   - [Just-In-Time(JIT) Compiler](#just-in-timejit-compiler)
 - [Compile Time vs Runtime](#compile-time-vs-runtime)
@@ -37,6 +38,8 @@
 #### Microcontroller
 - Tiny computers that specialize a specific task.
 
+---
+
 ## Programming vs Scripting vs Markup Language
 ### Programming vs Scripting Language
 |                | Programming Language | Scripting Language |
@@ -60,11 +63,30 @@
 
 ---
 
+## Abstract Syntax Tree(AST)
+> ...an **abstract syntax tree (AST)**, or just **syntax tree**, is a tree representation of the abstract syntactic structure of text (often source code) written in a formal language. Each node of the tree denotes a construct occurring in the text. | Wikipedia
+
+- AST Expressing an expression in a tree structure.
+- A branch from the root represents one whole expression.
+### The Significance of AST
+- An AST is agnostic to programming languages.
+- AST is essentially about creating an intermediary abstraction.
+  - All compilers require some sort of intermediary between the source code and compiled code, which are often in the shape of ASTs.
+### Example
+<div align="center">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Abstract_syntax_tree_for_Euclidean_algorithm.svg/800px-Abstract_syntax_tree_for_Euclidean_algorithm.svg.png"  alt="Abstract Syntax Tree" width="50%" style="background: white"/>
+</div>
+
+### Reference
+[Abstract syntax tree - Wikipedia](https://en.wikipedia.org/wiki/Abstract_syntax_tree)  
+
+---
+
 ## Compiler vs Interpreter
 > ...two different ways to translate a program from programming or scripting language to machine language.
 - Most modern dynamic languages have implementations that use both interpreters and compilers.
 - ***JavaScript used to be purely interpreted years ago. Now, it is JIT-compiled to native machine code in all major JavaScript implementations.***
-### Compiler
+### [Compiler](https://github.com/Kakamotobi/Learned/blob/main/Computer%20Science/Compiler.md)
 - Source Code (high level lang.) &rarr; Compiler &rarr; Object Code (machine language a.k.a. binary code)
 - Takes a bit of time to translate the whole source code all in one go. Once the translation is done, things will go fast.
 - However, a mistake in the code will not be able to be corrected while translating.
