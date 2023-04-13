@@ -3,9 +3,11 @@
 ## Table of Contents
 - [What is Automata Theory?](#what-is-automata-theory)
   - [What is an Automaton?](#what-is-an-automaton)
+  - [The Four Families of Automaton](#the-four-families-of-automaton)
   - [Why use Automata?](#why-use-automata)
   - [Applications of Automata Theory in Web Development](#applications-of-automata-theory-in-web-development)
-  - [The Four Families of Automaton](#the-four-families-of-automaton)
+  - [How to Model a System based on Automata Theory](#how-to-model-a-system-based-on-automata-theory)
+    - [Example - modeling an image carousel using Finite-State Machine](#example---modeling-an-image-carousel-using-finite-state-machine)
 - [Formal Grammar](#formal-grammar)
   - [Chomsky's Hierarchy](#chomskys-hierarchy)
   - [Regular Expression](#regular-expression)
@@ -36,8 +38,14 @@
 - Key Assumptions
   - A machine must have a finite description.
   - The input is expressed as a finite string of symbols that come from a fixed alphabet.
+### The Four Families of Automaton
+- Finite-State Machine
+- Pushdown Automata
+- Linear-bounded Automata
+- Turing Machine
 ### Why use Automata?
 - Automatons are easier to build and require no hardware, since they are not physical machines. However, it has its limits (Ex: only capable of computing problems of finite nature).
+- **Automata Theory can be used to model systems of finite nature.**
 ### Applications of Automata Theory in Web Development
 - Web Scraping
   - Extracting and parsing structured data from web pages.
@@ -47,12 +55,27 @@
   - Detecting and preventing security attacks on web applications.
 - Web Search
 - Web Automation
-  - Automating repetitive tasks (Ex: filling out forms, naviating through pages, clicking buttons).
-### The Four Families of Automaton
-- Finite-State Machine
-- Pushdown Automata
-- Linear-bounded Automata
-- Turing Machine
+  - Automating repetitive tasks (Ex: filling out forms, navigating through pages, clicking buttons).
+- _Automata Theory is not limited to the above examples._
+  - _Rather, Automata Theory can be used to model any system of finite nature._
+### How to Model a System based on Automata Theory
+1. Define all the possible **states**.
+2. Define the **actions** that decide when and how state(S1) changes to another state(S2).
+3. Define **what needs to be done** when 1) state begins to change, 2) state is changing, 3) state changed.
+4. Translate that into code.
+#### Example - modeling an image carousel using Finite-State Machine
+1. **Possible States**
+    - There are two possible states: "Idle" and "Moving".
+2. **Actions**
+    - "Idle" --> user clicks previous/next button -> "Moving"
+    - When "idle", generate/prepare the previous and next images.
+    - When "moving", show the image moving.
+3. **What needs to be done**
+    - When leaving S1, do something.
+    - When action is in place, do something.
+    - When settling to S2, do something.
+4. **Code**
+    - Only need three `<img>` tags: previous, current, next.
 
 ## Formal Grammar
 - A **formal grammar** determines how valid strings are formed from a set of alphabet. It has nothing to do with the meaning of a string. It only determines the string's form/syntax.
