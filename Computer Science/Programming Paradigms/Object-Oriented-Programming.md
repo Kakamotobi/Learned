@@ -1,6 +1,13 @@
 ## Object-Oriented Programming (OOP)
 
 ## Table of Contents
+- [What is Object-Oriented Design(OOD)](#what-is-object-oriented-designood)
+  - [SOLID](#solid)
+    - [Single-responsibility Principle](#single-responsibility-principle)
+    - [Open-closed Principle](#open-closed-principle)
+    - [Liskov substitution Principle](#liskov-substitution-principle)
+    - [Interface segregation Principle](#interface-segregation-principle)
+    - [Dependency inversion Principle](#dependency-inversion-principle)
 - [What is Object-Oriented Programming(OOP)?](#what-is-object-oriented-programmingoop)
 - [Building Blocks of OOP](#building-blocks-of-oop)
 - [The 4 Pillars of OOP](#the-4-pillars-of-oop)
@@ -9,8 +16,92 @@
   - [Inheritance](#inheritance)
   - [Polymorphism](#polymorphism)
 - [Example](#example)
-- [Object Instances and Reference](#object-instantces-and-reference)
+- [Object Instances and Reference](#object-instances-and-reference)
 - [Some Tips on Implementing OOP](#some-tips-on-implementing-oop)
+
+## What is Object-Oriented Design(OOD)?
+> Object-oriented design (OOD) is the process of planning a system of interacting objects for the purpose of solving a software problem. | Wikipedia
+
+- OOD is one of many approaches in designing a software system.
+### SOLID
+#### Single-responsibility Principle
+> A class should have one and only one reason to change, meaning that a class should have only one job. | DigitalOcean
+
+- **If another responsibility pops up, isolate it to another class to ensure that an individual class is only concerned with doing one thing.**
+- Ex: a class that fetches data from a server, should only be doing that and not doing anything else like rendering the data.
+- Ex: a shape class should only contain properties and methods pertaining to that shape, such as calculating the area, and should not contain logic to, for example, output to the console.
+#### Open-closed Principle
+> Objects or entities should be open for extension but closed for modification. | DigitalOcean
+
+- i.e. **we should be able to extend a class without modifying the class itself.**
+- Example
+  - The `sum` method on the `AreaCalculator` class calculates the area of each shape that it was given and returns a sum of the areas.
+  - This means that every time a new shape is added, the `AreaCalculator` class will have to be modified (need to add more `if`/`else`).
+  - Instead, move the logic to calculate the `area` to the individual shapes' classes.
+  - The `AreaCalculator` class' `sum` method should now only invoke the `area` method of the shape objects that it was given and return a sum of the areas.
+  - Therefore, the `AreaCalculator` class does not have to be constantly modified. Just make sure that all shapes share the same interface to get its area.
+#### Liskov substitution Principle
+> Let q(x) be a property provable about objects of x of type T. Then q(y) should be provable for objects y of type S where S is a subtype of T. | DigitalOcean
+
+- i.e. subclasses or derived classes should be substitutable for their base or parent class.
+- i.e. **when a subclass overrides its parent's property/method, it must be/return the same type.**
+#### Interface segregation Principle
+> A client should never be forced to implement an interface that it doesn’t use, or clients shouldn’t be forced to depend on methods they do not use. | DigitalOcean
+
+- Example
+  - The `ShapeInterface` consists of two methods: `area()` and `volume()`.
+  - 2D shapes do not need the `volume()` method, however, the `ShapeInterface` unnecessarily forces 2D shapes to also include that interface.
+  - Therefore, create separate interfaces for 2D and 3D shapes.
+#### Dependency inversion Principle
+> Entities must depend on abstractions, not on concretions. It states that the high-level module must not depend on the low-level module, but they should depend on abstractions. | DigitalOcean
+
+- **i.e. high level modules should not depend on low level modules. Rather, they should both depend on abstractions.**
+  - Each class should not care of what exactly other classes are doing.
+  - _To do this, we can setup an interface through which both classes can communicate without "knowing" each other._
+- Abstraction vs Concretion
+  - Abstraction: a high level description of something.
+  - Concretion: a real instance of an abstraction.
+- Dependency inversion principle allows for the decoupling of classes; thereby, leading to more testable and maintainable code.
+- Example
+  - The below code violates the dependency inversion principle because the high-level module `PasswordReminder` is forced to depend on an instance of the `MySQLConnection` class.
+  - _If the DB is changed later on, `PasswordReminder` would have to be modified as well._
+    ```js
+    // The low-level module
+    class MySQLConnection {
+      connect() {
+        // Connect to MySQL DB
+        return "DB connected";
+      }
+    }
+    
+    // The high-level module
+    class PasswordReminder {
+      #dbConnection;
+      
+      constructor(dbConnection) { // dependency violation
+        this.#dbConnection = dbConnection;
+      }
+    }
+    ```
+  - The below code complies to the dependency inversion principle since the high level module (`PasswordReminder`) does not depend on the low level module (`MySQLConnection`) but instead expect any DB connection class that complies with the `DBConnectionInterface`.
+    ```ts
+    interface DBConnectionInterface {
+      connect(): string;
+    }
+    
+    class MySQLConnection implements DBConnectionInterface {
+      connect() {
+        // Connect to MyQL DB
+        return "DB connected";
+      }
+    }
+    
+    class PasswordReminder {      
+      constructor(private dbConnection: DBConnectionInterface) { // set type to DBConnectionInterface
+        this.dbConnection = dbConnection;
+      }
+    }
+    ```
 
 ## What is Object-Oriented Programming(OOP)?
 > Object-oriented programming (OOP) is a programming paradigm based on the concept of "objects", which can contain data and code. The data is in the form of fields (often known as attributes or properties), and the code is in the form of procedures (often known as methods). | Wikipedia
@@ -228,5 +319,8 @@ const personB = new Person();
 - The lower the object, the more likely that it should be more independent.
 
 ## Reference
+[Object-oriented design - Wikipedia](https://en.wikipedia.org/wiki/Object-oriented_design)  
+[SOLID: The First 5 Principles of Object Oriented Design  | DigitalOcean](https://www.digitalocean.com/community/conceptual-articles/s-o-l-i-d-the-first-five-principles-of-object-oriented-design)  
+[Object-oriented programming - Wikipedia](https://en.wikipedia.org/wiki/Object-oriented_programming)  
 [Object Oriented vs Functional Programming with TypeScript - YouTube](https://www.youtube.com/watch?v=fsVL_xrYO0w&ab_channel=Fireship)  
 [MDN Web Docs Glossary: Definitions of Web-related terms | MDN](https://developer.mozilla.org/en-US/docs/Glossary)  
