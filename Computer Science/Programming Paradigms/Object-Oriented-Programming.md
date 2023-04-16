@@ -258,7 +258,7 @@ superman.sayHello(); // Hello, I'm Clark Kent.
 > In the case of OOP, by making the class responsible for its code as well as its own data, polymorphism can be achieved in that each class has its own function that (once called) behaves properly for any object. | MDN
 
 - Polymorphism = many forms.
-- A superclass acts as a single interface that works for all subclasses of any data type.
+- **A superclass acts as a single interface that works for all subclasses of any data type.**
   - i.e. the practice of designing objects to share behaviors and to be able to override shared behaviors with specific ones.
   - Ex: integers and floats are polymorphic since they have the same behaviors (Ex: add, subtract) despite having being different types.
 - Allows us to get rid of long if and elses or switch and case statements.
@@ -311,12 +311,13 @@ const personB = new Person();
 - Ex: the pointer variable personA is loaded onto memory. It points to the personA instance on heap memory, which references its class Person that is also loaded onto heap memory.
 
 ## Some Tips on Implementing OOP
-- All methods relating to private members should be on the same class.
+- **All methods relating to private members should be on the same class.**
   - Resist from passing on an object's variable to another object to use.
   - Instead, keep an object's variables private and define methods for those variables in that object.
   - i.e. the higher object should not bring a lower object's values to process. The higher object should try to invoke the lower object's methods.
   - Ex: if a ChessPiece object has a Position object pertaining to it, the ChessPiece object should invoke functionalities defined in the Position object instead of bringing the position value and doing the calculation itself.
-- The lower the object, the more likely that it should be more independent.
+- **The lower the object, the more likely that it should be more independent.**
+- **Do not use values in the logic. Instead, use identifiers.**
 
 ## Reference
 [Object-oriented design - Wikipedia](https://en.wikipedia.org/wiki/Object-oriented_design)  
@@ -324,3 +325,4 @@ const personB = new Person();
 [Object-oriented programming - Wikipedia](https://en.wikipedia.org/wiki/Object-oriented_programming)  
 [Object Oriented vs Functional Programming with TypeScript - YouTube](https://www.youtube.com/watch?v=fsVL_xrYO0w&ab_channel=Fireship)  
 [MDN Web Docs Glossary: Definitions of Web-related terms | MDN](https://developer.mozilla.org/en-US/docs/Glossary)  
+[객체지향의 기본 이론 | 개발자 황준일](https://junilhwang.github.io/TIL/CodeSpitz/Object-Oriented-Javascript/01-Intro/#value-vs-identifier)  
