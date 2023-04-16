@@ -15,7 +15,6 @@
   - [Abstraction](#abstraction)
   - [Inheritance](#inheritance)
   - [Polymorphism](#polymorphism)
-- [Example](#example)
 - [Object Instances and Reference](#object-instances-and-reference)
 - [Some Tips on Implementing OOP](#some-tips-on-implementing-oop)
 
@@ -106,9 +105,11 @@
 ## What is Object-Oriented Programming(OOP)?
 > Object-oriented programming (OOP) is a programming paradigm based on the concept of "objects", which can contain data and code. The data is in the form of fields (often known as attributes or properties), and the code is in the form of procedures (often known as methods). | Wikipedia
 
-- **Structures a program into simple, reusable pieces of code (usually classes), which are used to create individual instances of objects.**
+- OOP is a programming paradigm that is based on the principles of OOD.
+  - i.e. translating OOD into code.
+- **OOP is about structuring a program into simple, reusable pieces of code (usually classes), which are used to create individual instances of objects.**
   - The properties on the objects are manipulated using the methods given to the object.
-- It is an *imperative* type of programming style.
+- It is an _imperative_ type of programming style.
 - OOP came to rise amidst ADT and Object-orientation advancing.
   - ADT focused on type abstraction.
     - It supports creating instances of a type.
@@ -261,8 +262,7 @@ superman.sayHello(); // Hello, I'm Clark Kent.
   - i.e. the practice of designing objects to share behaviors and to be able to override shared behaviors with specific ones.
   - Ex: integers and floats are polymorphic since they have the same behaviors (Ex: add, subtract) despite having being different types.
 - Allows us to get rid of long if and elses or switch and case statements.
-
-## Example
+#### Example
 - You do not have to specify that `Dog` needs to speak like a dog, and `Cat` needs to speak like a dog, and `Cow` needs to speak like a cow. Simply call the `.speak()` method and the dog or cat or cow will do that.
 ```ts
 class Animal {
