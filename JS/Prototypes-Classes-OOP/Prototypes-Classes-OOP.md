@@ -12,17 +12,23 @@
     - [`extends` and `super` Keywords](#extends-and-super-keywords)
 
 ## Object Oriented Programming (OOP)
-> A programming paradigm that relies on the concept of classes and objects. It is used to structure a software program into simple, reusable pieces of code blueprints (usually called classes), which are used to create individual instances of objects.
+> ...a programming paradigm in computer science that relies on the concept of classes and objects. It is used to structure a software program into simple, reusable pieces of code blueprints (usually called classes), which are used to create individual instances of objects. | Educative
 
-> A class is an abstract blueprint used to create more specific, concrete objects. Classes often represent broad categories, like Car or Dog that share attributes. These classes define what attributes an instance of this type will have, like color, but not the value of those attributes for a specific object.
+> A class is an abstract blueprint that creates more specific, concrete objects. Classes often represent broad categories, like `Car` or `Dog` that share attributes. These classes define what attributes an instance of this type will have, like color, but not the value of those attributes for a specific object. | Educative
 
-> Classes can also contain functions, called methods available only to objects of that type. These functions are defined within the class and perform some action helpful to that specific type of object.
-### Reference
-[What is Object Oriented Programming? OOP Explained in Depth](https://www.educative.io/blog/object-oriented-programming)
+> Classes can also contain functions called **methods** that are available only to objects of that type. These functions are defined within the class and perform some action helpful to that specific object type. | Educative
 
 ## JavaScript and OOP
-- JS is not a class-based language. Rather, it is a **prototype-based** language.
-  - The **prototype** object is the template for which attributes, methods, and functionalities can be inherited.
+- JS is not a **class-based** language. Rather, it is a **prototype-based** language.
+  - Class-based
+    - Classes are used to define objects.
+    - An object is an instance of a class, and it has its own unique set of values for the defined properties of the class.
+  - Prototype-based
+    - Prototypes are used to define objects.
+    - The **prototype** object is the shared template from which all objects of that prototype inherit attributes, methods, and functionalities.
+- **JS is able to support OOP through the use of its prototype system and the constructor method.**
+  - The `class` syntax was added to JavaScript since ES2015. However, it is only syntactic sugar for JS' prototype system and the constructor method.
+  - The `extends` keyword is essentially based on a prototype-based inheritance.
 ### Object Prototypes
 - Prototypes are the mechanism by which JS objects inherit features from one another.
   - An object/instance has a prototype object from which it inherits properties and methods.
@@ -61,6 +67,28 @@
       ```
 
 ## Ways to Create Objects in JS
+### Object Literal
+- A singleton approach in that there is only a single instance.
+```js
+const color = {
+  name: "black",
+  r: 0,
+  g: 0,
+  b: 0,
+  hex: function() {
+    return "#" + ((1 << 24) + (this.r << 16) + (this.g << 8) + this.b).toString(16).slice(1);
+  },
+  rgb: function() {
+    return `rgb(${this.innerRGB()})`;
+  },
+  rgba: function(a = 1) {
+    return `rgba(${this.innerRGB()}, ${a})`;
+  },
+  innerRGB: function() {
+    return `${r}, ${g}, ${b}`;
+  }
+}
+```
 ### Factory Function
 - Create a function that creates a prototype object with properties and methods based off of the passed in arguments.
 - This is not ideal as all attributes/methods are newly generated for every intsance instead of in a prototype object.
@@ -181,4 +209,5 @@
 ![tom](refImg/tom.png)
 
 ## Reference
+[What is Object Oriented Programming? OOP Explained in Depth](https://www.educative.io/blog/object-oriented-programming)  
 [__proto__ VS. prototype in JavaScript - Stack Overflow](https://stackoverflow.com/questions/9959727/proto-vs-prototype-in-javascript)  
