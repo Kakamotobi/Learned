@@ -5,6 +5,8 @@
 - [JavaScript and OOP](#javascript-and-oop)
   - [Object Prototypes](#object-prototypes)
 - [Ways to Create Objects in JS](#ways-to-create-objects-in-js)
+  - [Object Literal](#object-literal)
+  - [`Object.create()`](#objectcreate)
   - [Factory Function](#factory-function)
   - [Constructor Function](#constructor-function)
   - [Class](#class)
@@ -88,6 +90,31 @@ const color = {
     return `${r}, ${g}, ${b}`;
   }
 }
+```
+### `Object.create()`
+- Essentially the same as creating a Prototype object.
+```js
+const colorObj = {
+  hex: function() {
+    return "#" + ((1 << 24) + (this.r << 16) + (this.g << 8) + this.b).toString(16).slice(1);
+  },
+  rgb: function() {
+    return `rgb(${this.innerRGB()})`;
+  },
+  rgba: function(a = 1) {
+    return `rgba(${this.innerRGB()}, ${a})`;
+  },
+  innerRGB: function() {
+    return `${r}, ${g}, ${b}`;
+  }
+};
+
+const black = Object.create(colorObj, {
+  name: { value: "black" },
+  r: { value: 0 },
+  g: { value: 0 },
+  b: { value: 0 },
+});
 ```
 ### Factory Function
 - Create a function that creates a prototype object with properties and methods based off of the passed in arguments.
