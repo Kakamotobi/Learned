@@ -81,7 +81,7 @@ Animal.prototype.walk = function () {
 
 // Child class
 function Dog(name, breed) {
-  Animal.call(this, name);
+  Animal.call(this, name); // Basically, `super(name)`.
   this.breed = breed;
 }
 
@@ -95,8 +95,15 @@ Dog.prototype.constructor = Dog;
 console.log(Dog.prototype.constructor === Animal); // false
 console.log(Dog.prototype.constructor === Dog); // true
 
+Dog.prototype.bark = function () {
+  console.log("woof!");
+};
+
+console.log(Animal.prototype); // { walk: [Function (anonymous)] }
+console.log(Dog.prototype); // Animal { constructor: [Function: Dog], bark: [Function (anonymous)] }
+
 const spike = new Dog("spike", "bulldog");
-console.log(spike.__proto__); // Animal { constructor: [Function: Dog] }
+console.log(spike.__proto__); // Animal { constructor: [Function: Dog], bark: [Function (anonymous)] }
 ```
 
 ## Ways to Create Objects in JS
