@@ -4,6 +4,7 @@
 - [Object Oriented Programming (OOP)](#object-oriented-programming-oop)
 - [JavaScript and OOP](#javascript-and-oop)
   - [Object Prototypes](#object-prototypes)
+    - [Prototype Inheritance](#prototype-inheritance)
 - [Ways to Create Objects in JS](#ways-to-create-objects-in-js)
   - [Object Literal](#object-literal)
   - [`Object.create()`](#objectcreate)
@@ -67,6 +68,36 @@
       arr instanceof Array; // true
       arr instanceof Object; // true <-- JS objects are built on `Object.prototype` - the prototype/blueprint of all objects in JS.
       ```
+#### Prototype Inheritance
+```js
+// Parent class
+function Animal(name) {
+  this.name = name;
+}
+
+Animal.prototype.walk = function () {
+  console.log(this.name + " is walking.");
+};
+
+// Child class
+function Dog(name, breed) {
+  Animal.call(this, name);
+  this.breed = breed;
+}
+
+// Need to make a copy of the parent's prototype because if not, changes made to `Dog.prototype` will be reflected to `Animal.prototype`.
+Dog.prototype = Object.create(Animal.prototype);
+// `Dog.prototype` now has a `constructor` property that points to `Animal`.
+
+// Change `Dog`'s constructor to itself rather than to `Animal`.
+console.log(Dog.prototype.constructor === Animal); // true
+Dog.prototype.constructor = Dog;
+console.log(Dog.prototype.constructor === Animal); // false
+console.log(Dog.prototype.constructor === Dog); // true
+
+const spike = new Dog("spike", "bulldog");
+console.log(spike.__proto__); // Animal { constructor: [Function: Dog] }
+```
 
 ## Ways to Create Objects in JS
 ### Object Literal
