@@ -23,6 +23,12 @@
   - [What is meant by Architecture?](#what-is-meant-by-architecture)
   - [MV<sup>*</sup> Architectures](#mv-architectures)
     - [Evolution of MV<sup>*</sup> Architectures](#evolution-of-mv-architectures)
+      - [Introduction of Model-View-Controller (MVC)](#introduction-of-model-view-controller-mvc)
+      - [Early Web MVC](#early-web-mvc)
+      - [jQuery Era MVC (MVP)](#jquery-era-mvc-mvp)
+      - [The Rise of Model-View-ViewModel (MVVM) and SPA](#the-rise-of-model-view-viewmodel-mvvm-and-spa)
+      - [Container and Presentational Components](#container-and-presentational-components)
+      - [The Flux Pattern and Redux](#the-flux-pattern-and-redux)
 - [Reference](#reference)
 
 ## Creational Design Patterns
@@ -446,7 +452,7 @@ app.get("/", (req, res) => {
   - jQuery's main functions were DOM traversal/manipulation, event handling, and AJAX.
   - Manipulates the Model by communicating with the server.
 ##### The Rise of Model-View-ViewModel (MVVM) and SPA
-- Back when pages were built on the server, pages could be developed declaratively by embedding expressions (Ex: `{{}}`, `<%= %>`.
+- Back when pages were built on the server, pages could be developed declaratively by embedding expressions (Ex: `{{}}`, `<%= %>`).
 - However, for jQuery, data had to be handled manually (find, change, update, attach events, etc.).
 - Therefore, like how pages were built declaratively from the server, developers searched for a way to build from the client declaratively, such as using templates.
 - This led to the introduction of template binding based libraries that make use of declarative data bindings, such as knockout.js, and AngularJS.
@@ -455,13 +461,16 @@ app.get("/", (req, res) => {
     - There was no longer the need to manipulate the DOM, as it was taken care of by the framework.
       - The "C" in MVC was replaced by "VM" simply to indicate that you only need to handle the Model to update the View.
 - Instead of having multiple pages, it became possible to simply update parts of the page.
-- Other frameworks and libraries of _similar_ MVVM architecture began to be released: React, Vue, Angular2, Svelte, etc.
+- Other frameworks and libraries of MVVM architecture (_or similar_) began to be released: Knockout.js, Vue, Angular, Svelte, React, etc.
   - _React Notes_
     - React is not opinionated to a particular architecture.
     - React is a _View_ library. Hence, React components represent the _View_ layer.
-    - The _ViewModel_ layer is essentially handled internally within the component itself since changes in the state triggers a re-render of the component.
+    - The responsibilities of the _ViewModel_ layer is essentially handled internally within the component itself since changes in the state triggers a re-render of the component.
     - To implement a structure similar to a complete MVVM, React can be used with other libraries such as Redux. Redux becomes the _Model_ layer, as it manages the states of the application.
       - Therefore, a very simple React application without using any complex React APIs or other libraries could be seen as "VVM" where V represents JSX and CSS, and VM represents component-related code for managing the state.
+  - _Svelte Notes_
+    - Svelte is similar to the MVVM architecture.
+    - However, Svelte does not have a separate concept of a ViewModel. Instead, it provides a built-in reactivity system that allows us to write reactive code directly in components.
 
 <p align="center">
   <img src="https://github.com/Kakamotobi/Learned/blob/main/Web%20Development/refImg/MVVM.png" alt="MVVM Illustration" width="80%" />
@@ -478,11 +487,20 @@ app.get("/", (req, res) => {
 - **ViewModel**
   - **Defines properties and logic for the View to data bind to, and informs the View of changes to state (presentation logic).**
     - Communication with the View is automated through binding.
+  - i.e. it contains the Model used by the View, and changes made to the View are reflected to the ViewModel, and vice versa.
   - Model that draws the View.
   - It defines the structure and behavior of the application.
   - It represents the functionality offered by the UI.
 ###### Transition from MVC to MVVM
-- Controller is improved to be declarative (data binding).
+- **Issues at Point**
+  - Unlike before, there are a lot of Views in modern Frontend.
+  - Data needs to go both ways (between Views and Models).
+    - Handling this in a Controller leads to a huge, complex Controller.
+  - Views need to be organized in a hierarchical structure in order to optimze re-renders.
+- **Controller vs ViewModel**
+  - The term "Controller" makes more sense in backend development or in server rendered applications where it facilitated the entire application.
+    - Ex: when websites were generated in the backend and wholy sent as a response.
+  - The "ViewModel" is only responsible for syncing the current state with the data in the Model, and data binding with the View.
 - Model and View are not separated, and rather managed using a template.
   - Previously, HTML was accessed through the DOM (using selectors like classes and ids).
   - Now, HTML can be directly accessed (Ex: JSX).
@@ -507,7 +525,13 @@ app.get("/", (req, res) => {
 - It's difficult to track, and components in the middle that do not need to know about the state has to hold on to it.
 - To tackle this, a new architectural pattern for state management emerged.
 ##### The Flux Pattern and Redux
-- Flux is a pattern that adopts a uni-directional data flow in order to solve scaling issues, such as props drilling, while using the MVC approach on the client-side.
+- Modern frontend applications have a lot of Views, and data needs to go both ways between Views and Models. This can lead to complicated dependencies and inconsistencies.
+<p align="center">
+  <img src="https://www.freecodecamp.org/news/content/images/2020/04/Screenshot-2020-04-16-at-6.38.14-PM.png" alt="MVC Problem" width="40%" />
+</p>
+
+- Flux was developed by Facebook as a way to solve this and manage state in large-scale, complex web applications.
+- **Flux is a pattern that adopts a _uni-directional data flow_ (View &rarr; Store &rarr; View) in order to ensure predictable and consistent state, and solve scaling issues, such as props drilling, while using the MVC approach on the client-side.**
 - Instead of perceiving the View as each MVC component, the components are perceived as a whole View.
 
 <p align="center">
