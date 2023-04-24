@@ -533,6 +533,7 @@ app.get("/", (req, res) => {
 - Flux was developed by Facebook as a way to solve this and manage state in large-scale, complex web applications.
 - **Flux is a pattern that adopts a _uni-directional data flow_ (View &rarr; Store &rarr; View) in order to ensure predictable and consistent state, and solve scaling issues, such as props drilling, while using the MVC approach on the client-side.**
 - Instead of perceiving the View as each MVC component, the components are perceived as a whole View.
+- Many state management libraries such as Redux use the Flux architecture.
 
 <p align="center">
   <img src="https://github.com/Kakamotobi/Learned/blob/main/Web%20Development/refImg/state-management.gif" alt="State Management" width="80%" />
