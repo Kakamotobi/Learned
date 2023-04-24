@@ -5,6 +5,8 @@
 - [One-Way Data Binding](#one-way-data-binding)
 - [Two-Way Data Binding](#two-way-data-binding)
 - [Data Binding in Libraries/Frameworks](#data-binding-in-librariesframeworks)
+  - [Angular and Vue](#angular-and-vue)
+  - [React](#react)
 
 ## What is Data Binding?
 > ... a general technique that binds data sources from the provider and consumer together and synchronizes them. | Wikipedia
@@ -121,6 +123,7 @@ render();
 ### React
 <p align="center">
   <img src="https://github.com/Kakamotobi/Learned/blob/main/Web%20Development/refImg/react-data-binding.png" alt="React Data Binding" width="40%" />
+  <img src="https://redux.js.org/assets/images/one-way-data-flow-04fe46332c1ccb3497ecb04b94e55b97.png" alt="React Data Flow" width="40%" />
 </p>
 
 - **React by default implements only Component to View data binding (i.e., one-way data binding).**
@@ -175,3 +178,4 @@ ReactDOM.render(<App />, document.getElementById('app'));
 [Data binding - Wikipedia](https://en.wikipedia.org/wiki/Data_binding)  
 [What is data binding? - YouTube](https://www.youtube.com/watch?v=9G9eYCSdJvU&ab_channel=vaadinofficial)  
 [ReactJS Data Binding - GeeksforGeeks](https://www.geeksforgeeks.org/reactjs-data-binding/)  
+[Redux Essentials, Part 1: Redux Overview and Concepts | Redux](https://redux.js.org/tutorials/essentials/part-1-overview-concepts)  
