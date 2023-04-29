@@ -22,6 +22,9 @@
 - [Architectural Design Patterns](#architectural-design-patterns)
   - [What is meant by Architecture?](#what-is-meant-by-architecture)
   - [MV<sup>*</sup> Architectures](#mv-architectures)
+    - [MV<sup>*</sup> and React Disclaimer](#mv-and-react-disclaimer)
+      - [Preliminary Background](#preliminary-background)
+      - [MVC and React](#mvc-and-react)
     - [Evolution of MV<sup>*</sup> Architectures](#evolution-of-mv-architectures)
       - [Introduction of Model-View-Controller (MVC)](#introduction-of-model-view-controller-mvc)
       - [Early Web MVC](#early-web-mvc)
@@ -384,6 +387,24 @@ app.get("/", (req, res) => {
 - They are patterns that we as developers can adopt/apply.
   - *React is not an MVC framework. It is a View library.*
 - ***Don't get too hung up on the names. Different frameworks have different naming conventions.***
+#### MV<sup>*</sup> and React Disclaimer
+##### Preliminary Background
+- **Any application architecture consists of 1) an app state, 2) a view, 3) a facilitator to coordinate business logic like data fetching and I/O.**
+  - These three concerns exist in most modern applications. MVC is just one of many architectures that attempt to prescribe a solution to handle the relationships of these concerns.
+##### MVC and React
+- In React, a single component can contain both the presentation and business logic.
+  - i.e. there is no separation. **The whole thing is a View.**
+  - This is different from what MVC acclaims for; as in these should be handled separately in a Controller and Model.
+  - **There is no need for explicit subscription/coordination between the Model and View through a Controller like in MVC.**
+    - In Redux, even the Store and Reducers are unaware of any View.
+- So how are things connected in React? There must be some sort of intermediary like a Controller right?
+  - The connection exists but it is different from a Controller.
+  - The connection essentially lets the View subscribe to the Store without knowing of the Store's existence.
+    - _Note: Model !== Store._
+  - The Store is an event hub and provides subscription to Store updates.
+  - Also, if we use tools like Apollo or React Query, we can simply query from the View and automatically subscribe to data/Model updates in the server.
+    - This means that logic that was taken care of in the Controller in MVC is abstracted away to be handled implicitly and declaratively.
+    - i.e. there is no longer any Model in the client side.
 #### Evolution of MV<sup>*</sup> Architectures
 ##### Introduction of Model-View-Controller (MVC)
 - Smalltalk-80 MVC was designed in 1979.
@@ -578,6 +599,7 @@ app.get("/", (req, res) => {
 [Learn JavaScript Design Patterns - patterns.dev](https://www.patterns.dev/posts/classic-design-patterns/)  
 [프론트엔드에서 MV* 아케틱쳐란 무엇인가요?](https://velog.io/@teo/%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C%EC%97%90%EC%84%9C-MV-%EC%95%84%ED%82%A4%ED%85%8D%EC%B3%90%EB%9E%80-%EB%AC%B4%EC%97%87%EC%9D%B8%EA%B0%80%EC%9A%94)  
 [Do MVC like it’s 1979. How to build a good iOS architecture by… | by Bohdan Orlov | Bumble Tech | Medium](https://medium.com/bumble-tech/do-mvc-like-its-1979-da62304f6568)  
+[JavaScript Technical Interview Question: is React a MVC or MVVM? | by GP Lee | Web Developers Tomorrow | Medium <-- Check the comments](https://medium.com/developers-tomorrow/javascript-interview-question-is-react-an-mvc-or-mvvm-ac2ea2a5127d)  
 [Elements of MVC in React. Let’s discover the original MVC pattern… | by Daniel Dughila | The Startup | Medium](https://medium.com/swlh/elements-of-mvc-in-react-9382de427c09#:~:text=React%20isn't%20an%20MVC,nothing%20to%20do%20with%20frameworks.)  
 [javascript - MVVM architectural pattern for a ReactJS application - Stack Overflow](https://stackoverflow.com/questions/51506440/mvvm-architectural-pattern-for-a-reactjs-application)  
 [Presentational and Container Components | by Dan Abramov | Medium](https://medium.com/@dan_abramov/smart-and-dumb-components-7ca2f9a7c7d0)  
