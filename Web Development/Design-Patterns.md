@@ -270,9 +270,9 @@ reactive.name; // "Tracking: name" // "bomboclat"
 - Analogy: free roaming, virtual guide app, local tour guide, are all different ways (iterators) to tour an area (collection).
 ### Observer
 - **Define a subscription mechanism where observers are notified (typically by calling a method on each observer) and updates in accordance when the object that they are observing changes.**
-  - _The observable maintains a list of its observers._
-  - _However, observers are not "aware" of the observable._
-- One to many dependency between objects.
+  - _**The observable maintains a list of its observers.**_
+  - _**However, observers are not "aware" of the observable.**_
+- _One-to-Many_ dependency between objects.
   - Observers depend on an object to provide them data.
 - The main object should:
   - manage its main state.
@@ -284,23 +284,81 @@ reactive.name; // "Tracking: name" // "bomboclat"
   - other business logic.
 - Observers perform certain actions upon receiving a notification from the main object.
   - All observers should implement the same interface to communicate with the main object.
-- Ex: the MVC architecture (when the model changes, the view updates).
-- Ex: rxjs library.
-  ```js
-  import { Subject } from "rxjs";
+- Ex: when used in the MVC architecture, changes to the Model (through the Controller) will notify the observer Views to update.
+  - This allows for a unidirectional data flow.
+#### Example - direct registration of observer via intermediary (Ex: Controller in MVC)
+```ts
+interface Observable {
+  registerObserver(observer: Observer): void;
+  removeObserver(observer: Observer): void;
+  notifyObservers(data: any): void;
+}
+
+interface Observer {
+  update(data: any): void;
+}
+```
+```ts
+// Concrete Observable
+
+class ConcreteObservable implements Observable {
+  private observers: Observer[];
   
-  const magazine = new Subject(); // Data to listen to.
+  registerObserver(observer: Observer): void {
+    this.observers.push(observer);
+  }
   
-  // The subject keeps track of these subscriptions and call their respective callback functions whenever the data changes.
-  const subscriber1 = magazine.subscribe(v => console.log(`subscriber1: ${v}`));
-  const subscriber2 = magazine.subscribe(v => console.log(`subscriber2: ${v}));
+  removeObserver(observer: Observer): void {
+    const idx = this.observers.indexOf(observer);
+    if (idx !=== -1) {
+      this.observers.splice(idx, 1);
+    }
+  }
   
-  // Push new values to the subject.
-  // For each change in data, all subscribers will be notified.
-  magzine.next("Can too much vegetables be bad for you?");
-  magazine.next("Plant-based meat are not really plant-based.");
-  magazine.next("The dangers of misinformation");
-  ```
+  notifyObservers(data: any) {
+    this.observers.forEach((observer) => {
+      observer.update(data);
+    });
+  }
+}
+```
+```ts
+// Concrete Observer
+
+class ConcreteObserver implements Observer {
+  update(data: any) {
+    console.log(`Received updated data: ${data}, from the Observable.`);
+  }
+}
+```
+```ts
+// Usage
+
+const concreteObservable = new ConcreteObservable();
+const concreteObserver1 = new ConcreteObserver();
+const concreteObserver2 = new ConcreteObserver();
+
+concreteObservable.registerObserver(concreteObserver1);
+concreteObservable.registerObserver(concreteObserver2);
+
+concreteObservable.notifyObservers("I am new data!");
+```
+#### Example - RxJS library
+```js
+import { Subject } from "rxjs";
+
+const magazine = new Subject(); // Data to listen to.
+
+// The subject keeps track of these subscriptions and call their respective callback functions whenever the data changes.
+const subscriber1 = magazine.subscribe(v => console.log(`subscriber1: ${v}`));
+const subscriber2 = magazine.subscribe(v => console.log(`subscriber2: ${v}));
+
+// Push new values to the subject.
+// For each change in data, all subscribers will be notified.
+magzine.next("Can too much vegetables be bad for you?");
+magazine.next("Plant-based meat are not really plant-based.");
+magazine.next("The dangers of misinformation");
+```
 ### Pub/Sub
 - **Define a subscription mechanism where subscribers are notified through a topic/channel that the publisher publishes to.**
   - _i.e. a publisher publishes to the topic/channel, and subscribers subscribe to that topic/channel._
