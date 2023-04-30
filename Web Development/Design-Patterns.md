@@ -299,8 +299,6 @@ interface Observer {
 }
 ```
 ```ts
-// Concrete Observable
-
 class ConcreteObservable implements Observable {
   private observers: Observer[];
   
@@ -323,8 +321,6 @@ class ConcreteObservable implements Observable {
 }
 ```
 ```ts
-// Concrete Observer
-
 class ConcreteObserver implements Observer {
   update(data: any) {
     console.log(`Received updated data: ${data}, from the Observable.`);
@@ -332,8 +328,6 @@ class ConcreteObserver implements Observer {
 }
 ```
 ```ts
-// Usage
-
 const concreteObservable = new ConcreteObservable();
 const concreteObserver1 = new ConcreteObserver();
 const concreteObserver2 = new ConcreteObserver();
@@ -655,6 +649,7 @@ app.get("/", (req, res) => {
 [Making Architecture Matter - Martin Fowler Keynote - YouTube](https://www.youtube.com/watch?v=DngAZyWMGR0&ab_channel=O%27Reilly)  
 [Who Needs an Architect? | Martin Fowler](https://martinfowler.com/ieeeSoftware/whoNeedsArchitect.pdf)  
 [Learn JavaScript Design Patterns - patterns.dev](https://www.patterns.dev/posts/classic-design-patterns/)  
+[The Observer Pattern with Vanilla JavaScript | by Patrick Ackerman | Medium](https://medium.com/@patrickackerman/the-observer-pattern-with-vanilla-javascript-8f85ea05eaa8)  
 [프론트엔드에서 MV* 아케틱쳐란 무엇인가요?](https://velog.io/@teo/%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C%EC%97%90%EC%84%9C-MV-%EC%95%84%ED%82%A4%ED%85%8D%EC%B3%90%EB%9E%80-%EB%AC%B4%EC%97%87%EC%9D%B8%EA%B0%80%EC%9A%94)  
 [Do MVC like it’s 1979. How to build a good iOS architecture by… | by Bohdan Orlov | Bumble Tech | Medium](https://medium.com/bumble-tech/do-mvc-like-its-1979-da62304f6568)  
 [JavaScript Technical Interview Question: is React a MVC or MVVM? | by GP Lee | Web Developers Tomorrow | Medium <-- Check the comments](https://medium.com/developers-tomorrow/javascript-interview-question-is-react-an-mvc-or-mvvm-ac2ea2a5127d)  
