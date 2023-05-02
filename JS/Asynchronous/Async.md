@@ -195,6 +195,7 @@ eventEmitter.removeAllListeners("blah");
 ```
 
 ## Dealing with Asynchronous Data
+- **The below options are all tools that enable us to write asynchronous programming.**
 ### Option 1 - Callbacks
 #### Definition
 - A function that is passed as an argument to another function, which will invoke the argument(callback) at a given time to complete some kind of routine or action.
@@ -249,7 +250,7 @@ fakeRequestCallback(
   }
 );
 ```
-- Using callbacks can result to a lot of nesting (callback hell).
+- Using callbacks can result in a lot of nesting (callback hell).
 - The Flow:
   ```js
   asyncOpFunction (url1, 
@@ -279,9 +280,9 @@ fakeRequestCallback(
   ```
 ### Option 2 - Promises
 #### Definition
-- A `Promise` is a returned **object** representing **the eventual resolution of success or failure of an asynchronous operation** (something that takes time) and its resulting value, to which callbacks are attached, instead of passed in to the function.
+- A `Promise` is a returned **object** representing **the eventual resolution of success or failure of an asynchronous operation** (something that takes time) and its resulting value, to which callbacks are attached (via `then()`, and `catch()`), instead of passed in to the function.
   - These callbacks will run depending on whether the promise was `fulfilled` or `rejected`.
-  - *Rather than passing callbacks into a function, we wait for the function to return a promise object and attach callbacks to it depending on whether the promise was fulfilled or rejected.*
+  - *Rather than passing callbacks into a function, we wait for the function to return a promise object and then attach callbacks to it depending on whether the promise was fulfilled or rejected.*
 - Promises allow you to associate handlers with an asynchronous action's eventual success value or failure reason.
   - This lets asynchronous methods return values like synchronous methods: instead of immediately returning the final value, the asynchronous method returns a promise to supply the value at some point in the future.
 #### 3 States
