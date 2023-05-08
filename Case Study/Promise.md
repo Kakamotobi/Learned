@@ -18,7 +18,8 @@
     - `reject(reason)`
       - The `Promise` rejects with the passed in `reason`.
     - _Note_
-      - _`fetch` implicitly resolves with the result from the request._
+      - Errors thrown in the `executor` cause the promise to be rejected.
+      - _`fetch` implicitly resolves with the result from the request or rejects with the error._
 - `then(onFulfilled, onRejected?)`
   - Collect and attach a callback to run if the `Promise` is fulfilled.
   - Return the `Promise` to allow chaining.
@@ -33,12 +34,12 @@
 </div>
 
 - "PENDING"
-  - &rarr; "FULFILLED"
-  - &rarr; "REJECTED"
+  - `resolve()` &rarr; "FULFILLED"
+  - `reject()` &rarr; "REJECTED"
 - "FULFILLED"
-  - &rarr; "PENDING"
+  - async operation &rarr; "PENDING"
 - "REJECTED"
-  - &rarr; "PENDING"
+  - async operation &rarr; "PENDING"
 
 ## Reference
 [Promise - JavaScript | MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)  
