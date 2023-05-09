@@ -22,8 +22,9 @@
       - _`fetch` implicitly resolves with the result from the request or rejects with the error._
 - `then(onFulfilled, onRejected?)`
   - Collect and attach a callback to run if the `Promise` is fulfilled.
+    - Optional: collect and attach a callback to run if the `Promise` is rejected.
   - Return the `Promise` to allow chaining.
-- `catch()`
+- `catch(onRejected)`
   - Collect and attach a callback to run if the `Promise` is rejected.
     - Basically, a shortcut for `onRejected` in `then()`.
   - Return the `Promise` to allow chaining.
