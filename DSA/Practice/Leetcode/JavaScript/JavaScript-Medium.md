@@ -2,6 +2,7 @@
 
 ## Table of Contents
 - [2622. Cache With Time Limit](#2622-cache-with-time-limit)
+- [2624. Snail Traversal](#2624-snail-traversal)
 
 ## [2622. Cache With Time Limit](https://leetcode.com/problems/cache-with-time-limit/)
 ```js
@@ -51,4 +52,34 @@ TimeLimitedCache.prototype.count = function() {
  * obj.get(1) // 42
  * obj.count() // 1
  */
+```
+
+## [2624. Snail Traversal](https://leetcode.com/problems/snail-traversal/)
+```js
+/**
+ * @param {number} rowsCount
+ * @param {number} colsCount
+ * @return {Array<Array<number>>}
+ */
+Array.prototype.snail = function(rowsCount, colsCount) {
+  if (rowsCount * colsCount !== this.length) return [];
+
+  let row;
+  let col;
+
+  return this.reduce((acc, curr, idx) => {
+    row = idx % rowsCount;
+    col = Math.floor(idx / rowsCount);
+
+    // Need to reverse on odd columns for "snail" curve.
+    if (col % 2 !== 0) {
+      row = rowsCount - row - 1;
+    }
+
+    if (!acc[row]) acc[row] = [];
+    acc[row][col] = curr;
+
+    return acc;
+  }, []);
+}
 ```
