@@ -3,6 +3,7 @@
 ## Table of Contents
 - [2622. Cache With Time Limit](#2622-cache-with-time-limit)
 - [2624. Snail Traversal](#2624-snail-traversal)
+- [2623. Memoize](#2623-memoize)
 
 ## [2622. Cache With Time Limit](https://leetcode.com/problems/cache-with-time-limit/)
 ```js
@@ -44,14 +45,6 @@ TimeLimitedCache.prototype.get = function(key) {
 TimeLimitedCache.prototype.count = function() {
   return Object.entries(this.cache).length;
 };
-
-/**
- * Your TimeLimitedCache object will be instantiated and called as such:
- * var obj = new TimeLimitedCache()
- * obj.set(1, 42, 1000); // false
- * obj.get(1) // 42
- * obj.count() // 1
- */
 ```
 
 ## [2624. Snail Traversal](https://leetcode.com/problems/snail-traversal/)
@@ -81,5 +74,22 @@ Array.prototype.snail = function(rowsCount, colsCount) {
 
     return acc;
   }, []);
+}
+```
+
+## [2623. Memoize](https://leetcode.com/problems/memoize/)
+```js
+/**
+ * @param {Function} fn
+ */
+function memoize(fn) {
+    const memo = new Map();
+    
+    return function(...args) {
+        if (memo.get(`${args}`) !== undefined) return memo.get(`${args}`);
+
+        memo.set(`${args}`, fn(...args));
+        return memo.get(`${args}`);
+    }
 }
 ```
