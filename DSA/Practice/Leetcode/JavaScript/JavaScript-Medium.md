@@ -4,6 +4,7 @@
 - [2622. Cache With Time Limit](#2622-cache-with-time-limit)
 - [2624. Snail Traversal](#2624-snail-traversal)
 - [2623. Memoize](#2623-memoize)
+- [2625. Flatten Deeply Nested Array](#2625-flatten-deeply-nested-array)
 
 ## [2622. Cache With Time Limit](https://leetcode.com/problems/cache-with-time-limit/)
 ```js
@@ -92,4 +93,27 @@ function memoize(fn) {
         return memo.get(`${args}`);
     }
 }
+```
+
+## [2625. Flatten Deeply Nested Array](https://leetcode.com/problems/flatten-deeply-nested-array/)
+```js
+/**
+ * @param {any[]} arr
+ * @param {number} depth
+ * @return {any[]}
+ */
+const flat = (arr, n) => {
+    if (n === 0) return arr;
+
+    const res = [];
+
+    arr.forEach((el) => {
+        // if el is an array, need recursion check (for possible nested arrays).
+        if (Array.isArray(el)) res.push(...flat(el, n-1));
+        // else just push to res.
+        else res.push(el);
+    })
+
+    return res;
+};
 ```
