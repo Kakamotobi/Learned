@@ -5,6 +5,7 @@
 - [2624. Snail Traversal](#2624-snail-traversal)
 - [2623. Memoize](#2623-memoize)
 - [2625. Flatten Deeply Nested Array](#2625-flatten-deeply-nested-array)
+- [2633. Convert Object to JSON String](#2633-convert-object-to-json-string)
 
 ## [2622. Cache With Time Limit](https://leetcode.com/problems/cache-with-time-limit/)
 ```js
@@ -115,5 +116,37 @@ const flat = (arr, n) => {
     })
 
     return res;
+};
+```
+
+## [2633. Convert Object to JSON String](https://leetcode.com/problems/convert-object-to-json-string/)
+```js
+/**
+ * @param {any} object
+ * @return {string}
+ */
+const jsonStringify = function(object) {
+    const helper = (val) => {
+        switch (typeof val) {
+            case "object":
+                if (Array.isArray(val)) {
+                    return `[${val.map((x) => helper(x)).join(",")}]`;
+                } else if (val) {
+                    return `{${Object.keys(val).map((key) => `"${key}":${helper(val[key])}`).join(",")}}`;
+                } else {
+                    return "null";
+                }
+            case "string":
+                return `"${val}"`;
+            case "number":
+                return val;
+            case "boolean":
+                return val;
+            default:
+                return "";
+        }
+    }
+
+    return helper(object);
 };
 ```
