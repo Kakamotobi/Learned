@@ -6,6 +6,7 @@
 - [2623. Memoize](#2623-memoize)
 - [2625. Flatten Deeply Nested Array](#2625-flatten-deeply-nested-array)
 - [2633. Convert Object to JSON String](#2633-convert-object-to-json-string)
+- [2632. Curry](#2632-curry)
 
 ## [2622. Cache With Time Limit](https://leetcode.com/problems/cache-with-time-limit/)
 ```js
@@ -148,5 +149,25 @@ const jsonStringify = function(object) {
     }
 
     return helper(object);
+};
+```
+
+## [2632. Curry](https://leetcode.com/problems/curry/)
+```js
+/**
+ * @param {Function} fn
+ * @return {Function}
+ */
+const curry = function(fn) {
+  return function curried(...args) {
+    // If equal or more arguments than the number of parameters that `fn` expects was given, execute and return the output.
+    if (args.length >= fn.length) {
+      return fn(...args);
+    }
+
+    return function(...moreArgs) {
+      return curried(...args, ...moreArgs);
+    }
+  };
 };
 ```
