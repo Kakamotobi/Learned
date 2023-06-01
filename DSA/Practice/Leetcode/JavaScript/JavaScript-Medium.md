@@ -7,6 +7,7 @@
 - [2625. Flatten Deeply Nested Array](#2625-flatten-deeply-nested-array)
 - [2633. Convert Object to JSON String](#2633-convert-object-to-json-string)
 - [2632. Curry](#2632-curry)
+- [2676. Throttle](#2676-throttle)
 
 ## [2622. Cache With Time Limit](https://leetcode.com/problems/cache-with-time-limit/)
 ```js
@@ -169,5 +170,42 @@ const curry = function(fn) {
       return curried(...args, ...moreArgs);
     }
   };
+};
+```
+
+## [2676. Throttle](https://leetcode.com/problems/throttle/description/)
+- Countdown for `t` starts upon the first function call.
+- The arguments of any function calls in that period of time will be stored, where the arguments of the latest function call will overwrite that of its preceding function call.
+- When the countdown ends, the function should be called again with latest saved arguments (repeat cycle).
+
+```js
+/**
+ * @param {Function} fn
+ * @param {number} t
+ * @return {Function}
+ */
+const throttle = function(fn, t) {
+    let latestArgs;
+    let throttlingActive = false;
+
+    function executeFn() {
+        // If there is no timer in place (i.e. can execute the function right away).
+        if (!throttlingActive && latestArgs) {
+            fn (...latestArgs);
+            
+            latestArgs = null;
+            throttlingActive = true;
+
+            setTimeout(() => {
+                throttlingActive = false;
+                executeFn();
+            }, t);
+        }
+    }
+
+    return function(...args) {
+        latestArgs = args;
+        executeFn();
+  }
 };
 ```
