@@ -8,6 +8,7 @@
 - [2633. Convert Object to JSON String](#2633-convert-object-to-json-string)
 - [2632. Curry](#2632-curry)
 - [2676. Throttle](#2676-throttle)
+- [2694. Event Emitter](#2694-event-emitter)
 
 ## [2622. Cache With Time Limit](https://leetcode.com/problems/cache-with-time-limit/)
 ```js
@@ -87,14 +88,14 @@ Array.prototype.snail = function(rowsCount, colsCount) {
  * @param {Function} fn
  */
 function memoize(fn) {
-    const memo = new Map();
-    
-    return function(...args) {
-        if (memo.get(`${args}`) !== undefined) return memo.get(`${args}`);
+  const memo = new Map();
 
-        memo.set(`${args}`, fn(...args));
-        return memo.get(`${args}`);
-    }
+  return function(...args) {
+    if (memo.get(`${args}`) !== undefined) return memo.get(`${args}`);
+
+    memo.set(`${args}`, fn(...args));
+    return memo.get(`${args}`);
+  }
 }
 ```
 
@@ -106,18 +107,18 @@ function memoize(fn) {
  * @return {any[]}
  */
 const flat = (arr, n) => {
-    if (n === 0) return arr;
+  if (n === 0) return arr;
 
-    const res = [];
+  const res = [];
 
-    arr.forEach((el) => {
-        // if el is an array, need recursion check (for possible nested arrays).
-        if (Array.isArray(el)) res.push(...flat(el, n-1));
-        // else just push to res.
-        else res.push(el);
-    })
+  arr.forEach((el) => {
+    // if el is an array, need recursion check (for possible nested arrays).
+    if (Array.isArray(el)) res.push(...flat(el, n-1));
+    // else just push to res.
+    else res.push(el);
+  });
 
-    return res;
+  return res;
 };
 ```
 
@@ -128,28 +129,28 @@ const flat = (arr, n) => {
  * @return {string}
  */
 const jsonStringify = function(object) {
-    const helper = (val) => {
-        switch (typeof val) {
-            case "object":
-                if (Array.isArray(val)) {
-                    return `[${val.map((x) => helper(x)).join(",")}]`;
-                } else if (val) {
-                    return `{${Object.keys(val).map((key) => `"${key}":${helper(val[key])}`).join(",")}}`;
-                } else {
-                    return "null";
-                }
-            case "string":
-                return `"${val}"`;
-            case "number":
-                return val;
-            case "boolean":
-                return val;
-            default:
-                return "";
+  const helper = (val) => {
+    switch (typeof val) {
+      case "object":
+        if (Array.isArray(val)) {
+          return `[${val.map((x) => helper(x)).join(",")}]`;
+        } else if (val) {
+          return `{${Object.keys(val).map((key) => `"${key}":${helper(val[key])}`).join(",")}}`;
+        } else {
+          return "null";
         }
+      case "string":
+        return `"${val}"`;
+      case "number":
+        return val;
+      case "boolean":
+        return val;
+      default:
+       return "";
     }
+  }
 
-    return helper(object);
+  return helper(object);
 };
 ```
 
@@ -185,27 +186,57 @@ const curry = function(fn) {
  * @return {Function}
  */
 const throttle = function(fn, t) {
-    let latestArgs;
-    let throttlingActive = false;
+  let latestArgs;
+  let throttlingActive = false;
 
-    function executeFn() {
-        // If there is no timer in place (i.e. can execute the function right away).
-        if (!throttlingActive && latestArgs) {
-            fn (...latestArgs);
-            
-            latestArgs = null;
-            throttlingActive = true;
+  function executeFn() {
+    // If there is no timer in place (i.e. can execute the function right away).
+    if (!throttlingActive && latestArgs) {
+      fn (...latestArgs);
 
-            setTimeout(() => {
-                throttlingActive = false;
-                executeFn();
-            }, t);
-        }
-    }
+      latestArgs = null;
+      throttlingActive = true;
 
-    return function(...args) {
-        latestArgs = args;
+      setTimeout(() => {
+        throttlingActive = false;
         executeFn();
+      }, t);
+    }
+  }
+
+  return function(...args) {
+    latestArgs = args;
+    executeFn();
   }
 };
+```
+
+## [2694. Event Emitter](https://leetcode.com/problems/event-emitter/description/)
+```js
+class EventEmitter {
+  constructor() {
+    this.subscriptions = {};
+  }
+
+  subscribe(event, cb) {
+    if (this.subscriptions[event]) this.subscriptions[event].push(cb);
+    else this.subscriptions[event] = [cb];
+
+    return {
+      unsubscribe: () => {
+        this.subscriptions[event] = this.subscriptions[event].filter((subscriber) => {
+          return subscriber !== cb;
+        });
+      }
+    };
+  }
+
+  emit(event, args = []) {
+    if (!this.subscriptions[event]) return [];
+
+    return this.subscriptions[event].reduce((acc, curr) => {
+      return [...acc, curr(...args)];
+    }, []);
+  }
+}
 ```
