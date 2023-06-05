@@ -9,6 +9,7 @@
 - [2632. Curry](#2632-curry)
 - [2676. Throttle](#2676-throttle)
 - [2694. Event Emitter](#2694-event-emitter)
+- [2700. Differences Between Two Objects](#2700-differences-between-two-objects)
 
 ## [2622. Cache With Time Limit](https://leetcode.com/problems/cache-with-time-limit/)
 ```js
@@ -239,4 +240,50 @@ class EventEmitter {
     }, []);
   }
 }
+```
+
+## [2700. Differences Between Two Objects](https://leetcode.com/problems/differences-between-two-objects/description/)
+```js
+function objDiff(obj1, obj2) {
+  function helper(obj1Item, obj2Item) {
+    // "Same" Case
+    // If the same, return an empty array.
+    if (obj1Item === obj2Item) return [];
+
+    // "Different" Cases
+    // If either is null.
+    // If either is not an object.
+    // If one is an array and the other is not.
+    if ((obj1Item === null || obj2Item === null) ||
+      (!isObject(obj1Item) || !isObject(obj2Item)) ||
+      (Array.isArray(obj1Item) !== Array.isArray(obj2Item))
+    ) {
+      return [obj1Item, obj2Item];
+    }
+
+    // At this point, both are not null || both are objects || both are arrays
+    // i.e. both are iterable (need to check inside).
+    console.log(obj1Item, obj2Item);
+
+    const diffs = {};
+
+    for (let obj1Key in obj1Item) {
+      if (obj1Key in obj2Item) {
+        const innerDiffs = helper(obj1Item[obj1Key], obj2Item[obj1Key]);
+
+        if (Object.keys(innerDiffs).length > 0) {
+          diffs[obj1Key] = innerDiffs;
+        }
+      }
+    }
+
+    return diffs;
+  }
+
+  function isObject(target) {
+    return typeof target === "object";
+  }
+
+  return helper(obj1, obj2);
+};
 ```
