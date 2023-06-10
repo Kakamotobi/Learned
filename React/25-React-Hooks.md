@@ -58,9 +58,12 @@ export default CounterHooks;
 ### `useEffect()`
 - Syntax: `useEffect(() => {}, [])`
 - **Runs after every single render (including the very first render) of the component by default.**
+  - The "setup" callback can optionally return a "cleanup" function 
+    - This function will run first before the "setup" callback if it exists.
+    - It will also run when the component unmounts from the DOM.
 - Commonly used for getting data from an API, save something to a database, manipulate the DOM.
 - Notes
-  - Think of `useEffect()` as `componentDidMount`, `componentDidUpdate`, and `comopnentWillUnmount` combined.
+  - Think of `useEffect()` as `componentDidMount`, `componentDidUpdate`, and `componentWillUnmount` combined.
     - Functional components do not have access to React class lifecycle methods.
   - Class-based components accept a second callback to be executed after manipulating state. However, function-based components do not.
     - Instead, to execute a side effect after rendering, declare it in the component body with `useEffect()`.
@@ -105,6 +108,10 @@ function SWMovies() {
       setMovie(res.data);
     }
     getData();
+    
+    return () => {
+      // clean up!
+    };
   }, [number]);
 
   return (
