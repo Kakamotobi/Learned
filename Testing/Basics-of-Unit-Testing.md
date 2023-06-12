@@ -2,11 +2,10 @@
 
 ## Table of Contents
 - [What is Unit Testing?](#what-is-unit-testing)
-- [Goals of Testing](#goals-of-testing)
 - [Some Concepts](#some-concepts)
 	- [Mocking](#mocking)
 	- [Interface](#interface)
-- [How to Test](#how-to-test)
+- [How to Write Test Code](#how-to-write-test-code)
 - [Simple Example - Node.js](#simple-example---nodejs)
   - [Issues with the Example](#issues-with-the-example)
   - [Solution](#solution)
@@ -28,16 +27,6 @@
 - It is the first level of testing.
 - _Unit tests only test data and functionality, and will not catch errors in integration._
 
-## Goals of Testing
-- Automate the process of ensuring that our app works as we expect.
-- Keep us from having to manually click around the app to find bugs.
-- Make sure the app still works as expected even after we change something.
-- Help detect flaws in code earlier on.
-### Opinion
-- There are many testing frameworks/libraries out there that people spend more time setting it up than they do writing tests.
-- All testing frameworks/libraries are essentially the same.
-- We don't even have to use a testing library.
-
 ## Some Concepts
 ### Mocking
 - Mocking is used when the unit that is being tested has external dependencies such as fetching data from an API.
@@ -45,14 +34,25 @@
 ### Interface
 - When testing, we need to consider as much cases that arise from interfaces including functions, parameters, etc.
 
-## How to Test
+## How to Write Test Code
+### Start by testing the smallest unit
+- Test a function that is not dependent on other functions, and has a clear output.
 - Run one testing command that will start up a sub program that is going to make sure that all of our code works as expected.
 - No need to know the internal implementation of the code to test. We can test it by knowing what goes into it and what should come out.
-### Notes
+#### Notes
 - Test each test case independently.
 - Do not make a test for every line of code. Make tests for code that affects the behavior of the program.
 	- Only test things that are vital to the performance of the unit being tested.
 - Once all units in a program have been tested to success, larger components of the program can be tested through integration testing.
+### given &rarr; when &rarr; then
+- A format/style of testing.
+- **Given**
+	- Pre-conditions to the test.
+	- i.e. set values necessary for testing.
+- **When**
+	- The behavior that we are testing.
+- **Then**
+	- The expected changes as an output of the behavior.
 
 ## Simple Example - Node.js
 ```js
@@ -255,5 +255,6 @@ mocha index.test.js
 
 ## Reference
 [What is Unit Testing? - TechTarget](https://www.techtarget.com/searchsoftwarequality/definition/unit-testing#:~:text=Unit%20testing%20is%20a%20software,developers%20and%20sometimes%20QA%20staff.)  
+[GivenWhenThen](https://martinfowler.com/bliki/GivenWhenThen.html)  
 [Mocha.js](https://mochajs.org/)  
 [Chai.js](https://www.chaijs.com/)  
