@@ -1,8 +1,11 @@
-# Basics of Testing
+# Basics of Unit Testing
 
 ## Table of Contents
-- [What is (Unit) Testing?](#what-is-unit-testing)
+- [What is Unit Testing?](#what-is-unit-testing)
 - [Goals of Testing](#goals-of-testing)
+- [Some Concepts](#some-concepts)
+	- [Mocking](#mocking)
+	- [Interface](#interface)
 - [How to Test](#how-to-test)
 - [Simple Example - Node.js](#simple-example---nodejs)
   - [Issues with the Example](#issues-with-the-example)
@@ -12,13 +15,18 @@
 	- [Mocha in the Browser](#mocha-in-the-browser)
 	- [Chai.js](#chaijs)
 
-## What is (Unit) Testing?
+## What is Unit Testing?
 > Unit testing is a software development process in which the smallest testable parts of an application, called units, are individually and independently scrutinized for proper operation. ... The main objective of unit testing is to isolate written code to test and determine if it works as intended. | TechTarget
 
-- It is a component of test-driven development (TDD).
-	- TDD: continual testing and revision in building a product.
+- A program is usually a **layered architecture** where each separate layer combine together to form a single unit of software.
+	- A layer should only interact with a layer that is directly above or below it.
+	- For example, hardware (I/O) --> OS --> Process --> Thread --> V8.
+- Unit testing involves _**testing each layer separately**_.
+	- _Validating each layer means that the whole unit would work as expected._
+- Unit Testing is a component of **Test-Driven Development (TDD)**.
+	- TDD refers to continal testing and revision while building a project.
 - It is the first level of testing.
-- *Unit tests only test data and functionality, and will not catch errors in integration.*
+- _Unit tests only test data and functionality, and will not catch errors in integration._
 
 ## Goals of Testing
 - Automate the process of ensuring that our app works as we expect.
@@ -30,8 +38,15 @@
 - All testing frameworks/libraries are essentially the same.
 - We don't even have to use a testing library.
 
+## Some Concepts
+### Mocking
+- Mocking is used when the unit that is being tested has external dependencies such as fetching data from an API.
+	- When testing the unit, the result of the external dependency is not what we are testing for. Therefore, we can simply 
+### Interface
+- When testing, we need to consider as much cases that arise from interfaces including functions, parameters, etc.
+
 ## How to Test
-- We will run one testing command that will start up a sub program that is going to make sure that all of our code works as expected.
+- Run one testing command that will start up a sub program that is going to make sure that all of our code works as expected.
 - No need to know the internal implementation of the code to test. We can test it by knowing what goes into it and what should come out.
 ### Notes
 - Test each test case independently.
@@ -241,4 +256,4 @@ mocha index.test.js
 ## Reference
 [What is Unit Testing? - TechTarget](https://www.techtarget.com/searchsoftwarequality/definition/unit-testing#:~:text=Unit%20testing%20is%20a%20software,developers%20and%20sometimes%20QA%20staff.)  
 [Mocha.js](https://mochajs.org/)  
-[Chai.js](https://www.chaijs.com/)
+[Chai.js](https://www.chaijs.com/)  
