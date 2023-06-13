@@ -183,75 +183,83 @@ superman.sayHello(); // Hello, I'm Clark Kent.
 #### Composition
 - Composition breaks apart the interfaces and logic into small pieces, and then builds up larger functions or objects by combining these pieces together.
   - *cf. inheritence and composition are alternatives to each other for code reusability.*
-- There are multiple ways to implement composition.
-  - Mixin Pattern - concatenate objects together.
-    - The idea is to decouple your properties or behaviors into objects or functions that return objects. Then merge all these objects together into a final function that does everything that we need it to.
-    - Basically, a certain type of multiple inheritance.
-    ```js
-    const getName = (name) => {
-      return { name };
-    };
+- _**Basically, composition is when you reuse code without inheriting it.**_
+  - If there are two separate classes that want to reuse another code, they can simply use/utilize the code (not inherit it).
+  - Instead of inheriting functionality from a superclass, a class has member variables, which are objects of another class.
+    - Ex: `new Person("Kakamotobi")` inside of the `User` class.
+- cf. **Dependency Injection**
+  - Receive external dependencies from outside.
+  - i.e. receive what is needed through parameters.
+  - Objects are decoupled.
+##### Some Ways to Implement Composition
+- Mixin Pattern - concatenate objects together.
+  - The idea is to decouple your properties or behaviors into objects or functions that return objects. Then merge all these objects together into a final function that does everything that we need it to.
+  - Basically, a certain type of multiple inheritance.
+  ```js
+  const getName = (name) => {
+    return { name };
+  };
 
-    const canSayHello = (name) => {
-      return {
-        sayHello: () => `Hello, I'm ${name}.`;
-      }
+  const canSayHello = (name) => {
+    return {
+      sayHello: () => `Hello, I'm ${name}.`;
+    }
+  }
+
+  // use normal function declaration to preserver `this`.
+  const Human = function(name) {
+    return {
+      ...getName(name),
+      ...canSayHello(name)
+    }
+  }
+
+  const kakamotobi = Human("Kakamotobi"); // { name: "Kakamotobi", sayHello: () => "Hello, I'm Kakamotobi." }
+  console.log(kakamotobi.sayHello()); // Hello, I'm Kakamotobi.
+  ```
+  - The mixin pattern can be powerful but in its current form we lose all of the ergonomics of Class-based OOP.
+    - TypeScript allows us to use mixins in a Class-based format.
+    - Instead of encapsulating everything in a single Class, create behavior classes that define the individual behaviors.
+  ```ts
+  function applyMixins(//) {
+    //
+  }
+
+  // Mixin 1
+  class CanSayHello {
+    name;
+
+    sayHello() {
+      return `Hello, I'm ${this.name}`;
+    }
+  }
+
+  // Mixin 2
+  class HasSuperPower {
+    heroName;
+
+    superpower() {
+      return `${this.heroName} beams light off eyes!`;
+    }
+  }
+
+  // Build up SuperHero using mixins 
+  class SuperHero implements CanSayHi, HasSuperPower {
+    heroName;
+
+    constructor(public name) {
+      this.heroName = `HERO ${name}`;
     }
 
-    // use normal function declaration to preserver `this`.
-    const Human = function(name) {
-      return {
-        ...getName(name),
-        ...canSayHello(name)
-      }
-    }
+    sayHello: () => string;
+    superpower: () => string;
+  }
 
-    const kakamotobi = Human("Kakamotobi"); // { name: "Kakamotobi", sayHello: () => "Hello, I'm Kakamotobi." }
-    console.log(kakamotobi.sayHello()); // Hello, I'm Kakamotobi.
-    ```
-    - The mixin pattern can be powerful but in its current form we lose all of the ergonomics of Class-based OOP.
-      - TypeScript allows us to use mixins in a Class-based format.
-      - Instead of encapsulating everything in a single Class, create behavior classes that define the individual behaviors.
-    ```ts
-    function applyMixins(//) {
-      //
-    }
-    
-    // Mixin 1
-    class CanSayHello {
-      name;
-      
-      sayHello() {
-        return `Hello, I'm ${this.name}`;
-      }
-    }
-    
-    // Mixin 2
-    class HasSuperPower {
-      heroName;
-      
-      superpower() {
-        return `${this.heroName} beams light off eyes!`;
-      }
-    }
-    
-    // Build up SuperHero using mixins 
-    class SuperHero implements CanSayHi, HasSuperPower {
-      heroName;
-      
-      constructor(public name) {
-        this.heroName = `HERO ${name}`;
-      }
-      
-      sayHello: () => string;
-      superpower: () => string;
-    }
-    
-    applyMixins(SuperHero, [CanSayHello, HasSuperPower]);
-    
-    const superman = new SuperHero("Super Man");
-    console.log(superman.superpower()); // HERO Super Man
-    ```
+  applyMixins(SuperHero, [CanSayHello, HasSuperPower]);
+
+  const superman = new SuperHero("Super Man");
+  console.log(superman.superpower()); // HERO Super Man
+  ```
 ### Polymorphism
 > the presentation of one interface for multiple data types. | MDN
 
@@ -326,3 +334,4 @@ const personB = new Person();
 [Object Oriented vs Functional Programming with TypeScript - YouTube](https://www.youtube.com/watch?v=fsVL_xrYO0w&ab_channel=Fireship)  
 [MDN Web Docs Glossary: Definitions of Web-related terms | MDN](https://developer.mozilla.org/en-US/docs/Glossary)  
 [객체지향의 기본 이론 | 개발자 황준일](https://junilhwang.github.io/TIL/CodeSpitz/Object-Oriented-Javascript/01-Intro/#value-vs-identifier)  
+[The Flaws of Inheritance - YouTube](https://youtu.be/hxGOiiR9ZKg?t=212)  
