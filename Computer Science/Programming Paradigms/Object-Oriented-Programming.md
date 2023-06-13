@@ -14,6 +14,9 @@
   - [Encapsulation](#encapsulation)
   - [Abstraction](#abstraction)
   - [Inheritance](#inheritance)
+    - [Composition](#composition)
+      - [Some Ways to Implement Composition](#some-ways-to-implement-composition)
+      - [Dependency Injection](#dependency-injection)
   - [Polymorphism](#polymorphism)
 - [Object Instances and Reference](#object-instances-and-reference)
 - [Some Tips on Implementing OOP](#some-tips-on-implementing-oop)
@@ -151,6 +154,7 @@
 
 - A child class extending from a base/parent class inherits all of the parent's functionality and is able to overwrite or extend it with custom behaviors it needs.
 - This helps eliminate redundant code.
+- **The abstraction is based on parent classes.**
 - _Note_
   - Be careful of deeply nested classes as it can become very difficult to debug (too much abstraction!).
 #### Example
@@ -183,14 +187,14 @@ superman.sayHello(); // Hello, I'm Clark Kent.
 #### Composition
 - Composition breaks apart the interfaces and logic into small pieces, and then builds up larger functions or objects by combining these pieces together.
   - *cf. inheritence and composition are alternatives to each other for code reusability.*
+- **The abstraction is based on interfaces.**
+  - The interface simply describes what a particular object can do.
+    - Therefore, if the classes `MongoDB`, `Redis`, `Cassandra`, `MariaDB` implement the same interface (`Database`), `db.save()` in the server controller should work for whatever class was created.
 - _**Basically, composition is when you reuse code without inheriting it.**_
   - If there are two separate classes that want to reuse another code, they can simply use/utilize the code (not inherit it).
   - Instead of inheriting functionality from a superclass, a class has member variables, which are objects of another class.
     - Ex: `new Person("Kakamotobi")` inside of the `User` class.
-- cf. **Dependency Injection**
-  - Receive external dependencies from outside.
-  - i.e. receive what is needed through parameters.
-  - Objects are decoupled.
+- cf. [Dependency Injection](#dependency-injection)
 ##### Some Ways to Implement Composition
 - Mixin Pattern - concatenate objects together.
   - The idea is to decouple your properties or behaviors into objects or functions that return objects. Then merge all these objects together into a final function that does everything that we need it to.
@@ -260,6 +264,45 @@ superman.sayHello(); // Hello, I'm Clark Kent.
   const superman = new SuperHero("Super Man");
   console.log(superman.superpower()); // HERO Super Man
   ```
+##### Dependency Injection
+- Receive external dependencies from outside.
+- Passing in an interface for what is to be used.
+  - i.e. receive what is needed through parameters.
+- Objects are decoupled.
+- Example
+  - Instead of:
+    ```ts
+    class Server {
+      constructor() {
+        this.db = new MongoDB();
+      }
+    }
+
+    class MongoDB implements Database {
+      constructor() {}
+
+      connect() {}
+
+      // ...
+    }
+
+    interface Database {
+      connect(): void;
+      query(): any;
+      save(): void;
+      // ...
+    }
+
+    const server = new Server();
+    ```
+  - Inject Dependency
+    ```ts
+    class Server {
+      constructor(db) {}
+    }
+
+    const server = new Server(new MongoDB());
+    ```
 ### Polymorphism
 > the presentation of one interface for multiple data types. | MDN
 
