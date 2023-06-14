@@ -7,21 +7,22 @@
 - [Inferred Generics](#inferred-generics)
 - [Generics in `.tsx` Files](#generics-in-tsx-files)
 - [Generics with Multiple Types](#generics-with-multiple-types)
-- [Adding Type Constraints](#adding-type-constraints)
+- [Adding Generic (Type) Constraints](#adding-generic-type-constraints)
 - [Generics with Default Type Parameters](#generics-with-default-type-parameters)
 - [Writing Generic Classes](#writing-generic-classes)
 
 ## What are Generics?
 - Allows us to define reusable functions and classes that work with multiple types rather than a single type.
-  - Accept any type (`T`) and return the same type.
+  - Ex: accept any type (`T`) and return the same type.
 - Generic Example
   ```ts
   function wrapInArray<T>(element: T): T[] {
     return [element];
   }
   ```
+  - If implementing this function without using generics, you would have to manually maintain a list of all possible types.
 - cf. Union Type
-  - By this approach, it is possible to receive a number as an argument and return a string.
+  - By this approach, it is possible to receive a number as an argument and return a string, which is not ideal.
   ```ts
   function doSomething(thing: number | string): number | string {
     // 
@@ -31,7 +32,7 @@
 ## Some Built-in Generics
 ### Type Interfaces
 - Type interfaces accept any (`T`) types and returns the specified type.
-  - EX: if you specify `Array<string>`, it will return an array of strings.
+  - Ex: if you specify `Array<string>`, it will return an array of strings.
   - Hover over to see `interface Array<T>`.
 - Example
   - The interface `Array` receives `T` values and returns an array of strings.
@@ -106,7 +107,7 @@ getRandomElement(["a", "b", "c"]);
   ```
 - To solve this, add a trailing comma to the parameter type.
   ```tsx
-  const getRandomElement = <T,>(list: T[]): T => { // Leads to TS error.
+  const getRandomElement = <T,>(list: T[]): T => {
     // ...
   }
   ```
@@ -123,8 +124,8 @@ function merge<T, U>(object1: T, object2: U) { // return type `T & U` is inferre
 const obj = merge({ name: "kakamotobi" }, { pets: ["tom", "jerry"] }; // { name: string; } & { pets: string[] }
 ```
 
-## Adding Type Constraints
-- `T` and `U` are any type. Therefore, TS does not complain about `merge({ name: "tom" }, 3)`.
+## Adding Generic (Type) Constraints
+- Problem: `T` and `U` can be any type. Therefore, TS does not complain about things like `merge({ name: "tom" }, 3)`.
   ```ts
   function merge<T, U>(object1: T, object2: U) { // return type `T & U` is inferred.
     return {
@@ -133,8 +134,10 @@ const obj = merge({ name: "kakamotobi" }, { pets: ["tom", "jerry"] }; // { name:
     }
   }
   ```
-- To constraint to a particular type, user the `extends` keyword.
+- **To constraint a Generic to a particular type, use the `extends` keyword.**
   ```ts
+  // Example 1
+  
   function merge<T extends object, U extends object>(object1: T, object2: U) { // return type `T & U` is inferred.
     return {
       ...object1,
@@ -143,6 +146,8 @@ const obj = merge({ name: "kakamotobi" }, { pets: ["tom", "jerry"] }; // { name:
   }
   ```
   ```ts
+  // Example 2
+  
   interface Length {
     length: number;
   }
