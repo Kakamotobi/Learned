@@ -135,6 +135,7 @@ const obj = merge({ name: "kakamotobi" }, { pets: ["tom", "jerry"] }; // { name:
   }
   ```
 - **To constraint a Generic to a particular type, use the `extends` keyword.**
+  - _Basically, `T` can be anything but also has to be whatever it is extending from (this is the constraint)._
   ```ts
   // Example 1
   
