@@ -10,6 +10,7 @@
 - [2676. Throttle](#2676-throttle)
 - [2694. Event Emitter](#2694-event-emitter)
 - [2700. Differences Between Two Objects](#2700-differences-between-two-objects)
+- [2721. Execute Asynchronous Functions in Parallel](#2721-execute-asynchronous-functions-in-parallel)
 
 ## [2622. Cache With Time Limit](https://leetcode.com/problems/cache-with-time-limit/)
 ```js
@@ -285,5 +286,34 @@ function objDiff(obj1, obj2) {
   }
 
   return helper(obj1, obj2);
+};
+```
+
+## [2721. Execute Asynchronous Functions in Parallel](https://leetcode.com/problems/execute-asynchronous-functions-in-parallel/)
+```js
+const promiseAll = async function(functions) {
+  return new Promise(async (resolve, reject) => {
+    const res = [];
+    let numResolvedFn = 0;
+    
+    // Higher order functions do not wait for promises to resolve before moving to the next iteration.
+    functions.forEach(async (fn, idx) => {
+      try {
+        res[idx] = await fn();
+        numResolvedFn++;
+        
+        if (numResolvedFn === functions.length) {
+          resolve(res);
+        }
+        
+        // Doesn't work when using `idx` because this will execute before all promises (`fn()`) have resolved.
+        // if (idx === functions.length - 1) {
+          //     resolve(res);
+        // }
+      } catch(err) {
+        reject(err);
+      }
+    });
+  });
 };
 ```
