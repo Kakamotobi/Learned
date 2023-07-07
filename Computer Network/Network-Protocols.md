@@ -83,7 +83,7 @@
   - The Application Layer involves high-level protocols for human-computer interaction.
     - i.e. the actual message being sent.
   - Browsers rely on this layer to initiate communication.
-  - Ex: HTTP/HTTPS, SMTP.
+  - Ex: HTTP/HTTPS, SSH, SMTP.
   - Data Unit: data
 - **Presentation**
   - The Presentation Layer is responsible for:
@@ -383,6 +383,7 @@
 
 - SSH is used for remote login and command-line execution.
 - SSH works by an SSH client connecting to an SSH server (called SSHD).
+- SSH is an application layer that works over TCP, since it needs a secure connection.
 
 <p align="center">
   <img src="https://www.ssh.com/hubfs/Imported_Blog_Media/SSH_simplified_protocol_diagram-2.png" alt="SSH Key-based Authentication" width="80%" />
