@@ -3,21 +3,23 @@
 ## Table of Contents
 - [What are Hooks?](#what-are-hooks)
 - [Basic Hooks](#basic-hooks)
-  - [`useState()`](#usestate)
-  - [`useEffect()`](#useeffect)
-  - [`useContext()`](#usecontext)
+  - [`useState`](#usestate)
+  - [`useEffect`](#useeffect)
+  - [`useContext`](#usecontext)
 - [Additional Hooks](#additional-hooks)
-  - [`useRef()`](#useref)
-  - [`useReducer()`](#usereducer)
-  - [`useMemo()`](#usememo)
-  - [`useCallback()`](#usecallback)
-  - [`useLayoutEffect()`](#uselayouteffect)
-  - [`useDebugValue()`](#usedebugvalue)
-  - [`useId()`](#useid)
-  - [`useTransition()`](#usetransition)
-- [Creating Custom Hooks](#creating-custom-hooks)
-  - [Example 1 - Toggle](#example-1---toggle)
-  - [Example 2 - Controlled Inputs in Forms](#example-2---controlled-inputs-in-forms)
+  - [`useRef`](#useref)
+  - [`useReducer`](#usereducer)
+  - [`useMemo`](#usememo)
+  - [`useCallback`](#usecallback)
+  - [`useLayoutEffect`](#uselayouteffect)
+  - [`useDebugValue`](#usedebugvalue)
+  - [`useId`](#useid)
+  - [`useTransition`](#usetransition)
+- [Custom Hooks](#custom-hooks)
+  - [When to Use Custom Hooks](#when-to-use-custom-hooks)
+  - [Creating Custom Hooks](#creating-custom-hooks)
+    - [Example 1 - Toggle](#example-1---toggle)
+    - [Example 2 - Controlled Inputs in Forms](#example-2---controlled-inputs-in-forms)
 
 ## What are Hooks?
 - **Hooks are functions for function components that "hook into" React's state and lifecycle features, which was only possible in class components until React version 16.8.**
@@ -33,7 +35,7 @@
   - Sharing any logic required some frustrating solutions like higher ordered components and render props (patterns where components are passed in as arguments to other components).
 
 ## Basic Hooks
-### `useState()`
+### `useState`
 - Syntax: `const [stateName, setState] = useState(initStateVal)`
 - **`useState()` returns an array with two different pieces.**
   - Reference to the state itself.
@@ -55,13 +57,14 @@ function CounterHooks() {
 
 export default CounterHooks;
 ```
-### `useEffect()`
+### `useEffect`
 - Syntax: `useEffect(() => {}, [])`
 - **Runs after every single render (including the very first render) of the component by default.**
   - The "setup" callback can optionally return a "cleanup" function 
     - This function will run first before the "setup" callback if it exists.
     - It will also run when the component unmounts from the DOM.
 - Commonly used for getting data from an API, save something to a database, manipulate the DOM.
+  - i.e. use `useEffect` when you need to "step outside React" and when there are no alternate built-in solution.
 - Notes
   - Think of `useEffect()` as `componentDidMount`, `componentDidUpdate`, and `componentWillUnmount` combined.
     - Functional components do not have access to React class lifecycle methods.
@@ -73,7 +76,7 @@ export default CounterHooks;
     - Dependencies can be any number of pieces of data or things in the state.
     - *`useEffect()` will only run if they change.*
 - **The function that you may choose to return in the `useEffect` callback will be called when the component is destroyed.**
-#### Example 1 - `useEffect()` with DOM Manipulation
+#### Example 1 - `useEffect` with DOM Manipulation
 ```js
 // Clicker.js
 
@@ -93,7 +96,7 @@ function Clicker() {
 
 export default Clicker;
 ```
-#### Example 2 - `useEffect()` with API Call
+#### Example 2 - `useEffect` with API Call
 ```js
 import React, { useState, useEffect } from "react";
 import axios from "axios";
@@ -134,7 +137,7 @@ function SWMovies() {
 
 export default SWMovies;
 ```
-### `useContext()`
+### `useContext`
 - Syntax: `useContext(contextObject)`.
   - Accepts a Context object (created by `React.createContext`) and returns the current context value for that Context.
 - `useContext` allows us to work with React's Context API.
@@ -253,7 +256,7 @@ export default SWMovies;
 - Refer [here](https://github.com/Kakamotobi/Learned/blob/main/React/Context-API.md#hooks-based-approach).
 
 ## Additional Hooks
-### `useRef()`
+### `useRef`
 - Syntax: `useRef(initialValue)`
 - **Allows us to create a mutable object that will keep the same reference between renders.**
 - Similar to `useState` in that the value is mutable. However, `useRef` does not re-render the component when the value changes.
@@ -275,7 +278,7 @@ function App() {
   )
 }
 ```
-### `useReducer()`
+### `useReducer`
 - Syntax: `const [state, dispatch] = useReducer(reducer, initialState, init)`.
   - `dispatch`: a function that can dispatch an action.
     - action: an object that has a `type` and an optional `payload` for data.
@@ -363,7 +366,7 @@ function Counter() {
 
 export default Counter;
 ```
-### `useMemo()`
+### `useMemo`
 - Syntax: `const memoizedValue = useMemo(() => computeExpensiveValue(a, b), [a, b]);`.
 - **Helps us optimize computation costs for improved performance by memoizing/caching the return values of a function call.**
 - Use only for expensive calculations; not for everything.
@@ -381,7 +384,7 @@ function App() {
   return <></>;
 }
 ```
-### `useCallback()`
+### `useCallback`
 - Syntax: `const memoizedCallback = useCallback(() => { doSomething(a, b) }, [a, b])`.
 - **Memoize an entire function.**
 - When you define a function in a component, a new function object is created each time the component rerenders.
@@ -403,7 +406,7 @@ function App() {
   return <><SomeChild handler={showCount}/></>
 }
 ```
-### `useLayoutEffect()`
+### `useLayoutEffect`
 - It works just like the `useEffect` hook but the callback will run after rendering a component but before the actual updates have been painted to the screen.
   - i.e. **React will wait for your code to finish running before it updates the UI.**
 #### Example
@@ -420,7 +423,7 @@ function App() {
   return <><button ref={myBtn}></button></>
 }
 ```
-### `useDebugValue()`
+### `useDebugValue`
 - **Allows us to display a label for custom hooks in React DevTools.**
 #### Example
 ```js
@@ -447,7 +450,7 @@ export function useDisplayName() {
   return displayName;
 }
 ```
-### `useId()`
+### `useId`
 - Syntax: `const id = useId()`.
 - **Generates unique IDs that are stable across the server and client.**
 - *It is NOT for generating keys in a list.*
@@ -467,7 +470,7 @@ function Box() {
   );
 };
 ```
-### `useTransition()`
+### `useTransition`
 - Syntax: `const [isPending, startTransition] = useTransition()`.
   - `startTransition` marks udpates in the provided callback as transitions.
   - `isPending` indicates when a transition is active to show a pending state.
@@ -496,9 +499,19 @@ function App() {
 }
 ```
 
-## Creating Custom Hooks
-### Example 1 - Toggle
-#### Before Using Custom Hook
+## Custom Hooks
+- Similar to built-in hooks, custom Hooks allow us to share stateful logic (repetitive logic), _not state itself_.
+  - `const someState = useMyHook` used in component A and component B are two completely independent state variables and Effects.
+### When to Use Custom Hooks
+- Custom Hooks can be used to hide away the details of the "how". This effectively makes the component more expressive of intent rather than implementation.
+- When using `useEffect`, it may be clearer to also wrap it in a custom Hook.
+
+
+
+
+### Creating Custom Hooks
+#### Example 1 - Toggle
+##### Before Using Custom Hook
 ```js
 // Toggler.js
 
@@ -526,7 +539,7 @@ function Toggler() {
 
 export default Toggler;
 ```
-#### After Using Custom Hook with `useState()`
+##### After Using Custom Hook with `useState`
 - Moved a lot of functionality from the component to a custom hook.
 - Cleaned up the component significantly and made a reusable piece of stateful logic for anything to do with toggling.
 ```js
@@ -569,8 +582,8 @@ function Toggler() {
 
 export default Toggler;
 ```
-### Example 2 - Controlled Inputs in Forms
-#### Before Using Custom Hooks
+#### Example 2 - Controlled Inputs in Forms
+##### Before Using Custom Hooks
 ```js
 // Form.js
 
@@ -594,7 +607,7 @@ function Form() {
 
 export default Form;
 ```
-#### After Using Custom Hooks with `useState()` 
+##### After Using Custom Hooks with `useState` 
 ```js
 // useInputState.js
 
