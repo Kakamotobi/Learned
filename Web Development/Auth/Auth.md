@@ -141,9 +141,9 @@
 8. App B should verify that the ID token was indeed sent by App A.
     - Verify the JWT signature, the `aud` claim, the `exp` claim, and the `iss` claim.
     - App B can also use the access token to send requests to app A's resource server for additional information.
-#### Example
+#### Illustration Example
 <div align="center">
-  <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/Web%20Development/Auth/refImg/OAuth2.0.jpg" alt="OAuth 2.0" width="80%"/>
+  <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/Web%20Development/Auth/refImg/OpenIdConnect.jpg" alt="OpenId Connect" width="80%"/>
 </div>
 
 ## Authorization
@@ -176,9 +176,9 @@
     - The client does not "understand" the access token.
 8. App B uses the access token to send requests to app A's resource server.
 9. App A's resource server responds with the requested data.
-#### Example
+#### Illustration Example
 <div align="center">
-  <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/Web%20Development/Auth/refImg/OpenIdConnect.jpg" alt="OpenId Connect" width="80%"/>
+  <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/Web%20Development/Auth/refImg/OAuth2.0.jpg" alt="OAuth2.0" width="80%"/>
 </div>
 
 #### GitHub OAuth Example
