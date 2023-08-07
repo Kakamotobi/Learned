@@ -419,7 +419,7 @@
 
 - An alternative way to integrate changes (cf. `git merge`) from the specified branch _into_ your HEAD branch.
 - **`git rebase <base-branch-name> [<target-branch-name>]`**
-  - The HEAD's current commit (and its history) is copied. These copied commits are added to the `<base-branch-name>` so that the `<base-branch-name>` becomes the base/parent branch. 
+  - The HEAD's (or the `<target-branch-name>`'s) current commit (and its history) is copied. These copied commits are added to `<base-branch-name>` so that `<base-branch-name>` becomes the base/parent branch.
     - _At this point, the HEAD points to the latest copied commit, and the `<base-branch-name>` branch remains pointing to the same commit (behind the HEAD)._
       - Ex: `git switch feature/navbar`, then `git rebase main`.
     - Make sure to update the `<base-branch-name>` pointer as well to the latest commit.
