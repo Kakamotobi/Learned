@@ -77,6 +77,7 @@
 
 <p align="center">
   <img src="https://www.tech-faq.com/wp-content/uploads/2009/01/osimodel.png" alt="OSI Model" width="50%" />
+  <img src="https://media.fs.com/images/community/upload/kindEditor/202107/29/original-seven-layers-of-osi-model-1627523878-JYjV8oybcC.png" alt="OSI Model" width="50%" />
 </p>
 
 - **Application**
@@ -412,6 +413,7 @@
 [OSI model - Wikipedia](https://en.wikipedia.org/wiki/OSI_model)  
 [What is the OSI Model? | Cloudfarez](https://www.cloudflare.com/learning/ddos/glossary/open-systems-interconnection-model-osi/)  
 [The OSI Model – What It Is; Why It Matters; Why It Doesn’t Matter. - Tech-FAQ](https://www.tech-faq.com/osi-model.html)  
+[TCP/IP vs. OSI: What’s the Difference Between them? | FS Community](https://community.fs.com/blog/tcpip-vs-osi-whats-the-difference-between-the-two-models.html)  
 
 [Transmission Control Protocol - Wikipedia](https://en.wikipedia.org/wiki/Transmission_Control_Protocol)  
 [TCP 3-Way Handshake Process - GeeksforGeeks](https://www.geeksforgeeks.org/tcp-3-way-handshake-process/)  
