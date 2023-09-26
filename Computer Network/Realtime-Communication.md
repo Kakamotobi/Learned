@@ -58,6 +58,7 @@
 #### STOMP
 - A text-oriented protocol that can be used as a subprotocol for WebSocket connections.
 - _As a subprotocol to a protocol like WebSocket, STOMP is also in the Application Layer of the OSI model._
+- STOMP is based on a _publish-subscribe_ mechanism where clients subscribe to a particular "topic" and will hence be notified of messages to that topic.
 - P.S. STOMP is not WebSocket exclusive.
 - [Other WebSocket subprotocols](https://www.iana.org/assignments/websocket/websocket.xml#subprotocol-name).
 
@@ -69,3 +70,4 @@
 [Writing WebSocket servers - Web APIs | MDN](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_servers)  
 [What is the difference between WebSocket and STOMP protocols? - Stack Overflow](https://stackoverflow.com/questions/40988030/what-is-the-difference-between-websocket-and-stomp-protocols)  
 [Long Polling vs WebSockets - which to use in 2023](https://ably.com/blog/websockets-vs-long-polling)  
+[STOMP - stomp.github.io](https://stomp.github.io/stomp-specification-1.2.html)  
