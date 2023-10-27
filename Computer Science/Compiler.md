@@ -6,7 +6,7 @@
   - [1. Lexical Analysis](#1-lexical-analysis)
   - [2. Syntax Analysis](#2-syntax-analysis)
   - [3. Semantic Analysis](#3-semantic-analysis)
-  - [4. Intermediate Code Generation](#intermediate-code-generation)
+  - [4. Intermediate Code Generation](#4-intermediate-code-generation)
   - [5. Code Optimization](#5-code-optimization)
   - [6. Target Code Generation](#6-target-code-generation)
 - [Compiler vs Interpreter](#compiler-vs-interpreter)
@@ -83,11 +83,21 @@
 | The source code is translated to object code successfully if it is free of errors.                                                      | The interpreter moves on only after the error has been removed.                                                                          |
 
 ## Just-In-Time(JIT) Compiler
-- Unlike the compiler where the translation is done ahead of time (i.e. before the code is executed), the JIT Compiler translates during execution.
-- Source Code → Machine Code → Execute → Source Code
+- Unlike a static compiler where the translation is done ahead of time (i.e. before the code is executed), the JIT compiler translates during execution.
+  - cf. static compiler
+    - A static compiler cannot fully analyze and well optimize the code.
+    - A JIT compiler has more observed information to make better optimizations.
+- **A JIT compiler runs a program using an interpreter. While interpreting the program, the JIT compiler observes the executions and makes optimizations (compile an optimized version of something).**
+  - Optimization Examples
+    - Caching a frequently called function.
+    - A function takes some parameters that are always integers.
+  - Source Code → Machine Code → Execute → Possible Optimization → Source Code
+    - _i.e. dynamic analysis and converting source code into machine code at runtime._
+  - This means that JIT starts off slow but, hopefully, gets faster as optimizations take place.
 - Every browser, and runtime in general, implements its own version of a JIT compiler.
   - Chrome and Node.js uses V8.
   - Check [here](https://github.com/Kakamotobi/Learned/blob/main/Web%20Development/Browsers.md#popular-web-browsers) for the JS engines that each browser uses for JIT compilation.
+  - _Note: any given programming language can be implemented using an interpreter, compiler, JIT compiler, etc._
 ### V8's JIT Compiler Structure
 <p align="center">
   <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/Computer%20Science/refImg/jit-compiler.png" alt="V8's JIT Compiler Structure" width="80%" /><br>
@@ -120,5 +130,6 @@
 [Language Processors: Assembler, Compiler and Interpreter](https://www.geeksforgeeks.org/language-processors-assembler-compiler-and-interpreter/)  
 [How do computers read code? - YouTube](https://www.youtube.com/watch?v=QXjU9qTsYCc&ab_channel=FrameofEssence)  
 [COMPILER| INTERPRETER |Difference between Interpreter and Compiler| Interpreter vs Compiler Animated](https://www.youtube.com/watch?v=e4ax90XmUBc)  
+[Just In Time (JIT) Compilers - Computerphile | YouTube](https://www.youtube.com/watch?v=d7KHAVaX_Rs)  
 [The JIT in JavaScript: Just In Time Compiler](https://blog.bitsrc.io/the-jit-in-javascript-just-in-time-compiler-798b66e44143)  
 [How Does JavaScript Really Work? (Part 1) | by Priyesh Patel | Bits and Pieces - Medium](https://blog.bitsrc.io/how-does-javascript-really-work-part-1-7681dd54a36d)  
