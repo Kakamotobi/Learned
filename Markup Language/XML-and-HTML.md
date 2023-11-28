@@ -4,8 +4,8 @@
 - [What is Extensive Markup Language(XML)?](#what-is-extensive-markup-languagexml)
   - [XML Structure](#xml-structure)
   - [Conditions for Well-formed and Valid XML](#conditions-for-well-formed-and-valid-xml)
-  - [XML vs JSON](#xml-json)
-- [What is HyperText Markup Langauge(HTML)?](#what-is-hypertext-markup-languagehtml)
+  - [XML vs JSON](#xml-vs-json)
+- [What is HyperText Markup Language(HTML)?](#what-is-hypertext-markup-languagehtml)
 
 ## What is Extensive Markup Language(XML)?
 > XML (Extensible Markup Language) is a markup language similar to HTML, but without predefined tags to use. Instead, you define your own tags designed specifically for your needs. | MDN
@@ -61,7 +61,7 @@
 }
 ```
 
-## What is HyperText Markup Langauge(HTML)?
+## What is HyperText Markup Language(HTML)?
 > HTML (HyperText Markup Language) is the most basic building block of the Web. It defines the meaning and structure of web content. | MDN
 
 - HTML is designed to describe the structure of a webpage.
