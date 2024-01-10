@@ -12,31 +12,36 @@
 ## What is Shadow DOM?
 > An important aspect of web components is encapsulation — being able to keep the markup structure, style, and behavior hidden and separate from other code on the page so that different parts do not clash, and the code can be kept nice and clean. The Shadow DOM API is a key part of this, providing a way to attach a hidden separated DOM to an element. | MDN
 
-- The Shadow DOM is much like the ordinary "light" DOM but different in the way it is generated and used in relation to other elements on the document.
-- DOM elements come together to compose a DOM tree.
+- The Shadow DOM is a way that browsers can attach hidden, separated DOM trees (starting with a Shadow Root) to an element (refered to as the Shadow Host) in the real DOM.
   - The Shadow DOM is essentially an isolated and enclosed tree in the DOM.
+- The Shadow DOM can be manipulated the same way as the real DOM nodes.
+  - However, the code inside a Shadow DOM cannot affect anything outside of it (encapsulation).
+- Browsers have been using the Shadow DOM as a means to encapsulate the inner structure of an element.
+  - This includes variables, styles, etc.
+  - For example, in the real DOM we only see the `<video>` element. However, it actually contains buttons and other controls inside its Shadow DOM.
 
-<p align="center">
-  <img src="https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_shadow_DOM/shadowdom.svg" alt="Shadow Tree" width="80%" />
-</p>
+<div align="center">
+  <img src="https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_shadow_DOM/shadowdom.svg" alt="Shadow Tree" width="80%" />
+  <p><i>MDN</i></p>
+</div>
 
 ### Terminologies
 - **Shadow Host**
-  - The ordinary node (in the "light" DOM) to which the Shadow DOM is added.
+  - The ordinary node (in the "light" DOM) to which the Shadow DOM is attached to.
     - _NOTE: the custom element itself and not the parent element._
   - Styles that are applied to the host affect the outermost part of the web component.
     - This includes slots or light DOM.
   - Not all elements can be a Shadow Host.
     - Ex: `<a>`, `<img>`.
-- **Shadow Tree**
-  - The DOM tree inside the Shadow DOM.
-- **Shadow Boundary**
-  - The point where the Shadow DOM ends and the "light" DOM resumes.
 - **Shadow Root**
-  - The root node of the Shadow Tree.
+  - The root node of the Shadow DOM Tree.
   - If the encapsulation mode (`mode`) is set to `open`, the Shadow Root can be accessed outside of the Shadow DOM.
   - Styles that are applied to the root affect the internal structure of the web component.
     - i.e. shadow DOM elements in the component's template.
+- **Shadow Tree**
+  - The DOM tree inside the Shadow DOM (attached to the Shadow Root).
+- **Shadow Boundary**
+  - The point where the Shadow DOM ends and the "light" DOM resumes.
 
 ## Creating a Shadow DOM
 ```js
