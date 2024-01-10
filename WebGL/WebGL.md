@@ -65,7 +65,7 @@
     - Vertex Shader: a program that receives a set of vertex attributes and outputs a new set of attributes. It can calculate the projected position of the vertex in screen space, and also generate other attributes (Ex: color/texture coordinates) for each vertex.
 4. The GPU creates the triangles by connecting the projected vertices. It takes the vertices in the order specified by the indices array (provided in step 2) and groups them into sets of three.
 5. The **Rasterizer** takes each triangle and clips it by discarding portions that are out of bounds of the screen. The visible portion is split into pixel-sized fragments. Other vertex attributes (output by the Vertex Shader) are applied across the rasterized surface of each triangle for a smooth gradient (Ex: if each vertex is assigned a color value, the colors will be blended into a color gradient across the pixelated surface).
-    - Rasterizer: a program that outputs pixel-sized fragments (small pieces representing data for generating a screen pixel).
+    - Rasterizer: a program that outputs pixel-sized fragments (small pieces of data necessary to generate a screen pixel).
 6. The **Fragment Shader** calculates and assigns the color to the pixels.
     - Fragment Shader: a program that outputs color and depth values for every individual pixel (most performance-sensitive step of the graphics pipeline).
       - Ex: texture mapping, and lighting.
