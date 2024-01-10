@@ -3,7 +3,7 @@
 ## Table of Contents
 - [What is WebGL?](#what-is-webgl)
 - [WebGL High-Level View](#webgl-high-level-view)
-- [How WebGL Works](#how-web-gl-works)
+- [How WebGL Works](#how-webgl-works)
   - [WebGL Rendering Pipeline](#webgl-rendering-pipeline)
 - [Reference](#reference)
 
@@ -76,4 +76,5 @@
 [WebGL: 2D and 3D graphics for the web - Web APIs | MDN](https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API)  
 [Dev.Opera — An Introduction to WebGL — Part 1](https://dev.opera.com/articles/introduction-to-webgl-part-1/)  
 [WebGL Introduction - GeeksforGeeks](https://www.geeksforgeeks.org/webgl-introduction/)  
+[WebGL Fundamentals](https://webglfundamentals.org/)  
 [WebGL tutorial - Web APIs | MDN](https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Tutorial)  
