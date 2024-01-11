@@ -18,7 +18,7 @@
 
 - WebGL essentially runs a specific context for the `<canvas>` element, giving us access to hardware-accelerated 3D rendering in JS (i.e. runs directly with your GPU).
 - Since WebGL is based on OpenGL ES 2.0, it can run on many devices including computers, phones, TVs.
-- WebGL is low-level system that only draws points, lines, and triangles.
+- **WebGL is low-level system that only draws points, lines, and triangles.**
   - There are many libraries such as Three.js that use WebGL and handles scenes, lights, shadows, materials, textures, 3D math, etc, making it easier for us to develop.
 ### OpenGL
 - A cross-language and platform to render 2D/3D vector graphics.
@@ -37,9 +37,14 @@
 - **Shader:** a program determining "how" you want to draw the object.
   - Vertex Shader: specify all the vertices (essentially, the shape itself).
   - Fragment Shader: define the color, texture, etc (essentially, the decorations).
-- **Buffer:** data held on the GPU
-  - Vertex Buffer: vertex(geometry) attributes of the model (Ex: position, color, texture coordinates).
+- **Buffer:** array of binary data uploaded to the GPU.
+  - Vertex Buffer: vertex(geometry) attributes of the model (Ex: position, normal, color, texture coordinates).
   - Frame Buffer: a collection of buffers that serve as a rendering destination. Essentially a collection of attachments.
+- **Attributes:** specifies how to access data on the buffers and feed them to the Vertex Shader.
+  - Ex: which buffer to pull the vertex positions out of, what type of data to pull out, the offset in the buffer where the positions start, the number of bytes from one position to the next.
+- **Uniforms:** global variables that are set before executing shaders.
+- **Textures:** arrays of data that shaders can randomly access.
+- **Varyings:** a way for a Vertex Shader to pass data to a Fragment Shader.
 
 ## WebGL High-Level View
 1. Prepare the canvas, get the WebGL rendering context.
@@ -52,6 +57,9 @@
 
 ## How WebGL Works
 - Triangles are the basic element with which models are drawn. We need to use JS to generate the information for where and how these triangles should be created, and their appearance (color, shades, textures, etc). This information will be sent to the GPU to process and return a view of the scene.
+- Since WebGL runs on the GPU, we need to provide code/programs to run on that GPU: Vertex Shader and Fragment Shader, which are written in GLSL.
+  - The WebGL API is mostly about setting up state for these shaders to run.
+  - A shader can receive data via 4 different methods: Attributes and Buffers, Uniforms, Textures, Varyings.
 ### WebGL Rendering Pipeline
 <div align="center">
   <img src="https://media.geeksforgeeks.org/wp-content/uploads/20220623131006/Group12.png" alt="WebGL Rendering Pipeline" />
@@ -62,14 +70,15 @@
     - Vertex Arrays: arrays containing vertex information such as the location of the vertex in the 3D space, the vertex's texture, color, and light.
 2. The information in the vertex arrays is fed to the GPU in a set of one or more **Vertex Buffers**. When these are preparing to render, another array of indices pointing to the elements in the Vertex Array is needed. These indices will later indicate how each vertex will combine into triangles (step 4).
 3. The GPU reads each item in the Vertex Buffer and runs it through the **Vertex Shader**.
-    - Vertex Shader: a program that receives a set of vertex attributes and outputs a new set of attributes. It can calculate the projected position of the vertex in screen space, and also generate other attributes (Ex: color/texture coordinates) for each vertex.
+    - Vertex Shader: a program that receives a set of vertex attributes and computes vertex positions. It can calculate the projected position of the vertex in screen space, and also generate other attributes (Ex: color/texture coordinates) for each vertex.
 4. The GPU creates the triangles by connecting the projected vertices. It takes the vertices in the order specified by the indices array (provided in step 2) and groups them into sets of three.
-5. The **Rasterizer** takes each triangle and clips it by discarding portions that are out of bounds of the screen. The visible portion is split into pixel-sized fragments. Other vertex attributes (output by the Vertex Shader) are applied across the rasterized surface of each triangle for a smooth gradient (Ex: if each vertex is assigned a color value, the colors will be blended into a color gradient across the pixelated surface).
-    - Rasterizer: a program that outputs pixel-sized fragments (small pieces of data necessary to generate a screen pixel).
+5. WebGL's **Rasterizer** takes each generated primitive (point, line, triangles) and clips it by discarding portions that are out of bounds, resulting in pixel-based images. The visible portion is split into pixel-sized fragments.
+    - Rasterizer: a program that receives vertex positions and outputs pixel-sized fragments (small pieces of data necessary to generate a screen pixel).
 6. The **Fragment Shader** calculates and assigns the color to the pixels.
     - Fragment Shader: a program that outputs color and depth values for every individual pixel (most performance-sensitive step of the graphics pipeline).
       - Ex: texture mapping, and lighting.
-7. The values resulting from the Fragment Shader are then drawn into the **Frame Buffer**.
+7. Other vertex attributes (output by the Vertex Shader) are applied across the rasterized surface of each triangle for a smooth gradient (Ex: if each vertex is assigned a color value, the colors will be blended into a color gradient across the pixelated surface).
+8. The resulting values are then drawn into the **Frame Buffer**.
     - FrameBuffer: holds the scene data including width/height of the surface, each pixel's color, depth and stencil buffers.
 
 ## Reference
