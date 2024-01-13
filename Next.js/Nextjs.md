@@ -5,7 +5,7 @@
 - [Client-side vs Server-side Rendering](#client-side-vs-server-side-rendering)
 - [Static vs Dynamic Rendering vs Streaming](#static-vs-dynamic-rendering-vs-streaming)
 - [Routing and Navigation](#routing-and-navigation)
-- [Data Fetching and Revalidation](#data-fetching-and-revalidation)
+- [Caching and Revalidation](#caching-and-revalidation)
 - [Reference](#reference)
 
 ## What is Next.js?
@@ -39,14 +39,20 @@
   - Any use of browser APIs (Ex: event listeners, hooks) require this.
   - [How client components are rendered](https://nextjs.org/docs/app/building-your-application/rendering/client-components#how-are-client-components-rendered)
 ### Server-side Rendering
+<div align="center">
+  <img src="https://nextjs.org/_next/image?url=%2Fdocs%2Flight%2Fserver-rendering-without-streaming-chart.png&w=3840&q=75&dpl=dpl_4ykYFHvrysxFPMKSgipbGVFm9BQ2" alt="Server-side Rendering" width="75%" />
+  <p><i>Next.js Docs</i></p>
+</div>
+
 1. All data for the given page is fetched on the Server.
 2. The Server then renders the HTML for the page.
 3. The Server sends the HTML, CSS, JS for the page to the Client.
 4. The Client renders a non-interactive user interface using the generated HTML and CSS. - TTV
 5. React hydrates the user interface to make it interactive. - TTI
 - _Notes_
+  - These steps are sequential and blocking.
   - Server Components can be rendered in three ways: Static, Dynamic, Streaming.
-  - [Server-side Rendering Strategies](https://nextjs.org/docs/app/building-your-application/rendering/server-components#server-rendering-strategies)
+    - [Server-side Rendering Strategies](https://nextjs.org/docs/app/building-your-application/rendering/server-components#server-rendering-strategies)
 
 ## Static vs Dynamic Rendering vs Streaming
 - By default, Next.js applies Static Rendering.
@@ -96,7 +102,7 @@
         ```
  
 <div align="center">
-  <img src="https://nextjs.org/_next/image?url=%2Fdocs%2Flight%2Fsequential-parallel-data-fetching.png&w=3840&q=75&dpl=dpl_4ykYFHvrysxFPMKSgipbGVFm9BQ2" alt="Static vs Dynamic Rendering Conditions" width="75%" />
+  <img src="https://nextjs.org/_next/image?url=%2Fdocs%2Flight%2Fserver-rendering-with-streaming-chart.png&w=3840&q=75&dpl=dpl_4ykYFHvrysxFPMKSgipbGVFm9BQ2" alt="Streaming" width="75%" />
   <p><i>Next.js Docs</i></p>
 </div>
 
@@ -107,19 +113,72 @@
   - Prefetched means to preload a route in the background before the user visits it.
   - Therefore, when a user navigates to a new route, the browser doesn’t reload the page. Instead, only the route segments that change are re-rendered.
   - When `<Link>` components become visible in the viewport, the corresponding pages are prefetched.
+    - The entire route is prefetched for Static Routes.
+    - Only the shared layout is prefetched and cached for 30s for Dynamic Routes.
   - `router.prefetch()` provided by `useRouter` can be used manually.
+  - _Note_
+    - Prefetching is only enabled in production.
 
-## Data Fetching and Revalidation
-- By default, Next.js in production pre-renders and caches all components.
-  - Therefore, it doesn’t fetch new data upon CRUD. It just uses the pre-generated component from the cache.
-  - This means that we need to tell Next.js to revalidate this cache.
-    - Ex: `revalidatePath(“/my-profile”)` revalidates the cache belonging to this route path.
-      - _`This doesn’t include nested paths._
-      - To also revalidate nested paths, do `revalidatePath(“/my-profile”, “layout”)`.
+## Caching and Revalidation
+- Next.js maintains two different caches: Router Cache and Data Cache.
+### Router Cache
+- **The Router Cache is an in-memory cache on the Client.**
+- The Router Cache stores the RSC payload of prefetched route segments and visited routes.
+- By default, Next.js in production pre-renders and caches all components in the Router Cache.
+  - Since it gets the cached component containing stale data, it doesn't fetch new data upon CRUD. It simply uses the pre-generated component from the Router Cache.
+  - _This means that we need to tell Next.js to revalidate this data cache being used by this route segment._
+- [Router Cache](https://nextjs.org/docs/app/building-your-application/caching#router-cache)
+### Data Cache
+- **The Data Cache is a persistent HTTP cache on the Server.**
+- By default, values returned from `fetch` are cached in the Data Cache (Ex: `fetch('https://...', { cache: 'force-cache' })` by default).
+- Data can be fetched at build time or request time, cached, and reused on each data request.
+- [Data Cache](https://nextjs.org/docs/app/building-your-application/caching#data-cache)
+- [Opting out of Data Caching](https://nextjs.org/docs/app/building-your-application/data-fetching/fetching-caching-and-revalidating#opting-out-of-data-caching)
+#### Revalidation
+- When an error occurs upon revalidation, the previous cached data will be served. Next.js will try revalidating on the next request.
+##### Time-based Revalidation
+- Automatically revalidates data after the specified amount of time.
+- Useful for data that doesn't change frequently and being fresh is not significant.
+- Example
+  - Individual `fetch`.
+    ```ts
+    fetch('https://...', { next: { revalidate: 3600 } })
+    ```
+  - Segment Config Options
+    ```ts
+    // layout.js or page.js
+    
+    export const revalidate = 3600;
+    ```
+##### On-Demand Revalidation
+- Manully revalidate data based on an event (Ex: form submit).
+- Trigger these revalidations inside a Server Action or Route Handler.
+- Useful for ensuring latest data.
+- **`revalidatePath`**
+  - Revalidates Data Cache used by this route path.
+  - Ex: `revalidatePath(“/my-profile”)` revalidates the Router Cache belonging to this route path.
+    - _`This doesn’t include nested paths._
+    - To also revalidate nested paths, do `revalidatePath(“/my-profile”, “layout”)`.
+- **`revalidateTag`**
+  - Revalidates Data Cache by the cache tag.
+  - Example
+    ```tsx
+    // Assign tags to the cache.
+    async function Component() {
+      const res = await fetch('https://...', { next: { tags: ["collection"] } });
+      const data = await res.json();
+    }
+    ```
+    ```ts
+    // Server Action
+    "use-server";
 
-
-
-
+    import { revalidateTag } from 'next/cache'
+    
+    export default async function action() {
+      revalidateTag("collection")
+    }
+    ```
 
 ## Reference
 [Docs | Next.js](https://nextjs.org/docs)  
