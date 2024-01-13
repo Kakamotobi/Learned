@@ -6,6 +6,7 @@
 - [Static vs Dynamic Rendering vs Streaming](#static-vs-dynamic-rendering-vs-streaming)
 - [Routing and Navigation](#routing-and-navigation)
 - [Caching and Revalidation](#caching-and-revalidation)
+- [Partial Rendering](#partial-rendering)
 - [Reference](#reference)
 
 ## What is Next.js?
@@ -110,7 +111,7 @@
 - **On the Server, your application code is automatically code-split by route segments.** Therefore, only the code needed for the current route is loaded on navigation.
   - Code-splitting refers to breaking down your source code into small bundles to be downloaded and executed by the browser. Thereby, the amount of data transferred and execution time for each request is reduced.
 - **On the Client, the route segments are prefetched and cached.**
-  - Prefetched means to preload a route in the background before the user visits it.
+  - Prefetching means to preload a route in the background before the user visits it.
   - Therefore, when a user navigates to a new route, the browser doesn’t reload the page. Instead, only the route segments that change are re-rendered.
   - When `<Link>` components become visible in the viewport, the corresponding pages are prefetched.
     - The entire route is prefetched for Static Routes.
@@ -179,6 +180,10 @@
       revalidateTag("collection")
     }
     ```
+
+## Partial Rendering
+- Only the route segments that change upon navigation are re-rendered on the client, and any shared segments are preserved.
+  - Ex: layout.jsx is preserved.
 
 ## Reference
 [Docs | Next.js](https://nextjs.org/docs)  
