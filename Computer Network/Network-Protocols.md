@@ -1,7 +1,6 @@
 # Network Protocols
 
 ## Table of Contents
-- [Brief History of Networks](#brief-history-of-networks)
 - [What are Network Protocols?](#what-are-network-protocols)
   - [Types of Network Protocols](#types-of-network-protocols)
 - [Open Systems Interconnection(OSI) Model](#open-systems-interconnectionosi-model)
@@ -32,29 +31,11 @@
 - [Secure Shell(SSH)](#secure-shellssh)
 - [Some CLI Network Commands](#some-cli-network-commands)
 
-## Brief History of Networks
-- From a very high level view point, every network is comprised of a transmitting end, receiving end, and some sort of link between the two.
-- Computer Networks essentially developed from Telephone Networks (1920s).
-### Public Switched Telephone Network(PSTN)
-- Telephone Networks started off as a _landline network_ where nodes (communication endpoints) were directly connected via wire.
-- It involves **circuit switching** where two networks nodes have to first establish a **_dedicated communications channel (circuit)_** going through the network in order to communicate.
-  - The channel remains dedicated until the communication session (telephone call) ends.
-
-    <p align="center">
-      <img src="https://cdn.comparitech.com/wp-content/uploads/2019/03/Circuit-Switching-1024x427.jpg" alt="Circuit Switching" width="80%"/>
-    </p>
-
-### Computer Network (Internet)
-- It involves **packet switching** where two network nodes communicate by sending/receiving packets on an existing connection.
-  - i.e. data is transmitted in packets that go through the different nodes in the network to arrive at the targetted network node (without dedicated circuits).
-
-  <p align="center">
-    <img src="https://learningcontent.cisco.com/images/Fig3_SegmentRouting.png" alt="Packet Switching" width="80%"/>
-  </p>
-
 ## What are Network Protocols?
 > A network protocol is an accepted set of rules that govern data communication between different devices in the network. It determines what is being communicated, how it is being communicated, and when it is being communicated. It permits connected devices to communicate with each other, irrespective of internal and structural differences. | GeeksforGeeks
 
+- A protocol defines the format and the order of messages exchanged between two or more communicating entities, as well as the actions taken on the transmission and/or receipt of a message or other event.
+- All activity on the Internet that involves two or more communicating remote entities is governed by a protocol.
 ### Types of Network Protocols
 - There are largely three major categories.
 #### Communication
