@@ -10,6 +10,7 @@
   - [Network Core](#network-core)
     - [Circuit Switching](#circuit-switching)
     - [Packet Switching](#packet-switching)
+  - [Today's Internet (ISP Hierarchy)](#todays-internet-isp-hierarchy)
 - [Types of Networks](#types-of-networks)
 - [Terminologies](#terminologies)
 - [Related Concepts](#related-concepts)
@@ -41,11 +42,6 @@
 <div align="center">
   <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/Computer%20Network/refImg/figure1.1-some-pieces-of-the-internet.png" alt="Figure 1.1 - Some Pieces of the Internet" />
   <p><em>Computer Network: Top-down Approach - Figure 1.1</em></p>
-</div>
-
-<div align="center">
-  <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/Computer%20Network/refImg/figure1.15-interconnection-of-isps.png" alt="Figure 1.15 - Interconnection of ISPs" width="80%" />
-  <p><em>Computer Network: Top-down Approach - Figure 1.15</em></p>
 </div>
 
 ### Network Edge
@@ -119,6 +115,40 @@
 ##### Forwarding Table
 - **A table that maps destination IP addresses (included in a Packet’s header) to outbound Links to determine which outbound Link to forward the Packet onto.**
 - The Internet has a number of special Routing Protocols that are used to automatically set Forwarding Tables.
+### Today's Internet (ISP Hierarchy)
+<div align="center">
+  <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/Computer%20Network/refImg/figure1.15-interconnection-of-isps.png" alt="Figure 1.15 - Interconnection of ISPs" width="80%" />
+  <p><em>Computer Network: Top-down Approach - Figure 1.15</em></p>
+</div>
+
+#### Components
+- ISPs form a hierarchy where each tier is a customer of the above tier (except the top tier) and a provider to the below tier (except the bottom tier).
+- In 2020, there are dozens of tier 1 ISPs, and hundreds of thousands of lower-tier ISPs.
+##### Global Transit ISP
+- The top tier ISP that can reach every other network on the Internet.
+- Global Transit ISPs are interconnected with each other.
+##### Regional ISPs
+- There can be smaller Regional ISPs within bigger Regional ISPs.
+##### Access ISP
+- The ISP that connects End-Systems into the Internet.
+##### Other
+###### Points of Presence(PoPs)
+- A group of one or more Routers at the same location in the provider's network where customer ISPs can connect into the provider ISP.
+- PoPs exist in all tiers except for the bottom tier (Access ISP).
+###### Multi-Homing
+- An ISP can connect to two or more provider ISPs.
+- Applies to all tiers except for the top tier ISP.
+- An ISP can multi-home across tiers.
+  - Ex: an Access ISP can multi-home by connecting to a Regional ISP and a Global Transit ISP.
+###### Peering
+- ISPs at the same tier can directly connect networks together. Traffic can be passed over the direct connection instead of going around upstream intermediaries; thereby, reducing payment to provider ISPs.
+- Usually settlement-free.
+###### Internet Exchange Point(IXP)
+- Meeting points where multiple ISPs (of the same tier) can peer together.
+- There are over 600 IXPs in the Internet in 2020.
+###### Content-Provider Networks
+- Peers with lower-tier ISPs (either directly or through IXP); thereby, reducing payment to top tier ISPs.
+- Also connects to top tier ISPs since many Access ISPs can only be reached through top tier ISPs.
 
 ## Types of Networks
 ### Local Area Network (LAN)
