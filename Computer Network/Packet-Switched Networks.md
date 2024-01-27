@@ -1,17 +1,20 @@
 # Packet-Switched Networks
 
 ## Table of Contents
-- [Delays](#delays)
+- [Nodal Delay](#nodal-delay)
   - [Processing Delay](#processing-delay)
   - [Queueing Delay](#queueing-delay)
     - [Queueing Delay and Packet Loss](#queueing-delay-and-packet-loss)
       - [Traffic Intensity](#traffic-intensity)
   - [Transmission Delay](#transmission-delay)
   - [Propagation Delay](#propagation-delay)
+- [End-to-End Delay](#end-to-end-delay)
 
 ## [Packet Switching](https://github.com/Kakamotobi/Learned/blob/main/Computer%20Network/Computer-Network.md#packet-switching)
 
-## Delays
+## Nodal Delay
+- Delay at a single router.
+
 <div align="center">
   <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/Computer%20Network/refImg/figure1.16-the-nodal-delay-at-router-a.png" alt="Figure 1.16 - The nodal delay at router A" width="80%" />
   <p><em>Computer Network: Top-down Approach - Figure 1.15</em></p>
@@ -44,6 +47,10 @@
   - If packets arrive periodically, there will be minimal queueing delay.
   - If packets arrive in bursts, the average queueing delay will be significant.
     - The first packet will have no queueing delay but the last packet will have a queueing delay of _(n - 1)L/R_ seconds.
+##### Packet Loss
+- Since an output queue has a finite capacity, when a packet arrives at a full queue, the packet or one of the packet in the queue will be dropped (depending on the router).
+- At the end-system, a lost packet will look like it having been transmitted to the network core but never showing up at the destination.
+- Try `ping <hostname or ip address>` to test network latency and packet loss.
 ### Transmission Delay
 - The time required to push/transmit all of the packet's bits onto the outbound Link.
 - <i>d<sub>transmission</sub> = L/R</i>
@@ -58,3 +65,26 @@
 - <i>d<sub>propagation</sub> = distance / propagation speed</i>
   - The propagation speed is between 2 * 10<sup>8</sup>m/s and 3 * 10<sup>8</sup>m/s (approx. speed of light).
   - Ex: 5,000km / 300,000km/s
+
+## End-to-End Delay
+- Total delay from source to destination.
+- <i>d<sub>end-end</sub> = N(d<sub>processing</sub> + d<sub>transmission</sub> + d<sub>propagation</sub></i>
+  - Assuming that:
+    - the network is uncongested (queueing delays are negligible).
+    - <i>d<sub>processing</sub></i> is the same at each router.
+    - transmission rate out of the source host and routers are the same (R bits/sec).
+    - <i>d<sub>propagation</sub></i> is the same for each link.
+- Try `traceroute <hostname or ip address>`.
+  - Sends multiple special packets towards the destination (does this process 3 times).
+  - When a router receives a special packet, it sends back a short message about itself to the source.
+  - The round-trip delays (in ms) include the nodal delay.
+    - Due to the queueing delay varying, the nth router's delay can be longer than that of the n+1 router.
+    - A big increase in delay between routers indicates a long link (Ex: transatlantic link).
+  - `*` indicates that the source received fewer than three messages from the router due to packet loss in the network.
+  - RFC 1393.
+
+## End System Delay
+- An end system transmitting a packet into a shared medium (Ex: WiFi, cable modem) may experience purposeful delay.
+- Media packetization delay (Ex: VoIP).
+
+
