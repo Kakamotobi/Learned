@@ -9,6 +9,7 @@
   - [Transmission Delay](#transmission-delay)
   - [Propagation Delay](#propagation-delay)
 - [End-to-End Delay](#end-to-end-delay)
+- [Throughput](#throughput)
 
 ## [Packet Switching](https://github.com/Kakamotobi/Learned/blob/main/Computer%20Network/Computer-Network.md#packet-switching)
 
@@ -16,25 +17,25 @@
 - Delay at a single router.
 
 <div align="center">
-  <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/Computer%20Network/refImg/figure1.16-the-nodal-delay-at-router-a.png" alt="Figure 1.16 - The nodal delay at router A" width="80%" />
+  <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/Computer%20Network/refImg/figure1.16-the-nodal-delay-at-router-a.png" alt="Figure 1.16 - The nodal delay at router A" width="60%" />
   <p><em>Computer Network: Top-down Approach - Figure 1.15</em></p>
   <br />
   <i>Total Nodal Delay = d<sub>processing</sub> + d<sub>queueing</sub> + d<sub>transmission</sub> + d<sub>propagation</sub></i>
 </div>
 
 ### Processing Delay
-- The time required to check the packet's header and determine where to direct the packet (the queue for the target outbound link).
+- **The time required to check the packet's header and determine where to direct the packet (the queue for the target outbound link).**
   - It could also include the time to check for bit-level errors in the packet that may have occured in transmitting the packet's bits from the upstream node to this node.
 - Microseconds or less.
 ### Queueing Delay
-- The time that a packet waits in the output queue/buffer for its turn to be transmitted onto the outbound link.
+- **The time that a packet waits in the output queue/buffer for its turn to be transmitted onto the outbound link.**
   - If there are no preceding packets in the queue, the queueing delay will be 0.
 - Unlike the other delays, the queueing delay can vary from packet to packet.
 - Microseconds to milliseconds.
 #### Queueing Delay and Packet Loss
 - The significance of the queueing delay depends on 1) the rate at which traffic arrives at the queue, 2) the transmission rate of the link, and 3) whether the traffic arrives periodically or in bursts.
 ##### Traffic Intensity
-- Traffic Intensity is a ratio used to estimate the extent of the queueing delay.
+- **Traffic Intensity is a ratio used to estimate the extent of the queueing delay.**
 - <i>Traffic Intensity = L*a / R</i>
   - L = packet size in bits
   - a = rate at which packets arrive at the output queue (packets per second)
@@ -52,7 +53,7 @@
 - At the end-system, a lost packet will look like it having been transmitted to the network core but never showing up at the destination.
 - Try `ping <hostname or ip address>` to test network latency and packet loss.
 ### Transmission Delay
-- The time required to push/transmit all of the packet's bits onto the outbound Link.
+- **The time required to push/transmit all of the packet's bits onto the outbound Link.**
 - <i>d<sub>transmission</sub> = L/R</i>
   - L = packet size in bits
   - R = transmission rate (bits per second)
@@ -60,7 +61,7 @@
   - Ex: 0.016Mb / 10Mbps = 0.0016s
 - Microseconds to milliseconds.
 ### Propagation Delay
-- The time required to actually propagate a bit from the current node to the next node.
+- **The time required to actually propagate a bit from the current node to the next node.**
   - Depends on the physical medium of the Link (Ex: fiber optics, twisted-pair copper wire).
 - <i>d<sub>propagation</sub> = distance / propagation speed</i>
   - The propagation speed is between 2 * 10<sup>8</sup>m/s and 3 * 10<sup>8</sup>m/s (approx. speed of light).
@@ -87,4 +88,25 @@
 - An end system transmitting a packet into a shared medium (Ex: WiFi, cable modem) may experience purposeful delay.
 - Media packetization delay (Ex: VoIP).
 
+## Throughput
+- **The rate (bits/sec) at which the destination Host is receiving the actual data in a given time period.**
+  - i.e. the transmission rate of the bottleneck link.
+- The network core is composed of high speed links that experience little congestion. Therefore, the constraining factor for throughput in today's Internet is usually the access network.
+- Throughput depends on the transmission rates of the links over which the data flows. However, it also depends on the intervening traffic (Ex: a link has a high transmission rate but if there is a lot of traffic, it may be the bottleneck link).
+### Example 1
+<div align="center">
+  <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/Computer%20Network/refImg/figure1.19-throughput.png" alt="Figure 1.19 - Throughput for a file transfer from server to client" width="60%" />
+  <p><em>Computer Network: Top-down Approach - Figure 1.19</em></p>
+</div>
 
+- If R<sub>s</sub> < R<sub>c</sub>, throughput is R<sub>s</sub> bps.
+- If R<sub>c</sub> < R<sub>s</sub>, throughput is R<sub>c</sub> bps.
+- **<i>throughput = min{R<sub>1</sub>, R<sub>2</sub>, ..., R<sub>N</sub>}</i>**
+### Example 2
+<div align="center">
+  <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/Computer%20Network/refImg/figure1.20-throughput.png" alt="Figure 1.20 - End-to-end throughput" width="60%" />
+  <p><em>Computer Network: Top-down Approach - Figure 1.20</em></p>
+</div>
+
+- If R<sub>s</sub> is 2Mbps, R<sub>c</sub> is 1Mbps, R is 5Mbps, and the common link's transmission rate is equally divided among 10 downloads, the throughput becomes 0.5Mbps (500Kbps).
+  - This means that the bottleneck is no longer the access network, but is the shared link in the network core.
