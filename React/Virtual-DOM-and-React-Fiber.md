@@ -47,9 +47,9 @@
 
 ## React Fiber - The Internals of React's VDOM
 - At its basic, React Fiber is an ordinary object in JS. It is the **Fiber Reconciler**'s job to manage this object (detect any differences with the actual DOM and if there are any, request a rerender of the screen).
-- **Reconciliaton** is the process/algorithm that determines what parts of the DOM need to be newly rendered by comparing the VDOM and the actual DOM.
+- **Reconciliaton** is the process/algorithm occurring in the Render Phase that determines what parts of the DOM need to be newly rendered by comparing the VDOM and the actual DOM.
   - Previously, this algorithm was based on a stack; meaning that the necessary operations would take place synchronously.
-  - With the introduction of "fiber", this process is now asynchronous.
+  - With the introduction of "fiber", this process is now _asynchronous_ since React 18.
 - Using the information provided by the Reconciler, the **Renderer** actually updates the DOM.
 - _Note_
   - _Since the Reconciler and Renderer are implemented separately, React DOM and React Native can use the same Reconciler but use their own Renderers to target different environments._
