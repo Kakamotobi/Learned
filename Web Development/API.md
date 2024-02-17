@@ -72,24 +72,24 @@
 - RESTful API simply means that the API follows the REST architecture.
 - It is currently the most prevalent API.
 #### The 6 Principles of REST
-1) Uniform Interface
-  - All API requests for the same resource must look the same.
-    - i.e. the same piece of data/resource should belong to only one URI.
-2) Client-Server Decoupling
-  - The Client and Server must be independent of each other.
-  - The Client can only interact with the Server through these endpoints and can only get information that the requested URI responds.
-  - The Server should not modify the Client in any other way than responding the requested data via HTTP.
-3) Statelessness
-  - The Server should not store any data related to a Client request.
-    - i.e. no server-side sessions.
-4) Cacheability
-  - Server responses should indicate whether the particular resource is allowed to be cached on the Client.
-  - For Client-side performance gain and Server-side scalability.
-5) Layered System Architecture
-  - Since the Client and Server may not directly connect with each other due to intermediaries, both the Client and Server should not be designed to know whether they are communicating with the end application or an intermediary.
-6) Code on Demand (optional)
-  - Some times, instead of static resources, the Server could respond executable code (Ex: Java applet).
-  - The code should only run on-demand.
+##### 1) Uniform Interface
+- All API requests for the same resource must look the same.
+  - i.e. the same piece of data/resource should belong to only one URI.
+##### 2) Client-Server Decoupling
+- The Client and Server must be independent of each other.
+- The Client can only interact with the Server through these endpoints and can only get information that the requested URI responds.
+- The Server should not modify the Client in any other way than responding the requested data via HTTP.
+##### 3) Statelessness
+- The Server should not store any data related to a Client request.
+  - i.e. no server-side sessions.
+##### 4) Cacheability
+- Server responses should indicate whether the particular resource is allowed to be cached on the Client.
+- For Client-side performance gain and Server-side scalability.
+##### 5) Layered System Architecture
+- Since the Client and Server may not directly connect with each other due to intermediaries, both the Client and Server should not be designed to know whether they are communicating with the end application or an intermediary.
+##### 6) Code on Demand (optional)
+- Some times, instead of static resources, the Server could respond executable code (Ex: Java applet).
+- The code should only run on-demand.
 #### How REST Works
 - A Client and Server communicate with each other using data (usually in JSON format) over HTTP.
   - HTTP methods are used to perform CRUD actions.
