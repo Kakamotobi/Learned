@@ -6,6 +6,7 @@
 - [API Paradigms](#api-paradigms)
   - [Simple Object Access Protocol(SOAP)](#simple-object-access-protocolsoap)
   - [REpresentational State Transfer(REST)](#representational-state-transferrest)
+    - [The 6 Principles of REST](#the-6-principles-of-rest)
     - [How REST Works](#how-rest-works)
   - [GraphQL](#graphql)
     - [GraphQL vs. REST API](#graphql-vs-rest-api)
@@ -66,15 +67,33 @@
 - It was used more back in the days, but is now lacking flexibility.
 ### REpresentational State Transfer(REST)
 - Introduced in 2000.
-- REST is an architectural style for designing APIs.
-- Data entities or resources are organized into unique URIs and made available on a server to which the client can access the resource from.
+- **REST is a resource-oriented architecture for designing APIs where data entities/resources are organized into unique URIs using the various HTTP methods and made available on a server to which clients can access the resource from.**
 - REST is stateless. Therefore, the client and the server do not have to store any information about each other, and every request/response cycle is independent.
 - RESTful API simply means that the API follows the REST architecture.
 - It is currently the most prevalent API.
+#### The 6 Principles of REST
+1) Uniform Interface
+  - All API requests for the same resource must look the same.
+    - i.e. the same piece of data/resource should belong to only one URI.
+2) Client-Server Decoupling
+  - The Client and Server must be independent of each other.
+  - The Client can only interact with the Server through these endpoints and can only get information that the requested URI responds.
+  - The Server should not modify the Client in any other way than responding the requested data via HTTP.
+3) Statelessness
+  - The Server should not store any data related to a Client request.
+    - i.e. no server-side sessions.
+4) Cacheability
+  - Server responses should indicate whether the particular resource is allowed to be cached on the Client.
+  - For Client-side performance gain and Server-side scalability.
+5) Layered System Architecture
+  - Since the Client and Server may not directly connect with each other due to intermediaries, both the Client and Server should not be designed to know whether they are communicating with the end application or an intermediary.
+6) Code on Demand (optional)
+  - Some times, instead of static resources, the Server could respond executable code (Ex: Java applet).
+  - The code should only run on-demand.
 #### How REST Works
-- A client and server communicate with each other using data (usually in JSON format) over HTTP.
+- A Client and Server communicate with each other using data (usually in JSON format) over HTTP.
   - HTTP methods are used to perform CRUD actions.
-  - The client sends a request to one of the endpoints on the server via HTTP.
+  - The Client sends a request to one of the endpoints on the Server via HTTP.
     - The request contains:
       - an operation type (HTTP method).
       - an endpoint.
@@ -82,7 +101,7 @@
         - Ex: `Accept` header to inform the server of the data format that the client wishes to receive.
         - Ex: `Authorization` header to inform the server that you have permission to make that request.
       - a body/payload.
-  - The server receives the client's request and responds with the corresponding data/action.
+  - The Server receives the Client's request and responds with the corresponding data/action.
     - The response contains:
       - an  HTTP status code.
       - some headers (metadata about the response).
@@ -748,7 +767,7 @@ app.listen(3000);
 [Introduction to web APIs - Learn web development | MDN](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Introduction)  
 [API란 무엇인가요? - API 초보자를 위한 가이드 - AWS](https://aws.amazon.com/ko/what-is/api/)  
 [SOAP - IBM Documentation](https://www.ibm.com/docs/en/wasdtfe?topic=applications-soap)  
-[What is a REST API? | IBM](https://www.ibm.com/cloud/learn/rest-apis)  
+[What is a REST API? | IBM](https://www.ibm.com/topics/rest-apis)  
 [RESTful APIs in 100 Seconds // Build an API from Scratch with Node.js Express - YouTube](https://www.youtube.com/watch?v=-MTSQjw5DrM&ab_channel=Fireship)  
 [GraphQL Basics - Build an app with the SpaceX API - YouTube](https://www.youtube.com/watch?v=7wzR4Ig5pTI&ab_channel=Fireship)  
 [The Ultimate Guide to API Architecture: REST, SOAP or GraphQL? | DA-14](https://da-14.com/blog/ultimate-guide-api-architecture-rest-soap-or-graphql)  
