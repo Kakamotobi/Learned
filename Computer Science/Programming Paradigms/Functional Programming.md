@@ -7,6 +7,7 @@
   - [Avoiding Side Effects](#avoiding-side-effects)
   - [Avoiding Shared State](#avoiding-shared-state)
   - [Immutable Data](#immutable-data)
+  - [First-Class Function](#first-class-function)
 - [Function (mathematical)](#function-mathematical)
 - [Function Composition](#function-composition)
   - [Function Composition and Currying](#function-composition-and-currying)
@@ -156,6 +157,9 @@
     doubleArrVals(arr);
     console.log(original); // [1, 2, 3]
     ```
+### First-Class Function
+- In FP, functions are first-class citizens.
+  - i.e. **functions can be passed in as arguments to another function, can be returned by another function, and can be assigned to variables or stored in data structures.**
 
 ## Function (mathematical)
 ### Traditional Function
