@@ -53,6 +53,7 @@
 
 ## Open Systems Interconnection(OSI) Model
 - The OSI model _attempts_ to represent the abstract layers of communication between computing systems.
+- Each layer provides its service by 1) performing certain actions within that layer, and by 2) using the services of the layer directly below it.
 - Higher layers have gone through the lower layers.
   - i.e. lower layers are not aware of what happens in higher layers.
 
@@ -62,11 +63,13 @@
 </p>
 
 - **Application**
-  - The Application Layer involves high-level protocols for human-computer interaction.
-    - i.e. the actual message being sent.
-  - Browsers rely on this layer to initiate communication.
-  - Ex: HTTP/HTTPS, SSH, SMTP.
-  - Data Unit: data
+  - **Where network applications and their application-layer protocols reside.**
+    - It involves high-level protocols for human-computer interaction.
+      - i.e. the actual message/data being sent.
+  - Using an application-layer protocol, end systems exchange packets of information with the applicstion in another end system.
+    - Ex: browsers directly rely on this layer to initiate and receive communication.
+  - Ex: HTTP/HTTPS, SMTP, FTP, SMTP, DNS.
+  - Data Unit: message (packet of information)
 - **Presentation**
   - The Presentation Layer is responsible for:
     - Translating incoming data to a format that the receiver can understand.
@@ -77,10 +80,10 @@
   - The Session Layer is responsible for establishing and maintaining _sessions_ and _ports_ for continuous transmissions between the two network nodes.
   - Data Unit: data
 - **Transport**
-  - The Transport Layer is responsible for actually transmitting the data segments between endpoints on the network.
-    - These may be connection-oriented or connectionless.
-  - Ex: TCP, UDP.
-  - Data Unit: segment or datagram.
+  - **Responsible for actually transporting application-layer messages between application endpoints on the network.**
+    - Transport layer protocols may be connection-oriented (TCP) or connectionless (UDP).
+  - Ex: [TCP](#transmission-control-protocoltcp), [UDP](#user-datagram-protocoludp).
+  - Data Unit: segment(TCP) or datagram(UDP).
 - **Network**
   - The Network Layer is responsible for deciding the actual path on the network that the data will pass through.
   - Ex: IP.
@@ -97,9 +100,17 @@
 - _These protocols are the first protocol that a client and server establish before actually transmitting data._
 ### Transmission Control Protocol(TCP)
 - **TCP is a connection-oriented protocol that first establishes a reliable virtual-circuit connection between two applications before starting data transmission.**
-  - i.e. end-to-end connection.
-- In TCP, data is sent as a stream of bytes, where they are received in the order that they were sent in.
 - TCP is useful for web browsing, email, file transfer, etc.
+#### Characteristics
+- **Guaranteed Delivery**
+  - Since TCP is connection-oriented, application-layer messages are guaranteed to be delivered to the desintation.
+- **Order of Data Arrival**
+  - Data is received in the order that they were sent in.
+- **Flow Control**
+  - Sender/receiver speed matching.
+- **Congestion Control**
+  - TCP breaks long messages into shorter segments and provides a congestion-control mechanism.
+  - A source throttles its transmission rate when the network is congested.
 #### TCP 3-Way Handshake
 - TCP: before anything, the client and server first "discuss" the parameters of the connection.
 - This is done through the use of three messages: SYN, SYN + ACK, ACK.
@@ -188,6 +199,10 @@
   - i.e. the transmitting computer simply sends the data but does not make sure the data is received by the receiving computer.
 - There is no guarantee that the data is successfully transmitted (data can be lost, duplicated, arrive out of order). Therefore, UDP is faster than TCP.
 - UDP is useful for broadcasting, video streaming, multiplayer games, etc.
+#### Characteristics
+- No Reliability
+- No Flow Control
+- No Congestion Control
 #### UDP Header
 <p align="center">
   <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/Computer%20Network/refImg/udp-header.png" alt="UDP Header" width="80%" />
