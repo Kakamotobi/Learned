@@ -4,6 +4,7 @@
 - [What are Network Protocols?](#what-are-network-protocols)
   - [Types of Network Protocols](#types-of-network-protocols)
 - [Open Systems Interconnection(OSI) Model](#open-systems-interconnectionosi-model)
+  - [Encapsulation](#encapsulation)
 - [TCP vs UDP vs QUIC](#tcp-vs-udp-vs-quic)
   - [Transmission Control Protocol(TCP)](#transmission-control-protocoltcp)
     - [TCP 3-Way Handshake](#tcp-3-way-handshake)
@@ -54,46 +55,76 @@
 ## Open Systems Interconnection(OSI) Model
 - The OSI model _attempts_ to represent the abstract layers of communication between computing systems.
 - Each layer provides its service by 1) performing certain actions within that layer, and by 2) using the services of the layer directly below it.
-- Higher layers have gone through the lower layers.
+- Higher layers rely on the services of the lower layers.
   - i.e. lower layers are not aware of what happens in higher layers.
 
-<p align="center">
+<div align="center">
   <img src="https://www.tech-faq.com/wp-content/uploads/2009/01/osimodel.png" alt="OSI Model" width="50%" />
   <img src="https://media.fs.com/images/community/upload/kindEditor/202107/29/original-seven-layers-of-osi-model-1627523878-JYjV8oybcC.png" alt="OSI Model" width="50%" />
-</p>
+</div>
 
 - **Application**
   - **Where network applications and their application-layer protocols reside.**
     - It involves high-level protocols for human-computer interaction.
       - i.e. the actual message/data being sent.
-  - Using an application-layer protocol, end systems exchange packets of information with the applicstion in another end system.
+  - **Using an application-layer protocol, end systems exchange packets of information with the application in another end system**.
     - Ex: browsers directly rely on this layer to initiate and receive communication.
-  - Ex: HTTP/HTTPS, SMTP, FTP, SMTP, DNS.
+  - Protocols: [HTTP/HTTPS](#http-vs-https), SMTP, FTP, SMTP, DNS.
   - Data Unit: message (packet of information)
 - **Presentation**
-  - The Presentation Layer is responsible for:
+  - The presentation layer is responsible for:
     - Translating incoming data to a format that the receiver can understand.
     - Encrypting/Decrypting the data.
     - Compressing data, which was received from the Application Layer, before passing it on to the Session Layer.
   - Data Unit: data
 - **Session**
-  - The Session Layer is responsible for establishing and maintaining _sessions_ and _ports_ for continuous transmissions between the two network nodes.
+  - The session layer is responsible for establishing and maintaining _sessions_ and _ports_ for continuous transmissions between the two network nodes.
   - Data Unit: data
 - **Transport**
-  - **Responsible for actually transporting application-layer messages between application endpoints on the network.**
+  - The transport layer is **responsible for actually transporting application-layer messages between application endpoints on the network.**
     - Transport layer protocols may be connection-oriented (TCP) or connectionless (UDP).
-  - Ex: [TCP](#transmission-control-protocoltcp), [UDP](#user-datagram-protocoludp).
+  - Protocols: [TCP](#transmission-control-protocoltcp), [UDP](#user-datagram-protocoludp).
   - Data Unit: segment(TCP) or datagram(UDP).
 - **Network**
-  - The Network Layer is responsible for deciding the actual path on the network that the data will pass through.
-  - Ex: IP.
-  - Data Unit: packet
+  - The network layer receives a transport-layer segment and a destination address from the transport-layer protocol (TCP or UDP) in the source host.
+  - The network layer is **responsible for delivering the received segment to the transport layer in the destination host**.
+  - Protocols: IP, routing protocols.
+    - IP defines the fields in the datagram, and how the end systems and routers act on these fields.
+      - All components of the Internet must have a network layer with the IP protocol.
+    - Each network can run any routing protocol desired.
+  - Data Unit: datagrams (network-layer packets)
 - **Data Link**
-  - The Data Link Layer is responsible for the node-to-node transmission of data.
-  - Data Unit: frame
+  - The link layer receives the network-layer datagrams from the network layer at each node.
+  - The link layer is **responsible for delivering the received datagram to the next node along the route. At the next node, the link layer passes the datagram up to the network layer**.
+    - i.e. node-to-node transmission.
+  - Along the route, a datagram may be handled by multiple different link-layer protocols.
+  - Protocols: Ethernet, WiFi, PPP.
+  - Data Unit: frames (link-layer packets)
 - **Physical**
-  - The Physical Layer is responsible for the transmission of raw bit streams over the physical connection between devices (cables/wires).
+  - The physical layer receives a link-layer frame.
+  - The physical layer is **responsible for transmitting the individual bits within the frame from one node to the next**.
+  - The physical-layer protocol used depends on the actual link and its transmission medium (Ex: twisted-pair copper wire, single-mode fiber optics).
+  - Protocols: protocol for twisted-pair copper wire, coaxial cable, fiber, etc.
   - Data Unit: bit
+### Encapsulation
+<div align="center">
+  <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/Computer%20Network/refImg/figure1.24-protocol-layers-physical-path.png" alt="Protocol Layers Physical Path" width="80%" />
+</div>
+
+- **Key**
+  - `M`: message
+  - `H`: header
+- **Encapsulation**
+  - Application-layer Message = the message
+  - Transport-layer Segment = Application-layer Message + Transport-layer Header (Ex: information for the receiver-side transport layer to deliver the message to the appropriate application)
+  - Network-layer Datagram = Transport-layer Segment + Network-layer Header (Ex: source and destination end system addresses)
+  - Link-Layer Frame = Network-layer Datagram + Link-Layer Header
+  - _At each layer, a packet has two fields: header and payload (typically a packet received from the layer above)._
+  - _Each added header provides information for the receiver-side to do its job._
+  - Once the message arrives at the destination host, the process of de-encapsulation begins (physical -> link -> network -> transport -> application).
+- Notes
+  - Packet switches (Ex: router, link-layer switch) do not implement all of the layers in the protocol stack. They usually only implement the bottom layers.
+    - Internet routers are capable of implementing the IP protocol, while link-layer switches are not. However, link-layer switches are able to recognize link-layer addresses (Ex: Ethernet addresses).
 
 ## TCP vs UDP vs QUIC
 - TCP, UDP, and QUIC are different transport layer protocols.
@@ -117,9 +148,9 @@
   - SYN: Synchronized sequence numbers.
   - ACK: Acknowledgement
 
-<p align="center">
+<div align="center">
   <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/Computer%20Network/refImg/tcp-handshake.png" alt="TCP 3-Way Handshake" width="80%" />
-</p>
+</div>
 
 1. The client sends a SYN(n) packet to the server.
 2. The server receives the client's SYN(n) packet and then sends SYN(k) and ACK(n+1) packets to the client.
@@ -193,16 +224,14 @@
 ### User Datagram Protocol(UDP)
 - a.k.a. "fire and forget" protocol.
 - **UDP is a connectionless protocol, based on unreliable datagrams, that does not establish any connection between two applications before starting data transmission.**
-  - _Datagram_ is a transfer unit (consisting header and payload sections) for connectionless communication services within a network that uses packet-switching.
-- Data is transmitted link by link (no end-to-end connection).
-  - i.e. it does not establish a session.
-  - i.e. the transmitting computer simply sends the data but does not make sure the data is received by the receiving computer.
-- There is no guarantee that the data is successfully transmitted (data can be lost, duplicated, arrive out of order). Therefore, UDP is faster than TCP.
+  - _Datagram_ is a transfer unit (consisting of header and payload sections) for connectionless communication services within a network that uses packet-switching.
 - UDP is useful for broadcasting, video streaming, multiplayer games, etc.
 #### Characteristics
-- No Reliability
-- No Flow Control
-- No Congestion Control
+- **No Reliability**
+  - Since data is transmitted link by link (no end-to-end connection), the transmitting end system sends the data but does not make sure the data is received by the receiving computer.
+  - There is no guarantee that the data is successfully transmitted (data can be lost, duplicated, arrive out of order). Therefore, UDP is faster than TCP.
+- **No Flow Control**
+- **No Congestion Control**
 #### UDP Header
 <p align="center">
   <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/Computer%20Network/refImg/udp-header.png" alt="UDP Header" width="80%" />
