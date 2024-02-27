@@ -1,4 +1,4 @@
-# Packet-Switched Networks
+# Packet-Switched Network Delays
 
 ## Table of Contents
 - [Nodal Delay](#nodal-delay)
@@ -69,7 +69,7 @@
 
 ## End-to-End Delay
 - Total delay from source to destination.
-- <i>d<sub>end-end</sub> = N(d<sub>processing</sub> + d<sub>transmission</sub> + d<sub>propagation</sub></i>
+- <i>d<sub>end-end</sub> = N(d<sub>processing</sub> + d<sub>transmission</sub> + d<sub>propagation</sub></i>)
   - Assuming that:
     - the network is uncongested (queueing delays are negligible).
     - <i>d<sub>processing</sub></i> is the same at each router.
