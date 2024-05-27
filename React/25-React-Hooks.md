@@ -2,6 +2,7 @@
 
 ## Table of Contents
 - [What are Hooks?](#what-are-hooks)
+- [Rules of Hooks](#rules-of-hooks)
 - [Basic Hooks](#basic-hooks)
   - [`useState`](#usestate)
   - [`useEffect`](#useeffect)
@@ -33,6 +34,13 @@
   - Therefore, in order to work with reactive data, you needed to create a class.
   - This resulted into a complex tree of nested components.
   - Sharing any logic required some frustrating solutions like higher ordered components and render props (patterns where components are passed in as arguments to other components).
+
+## Rules of Hooks
+- Hooks must be called at the top level of a React function - before any early returns.
+  - It cannot be called inside loops, conditions, or nested functions.
+- _Note_
+  - The used hooks are stored somewhere in React based on keys such as an index (like a linked list of fiber objects) based on their order because each hook stores the new result of the state or effect in the fiber nodes. This allows React to compare the previous value and make executions. Therefore, the order of hooks matter a lot.
+  - This is to guarantee the React function always executes the hooks in the same order.
 
 ## Basic Hooks
 ### `useState`
