@@ -116,7 +116,7 @@
   - `H`: header
 - **Encapsulation**
   - Application-layer Message = the message
-  - Transport-layer Segment = Application-layer Message + Transport-layer Header (Ex: information for the receiver-side transport layer to deliver the message to the appropriate application)
+  - Transport-layer Segment = Application-layer Message + Transport-layer Header (Ex: information for the receiver-side transport layer to deliver the message to the appropriate application, such as, TCP port numbers)
   - Network-layer Datagram = Transport-layer Segment + Network-layer Header (Ex: source and destination end system addresses)
   - Link-Layer Frame = Network-layer Datagram + Link-Layer Header
   - _At each layer, a packet has two fields: header and payload (typically a packet received from the layer above)._
