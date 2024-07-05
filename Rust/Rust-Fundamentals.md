@@ -11,6 +11,8 @@
 - [Memory Safety](#memory-safety)
 - [Functions](#functions)
 - [Module System](#module-system)
+- [Scalar Types](#scalar-types)
+- [Compound Types](#compound-types)
 
 ## Rust
 - A systems programming language that focuses on three goals: safety, speed, concurrency.
@@ -146,3 +148,35 @@ let num: i32 = 7; // signed 32-bit integer
     ```
   - The standard library(`std`) is always available by default.
 - "crates.io" is Rust's package registry (collection of things not in the standard library).
+
+## Scalar Types
+### Integer
+- Unsigned Ex: `u8` (byte), `u16`, ... `u64`, `u128`, `usize` (size of the platform's pointer type)
+- Signed Ex: `i8`, `i16`, ... `i64`, `i128`, `isize`
+- `let x: u16 = 5;` is the same as `let x = 5u16;`
+### Float
+- Ex: F32, F64
+### Boolean
+- `true`/`false`
+### Character
+- Represents a single unicode scalar value.
+- A character is always 4 bytes, which means an array of characters is a UCS-4 or UTF-32 string.
+
+## Compound Types
+- Gather multiple values of other types into one type.
+### Tuple
+- Store multiple values of any type.
+- Members of tuples are not always the same type.
+- Maximum Arity is 12.
+- Ex: `let nums: (u8, f64, i32) = (1, 2.3, 999);`
+#### Accessing Tuples
+- Dot Syntax (a.k.a. field access expression)
+  - Ex: `nums.0`, `nums.1`, `nums.2`
+- Destructuring
+  - Ex: `let (first, second, third) = nums;`
+### Array
+- Store multiple values of the same type.
+- Limited to a size of 32.
+- Ex: `let nums: [u8; 3] = [1, 2, 3]`, `let three_zeros: [u8; 3] = [0; 3];`
+#### Accessing Arrays
+- Ex: `nums[0]`
