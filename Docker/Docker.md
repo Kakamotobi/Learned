@@ -98,6 +98,7 @@
   - `docker run -d -p 80:80 --name <container name> <image tagname>` &rarr; build a container using the specified image.
     - `-p 80:80` - host's port 80 is mapped to container's port 80 (_port-forwarding_).
       - Port forwarding is needed to allow access from outside the container.
+      - i.e. allow localhost to reach the application running on port 80 inside of the container; since by default, there is no connection between a container and the host operating system.
 - Save and share the image
   - `docker tag <source image> <target image tag>` &rarr; create a tag that erfers to the source image.
   - `docker push <target image>` &rarr; push to Docker Hub
