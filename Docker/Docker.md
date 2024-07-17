@@ -2,6 +2,7 @@
 
 ## Table of Contents
 - [What is Docker?](#what-is-docker)
+  - [Why use Docker?](#why-use-docker)
   - [Docker vs Virtual Machine](#docker-vs-virtual-machine)
     - [Virtualization vs Containerization](#virtualization-vs-containerization)
   - [Docker Image](#docker-image)
@@ -16,10 +17,16 @@
 
 ## What is Docker?
 - **Docker is a software platform that packages software into standardized units called containers.**
-- Docker is not concerned with the specific infrastructure and tech stack that an pplication is built on. Therefore, it provides the same development and deployment environment.
+  - _A container is essentially a package of code and dependencies required to run that code (Ex: Node.js code + Node.js runtime)_.
+  - Support for containers is built into modern operating systems.
+- Docker is not concerned with the specific infrastructure and tech stack that an application is built on. Therefore, it provides the same development and deployment environment.
 - Docker is based on OS system calls.
   - All the API that container-based virtual platforms like Docker is available in the OS.
 - Docker enables us to quickly deploy and scale applications into any environment confidently.
+### Why use Docker?
+- To make the development and production environments the same.
+- To make the development environments within a team/company the same.
+- To prevent clashing of versions of tools between different projects.
 ### Docker vs Virtual Machine
 <p align="center">
   <img src="https://raw.githubusercontent.com/Kakamotobi/Learned/main/Docker/refImg/docker-vs-vm.png" alt="Docker vs Virtual Machine" width="80%" /><br/>
