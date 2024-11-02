@@ -2,7 +2,8 @@
 
 ## Table of Contents
 - [What is Next.js?](#what-is-nextjs)
-- [Client-side vs Server-side Rendering](#client-side-vs-server-side-rendering)
+- [Client-side Rendering vs Server-side Rendering](#client-side-rendering-vs-server-side-rendering)
+- [Client Components vs Server Components](#client-components-vs-server-components)
 - [Static vs Dynamic Rendering vs Streaming](#static-vs-dynamic-rendering-vs-streaming)
 - [Routing and Navigation](#routing-and-navigation)
 - [Caching and Revalidation](#caching-and-revalidation)
@@ -28,18 +29,21 @@
 - **TypeScript**
   - Provides improved support for TS (type checking, compilation, etc).
 
-## Client-side vs Server-side Rendering
+## Client-side Rendering vs Server-side Rendering
 ### Client-side Rendering
 1. The Server sends a minimal HTML document to the Client.
 2. The Client requests and receives JS files and executes them.
-3. The Client makes necessary data requests to the Server.
-4. The Client constructs the components and renders the UI. - TTV, TTI
+    - The Client makes necessary data requests to the Server.
+3. The Client constructs the components and renders the UI. - TTV, TTI
 - _Notes_
-  - To use Client Components, we need to opt-in to it by including the `"use-client"` directive. By doing so, all imported modules including child components are part of the client bundle.
-    - `"use-client"` is essentially the boundary between a Server Component and Client Component (including its child components).
-  - Any use of browser APIs (Ex: event listeners, hooks) require this.
-  - [How client components are rendered](https://nextjs.org/docs/app/building-your-application/rendering/client-components#how-are-client-components-rendered)
+  - In Next.js, Client-side Rendering can be triggered by:
+    - Using `useEffect` instead of server-side rendering methods (`getStaticProps`, `getServerSideProps`).
+    - Using data fetching libraries (Ex: `SWR`, `TanStack Query`).
+#### Reference
+[Rendering: Client-side Rendering (CSR) | Next.js](https://nextjs.org/docs/pages/building-your-application/rendering/client-side-rendering)
 ### Server-side Rendering
+- a.k.a. SSR, Dynamic Rendering
+
 <div align="center">
   <img src="https://nextjs.org/_next/image?url=%2Fdocs%2Flight%2Fserver-rendering-without-streaming-chart.png&w=3840&q=75&dpl=dpl_4ykYFHvrysxFPMKSgipbGVFm9BQ2" alt="Server-side Rendering" width="75%" />
   <p><i>Next.js Docs</i></p>
@@ -52,8 +56,32 @@
 5. React hydrates the user interface to make it interactive. - TTI
 - _Notes_
   - These steps are sequential and blocking.
+  - In Next.js, Server-side Rendering can be triggered by:
+    - Exporting an `async` function `getServerSideProps`, which is invoked on every request to the Server.
+    - Exporting an `async` function `getStaticProps`, which is invoked only once at build time.
+#### Reference
+[Rendering: Server-side Rendering (SSR) | Next.js](https://nextjs.org/docs/pages/building-your-application/rendering/server-side-rendering)
+
+## Client Components vs Server Components
+### (React) Client Components
+- **Client Components are [prerendered on the Server](https://github.com/reactwg/server-components/discussions/4) and then use Client JS to run in the browser.**
+- **Rendering Process**
+  - Full Page Load
+  - Subsequent Navigations
+- _Notes_
+  - In Next.js, we can use Client Components by including the `"use-client"` directive.
+    - By doing so, all imported modules including child components are part of the client bundle.
+    - `"use-client"` is essentially the boundary between a Server Component and Client Component (including its child components).
+    - Any use of browser APIs (Ex: event listeners, hooks) require this.
+#### Reference
+[Rendering: Client Components | Next.js](https://nextjs.org/docs/app/building-your-application/rendering/client-components)  
+### (React) Server Components
+- _Notes_
   - Server Components can be rendered in three ways: Static, Dynamic, Streaming.
     - [Server-side Rendering Strategies](https://nextjs.org/docs/app/building-your-application/rendering/server-components#server-rendering-strategies)
+#### Reference
+[Rendering: Server Components | Next.js](https://nextjs.org/docs/app/building-your-application/rendering/server-components)
+
 
 ## Static vs Dynamic Rendering vs Streaming
 - By default, Next.js applies Static Rendering.
